@@ -1,19 +1,26 @@
 import { signOut, useSession } from 'next-auth/react';
-import { createContext, ReactNode, useEffect, useState } from 'react';
-import { IAuthContext, IWallet } from './auth.types';
+import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
+import { IAuthContext, IWallet } from '../../../types/auth.types';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, firestore } from '@/lib/firebase';
 import { WALLET_COOKIE } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
+import { doc, DocumentData, getDoc, onSnapshot } from 'firebase/firestore';
+import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
 
 export const AuthContext = createContext<IAuthContext>({} as any);
 
-const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> }) => {
+const AuthContextProvider = ({
+  children,
+}: {
+  children: NonNullable<ReactNode>;
+}) => {
   const session = useSession();
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [wallet, setWallet] = useState<IWallet | null>(null);
+  const [user, setUser] = useState<TUser | null>();
 
   const loginWithWallet = (wallet: IWallet) => {
     localStorage.setItem(WALLET_COOKIE, JSON.stringify(wallet));
@@ -26,43 +33,71 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       localStorage.removeItem(WALLET_COOKIE);
       setWallet(null);
       signOut({ redirect: false });
+      router.push('/');
     });
   };
 
   const authStateChanged = async (firebaseUser: User | null) => {
     if (firebaseUser) {
-      
-      // TODO: Load user data from RTDB or Firestore
-
-      const localWallet = JSON.parse(localStorage.getItem(WALLET_COOKIE) || 'null');
+      // Initialize wallet from local storage
+      const localWallet = JSON.parse(
+        localStorage.getItem(WALLET_COOKIE) || 'null'
+      );
 
       if (localWallet) {
         setWallet(localWallet);
       }
 
-      setLoading(false);
+      const docRef = doc(firestore, 'users', firebaseUser.uid);
+      const docSnap = await getDoc(docRef);
 
+      const profileRef = doc(firestore, 'profiles', firebaseUser.uid);
+
+      if (docSnap.exists()) {
+        const { claims } = await firebaseUser.getIdTokenResult();
+        const data = docSnap.data();
+        setUser({
+          ...data,
+          roles: RoleValues.filter((role: EUserRole) => claims[role]),
+        });
+      }
+
+      // If the users profile changes, pull those changes into the client
+      onSnapshot(profileRef, (profile: DocumentData) => {
+        setUser({
+          ...user,
+          profile: profile.data() as TUserProfile,
+        });
+        setLoading(false);
+      });
     } else {
       logout();
       setLoading(false);
     }
   };
 
+  const isAuthenticated = useMemo(
+    () => auth.currentUser !== null,
+    [auth.currentUser]
+  );
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, authStateChanged);
     return () => unsubscribe();
-  }, []);  
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        loginWithWallet, 
-        logout, 
-        loading, 
-        wallet
+        isAuthenticated,
+        loginWithWallet,
+        logout,
+        loading,
+        wallet,
+        user,
       }}
     >
-      { children }
+      {children}
     </AuthContext.Provider>
   );
 };

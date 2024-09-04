@@ -9,8 +9,9 @@ import { getServerSession } from 'next-auth';
 import Footer from '@/components/Footer';
 import { authOptions } from '@/lib/auth';
 import { Toaster } from 'sonner';
+import MenuPanes from '@/components/MenuPanes';
 
-const font = Roboto_Mono({ subsets: ['latin']});
+const font = Roboto_Mono({ subsets: ['latin'] });
 
 export const metadata: Metadata = DEFAULT_METADATA;
 
@@ -18,10 +19,10 @@ export default async function RootLayout({
   children,
 }: Readonly<{
   children: NonNullable<React.ReactNode>;
-  metadata: Metadata
+  metadata: Metadata;
 }>) {
   const session = await getServerSession(authOptions);
-  
+
   return (
     <html lang='en' suppressHydrationWarning>
       <body className={font.className}>
@@ -29,6 +30,7 @@ export default async function RootLayout({
           <Header />
           {children}
           <Footer />
+          <MenuPanes />
           <Toaster richColors />
         </Providers>
       </body>
