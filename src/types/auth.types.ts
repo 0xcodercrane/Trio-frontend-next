@@ -7,16 +7,19 @@ export interface IWallet {
 };
 
 export interface IAuthContext {
+  isAuthenticated: boolean;
   loginWithWallet: (wallet: IWallet) => void;
   logout: () => void;
 
   wallet: IWallet | null;
 
   loading: boolean;
+  user: any;
 };
 
 export enum SUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
-  MAGIC_EDEN = 'magic-eden'
+  MAGIC_EDEN = 'magic-eden',
+  LEATHER = 'leather'
 }

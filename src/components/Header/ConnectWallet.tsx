@@ -2,7 +2,13 @@
 import { AuthContext } from '@/app/providers/AuthContext';
 import { WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
 import { auth } from '@/lib/firebase';
-import { UNISAT, XVERSE, MAGIC_EDEN, useLaserEyes } from '@omnisat/lasereyes';
+import {
+  UNISAT,
+  XVERSE,
+  MAGIC_EDEN,
+  useLaserEyes,
+  LEATHER,
+} from '@omnisat/lasereyes';
 import { signInWithCustomToken } from 'firebase/auth';
 import { signIn } from 'next-auth/react';
 import { useContext, useEffect } from 'react';
@@ -14,25 +20,33 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '../ui/button';
-import { UNISAT as unisatLogo, MAGIC_EDEN as magicEdenLogo, XVERSE as xVerseLogo } from '@/lib/constants/imgs';
-import type { SUPPORTED_WALLETS } from '@/app/providers/AuthContext/auth.types';
+import {
+  UNISAT as unisatLogo,
+  MAGIC_EDEN as magicEdenLogo,
+  XVERSE as xVerseLogo,
+  LEATHER as leatherLogo,
+} from '@/lib/constants/imgs';
+import type { SUPPORTED_WALLETS } from '@/types/auth.types';
 import { shortenAddress } from '@/lib/utilities';
 import { useRouter } from 'next/navigation';
 
-const WalletProviderConfig: { [key in SUPPORTED_WALLETS]: {
-  logo: StaticImageData;
-}} = {
+const WalletProviderConfig: {
+  [key in SUPPORTED_WALLETS]: {
+    logo: StaticImageData;
+  };
+} = {
   [UNISAT]: { logo: unisatLogo },
   [XVERSE]: { logo: xVerseLogo },
-  [MAGIC_EDEN]: { logo: magicEdenLogo }
+  [MAGIC_EDEN]: { logo: magicEdenLogo },
+  [LEATHER]: { logo: leatherLogo },
 };
 
-export default function ConnectWallet () {
-
+export default function ConnectWallet() {
   const { loginWithWallet, logout } = useContext(AuthContext);
   const router = useRouter();
 
   const {
+    isInitializing,
     connect,
     connected,
     paymentAddress,
@@ -42,7 +56,7 @@ export default function ConnectWallet () {
     signMessage,
     hasUnisat,
     disconnect,
-    provider
+    provider,
   } = useLaserEyes();
 
   const signIntoFirebase = async (address: string, signature: string) => {
@@ -50,9 +64,9 @@ export default function ConnectWallet () {
       const response = await fetch('/api/auth/customToken', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ address, signature }) // Send the address and its signature
+        body: JSON.stringify({ address, signature }), // Send the address and its signature
       });
 
       if (!response.ok) {
@@ -64,8 +78,6 @@ export default function ConnectWallet () {
 
       // Use the custom token to authenticate with Firebase
       try {
-        console.log('----- signIntoFirebase(2)');
-        console.log(auth, customToken);
         await signInWithCustomToken(auth, customToken);
 
         const idToken = await auth.currentUser?.getIdToken(true);
@@ -85,26 +97,34 @@ export default function ConnectWallet () {
       return false;
     }
   };
- 
+
   useEffect(() => {
+    if (isInitializing) return;
     if (connected && !auth.currentUser) {
       const connect = async (wallet: SUPPORTED_WALLETS) => {
-        const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE);
-        const signInResult = await signIntoFirebase(paymentAddress, signedMessage);
+        console.log('----- signing in with address', address);
+        const signedMessage = await signMessage(
+          WALLET_SIGN_IN_MESSAGE,
+          address
+        );
 
-        if (signInResult) return loginWithWallet({ 
-          ordinalsAddress: address, 
-          ordinalsPublicKey: publicKey, 
-          paymentAddress, 
-          paymentPublicKey,
-          wallet
-        });
+        console.log('----- signing in with signed message', signedMessage);
+
+        const signInResult = await signIntoFirebase(address, signedMessage);
+
+        if (signInResult)
+          return loginWithWallet({
+            ordinalsAddress: address,
+            ordinalsPublicKey: publicKey,
+            paymentAddress,
+            paymentPublicKey,
+            wallet,
+          });
       };
-  
+
       connect(provider);
     }
-
-  }, [connected]);
+  }, [isInitializing, connected]);
 
   const signOut = async () => {
     disconnect();
@@ -114,41 +134,52 @@ export default function ConnectWallet () {
 
   return (
     <DropdownMenu>
-      { !connected && 
-      <DropdownMenuTrigger asChild>
-        <Button variant='outline' size='icon' className='w-auto p-3'>Connect Wallet</Button>
-      </DropdownMenuTrigger>
-      }
-
-      { connected && provider &&
+      {!connected && (
         <DropdownMenuTrigger asChild>
-          <Button variant='outline' size='icon' className='w-auto p-3'><Image src={WalletProviderConfig[provider as SUPPORTED_WALLETS].logo} alt={`${provider} wallet logo`} width={24} height={24} />{shortenAddress(address)}</Button> 
+          <Button
+            className='w-[80px] h-[48px] p-[0.5rem] md:px-8 md:w-auto rounded-full bg-transparent border-2 border-white border-solid font-extrabold cursor-pointer'
+            variant='secondary'
+          >
+            Connect
+          </Button>
         </DropdownMenuTrigger>
-      }
-      <DropdownMenuContent align='end'>
-        {
-          !connected && Object.entries(WalletProviderConfig).map(([key, value]) => (key !== UNISAT || (key === UNISAT && hasUnisat)) && (
-            <DropdownMenuItem key={key} onClick={() => connect(key as SUPPORTED_WALLETS)}>
-              <div className='flex items-center space-x-2'>
-                <Image src={value.logo} alt={`${key} wallet logo`} width={24} height={24} />
-                <span className='capitalize'>{key}</span>
-              </div>
-            </DropdownMenuItem>
-          ))
-        }
+      )}
 
-        {
-          connected && (
-            <>
-              <DropdownMenuItem>
-                <span onClick={() => router.push('/dashboard')}>Dashboard</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <span onClick={signOut}>logout</span>
-              </DropdownMenuItem>
-            </>
-          ) 
-        }
+      <DropdownMenuContent align='end'>
+        {!connected &&
+          Object.entries(WalletProviderConfig).map(
+            ([key, value]) =>
+              (key !== UNISAT || (key === UNISAT && hasUnisat)) && (
+                // @ts-ignore
+                <DropdownMenuItem
+                  key={key}
+                  className='cursor-pointer'
+                  // @ts-ignore
+                  onClick={() => connect(key as SUPPORTED_WALLETS)}
+                >
+                  <div className='flex items-center space-x-2'>
+                    <Image
+                      src={value.logo}
+                      alt={`${key} wallet logo`}
+                      width={24}
+                      height={24}
+                    />
+                    <span className='capitalize'>{key}</span>
+                  </div>
+                </DropdownMenuItem>
+              )
+          )}
+
+        {connected && (
+          <>
+            <DropdownMenuItem>
+              <span onClick={() => router.push('/dashboard')}>Dashboard</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <span onClick={signOut}>logout</span>
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
