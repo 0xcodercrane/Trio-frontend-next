@@ -1,6 +1,9 @@
-import { LoaderPinwheel } from 'lucide-react';
-
+import { LoaderCircle, LoaderPinwheel } from 'lucide-react';
 
 export default function Loading() {
-  return <LoaderPinwheel className='animate-spin' />;
+  return (
+    <div className='flex h-full w-full justify-center items-center'>
+      <LoaderCircle className='animate-spin' />
+    </div>
+  );
 }
