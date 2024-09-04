@@ -101,7 +101,7 @@ export default function ConnectWallet() {
   useEffect(() => {
     if (isInitializing) return;
     if (connected && !auth.currentUser) {
-      const connect = async (wallet: SUPPORTED_WALLETS) => {
+      const connectWallet = async (wallet: SUPPORTED_WALLETS) => {
         console.log('----- signing in with address', address);
         const signedMessage = await signMessage(
           WALLET_SIGN_IN_MESSAGE,
@@ -122,7 +122,7 @@ export default function ConnectWallet() {
           });
       };
 
-      connect(provider);
+      connectWallet(provider);
     }
   }, [isInitializing, connected]);
 

@@ -19,7 +19,7 @@ export default function Home() {
         <Container>
           <div className='flex text-4l flex-col items-center justify-center h-[80vh]'>
             <h1 className='text-4xl font-bold mb-4'>
-              Welcome to your&nsbp;
+              Welcome to your&nbsp;
               <Image
                 src={BTC}
                 alt='btc-logo'
@@ -27,10 +27,10 @@ export default function Home() {
                 height={height}
                 className='inline'
               />
-              &nsbp; Ordinals NextJS App
+              &nbsp; Ordinals NextJS App
             </h1>
             <p className='text-lg'>
-              A template application with&nsbp;
+              A template application with&nbsp;
               <Link
                 className='hover:text-sky-500'
                 href='https://www.npmjs.com/package/ordinalsbot'
@@ -38,7 +38,7 @@ export default function Home() {
               >
                 ordinalsbot
               </Link>
-              ,&nsbp;
+              ,&nbsp;
               <Link
                 className='hover:text-sky-500'
                 href='https://docs.xverse.app/sats-connect'
@@ -46,7 +46,7 @@ export default function Home() {
               >
                 sats-connect
               </Link>
-              , and&nsbp;
+              , and&nbsp;
               <Link
                 className='hover:text-sky-500'
                 href='https://firebase.google.com/'
@@ -56,7 +56,7 @@ export default function Home() {
               </Link>
             </p>
             <p className='text-md'>
-              **Themed with&nsbp;
+              **Themed with&nbsp;
               <Link
                 className='hover:text-sky-500'
                 href='https://ui.shadcn.com/'
@@ -64,7 +64,7 @@ export default function Home() {
               >
                 ShadCN
               </Link>
-              &nsbp; and&nsbp;
+              &nbsp; and&nbsp;
               <Link
                 className='hover:text-sky-500'
                 href='https://tailwindcss.com/'
@@ -76,11 +76,11 @@ export default function Home() {
             </p>
 
             <p className='my-4 font-bold'>
-              Visit&nsbp;
+              Visit&nbsp;
               <Link className='hover:text-sky-500' href='/inscribe'>
                 /inscribe
               </Link>
-              &nsbp; to check out our example direct inscription using the&nsbp;
+              &nbsp; to check out our example direct inscription using the&nbsp;
               <a href='https://docs.ordinalsbot.com'>OrdinalsBot API</a>
             </p>
           </div>
