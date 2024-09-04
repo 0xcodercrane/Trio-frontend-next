@@ -3,5 +3,8 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.stickyTabStops": false,
     "editor.tabSize": 2,
-    "scssFormatter.singleQuote": true
+    "scssFormatter.singleQuote": true,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
