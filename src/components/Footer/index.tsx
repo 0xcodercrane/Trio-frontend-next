@@ -16,7 +16,9 @@ export default function Footer() {
   return (
     <div className='flex flex-row justify-between items-center h-20 p-5'>
       <div></div>
-      <div>Powered By <Link className='hover:text-sky-500' href='https://ordinalsbot.com' target='_blank'>OrdinalsBot</Link></div>
+      <div>Powered By <Link className='hover:text-sky-500'
+        href='https://ordinalsbot.com'
+        target='_blank'>OrdinalsBot</Link></div>
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

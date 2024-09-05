@@ -32,7 +32,9 @@ const Providers: FC<ProvidersProps> = ({ children, session }) => {
   );
 
   return (
-    <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+    <ThemeProvider attribute='class'
+      defaultTheme='system'
+      enableSystem>
       <LaserEyesProvider config={{ network: MAINNET }}>
         <SessionProvider
           session={session}

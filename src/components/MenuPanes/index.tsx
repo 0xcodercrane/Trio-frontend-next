@@ -14,18 +14,14 @@ export default function MenuPanes() {
 
   const renderPane = () => {
     switch (menuType) {
-      case EMenuType.PROFILE:
-        return <ProfilePane />;
-      case EMenuType.ACTIVITY:
-        return <ActivityPane />;
-      default:
-        return null;
+    case EMenuType.PROFILE:
+      return <ProfilePane />;
+    case EMenuType.ACTIVITY:
+      return <ActivityPane />;
+    default:
+      return null;
     }
   };
 
-  return (
-    <div className='w-full h-full bg-white text-black absolute top-[--header-height]'>
-      {renderPane()}
-    </div>
-  );
+  return <div className='absolute top-[--header-height] h-full w-full bg-white text-black'>{renderPane()}</div>;
 }

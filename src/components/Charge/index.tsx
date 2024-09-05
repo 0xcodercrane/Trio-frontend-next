@@ -69,7 +69,9 @@ export default function Charge({ charge, loading, feeRate }: { charge: DirectIns
       </CardContent>
       <CardFooter>
         <div className='flex flex-row justify-end w-full'>
-          <Button className='bg-green-700 hover:bg-green-600' onClick={pay} disabled={!charge.address}>Pay Now</Button>
+          <Button className='bg-green-700 hover:bg-green-600'
+            onClick={pay}
+            disabled={!charge.address}>Pay Now</Button>
         </div>
       </CardFooter>
     </Card>
