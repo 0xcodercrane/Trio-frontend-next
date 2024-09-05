@@ -1,31 +1,28 @@
+import { Search } from 'lucide-react';
 import Link from 'next/link';
 
-const NAV_CONFIG = [
+type TNavItem = {
+  name: string;
+  href: string;
+  target?: string;
+};
+
+const NAV_CONFIG: TNavItem[] = [
   {
-    name: 'Creators',
-    href: '/launchpad',
+    name: 'Marketplace',
+    href: '/',
   },
   {
-    name: 'Developers',
-    href: 'https://docs.ordinalsbot.com',
-    target: '_blank',
+    name: 'Collections',
+    href: '/collections'
   },
   {
-    name: 'Help',
-    href: '/faq',
+    name: 'Artists',
+    href: '/artists',
   },
   {
-    name: 'Partners',
-    href: '/partners',
-  },
-  {
-    name: 'Runes',
-    href: '/runes',
-  },
-  {
-    name: 'TRIO',
-    href: 'https://token.ordinalsbot.com',
-    target: '_blank',
+    name: 'Trio',
+    href: '/trio',
   }
 ];
 
@@ -52,6 +49,8 @@ export default function NavBar () {
             </div>
           ))     
         }
+        <div className='h-full border border-ob-black/[0.15]'></div>
+        <div className='bg-ob-black/[0.15] p-[0.75rem] rounded-full min-w-[52px] h-full flex items-center'><Search className='w-full' size='16' /></div>
       </div>
     </div>
   );

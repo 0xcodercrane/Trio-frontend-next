@@ -3,7 +3,8 @@
 import { useContext } from 'react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { EMenuType } from '@/types/global-context.types';
-import ProfileMenu from './ProfileMenu';
+import ProfilePane from './ProfilePane';
+import ActivityPane from './ActivityPane';
 
 export default function MenuPanes() {
   const { menuDisclosure, menuType } = useContext(GlobalContext);
@@ -14,7 +15,9 @@ export default function MenuPanes() {
   const renderPane = () => {
     switch (menuType) {
       case EMenuType.PROFILE:
-        return <ProfileMenu />;
+        return <ProfilePane />;
+      case EMenuType.ACTIVITY:
+        return <ActivityPane />;
       default:
         return null;
     }

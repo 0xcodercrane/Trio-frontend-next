@@ -1,7 +1,7 @@
 'use client';
 
 import { AuthContext } from '@/app/providers/AuthContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import ConnectWallet from './ConnectWallet';
 import { APP_NAME } from '@/lib/constants';
 import Link from 'next/link';
@@ -9,8 +9,6 @@ import Image from 'next/image';
 import { auth } from '@/lib/firebase';
 import NavBar from '../NavBar';
 import ConnectedWallet from './ConnectedWallet';
-import Loading from '../Loading';
-import { GlobalContext } from '@/app/providers/GlobalContext';
 
 export default function Header() {
   const { loading } = useContext(AuthContext);
@@ -48,7 +46,6 @@ export default function Header() {
 
         <div className='z-10 w-[33%]'>
           <div className='flex w-full justify-end items-center'>
-            {/* <UserAvatar /> */}
             {!loading && !auth.currentUser && <ConnectWallet />}
             {auth.currentUser && <ConnectedWallet />}
             {/* <Link href='/#buy-trio'><Button className='w-[80px] h-[48px] p-[0.5rem] md:px-8 md:w-auto rounded-full ml-2 border-2 border-solid border-white font-extrabold' variant='secondary'>Buy TRIO</Button></Link> */}
