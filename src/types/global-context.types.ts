@@ -12,5 +12,6 @@ export enum EMenuType {
 export interface IGlobalContext {
   menuDisclosure: IDisclosure;
   menuType: EMenuType;
+  menuBG: string;
   setMenuType: (type: EMenuType) => void;
 }

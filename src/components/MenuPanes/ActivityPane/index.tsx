@@ -1,24 +1,14 @@
-import { AuthContext } from '@/app/providers/AuthContext';
-import { Button } from '@/components/ui/button';
-import { useLaserEyes } from '@omnisat/lasereyes';
-import { useContext } from 'react';
+import { Container } from '@/components/Container';
 
 export default function ActivityPane() {
-  const { logout } = useContext(AuthContext);
-  const { disconnect } = useLaserEyes();
-
   return (
-    <div>
-      <h1>Activity</h1>
-      <Button
-        variant='destructive'
-        onClick={() => {
-          logout();
-          disconnect();
-        }}
-      >
-        Sign Out
-      </Button>
-    </div>
+    <Container>
+      <div className='flex justify-end text-white'>
+        <div className='w-2/3 rounded-lg bg-ob-black p-4'>
+          <h2 className='text-2xl'>Activity Feed</h2>
+          <span>Here are updates on trio.xyz</span>
+        </div>
+      </div>
+    </Container>
   );
 }

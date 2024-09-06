@@ -7,7 +7,7 @@ import ProfilePane from './ProfilePane';
 import ActivityPane from './ActivityPane';
 
 export default function MenuPanes() {
-  const { menuDisclosure, menuType } = useContext(GlobalContext);
+  const { menuDisclosure, menuType, menuBG } = useContext(GlobalContext);
   const { isOpen } = menuDisclosure;
 
   if (!isOpen) return null;
@@ -23,5 +23,5 @@ export default function MenuPanes() {
     }
   };
 
-  return <div className='absolute top-[--header-height] h-full w-full bg-ob-black text-black'>{renderPane()}</div>;
+  return <div className={`absolute top-[--header-height] h-full w-full ${menuBG} text-black`}>{renderPane()}</div>;
 }

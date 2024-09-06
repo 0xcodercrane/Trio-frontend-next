@@ -13,11 +13,11 @@ import { GlobalContext } from '@/app/providers/GlobalContext';
 
 export default function Header() {
   const { loading } = useContext(AuthContext);
-  const { menuDisclosure } = useContext(GlobalContext);
+  const { menuDisclosure, menuBG } = useContext(GlobalContext);
 
   return (
     <header
-      className={`relative z-20 -mb-24 flex h-[--header-height] w-full flex-row items-center justify-center ${menuDisclosure.isOpen ? 'bg-ob-black' : 'bg-transparent'} px-4 md:px-16 2xl:px-0`}
+      className={`relative z-20 -mb-24 flex h-[--header-height] w-full flex-row items-center justify-center ${menuBG} px-4 md:px-16 2xl:px-0`}
     >
       <div className='flex w-full max-w-[--global-max-width] items-center justify-between'>
         <div className='z-10 flex w-[33%] justify-start'>
