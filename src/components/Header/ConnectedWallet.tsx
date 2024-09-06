@@ -1,45 +1,18 @@
 import React, { useContext } from 'react';
-import Image from 'next/image';
-import { Bell, BellDot, Star, User, X } from 'lucide-react';
+import { Bell, Star, X } from 'lucide-react';
 import { AuthContext } from '@/app/providers/AuthContext';
-import Loading from '../Loading';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { EMenuType } from '@/types/global-context.types';
 import { Button } from '../ui/button';
+import { Avatar } from '../common';
 
 export default function ConnectedWallet() {
-  const { loading, user } = useContext(AuthContext);
+  const { loading } = useContext(AuthContext);
   const { setMenuType, menuDisclosure } = useContext(GlobalContext);
-
-  const { profile } = user || {};
-  const { avatar } = profile || {};
 
   const openMenu = (type: EMenuType) => {
     setMenuType(type);
     menuDisclosure.open();
-  };
-
-  const renderUserIcon = () => {
-    if (loading) return <Loading />;
-    if (avatar) {
-      return (
-        <Image
-          className='rounded-full max-h-full w-auto'
-          src={avatar}
-          alt='user avatar'
-          width={50}
-          height={50}
-          onClick={() => openMenu(EMenuType.PROFILE)}
-        />
-      );
-    } else {
-      return (
-        <User
-          className='h-full w-full text-black bg-white rounded-full p-[0.75rem]'
-          onClick={() => openMenu(EMenuType.PROFILE)}
-        />
-      );
-    }
   };
 
   const renderNotificationIcon = () => {
@@ -55,7 +28,7 @@ export default function ConnectedWallet() {
     return (
       <Bell
         onClick={() => openMenu(EMenuType.ACTIVITY)}
-        className='w-full h-full text-black bg-white rounded-full p-[0.75rem] max-h-[48px] max-w-[48px]'
+        className='h-full max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'
       />
     );
   };
@@ -63,8 +36,8 @@ export default function ConnectedWallet() {
   const renderPointsIcon = () => {
     if (loading) return null;
     return (
-      <Button className='min-w-[120px] h-[48px] py-[0.5rem] md:w-auto rounded-full ml-2 border-2 border-solid border-white font-extrabold'>
-        <div className='flex w-full justify-between items-center'>
+      <Button className='ml-2 h-[48px] min-w-[120px] rounded-full border-2 border-solid border-white py-[0.5rem] font-extrabold md:w-auto'>
+        <div className='flex w-full items-center justify-between'>
           12,000
           <Star fill='black' size='20' />
         </div>
@@ -76,7 +49,7 @@ export default function ConnectedWallet() {
     if (loading) return null;
     return (
       <Button
-        className='min-w-[120px] h-[48px] p-[0.5rem] md:px-8 md:w-auto rounded-full ml-2 border border-solid font-extrabold border-ob-blue ring-offset-4'
+        className='ml-2 h-[48px] min-w-[120px] rounded-full border border-solid border-ob-blue p-[0.5rem] font-extrabold ring-offset-4 md:w-auto md:px-8'
         variant='secondary'
       >
         Pending (2)
@@ -85,25 +58,28 @@ export default function ConnectedWallet() {
   };
 
   return (
-    <div className='flex justify-center h-[48px] items-center cursor-pointer'>
+    <div className='flex h-[48px] cursor-pointer items-center justify-center'>
       {!menuDisclosure.isOpen && (
-        <div className='flex gap-2 h-full'>
+        <div className='flex h-full gap-2'>
           {renderCart()}
           {renderPointsIcon()}
           {renderNotificationIcon()}
-          {renderUserIcon()}
+          <Avatar
+            onClick={() => {
+              setMenuType(EMenuType.PROFILE);
+              menuDisclosure.open();
+            }}
+          />
         </div>
       )}
       {menuDisclosure.isOpen && (
-        <X
-          className='w-full h-full text-black bg-white rounded-full p-[0.75rem]'
-          onClick={menuDisclosure.close}
-        />
+        <X className='h-full w-full rounded-full bg-white p-[0.75rem] text-black' onClick={menuDisclosure.close} />
       )}
     </div>
   );
 }
 
+//TODO - Built a more sophisticated bell icon with numbers inside of it. Like the Figma spec asks for.
 export const IconBell = () => {
   return (
     <svg
@@ -116,15 +92,11 @@ export const IconBell = () => {
       stroke-width='2'
       stroke-linecap='round'
       stroke-linejoin='round'
-      className='w-full h-full bg-white rounded-full p-[0.75rem] max-h-[48px] max-w-[48px]'
+      className='h-full max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem]'
     >
       <path d='M19.4 14.9C20.2 16.4 21 17 21 17H3s3-2 3-9c0-3.3 2.7-6 6-6 .7 0 1.3.1 1.9.3' />
       <path d='M10.3 21a1.94 1.94 0 0 0 3.4 0' />
-      <circle cx='18'
-        cy='8'
-        r='3'
-        fill='red'
-        stroke='red' />
+      <circle cx='18' cy='8' r='3' fill='red' stroke='red' />
     </svg>
   );
 };
