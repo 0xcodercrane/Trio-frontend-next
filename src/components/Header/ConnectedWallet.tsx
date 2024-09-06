@@ -4,7 +4,7 @@ import { AuthContext } from '@/app/providers/AuthContext';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { EMenuType } from '@/types/global-context.types';
 import { Button } from '../ui/button';
-import Avatar from '../common/Avatar';
+import { Avatar } from '../common';
 
 export default function ConnectedWallet() {
   const { loading } = useContext(AuthContext);

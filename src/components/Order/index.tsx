@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { shortenAddress } from '@/lib/utilities';
 import type { DirectInscriptionOrder } from 'ordinalsbot/dist/types/v1';
 import { CircleCheckBig } from 'lucide-react';
-import Loading from '../Loading';
+import { Loading } from '@/components/common';
 
 export default function Order({ order, loading }: { order: DirectInscriptionOrder | null; loading: boolean }) {
   if (!order) return null;

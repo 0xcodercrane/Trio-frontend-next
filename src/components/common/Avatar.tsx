@@ -2,7 +2,7 @@ import { AuthContext } from '@/app/providers/AuthContext';
 import { User } from 'lucide-react';
 import Image from 'next/image';
 import { useContext, useMemo } from 'react';
-import Loading from '../Loading';
+import { Loading } from '.';
 
 interface AvatarProps {
   onClick?: () => void;

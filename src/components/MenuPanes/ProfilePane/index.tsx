@@ -1,5 +1,5 @@
 import { AuthContext } from '@/app/providers/AuthContext';
-import Avatar from '@/components/common/Avatar';
+import { Avatar } from '@/components/common';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/ui/button';
 import { shortenAddress } from '@/lib/utilities';
@@ -53,10 +53,11 @@ export default function ProfilePane() {
           </div>
         </div>
         <div className='flex flex-row items-center justify-start gap-2'>
-          {ProfilePaneValues.map((pane) => (
+          {ProfilePaneValues.map((pane, index) => (
             <div
               className={`bg-ob-grey flex min-h-[48px] items-center justify-center rounded-full capitalize text-white ${activePane === pane ? '!bg-white text-ob-black' : ''} cursor-pointer`}
               onClick={() => setActivePane(pane)}
+              key={index}
             >
               <span className='px-8 py-4'>{pane}</span>
             </div>
