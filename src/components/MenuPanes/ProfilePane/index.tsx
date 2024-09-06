@@ -55,7 +55,7 @@ export default function ProfilePane() {
         <div className='flex flex-row items-center justify-start gap-2'>
           {ProfilePaneValues.map((pane, index) => (
             <div
-              className={`bg-ob-grey flex min-h-[48px] items-center justify-center rounded-full capitalize text-white ${activePane === pane ? '!bg-white text-ob-black' : ''} cursor-pointer`}
+              className={`bg-ob-grey flex min-h-[48px] items-center justify-center rounded-full capitalize text-white ${activePane === pane ? '!bg-white !text-ob-black' : ''} cursor-pointer`}
               onClick={() => setActivePane(pane)}
               key={index}
             >
