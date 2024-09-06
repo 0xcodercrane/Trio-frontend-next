@@ -1,46 +1,101 @@
 'use client';
 
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 
-export default function Footer() { 
-  const { setTheme } = useTheme();
+export default function Footer() {
   return (
-    <div className='flex flex-row justify-between items-center h-20 p-5'>
-      <div></div>
-      <div>Powered By <Link className='hover:text-sky-500'
-        href='https://ordinalsbot.com'
-        target='_blank'>OrdinalsBot</Link></div>
-      <div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline' size='icon'>
-              <Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
-              <Moon className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
-              <span className='sr-only'>Toggle theme</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuItem onClick={() => setTheme('light')}>
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')}>
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')}>
-              System
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <footer className="bg-black text-white pt-12 pb-8 w-full">
+      <div className="max-w-[100%] mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+          <div className="flex flex-col items-start">
+            <img
+              src="/img/ordinals-bot-logo.svg"
+              alt="OrdinalsBot Logo"
+              width={200}
+              height={50}
+            />
+          </div>
+          <div className="col-span-2 grid grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                GENERAL
+              </h3>
+              <ul className="space-y-2">
+                {['Home', 'Creators', 'Partners', 'Marketplace'].map((item) => (
+                  <li key={item}>
+                    <Link
+                      href={`#${item.toLowerCase()}`}
+                      className="text-xl font-semibold hover:text-gray-300 transition-colors"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                COMPANY
+              </h3>
+              <ul className="space-y-2">
+                {['Developers', 'Guides', 'Help', 'Runes'].map((item) => (
+                  <li key={item}>
+                    <Link
+                      href={`#${item.toLowerCase()}`}
+                      className="text-xl font-semibold hover:text-gray-300 transition-colors"
+                    >
+                      {item}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row md:gap-2 justify-between items-center text-ob-white">
+          <div className="flex space-x-6 mb-4 sm:mb-2">
+            {/* TODO - add real links */}
+            <Link
+              href="#privacy"
+              className="text-sm hover:text-gray-300 transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="#terms"
+              className="text-sm hover:text-gray-300 transition-colors"
+            >
+              Terms & Conditions
+            </Link>
+          </div>
+          <div className="flex items-center mb-4 sm:mb-2">
+            <span className="text-sm font-bold mr-2">Powered By</span>
+            <img
+              src="/img/ordinals-bot-logo.svg"
+              alt="OrdinalsBot Logo"
+              width={100}
+              height={24}
+            />
+          </div>
+          <div className="flex space-x-4">
+            {['instagram', 'x', 'telegram', 'discord'].map((social) => (
+              <Link
+                key={social}
+                href={`#${social}`}
+                className="hover:opacity-75 transition-opacity"
+              >
+                <img
+                  src={`/img/socials/${social}.svg`}
+                  alt={`${social} icon`}
+                  width={24}
+                  height={24}
+                />
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </footer>
   );
 }
