@@ -7,12 +7,15 @@ import LEATHER from '/public/img/leather_logo.png';
 
 const DEFAULT_DIMENSIONS = {
   width: 50,
-  height: 50
+  height: 50,
 };
 
 export {
   BTC,
   FIREBASE,
   DEFAULT_DIMENSIONS,
-  UNISAT, XVERSE, MAGIC_EDEN, LEATHER
+  UNISAT,
+  XVERSE,
+  MAGIC_EDEN,
+  LEATHER,
 };

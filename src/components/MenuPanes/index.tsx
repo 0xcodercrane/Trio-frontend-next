@@ -23,5 +23,11 @@ export default function MenuPanes() {
     }
   };
 
-  return <div className={`absolute top-[--header-height] h-full w-full ${menuBG} text-black`}>{renderPane()}</div>;
+  return (
+    <div
+      className={`absolute top-[--header-height] h-full w-full ${menuBG} text-black`}
+    >
+      {renderPane()}
+    </div>
+  );
 }

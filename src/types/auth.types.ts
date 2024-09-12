@@ -4,7 +4,7 @@ export interface IWallet {
   paymentAddress: string;
   paymentPublicKey: string;
   wallet: SUPPORTED_WALLETS;
-};
+}
 
 export interface IAuthContext {
   isAuthenticated: boolean;
@@ -14,12 +14,13 @@ export interface IAuthContext {
   wallet: IWallet | null;
 
   loading: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: any;
-};
+}
 
 export enum SUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
   MAGIC_EDEN = 'magic-eden',
-  LEATHER = 'leather'
+  LEATHER = 'leather',
 }

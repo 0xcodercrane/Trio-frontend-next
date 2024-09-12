@@ -12,7 +12,7 @@ enum EProfilePanes {
   BUY_TRIO = 'buy trio',
   ORDERS = 'orders',
   COLLECTED = 'collected',
-  POINTS = 'points'
+  POINTS = 'points',
 }
 
 const ProfilePaneValues = Object.values(EProfilePanes);
@@ -22,23 +22,26 @@ const ProfilePaneConfig = {
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
   [EProfilePanes.ORDERS]: () => <div className='text-white'>Orders</div>,
   [EProfilePanes.COLLECTED]: () => <div className='text-white'>Collected</div>,
-  [EProfilePanes.POINTS]: () => <div className='text-white'>Points</div>
+  [EProfilePanes.POINTS]: () => <div className='text-white'>Points</div>,
 };
 
 export default function ProfilePane() {
   const { wallet, logout } = useContext(AuthContext);
   const { disconnect } = useLaserEyes();
-  const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.ACCOUNT);
+  const [activePane, setActivePane] = useState<EProfilePanes>(
+    EProfilePanes.ACCOUNT,
+  );
 
   return (
     <Container>
-      <div className='flex gap-4 flex-col px-4 md:px-16 2xl:px-0'>
+      <div className='flex flex-col gap-4 px-4 md:px-16 2xl:px-0'>
         <div className='flex min-h-[128px] max-w-[25%] flex-row items-center gap-4'>
           <div className='flex h-full w-full flex-1 justify-center'>
             <Avatar />
           </div>
           <div className='flex flex-1 flex-col justify-start text-white'>
             <h2 className='text-2xl'>Account</h2>
+            {/* eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain */}
             <span>{shortenAddress(wallet?.ordinalsAddress!)}</span>
           </div>
           <div className='flex flex-1 flex-row justify-start'>
@@ -53,10 +56,10 @@ export default function ProfilePane() {
             </Button>
           </div>
         </div>
-        <div className='flex flex-row flex-wrap md:flex-nowrap items-center justify-start gap-2'>
+        <div className='flex flex-row flex-wrap items-center justify-start gap-2 md:flex-nowrap'>
           {ProfilePaneValues.map((pane, index) => (
             <div
-              className={`bg-ob-grey flex min-h-[48px] items-center justify-center rounded-full capitalize text-white ${activePane === pane ? '!bg-white !text-ob-black' : ''} cursor-pointer`}
+              className={`flex min-h-[48px] items-center justify-center rounded-full bg-ob-grey capitalize text-white ${activePane === pane ? '!bg-white !text-ob-black' : ''} cursor-pointer`}
               onClick={() => setActivePane(pane)}
               key={index}
             >
@@ -64,7 +67,7 @@ export default function ProfilePane() {
             </div>
           ))}
         </div>
-        <div className='mt-2' >{ProfilePaneConfig[activePane]()}</div>
+        <div className='mt-2'>{ProfilePaneConfig[activePane]()}</div>
       </div>
     </Container>
   );

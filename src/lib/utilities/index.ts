@@ -1,7 +1,10 @@
 import { ONE_BITCOIN } from '../constants';
 
-
-export const shortenString = (str: string, firstAmount: number, lastAmount: number) => {
+export const shortenString = (
+  str: string,
+  firstAmount: number,
+  lastAmount: number,
+) => {
   if (!str) return '';
 
   const start = str.substring(0, firstAmount);
@@ -17,5 +20,3 @@ export const shortenAddress = (address: string) => {
 export const satsToBitcoin = (sats: number) => {
   return sats / ONE_BITCOIN;
 };
-
-

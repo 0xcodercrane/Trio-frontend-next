@@ -27,7 +27,6 @@ import {
   LEATHER as leatherLogo,
 } from '@/lib/constants/imgs';
 import type { SUPPORTED_WALLETS } from '@/types/auth.types';
-import { shortenAddress } from '@/lib/utilities';
 import { useRouter } from 'next/navigation';
 
 const WalletProviderConfig: {
@@ -105,7 +104,7 @@ export default function ConnectWallet() {
         console.log('----- signing in with address', address);
         const signedMessage = await signMessage(
           WALLET_SIGN_IN_MESSAGE,
-          address
+          address,
         );
 
         console.log('----- signing in with signed message', signedMessage);
@@ -137,7 +136,7 @@ export default function ConnectWallet() {
       {!connected && (
         <DropdownMenuTrigger asChild>
           <Button
-            className='w-[80px] h-[48px] p-[0.5rem] md:px-8 md:w-auto rounded-full bg-transparent border-2 border-white border-solid font-extrabold cursor-pointer'
+            className='h-[48px] w-[80px] cursor-pointer rounded-full border-2 border-solid border-white bg-transparent p-[0.5rem] font-extrabold md:w-auto md:px-8'
             variant='secondary'
           >
             Connect
@@ -150,11 +149,10 @@ export default function ConnectWallet() {
           Object.entries(WalletProviderConfig).map(
             ([key, value]) =>
               (key !== UNISAT || (key === UNISAT && hasUnisat)) && (
-                // @ts-ignore
                 <DropdownMenuItem
                   key={key}
                   className='cursor-pointer'
-                  // @ts-ignore
+                  // @ts-expect-error seems theres more wallets missing
                   onClick={() => connect(key as SUPPORTED_WALLETS)}
                 >
                   <div className='flex items-center space-x-2'>
@@ -167,7 +165,7 @@ export default function ConnectWallet() {
                     <span className='capitalize'>{key}</span>
                   </div>
                 </DropdownMenuItem>
-              )
+              ),
           )}
 
         {connected && (

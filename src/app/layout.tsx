@@ -16,7 +16,7 @@ const font = Roboto_Mono({ subsets: ['latin'] });
 export const metadata: Metadata = DEFAULT_METADATA;
 
 export default async function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: NonNullable<React.ReactNode>;
   metadata: Metadata;

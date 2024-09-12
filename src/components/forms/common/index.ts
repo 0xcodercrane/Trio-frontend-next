@@ -1,5 +1,3 @@
 import FieldInfo from './FieldInfo';
 
-export { 
-  FieldInfo
-};
+export { FieldInfo };
