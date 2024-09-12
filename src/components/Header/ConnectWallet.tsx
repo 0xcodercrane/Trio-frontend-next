@@ -105,7 +105,7 @@ export default function ConnectWallet() {
         console.log('----- signing in with address', address);
         const signedMessage = await signMessage(
           WALLET_SIGN_IN_MESSAGE,
-          address
+          address,
         );
 
         console.log('----- signing in with signed message', signedMessage);
@@ -137,7 +137,7 @@ export default function ConnectWallet() {
       {!connected && (
         <DropdownMenuTrigger asChild>
           <Button
-            className='w-[80px] h-[48px] p-[0.5rem] md:px-8 md:w-auto rounded-full bg-transparent border-2 border-white border-solid font-extrabold cursor-pointer'
+            className='h-[48px] w-[80px] cursor-pointer rounded-full border-2 border-solid border-white bg-transparent p-[0.5rem] font-extrabold md:w-auto md:px-8'
             variant='secondary'
           >
             Connect
@@ -167,7 +167,7 @@ export default function ConnectWallet() {
                     <span className='capitalize'>{key}</span>
                   </div>
                 </DropdownMenuItem>
-              )
+              ),
           )}
 
         {connected && (

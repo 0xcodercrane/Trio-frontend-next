@@ -73,7 +73,10 @@ export default function ConnectedWallet() {
         </div>
       )}
       {menuDisclosure.isOpen && (
-        <X className='h-full w-full rounded-full bg-white p-[0.75rem] text-black' onClick={menuDisclosure.close} />
+        <X
+          className='h-full w-full rounded-full bg-white p-[0.75rem] text-black'
+          onClick={menuDisclosure.close}
+        />
       )}
     </div>
   );
@@ -89,9 +92,9 @@ export const IconBell = () => {
       viewBox='0 0 24 24'
       fill='none'
       stroke='black'
-      stroke-width='2'
-      stroke-linecap='round'
-      stroke-linejoin='round'
+      strokeWidth='2'
+      strokeLinecap='round'
+      strokeLinejoin='round'
       className='h-full max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem]'
     >
       <path d='M19.4 14.9C20.2 16.4 21 17 21 17H3s3-2 3-9c0-3.3 2.7-6 6-6 .7 0 1.3.1 1.9.3' />

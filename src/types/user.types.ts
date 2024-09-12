@@ -1,9 +1,8 @@
-
 export enum EUserRole {
   ADMIN = 'admin',
   TEAM = 'team',
-  CREATOR = 'creator'
-};
+  CREATOR = 'creator',
+}
 
 export const RoleValues = Object.values(EUserRole);
 export type TUser = {

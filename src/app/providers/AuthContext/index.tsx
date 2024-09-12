@@ -41,7 +41,7 @@ const AuthContextProvider = ({
     if (firebaseUser) {
       // Initialize wallet from local storage
       const localWallet = JSON.parse(
-        localStorage.getItem(WALLET_COOKIE) || 'null'
+        localStorage.getItem(WALLET_COOKIE) || 'null',
       );
 
       if (localWallet) {
@@ -78,7 +78,7 @@ const AuthContextProvider = ({
 
   const isAuthenticated = useMemo(
     () => auth.currentUser !== null,
-    [auth.currentUser]
+    [auth.currentUser],
   );
 
   useEffect(() => {

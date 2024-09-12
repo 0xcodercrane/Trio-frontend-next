@@ -12,7 +12,7 @@ enum EProfilePanes {
   BUY_TRIO = 'buy trio',
   ORDERS = 'orders',
   COLLECTED = 'collected',
-  POINTS = 'points'
+  POINTS = 'points',
 }
 
 const ProfilePaneValues = Object.values(EProfilePanes);
@@ -22,13 +22,15 @@ const ProfilePaneConfig = {
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
   [EProfilePanes.ORDERS]: () => <div className='text-white'>Orders</div>,
   [EProfilePanes.COLLECTED]: () => <div className='text-white'>Collected</div>,
-  [EProfilePanes.POINTS]: () => <div className='text-white'>Points</div>
+  [EProfilePanes.POINTS]: () => <div className='text-white'>Points</div>,
 };
 
 export default function ProfilePane() {
   const { wallet, logout } = useContext(AuthContext);
   const { disconnect } = useLaserEyes();
-  const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.ACCOUNT);
+  const [activePane, setActivePane] = useState<EProfilePanes>(
+    EProfilePanes.ACCOUNT,
+  );
 
   return (
     <Container>
@@ -56,7 +58,7 @@ export default function ProfilePane() {
         <div className='flex flex-row flex-wrap md:flex-nowrap items-center justify-start gap-2'>
           {ProfilePaneValues.map((pane, index) => (
             <div
-              className={`bg-ob-grey flex min-h-[48px] items-center justify-center rounded-full capitalize text-white ${activePane === pane ? '!bg-white !text-ob-black' : ''} cursor-pointer`}
+              className={`flex min-h-[48px] items-center justify-center rounded-full bg-ob-grey capitalize text-white ${activePane === pane ? '!bg-white !text-ob-black' : ''} cursor-pointer`}
               onClick={() => setActivePane(pane)}
               key={index}
             >

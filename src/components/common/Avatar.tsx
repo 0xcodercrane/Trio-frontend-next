@@ -15,7 +15,12 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   if (loading) return <Loading />;
   if (!src) {
-    return <User className='h-full w-full rounded-full bg-white p-[0.75rem] text-black' onClick={onClick} />;
+    return (
+      <User
+        className='h-full w-full rounded-full bg-white p-[0.75rem] text-black'
+        onClick={onClick}
+      />
+    );
   }
 
   return (

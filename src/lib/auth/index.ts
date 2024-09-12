@@ -3,7 +3,6 @@ import { SESSION_TOKEN_NAME } from '../constants';
 import admin from '@/app/api/firebase';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-
 export interface CustomSession extends Session {
   user: {
     id?: string; // Assuming 'id' is a string. Adjust the type as necessary.
@@ -23,9 +22,9 @@ export const authOptions: NextAuthOptions = {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false
-      }
-    }
+        secure: false,
+      },
+    },
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -37,7 +36,7 @@ export const authOptions: NextAuthOptions = {
       if (!session.user) customSession.user = {};
       customSession.user.id = token.id;
       return customSession;
-    }
+    },
   },
   providers: [
     CredentialsProvider({
@@ -45,8 +44,8 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         idToken: {
           label: 'ID Token',
-          type: 'text'
-        }
+          type: 'text',
+        },
       },
       async authorize(credentials) {
         if (!credentials) throw new Error('Invalid Credentials');
@@ -59,7 +58,7 @@ export const authOptions: NextAuthOptions = {
           console.error('Error verifying ID token', error);
           return null;
         }
-      }
-    })
-  ]
+      },
+    }),
+  ],
 };

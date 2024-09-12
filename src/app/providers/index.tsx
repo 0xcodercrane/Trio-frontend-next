@@ -28,13 +28,11 @@ const Providers: FC<ProvidersProps> = ({ children, session }) => {
           refetchOnReconnect: true,
         },
       },
-    })
+    }),
   );
 
   return (
-    <ThemeProvider attribute='class'
-      defaultTheme='system'
-      enableSystem>
+    <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
       <LaserEyesProvider config={{ network: MAINNET }}>
         <SessionProvider
           session={session}

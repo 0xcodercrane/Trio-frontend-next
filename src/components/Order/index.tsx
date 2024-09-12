@@ -1,10 +1,22 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { shortenAddress } from '@/lib/utilities';
 import type { DirectInscriptionOrder } from 'ordinalsbot/dist/types/v1';
 import { CircleCheckBig } from 'lucide-react';
 import { Loading } from '@/components/common';
 
-export default function Order({ order, loading }: { order: DirectInscriptionOrder | null; loading: boolean }) {
+export default function Order({
+  order,
+  loading,
+}: {
+  order: DirectInscriptionOrder | null;
+  loading: boolean;
+}) {
   if (!order) return null;
   if (loading) return <Loading />;
 
@@ -12,7 +24,13 @@ export default function Order({ order, loading }: { order: DirectInscriptionOrde
     <Card className='relative'>
       <div className='absolute right-4 top-4'>
         <CircleCheckBig
-          color={order.state === 'waiting-payment' ? '#ffbf00' : order.state === 'completed' ? 'green' : 'black'}
+          color={
+            order.state === 'waiting-payment'
+              ? '#ffbf00'
+              : order.state === 'completed'
+                ? 'green'
+                : 'black'
+          }
         />
       </div>
       <CardHeader>

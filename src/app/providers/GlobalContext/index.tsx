@@ -1,13 +1,24 @@
 'use client';
 
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { EMenuType, IGlobalContext } from '@/types/global-context.types';
 import { useDisclosure } from '@/lib/hooks';
 import { AuthContext } from '../AuthContext';
 
 export const GlobalContext = createContext<IGlobalContext>({} as any);
 
-const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> }) => {
+const GlobalContextProvider = ({
+  children,
+}: {
+  children: NonNullable<ReactNode>;
+}) => {
   const { isAuthenticated } = useContext(AuthContext);
   const menuDisclosure = useDisclosure(false);
   const [menuType, setMenuType] = useState<EMenuType>(EMenuType.PROFILE);
@@ -35,7 +46,7 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
         menuDisclosure,
         menuBG,
         menuType,
-        setMenuType
+        setMenuType,
       }}
     >
       {children}

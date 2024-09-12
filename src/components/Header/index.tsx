@@ -34,7 +34,9 @@ export default function Header() {
           </div>
         </div>
 
-        <div className='hidden w-[33%] md:flex'>{!menuDisclosure.isOpen && <NavBar />}</div>
+        <div className='hidden w-[33%] md:flex'>
+          {!menuDisclosure.isOpen && <NavBar />}
+        </div>
 
         <div className='z-10 w-[33%]'>
           <div className='flex w-full items-center justify-end'>

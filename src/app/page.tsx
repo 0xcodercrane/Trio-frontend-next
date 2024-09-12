@@ -6,17 +6,15 @@ export const metadata: Metadata = DEFAULT_METADATA;
 
 export default function Home() {
   return (
-    <div
-      className="
-      h-full gap-3
-      bg-no-repeat bg-cover bg-center bg-[url('../../public/img/hero.png')] bg-ob-black
-    "
-    >
-      <div className='backdrop-blur-2xl bg-ob-black/[0.80] h-full w-full'>
+    <div className="h-full gap-3 bg-ob-black bg-[url('../../public/img/hero.png')] bg-cover bg-center bg-no-repeat">
+      <div className='h-full w-full bg-ob-black/[0.80] backdrop-blur-2xl'>
         <Container>
-          <div className='flex text-4l flex-col items-center justify-center h-[80vh]'>
-            <h1 className='text-6xl font-bold mb-4 p-4'>
-              <span className='bg-gradient-to-r from-ob-blue to-ob-green bg-clip-text text-transparent'>Trio.xyz</span> is coming soon
+          <div className='text-4l flex h-[80vh] flex-col items-center justify-center'>
+            <h1 className='mb-4 p-4 text-6xl font-bold'>
+              <span className='bg-gradient-to-r from-ob-blue to-ob-green bg-clip-text text-transparent'>
+                Trio.xyz
+              </span>{' '}
+              is coming soon
             </h1>
           </div>
         </Container>

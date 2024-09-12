@@ -4,7 +4,7 @@ export interface IWallet {
   paymentAddress: string;
   paymentPublicKey: string;
   wallet: SUPPORTED_WALLETS;
-};
+}
 
 export interface IAuthContext {
   isAuthenticated: boolean;
@@ -15,11 +15,11 @@ export interface IAuthContext {
 
   loading: boolean;
   user: any;
-};
+}
 
 export enum SUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
   MAGIC_EDEN = 'magic-eden',
-  LEATHER = 'leather'
+  LEATHER = 'leather',
 }
