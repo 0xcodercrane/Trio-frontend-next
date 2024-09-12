@@ -31,6 +31,7 @@ export default function SignUp() {
         v.parse(signInFormSchema, value);
         const { email, password } = value;
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const signUpResponse = await createUserWithEmailAndPassword(
           auth,
           email,

@@ -50,6 +50,7 @@ export default function Inscribe() {
 
   const { data, error, isLoading } = useQuery({
     queryFn: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       return ordinalsbot.Inscription().getOrder(order?.id!);
     },
     queryKey: ['order', order?.id],
@@ -85,6 +86,7 @@ export default function Inscribe() {
 
       try {
         v.parse(directInscribeSchema, value);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setLoading(false);
         return toast.error(err.message);
@@ -165,7 +167,7 @@ export default function Inscribe() {
                     id={name}
                     name={name}
                     onChange={(e) => {
-                      //@ts-ignore
+                      //@ts-expect-error fixme
                       form.setFieldValue(name, e?.target?.files?.[0]);
                     }}
                   />
@@ -191,6 +193,7 @@ export default function Inscribe() {
       </div>
 
       {[InscriptionOrderState.QUEUED, InscriptionOrderState.COMPLETED].includes(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         order?.state!,
       ) && (
         <div className='w-2/3'>

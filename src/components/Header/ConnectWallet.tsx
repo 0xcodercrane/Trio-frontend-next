@@ -27,7 +27,6 @@ import {
   LEATHER as leatherLogo,
 } from '@/lib/constants/imgs';
 import type { SUPPORTED_WALLETS } from '@/types/auth.types';
-import { shortenAddress } from '@/lib/utilities';
 import { useRouter } from 'next/navigation';
 
 const WalletProviderConfig: {
@@ -150,11 +149,10 @@ export default function ConnectWallet() {
           Object.entries(WalletProviderConfig).map(
             ([key, value]) =>
               (key !== UNISAT || (key === UNISAT && hasUnisat)) && (
-                // @ts-ignore
                 <DropdownMenuItem
                   key={key}
                   className='cursor-pointer'
-                  // @ts-ignore
+                  // @ts-expect-error seems theres more wallets missing
                   onClick={() => connect(key as SUPPORTED_WALLETS)}
                 >
                   <div className='flex items-center space-x-2'>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FieldApi } from '@tanstack/react-form';
 
 export default function FieldInfo({

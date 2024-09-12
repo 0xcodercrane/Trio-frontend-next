@@ -14,6 +14,7 @@ export interface IAuthContext {
   wallet: IWallet | null;
 
   loading: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: any;
 }
 

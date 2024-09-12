@@ -46,6 +46,7 @@ export default function Charge({
           toast.error(response.error.message);
         }
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       toast.error(err.error.message);
     }

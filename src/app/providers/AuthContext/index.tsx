@@ -1,4 +1,4 @@
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
 import { IAuthContext, IWallet } from '../../../types/auth.types';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { doc, DocumentData, getDoc, onSnapshot } from 'firebase/firestore';
 import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AuthContext = createContext<IAuthContext>({} as any);
 
 const AuthContextProvider = ({
@@ -15,7 +16,6 @@ const AuthContextProvider = ({
 }: {
   children: NonNullable<ReactNode>;
 }) => {
-  const session = useSession();
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
