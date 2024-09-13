@@ -28,12 +28,12 @@ const NAV_CONFIG: TNavItem[] = [
 
 export default function NavBar() {
   return (
-    <div className='z-30 rounded-full px-2 md:h-[48px] md:border-solid md:bg-[#646464]/[.14]'>
-      <div className='flex h-full min-w-full flex-col items-center justify-center px-[0.5rem] py-[0.5rem] font-extrabold md:flex-row md:gap-6'>
+    <div className='z-30 rounded-full px-2 text-white md:h-[48px] md:border-solid md:bg-[#646464]/[.14]'>
+      <div className='flex h-full min-w-full flex-col items-center justify-center px-[0.5rem] py-[0.5rem] md:flex-row md:gap-6'>
         {NAV_CONFIG.map((item, index) => (
           <div
             key={index}
-            className='w-full pl-4 text-left text-4xl font-extrabold md:pl-0 md:text-sm'
+            className='w-full pl-4 text-left text-4xl font-semibold md:pl-0 md:text-sm'
           >
             <Link
               style={{ textDecoration: 'none' }}
@@ -45,8 +45,8 @@ export default function NavBar() {
             </Link>
           </div>
         ))}
-        <div className='h-full border border-ob-black/[0.15]'></div>
-        <div className='flex h-full min-w-[52px] items-center rounded-full bg-ob-black/[0.15] p-[0.75rem]'>
+        <div className='h-full border border-white/[0.15]'></div>
+        <div className='flex h-full min-w-[52px] items-center rounded-full bg-white/[0.15] p-[0.5rem]'>
           <Search className='w-full' size='16' />
         </div>
       </div>

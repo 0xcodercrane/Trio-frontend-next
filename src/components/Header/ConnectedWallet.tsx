@@ -10,60 +10,41 @@ export default function ConnectedWallet() {
   const { loading } = useContext(AuthContext);
   const { setMenuType, menuDisclosure } = useContext(GlobalContext);
 
+  if (loading) return null;
+
   const openMenu = (type: EMenuType) => {
     setMenuType(type);
     menuDisclosure.open();
   };
 
-  const renderNotificationIcon = () => {
-    if (loading) return null;
-    //TODO - Hook this up to the notification system
-    const notification = false;
-    if (notification)
-      return (
-        <div onClick={() => openMenu(EMenuType.ACTIVITY)}>
-          <IconBell />
-        </div>
-      );
-    return (
-      <Bell
-        onClick={() => openMenu(EMenuType.ACTIVITY)}
-        className='h-full max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'
-      />
-    );
-  };
-
-  const renderPointsIcon = () => {
-    if (loading) return null;
-    return (
-      <Button className='ml-2 h-[48px] min-w-[120px] rounded-full border-2 border-solid border-white py-[0.5rem] font-extrabold md:w-auto'>
-        <div className='flex w-full items-center justify-between'>
-          12,000
-          <Star fill='black' size='20' />
-        </div>
-      </Button>
-    );
-  };
-
-  const renderCart = () => {
-    if (loading) return null;
-    return (
-      <Button
-        className='ml-2 h-[48px] min-w-[120px] rounded-full border border-solid border-ob-blue p-[0.5rem] font-extrabold ring-offset-4 md:w-auto md:px-8'
-        variant='secondary'
-      >
-        Pending (2)
-      </Button>
-    );
-  };
-
   return (
-    <div className='flex h-[48px] cursor-pointer items-center justify-center'>
+    <div className='flex h-full cursor-pointer items-center justify-center'>
       {!menuDisclosure.isOpen && (
         <div className='flex h-full gap-2'>
-          {renderCart()}
-          {renderPointsIcon()}
-          {renderNotificationIcon()}
+          {/* FIXMe we need the gradient */}
+          <Button
+            className='h-auto min-w-[120px] rounded-full border-2 border-solid border-ob-red p-[0.5rem] font-extrabold ring-offset-4 md:w-auto md:px-8'
+            variant='secondary'
+          >
+            Pending (2)
+          </Button>
+
+          <Button
+            className='h-auto min-w-[120px] rounded-full bg-white py-[0.5rem] font-extrabold text-black md:w-auto'
+            variant='secondary'
+          >
+            <div className='flex w-full items-center justify-around'>
+              12,000
+              <Star fill='black' size='20' />
+            </div>
+          </Button>
+
+          <Bell
+            // TODO - Hook this up to the notification system
+            onClick={() => openMenu(EMenuType.ACTIVITY)}
+            className='h-auto max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'
+          />
+
           <Avatar
             onClick={() => {
               setMenuType(EMenuType.PROFILE);
@@ -87,8 +68,8 @@ export const IconBell = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      width='24'
-      height='24'
+      width='20'
+      height='20'
       viewBox='0 0 24 24'
       fill='none'
       stroke='black'

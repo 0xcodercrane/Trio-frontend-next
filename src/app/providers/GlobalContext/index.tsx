@@ -29,6 +29,8 @@ const GlobalContextProvider = ({
     switch (menuType) {
       case EMenuType.PROFILE:
         return 'bg-ob-black';
+      case EMenuType.WALLET:
+        return 'bg-ob-black';
       case EMenuType.ACTIVITY:
       default:
         return 'bg-ob-black-lightest';

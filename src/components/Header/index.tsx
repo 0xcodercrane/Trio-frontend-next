@@ -17,38 +17,34 @@ export default function Header() {
 
   return (
     <header
-      className={`relative z-20 -mb-24 flex h-[--header-height] w-full flex-row items-center justify-center ${menuBG} px-4 md:px-16 2xl:px-0`}
+      className={`relative z-20 grid h-[--header-height] w-full grid-cols-[1fr_1.5fr_1fr] px-4 md:px-16 ${menuBG} -mb-24 items-center gap-4`}
     >
-      <div className='flex w-full max-w-[--global-max-width] items-center justify-between'>
-        <div className='z-10 flex w-[33%] justify-start'>
-          <div className='ml-2 min-w-[100px] md:ml-0 md:max-w-[200px]'>
-            <Link href='/'>
-              <Image
-                className='h-[--header-content-height]'
-                src='/img/trio-logo.svg'
-                alt={`${APP_NAME} logo`}
-                width={172}
-                height={172}
-              />
-            </Link>
-          </div>
-        </div>
+      <div className='flex items-center'>
+        <Link href='/'>
+          <Image
+            className='h-10 w-auto'
+            src='/img/trio-logo.svg'
+            alt={`${APP_NAME} logo`}
+            width={100}
+            height={40}
+          />
+        </Link>
+      </div>
 
-        <div className='hidden w-[33%] md:flex'>
-          {!menuDisclosure.isOpen && <NavBar />}
-        </div>
+      <div className='hidden items-center justify-center space-x-4 lg:flex'>
+        {!menuDisclosure.isOpen && <NavBar />}
+      </div>
 
-        <div className='z-10 w-[33%]'>
-          <div className='flex w-full items-center justify-end'>
-            {!loading && !auth.currentUser && <ConnectWallet />}
-            {auth.currentUser && <ConnectedWallet />}
-            {/* <Link href='/#buy-trio'><Button className='w-[80px] h-[48px] p-[0.5rem] md:px-8 md:w-auto rounded-full ml-2 border-2 border-solid border-white font-extrabold' variant='secondary'>Buy TRIO</Button></Link> */}
-            <div className='ml-2 flex h-[48px] items-center justify-center md:hidden'>
-              {/* { !showMobileMenu && <Menu className='bg-white text-black rounded-full w-[48px] h-full p-[0.75rem] ml-2' onClick={() => setShowMobileMenu(true)} />}
-              { showMobileMenu && <X className='bg-white text-black rounded-full w-[48px] h-full p-[0.75rem] ml-2' onClick={() => setShowMobileMenu(false)} />} */}
-            </div>
-          </div>
-        </div>
+      {/* FIXME show mobile menu and hide these components - this will fix the shrinking icons as well */}
+      <div className='col-span-2 flex items-center justify-end space-x-4 lg:col-span-1'>
+        {!loading && !auth.currentUser ? (
+          <ConnectWallet />
+        ) : (
+          <ConnectedWallet />
+        )}
+        {/* <Link href='/#buy-trio'><Button className='w-[80px] h-[48px] p-[0.5rem] md:px-8 md:w-auto rounded-full ml-2 border-2 border-solid border-white font-extrabold' variant='secondary'>Buy TRIO</Button></Link> */}
+        {/* { !showMobileMenu && <Menu className='bg-white text-black rounded-full w-[48px] h-full p-[0.75rem] ml-2' onClick={() => setShowMobileMenu(true)} />}
+        { showMobileMenu && <X className='bg-white text-black rounded-full w-[48px] h-full p-[0.75rem] ml-2' onClick={() => setShowMobileMenu(false)} />} */}
         {/* {showMobileMenu && <div className='w-full h-[100vh] absolute top-[96px] right-0 bg-ob-black-lighter pt-32 z-20'><NavBar /></div>} */}
         {/* { showWalletConnectModal && <ConnectWalletModal closeModal={() => setShowWalletConnectModal(false)} />} */}
       </div>

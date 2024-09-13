@@ -17,7 +17,7 @@ export default function Avatar({ onClick }: AvatarProps) {
   if (!src) {
     return (
       <User
-        className='h-full w-full rounded-full bg-white p-[0.75rem] text-black'
+        className='h-auto max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'
         onClick={onClick}
       />
     );
@@ -25,7 +25,7 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   return (
     <Image
-      className='h-full max-h-full w-auto rounded-full'
+      className='h-auto max-h-full w-auto rounded-full'
       src={src}
       alt='user avatar'
       width={50}
