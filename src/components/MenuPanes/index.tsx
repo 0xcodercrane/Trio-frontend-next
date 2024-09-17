@@ -34,7 +34,13 @@ export default function MenuPanes() {
       <div className='fixed left-0 top-0 z-50 flex h-[--header-height] w-full items-center justify-between bg-ob-black px-4 md:px-16'>
         <div className='flex items-center'>
           <Link href='/'>
-            <Image className='h-10 w-auto' src='/img/trio-logo.svg' alt='Trio logo' width={100} height={40} />
+            <Image
+              className='h-10 w-auto'
+              src='/img/trio-logo.svg'
+              alt='Trio logo'
+              width={100}
+              height={40}
+            />
           </Link>
         </div>
 
@@ -46,7 +52,9 @@ export default function MenuPanes() {
         </div>
       </div>
 
-      <div className='absolute inset-0 top-[--header-height] z-40 overflow-y-auto'>{renderPane()}</div>
+      <div className='absolute inset-0 top-[--header-height] z-40 overflow-y-auto'>
+        {renderPane()}
+      </div>
     </div>
   );
 }

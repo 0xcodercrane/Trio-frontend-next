@@ -30,5 +30,5 @@ export enum SUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
   MAGIC_EDEN = 'magic-eden',
-  LEATHER = 'leather'
+  LEATHER = 'leather',
 }

@@ -54,7 +54,10 @@ export default function ConnectedWallet() {
         </div>
       )}
       {menuDisclosure.isOpen && (
-        <X className='h-full w-full rounded-full bg-white p-[0.75rem] text-black' onClick={menuDisclosure.close} />
+        <X
+          className='h-full w-full rounded-full bg-white p-[0.75rem] text-black'
+          onClick={menuDisclosure.close}
+        />
       )}
     </div>
   );
