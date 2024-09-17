@@ -12,7 +12,7 @@ enum EProfilePanes {
   BUY_TRIO = 'buy trio',
   ORDERS = 'orders',
   COLLECTED = 'collected',
-  POINTS = 'points',
+  POINTS = 'points'
 }
 
 const ProfilePaneValues = Object.values(EProfilePanes);
@@ -22,15 +22,13 @@ const ProfilePaneConfig = {
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
   [EProfilePanes.ORDERS]: () => <div className='text-white'>Orders</div>,
   [EProfilePanes.COLLECTED]: () => <div className='text-white'>Collected</div>,
-  [EProfilePanes.POINTS]: () => <div className='text-white'>Points</div>,
+  [EProfilePanes.POINTS]: () => <div className='text-white'>Points</div>
 };
 
 export default function ProfilePane() {
   const { wallet, logout } = useContext(AuthContext);
   const { disconnect } = useLaserEyes();
-  const [activePane, setActivePane] = useState<EProfilePanes>(
-    EProfilePanes.ACCOUNT,
-  );
+  const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.ACCOUNT);
 
   return (
     <Container>

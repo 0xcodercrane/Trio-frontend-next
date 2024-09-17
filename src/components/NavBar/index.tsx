@@ -10,20 +10,20 @@ type TNavItem = {
 const NAV_CONFIG: TNavItem[] = [
   {
     name: 'Marketplace',
-    href: '/',
+    href: '/'
   },
   {
     name: 'Collections',
-    href: '/collections',
+    href: '/collections'
   },
   {
     name: 'Artists',
-    href: '/artists',
+    href: '/artists'
   },
   {
     name: 'Trio',
-    href: '/trio',
-  },
+    href: '/trio'
+  }
 ];
 
 export default function NavBar() {
@@ -31,10 +31,7 @@ export default function NavBar() {
     <div className='z-30 rounded-full px-2 text-white md:h-[48px] md:border-solid md:bg-[#646464]/[.14]'>
       <div className='flex h-full min-w-full flex-col items-center justify-center px-[0.5rem] py-[0.5rem] md:flex-row md:gap-6'>
         {NAV_CONFIG.map((item, index) => (
-          <div
-            key={index}
-            className='w-full pl-4 text-left text-4xl font-semibold md:pl-0 md:text-sm'
-          >
+          <div key={index} className='w-full pl-4 text-left text-4xl font-semibold md:pl-0 md:text-sm'>
             <Link
               style={{ textDecoration: 'none' }}
               className='hover:opacity-80'

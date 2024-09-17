@@ -1,10 +1,6 @@
 import { ONE_BITCOIN } from '../constants';
 
-export const shortenString = (
-  str: string,
-  firstAmount: number,
-  lastAmount: number,
-) => {
+export const shortenString = (str: string, firstAmount: number, lastAmount: number) => {
   if (!str) return '';
 
   const start = str.substring(0, firstAmount);

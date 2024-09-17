@@ -10,18 +10,8 @@ import { toast } from 'sonner';
 import { valibotValidator } from '@tanstack/valibot-form-adapter';
 import { storage } from '@/lib/firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import {
-  EXPLORER_URL,
-  MEMPOOL_URL,
-  ONE_MINUTE,
-  ONE_SECOND,
-  USE_LOW_POSTAGE,
-} from '@/lib/constants';
-import {
-  DirectInscriptionOrder,
-  InscriptionOrderState,
-  type InscriptionFile,
-} from 'ordinalsbot/dist/types/v1';
+import { EXPLORER_URL, MEMPOOL_URL, ONE_MINUTE, ONE_SECOND, USE_LOW_POSTAGE } from '@/lib/constants';
+import { DirectInscriptionOrder, InscriptionOrderState, type InscriptionFile } from 'ordinalsbot/dist/types/v1';
 import { useQuery } from '@tanstack/react-query';
 import Order from '@/components/Order';
 import Charge from '@/components/Charge';
@@ -32,13 +22,10 @@ const directInscribeSchema = v.object({
   file: v.nullable(
     v.pipe(
       v.file(),
-      v.mimeType(
-        ['image/jpeg', 'image/png', 'text/plain'],
-        'Please upload one of the supported filetypes',
-      ),
-      v.maxSize(1024 * 1024 * 10, 'Please select a file smaller than 10 MB.'),
-    ),
-  ),
+      v.mimeType(['image/jpeg', 'image/png', 'text/plain'], 'Please upload one of the supported filetypes'),
+      v.maxSize(1024 * 1024 * 10, 'Please select a file smaller than 10 MB.')
+    )
+  )
 });
 
 type TDirectInscribeForm = v.InferInput<typeof directInscribeSchema>;
@@ -60,16 +47,16 @@ export default function Inscribe() {
     refetchInterval: () => {
       if (order?.charge.address) return ONE_MINUTE.toMillis() / 3;
       return ONE_SECOND.toMillis() * 5;
-    },
+    }
   });
 
   const {
     data: feeRate,
     isLoading: feeRateLoading,
-    error: feeRateError,
+    error: feeRateError
   } = useQuery({
     queryFn: async () => fetch('/api/feeRate').then((res) => res.json()),
-    queryKey: ['feeRate'],
+    queryKey: ['feeRate']
   });
 
   useEffect(() => {
@@ -79,7 +66,7 @@ export default function Inscribe() {
 
   const form = useForm({
     defaultValues: {
-      file: null,
+      file: null
     },
     onSubmit: async ({ value }: { value: TDirectInscribeForm }) => {
       if (loading || error || feeRateLoading || feeRateError) return; // Don't submit if we're loading or have an error
@@ -115,21 +102,19 @@ export default function Inscribe() {
 
         const { type, name, size } = file;
 
-        const directInscribeResponse = await ordinalsbot
-          .Inscription()
-          .createDirectOrder({
-            files: [
-              {
-                url: downloadURL,
-                name,
-                size,
-                type,
-              },
-            ],
-            lowPostage: USE_LOW_POSTAGE,
-            fee: feeRate?.fastestFee,
-            receiveAddress: wallet?.ordinalsAddress,
-          });
+        const directInscribeResponse = await ordinalsbot.Inscription().createDirectOrder({
+          files: [
+            {
+              url: downloadURL,
+              name,
+              size,
+              type
+            }
+          ],
+          lowPostage: USE_LOW_POSTAGE,
+          fee: feeRate?.fastestFee,
+          receiveAddress: wallet?.ordinalsAddress
+        });
 
         setOrder(directInscribeResponse);
       } else {
@@ -137,7 +122,7 @@ export default function Inscribe() {
       }
       setLoading(false);
     },
-    validatorAdapter: valibotValidator(),
+    validatorAdapter: valibotValidator()
   });
 
   return (
@@ -194,7 +179,7 @@ export default function Inscribe() {
 
       {[InscriptionOrderState.QUEUED, InscriptionOrderState.COMPLETED].includes(
         // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-        order?.state!,
+        order?.state!
       ) && (
         <div className='w-2/3'>
           <h3 className='text-2xl'>Inscription Status</h3>
@@ -209,10 +194,7 @@ export default function Inscribe() {
                 <div className='flex-1'>{file.status}</div>
                 <div className='2 flex flex-col'>
                   <div className='text-sm'>
-                    <a
-                      href={`${EXPLORER_URL}/${file.inscriptionId}`}
-                      target='_blank'
-                    >
+                    <a href={`${EXPLORER_URL}/${file.inscriptionId}`} target='_blank'>
                       {file.inscriptionId}
                     </a>
                   </div>

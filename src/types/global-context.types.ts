@@ -6,7 +6,7 @@ export enum EMenuType {
   SEARCH = 'search',
   WALLET = 'wallet',
   FEE = 'fee',
-  MOBILE = 'mobile',
+  MOBILE = 'mobile'
 }
 
 export interface IGlobalContext {

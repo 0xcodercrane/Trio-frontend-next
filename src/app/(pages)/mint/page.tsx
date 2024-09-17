@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Mint',
-  description: 'Mint ordinals on OrdinalsBot.com',
+  description: 'Mint ordinals on OrdinalsBot.com'
 };
 
 export default function Mint() {

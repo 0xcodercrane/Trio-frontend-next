@@ -149,7 +149,7 @@ export default function WalletConnectionPane() {
                   key={wallet.name}
                   variant='outline'
                   className='w-full justify-between border-zinc-700 bg-zinc-900 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-white'
-                  // @ts-ignore - Supported Wallets are the keys of the WalletProviderConfig object
+                  // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
                   onClick={() => handleConnect(key)}
                 >
                   <div className='flex items-center'>

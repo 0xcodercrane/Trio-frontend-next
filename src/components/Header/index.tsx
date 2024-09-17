@@ -20,19 +20,11 @@ export default function Header() {
     >
       <div className='flex items-center'>
         <Link href='/'>
-          <Image
-            className='h-10 w-auto'
-            src='/img/trio-logo.svg'
-            alt={`${APP_NAME} logo`}
-            width={100}
-            height={40}
-          />
+          <Image className='h-10 w-auto' src='/img/trio-logo.svg' alt={`${APP_NAME} logo`} width={100} height={40} />
         </Link>
       </div>
 
-      <div className='hidden items-center justify-center space-x-4 lg:flex'>
-        {!menuDisclosure.isOpen && <NavBar />}
-      </div>
+      <div className='hidden items-center justify-center space-x-4 lg:flex'>{!menuDisclosure.isOpen && <NavBar />}</div>
 
       {/* FIXME show mobile menu and hide these components - this will fix the shrinking icons as well */}
       <div className='col-span-2 flex items-center justify-end space-x-4 lg:col-span-1'>

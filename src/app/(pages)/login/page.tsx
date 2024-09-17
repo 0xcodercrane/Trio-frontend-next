@@ -12,22 +12,13 @@ export default function Login() {
     return (
       <div className='flex h-screen w-full flex-col items-center justify-center'>
         <div className='relative mb-4 h-44 w-44'>
-          <Image
-            src={session.user?.image as string}
-            fill
-            alt=''
-            className='rounded-full object-cover'
-          />
+          <Image src={session.user?.image as string} fill alt='' className='rounded-full object-cover' />
         </div>
         <p className='mb-2 text-2xl'>
-          Welcome <span className='font-bold'>{session.user?.name}</span>.
-          Signed In As
+          Welcome <span className='font-bold'>{session.user?.name}</span>. Signed In As
         </p>
         <p className='mb-4 font-bold'>{session.user?.email}</p>
-        <Button
-          className='rounded-md bg-red-600 px-6 py-2'
-          onClick={() => signOut()}
-        >
+        <Button className='rounded-md bg-red-600 px-6 py-2' onClick={() => signOut()}>
           Sign out
         </Button>
       </div>

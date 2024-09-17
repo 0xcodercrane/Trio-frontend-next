@@ -13,9 +13,9 @@ const signInFormSchema = v.required(
       v.string(),
       v.trim(),
       v.minLength(12, 'Password must be at least 12 characters'),
-      v.maxLength(64, 'Password must be less than 64 characters'),
-    ),
-  }),
+      v.maxLength(64, 'Password must be less than 64 characters')
+    )
+  })
 );
 
 type TSignInForm = v.InferInput<typeof signInFormSchema>;
@@ -24,7 +24,7 @@ export default function SignUp() {
   const form = useForm({
     defaultValues: {
       email: '',
-      password: '',
+      password: ''
     },
     onSubmit: async ({ value }: { value: TSignInForm }) => {
       try {
@@ -32,16 +32,12 @@ export default function SignUp() {
         const { email, password } = value;
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const signUpResponse = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password,
-        );
+        const signUpResponse = await createUserWithEmailAndPassword(auth, email, password);
       } catch (error) {
         console.log('there was an error', error);
       }
     },
-    validatorAdapter: valibotValidator(),
+    validatorAdapter: valibotValidator()
   });
 
   return (
@@ -103,11 +99,7 @@ export default function SignUp() {
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}
           children={([canSubmit, isSubmitting]) => (
-            <Button
-              type='submit'
-              disabled={!canSubmit || isSubmitting}
-              className='rounded-md bg-blue-600 px-6 py-2'
-            >
+            <Button type='submit' disabled={!canSubmit || isSubmitting} className='rounded-md bg-blue-600 px-6 py-2'>
               Sign Up
             </Button>
           )}
