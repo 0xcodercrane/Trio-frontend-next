@@ -12,6 +12,7 @@ export type TUser = {
   newsletter?: boolean;
   defaultAddress?: string;
   profile?: TUserProfile;
+  points?: number;
 };
 
 export type TUserProfile = {

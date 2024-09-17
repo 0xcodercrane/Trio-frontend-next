@@ -1,3 +1,4 @@
+'use client';
 import { signOut } from 'next-auth/react';
 import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
 import { IAuthContext, IWallet } from '../../../types/auth.types';
@@ -7,31 +8,33 @@ import { WALLET_COOKIE } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
 import { doc, DocumentData, getDoc, onSnapshot } from 'firebase/firestore';
 import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
+import { useLaserEyes } from '@omnisat/lasereyes';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AuthContext = createContext<IAuthContext>({} as any);
 
-const AuthContextProvider = ({
-  children,
-}: {
-  children: NonNullable<ReactNode>;
-}) => {
-  const router = useRouter();
+const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> }) => {
+  const { disconnect } = useLaserEyes();
 
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [wallet, setWallet] = useState<IWallet | null>(null);
-  const [user, setUser] = useState<TUser | null>();
+  const [user, setUser] = useState<TUser | null>(null);
+
+  const isAuthenticated = useMemo(() => {
+    return auth?.currentUser ? true : false;
+  }, [auth.currentUser]);
 
   const loginWithWallet = (wallet: IWallet) => {
     localStorage.setItem(WALLET_COOKIE, JSON.stringify(wallet));
     setWallet(wallet);
-    router.push('/dashboard');
   };
 
   const logout = () => {
     auth.signOut().then(() => {
       localStorage.removeItem(WALLET_COOKIE);
       setWallet(null);
+      setUser(null);
       signOut({ redirect: false });
       router.push('/');
     });
@@ -40,46 +43,52 @@ const AuthContextProvider = ({
   const authStateChanged = async (firebaseUser: User | null) => {
     if (firebaseUser) {
       // Initialize wallet from local storage
-      const localWallet = JSON.parse(
-        localStorage.getItem(WALLET_COOKIE) || 'null',
-      );
+      const localWallet = JSON.parse(localStorage.getItem(WALLET_COOKIE) || 'null');
 
       if (localWallet) {
         setWallet(localWallet);
       }
 
-      const docRef = doc(firestore, 'users', firebaseUser.uid);
-      const docSnap = await getDoc(docRef);
-
+      const userRef = doc(firestore, 'users', firebaseUser.uid);
       const profileRef = doc(firestore, 'profiles', firebaseUser.uid);
+      const pointsRef = doc(firestore, 'pointsBalances', firebaseUser.uid);
 
-      if (docSnap.exists()) {
-        const { claims } = await firebaseUser.getIdTokenResult();
-        const data = docSnap.data();
-        setUser({
-          ...data,
-          roles: RoleValues.filter((role: EUserRole) => claims[role]),
-        });
-      }
+      onSnapshot(
+        userRef,
+        async (userData: DocumentData) => {
+          const { claims } = await firebaseUser.getIdTokenResult();
+          setUser((prevUser) => ({
+            ...prevUser,
+            ...userData.data(),
+            roles: RoleValues.filter((role: EUserRole) => claims[role])
+          }));
+        },
+        (error) => {
+          console.log('----- catching firestore error');
+          console.log(error);
+        }
+      );
 
       // If the users profile changes, pull those changes into the client
       onSnapshot(profileRef, (profile: DocumentData) => {
-        setUser({
-          ...user,
-          profile: profile.data() as TUserProfile,
-        });
-        setLoading(false);
+        setUser((prevUser) => ({
+          ...prevUser,
+          profile: profile.data() as TUserProfile
+        }));
       });
+
+      onSnapshot(pointsRef, (points: DocumentData) => {
+        setUser((prevUser) => ({
+          ...prevUser,
+          points: points.data().currentBalance
+        }));
+      });
+      setLoading(false);
     } else {
       logout();
       setLoading(false);
     }
   };
-
-  const isAuthenticated = useMemo(
-    () => auth.currentUser !== null,
-    [auth.currentUser],
-  );
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, authStateChanged);
@@ -94,7 +103,7 @@ const AuthContextProvider = ({
         logout,
         loading,
         wallet,
-        user,
+        user
       }}
     >
       {children}

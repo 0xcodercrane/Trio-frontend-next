@@ -4,10 +4,10 @@ import { AuthContext } from '@/app/providers/AuthContext';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { EMenuType } from '@/types/global-context.types';
 import { Button } from '../ui/button';
-import { Avatar } from '../common';
+import { Avatar, Loading } from '../common';
 
 export default function ConnectedWallet() {
-  const { loading } = useContext(AuthContext);
+  const { loading, user } = useContext(AuthContext);
   const { setMenuType, menuDisclosure } = useContext(GlobalContext);
 
   if (loading) return null;
@@ -34,7 +34,8 @@ export default function ConnectedWallet() {
             variant='secondary'
           >
             <div className='flex w-full items-center justify-around'>
-              12,000
+              {loading && <Loading />}
+              {(!loading && user?.points) || 0}
               <Star fill='black' size='20' />
             </div>
           </Button>
@@ -47,17 +48,13 @@ export default function ConnectedWallet() {
 
           <Avatar
             onClick={() => {
-              setMenuType(EMenuType.PROFILE);
-              menuDisclosure.open();
+              openMenu(EMenuType.PROFILE);
             }}
           />
         </div>
       )}
       {menuDisclosure.isOpen && (
-        <X
-          className='h-full w-full rounded-full bg-white p-[0.75rem] text-black'
-          onClick={menuDisclosure.close}
-        />
+        <X className='h-full w-full rounded-full bg-white p-[0.75rem] text-black' onClick={menuDisclosure.close} />
       )}
     </div>
   );

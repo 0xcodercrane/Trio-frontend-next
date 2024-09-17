@@ -32,6 +32,7 @@
     --global-max-width: 1500px;
     --header-height: 96px;
     --header-content-height: 48px;
+    --max-button-height: 48px;
   }
 
   .dark {

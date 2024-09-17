@@ -25,3 +25,10 @@ export const ONE_BITCOIN = 100000000;
 export const EXPLORER_URL =
   process.env.ORDINALS_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
 export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';
+
+export enum SUPPORTED_WALLETS {
+  UNISAT = 'unisat',
+  XVERSE = 'xverse',
+  MAGIC_EDEN = 'magic-eden',
+  LEATHER = 'leather'
+}

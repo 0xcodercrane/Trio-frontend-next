@@ -13,7 +13,16 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   const src = useMemo(() => user?.profile?.avatar || null, [user]);
 
-  if (loading) return <Loading />;
+  console.log('avatar');
+  console.log(user);
+
+  if (loading)
+    return (
+      <div className='h-auto max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'>
+        <Loading />
+      </div>
+    );
+
   if (!src) {
     return (
       <User
@@ -25,7 +34,7 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   return (
     <Image
-      className='h-auto max-h-full w-auto rounded-full'
+      className='h-auto max-h-[--header-content-height] w-auto rounded-full'
       src={src}
       alt='user avatar'
       width={50}

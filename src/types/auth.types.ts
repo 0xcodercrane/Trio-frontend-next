@@ -1,3 +1,5 @@
+import { SUPPORTED_WALLETS } from '@/lib/constants';
+
 export interface IWallet {
   ordinalsAddress: string;
   ordinalsPublicKey: string;
@@ -16,11 +18,4 @@ export interface IAuthContext {
   loading: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: any;
-}
-
-export enum SUPPORTED_WALLETS {
-  UNISAT = 'unisat',
-  XVERSE = 'xverse',
-  MAGIC_EDEN = 'magic-eden',
-  LEATHER = 'leather',
 }
