@@ -6,20 +6,13 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth, firestore } from '@/lib/firebase';
 import { WALLET_COOKIE } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
-import { doc, DocumentData, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
-import { useLaserEyes } from '@omnisat/lasereyes';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AuthContext = createContext<IAuthContext>({} as any);
 
-const AuthContextProvider = ({
-  children,
-}: {
-  children: NonNullable<ReactNode>;
-}) => {
-  const { disconnect } = useLaserEyes();
-
+const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> }) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [wallet, setWallet] = useState<IWallet | null>(null);
@@ -47,9 +40,7 @@ const AuthContextProvider = ({
   const authStateChanged = async (firebaseUser: User | null) => {
     if (firebaseUser) {
       // Initialize wallet from local storage
-      const localWallet = JSON.parse(
-        localStorage.getItem(WALLET_COOKIE) || 'null',
-      );
+      const localWallet = JSON.parse(localStorage.getItem(WALLET_COOKIE) || 'null');
 
       if (localWallet) {
         setWallet(localWallet);
@@ -66,27 +57,27 @@ const AuthContextProvider = ({
           setUser((prevUser) => ({
             ...prevUser,
             ...userData.data(),
-            roles: RoleValues.filter((role: EUserRole) => claims[role]),
+            roles: RoleValues.filter((role: EUserRole) => claims[role])
           }));
         },
         (error) => {
           console.log('----- catching firestore error');
           console.log(error);
-        },
+        }
       );
 
       // If the users profile changes, pull those changes into the client
       onSnapshot(profileRef, (profile: DocumentData) => {
         setUser((prevUser) => ({
           ...prevUser,
-          profile: profile.data() as TUserProfile,
+          profile: profile.data() as TUserProfile
         }));
       });
 
       onSnapshot(pointsRef, (points: DocumentData) => {
         setUser((prevUser) => ({
           ...prevUser,
-          points: points.data().currentBalance,
+          points: points.data().currentBalance
         }));
       });
       setLoading(false);
@@ -109,7 +100,7 @@ const AuthContextProvider = ({
         logout,
         loading,
         wallet,
-        user,
+        user
       }}
     >
       {children}

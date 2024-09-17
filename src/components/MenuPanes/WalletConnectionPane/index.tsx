@@ -10,7 +10,7 @@ import {
   UNISAT as unisatLogo,
   MAGIC_EDEN as magicEdenLogo,
   XVERSE as xVerseLogo,
-  LEATHER as LeatherLogo,
+  LEATHER as LeatherLogo
 } from '@/lib/constants/imgs';
 import { signInWithCustomToken } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
@@ -24,11 +24,7 @@ const WALLET_OPTIONS: {
   [key in SUPPORTED_WALLETS]: {
     name: string;
     icon: StaticImageData | string;
-    provider:
-      | typeof XVERSE
-      | typeof UNISAT
-      | typeof MAGIC_EDEN
-      | typeof LEATHER;
+    provider: typeof XVERSE | typeof UNISAT | typeof MAGIC_EDEN | typeof LEATHER;
     recommended?: boolean;
   };
 } = {
@@ -36,15 +32,15 @@ const WALLET_OPTIONS: {
     name: 'Xverse',
     icon: xVerseLogo,
     provider: XVERSE,
-    recommended: true,
+    recommended: true
   },
   [UNISAT]: { name: 'Unisat', icon: unisatLogo, provider: UNISAT },
   [MAGIC_EDEN]: {
     name: 'Magic Eden',
     icon: magicEdenLogo,
-    provider: MAGIC_EDEN,
+    provider: MAGIC_EDEN
   },
-  [LEATHER]: { name: 'Leather', icon: LeatherLogo, provider: LEATHER },
+  [LEATHER]: { name: 'Leather', icon: LeatherLogo, provider: LEATHER }
   // { name: 'OKX', icon: '/img/okx-logo.svg', provider: 'OKX' }, // TODO do we support?
 };
 
@@ -62,7 +58,7 @@ export default function WalletConnectionPane() {
     paymentPublicKey,
     provider,
     isInitializing,
-    hasUnisat,
+    hasUnisat
   } = useLaserEyes();
 
   const signIntoFirebase = async (address: string, signature: string) => {
@@ -70,9 +66,9 @@ export default function WalletConnectionPane() {
       const response = await fetch('/api/auth/customToken', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ address, signature }), // Send the address and its signature
+        body: JSON.stringify({ address, signature }) // Send the address and its signature
       });
 
       if (!response.ok) {
@@ -94,12 +90,10 @@ export default function WalletConnectionPane() {
         }
       } catch (error) {
         console.error('Error signing in with custom token:', error);
-        // cancel();
         return false;
       }
     } catch (error) {
       console.error('Fetch Error: ', error);
-      // cancel();
       return false;
     }
   };
@@ -111,10 +105,7 @@ export default function WalletConnectionPane() {
     if (connected) {
       const signMessageForFirebase = async (wallet: SUPPORTED_WALLETS) => {
         try {
-          const signedMessage = await signMessage(
-            WALLET_SIGN_IN_MESSAGE,
-            address,
-          );
+          const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
           if (!signedMessage) return toast.error('Failed to sign message');
           const signInResult = await signIntoFirebase(address, signedMessage);
 
@@ -125,7 +116,7 @@ export default function WalletConnectionPane() {
               ordinalsPublicKey: publicKey,
               paymentAddress,
               paymentPublicKey,
-              wallet,
+              wallet
             });
           }
         } catch (error) {
@@ -148,9 +139,7 @@ export default function WalletConnectionPane() {
 
   return (
     <div className='flex h-full flex-col items-center justify-center bg-ob-black p-6 text-white'>
-      <h2 className='mb-8 text-4xl font-bold'>
-        Choose a bitcoin wallet to connect
-      </h2>
+      <h2 className='mb-8 text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>
       <div className='w-full max-w-md space-y-4'>
         {!connected &&
           Object.entries(WALLET_OPTIONS).map(
@@ -173,14 +162,12 @@ export default function WalletConnectionPane() {
                     />
                     {wallet.name}
                     {wallet.recommended && (
-                      <span className='ml-2 rounded-full bg-zinc-800 px-2 py-1 text-xs'>
-                        Recommended
-                      </span>
+                      <span className='ml-2 rounded-full bg-zinc-800 px-2 py-1 text-xs'>Recommended</span>
                     )}
                   </div>
                   <ChevronRight size={20} className='hover:text-white' />
                 </Button>
-              ),
+              )
           )}
       </div>
     </div>
