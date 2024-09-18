@@ -14,6 +14,9 @@ const config = {
       }
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-satoshi-variable)']
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

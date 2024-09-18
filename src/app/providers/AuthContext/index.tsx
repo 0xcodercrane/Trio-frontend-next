@@ -33,7 +33,6 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       setWallet(null);
       setUser(null);
       signOut({ redirect: false });
-      router.push('/');
     });
   };
 
