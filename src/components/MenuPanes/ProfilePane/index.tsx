@@ -58,11 +58,11 @@ export default function ProfilePane() {
         <div className='flex flex-row flex-wrap items-center justify-start gap-2 md:flex-nowrap'>
           {ProfilePaneValues.map((pane, index) => (
             <div
-              className={`flex min-h-[48px] items-center justify-center rounded-full bg-ob-grey capitalize text-white ${activePane === pane ? '!bg-white !text-ob-black' : ''} cursor-pointer`}
+              className={`flex min-h-[48px] items-center justify-center rounded-full bg-ob-grey capitalize text-white ${activePane === pane ? '!bg-white' : ''} cursor-pointer`}
               onClick={() => setActivePane(pane)}
               key={index}
             >
-              <span className='px-8 py-4'>{pane}</span>
+              <span className={`px-8 py-4 ${activePane === pane ? '!text-ob-black' : ''}`}>{pane}</span>
             </div>
           ))}
         </div>
