@@ -16,8 +16,9 @@ export const fetchTokenBalance = async (address: string, ticker: string = 'TRIO'
 export const useTokenBalanceQuery = (address: string, ticker: string = 'TRIO') => {
   return useQuery({
     queryKey: ['wallet-token-balance', address, ticker],
-    queryFn: async () => {
-      const { result, error } = await fetchTokenBalance(address, ticker);
+    queryFn: async () => fetchTokenBalance(address, ticker),
+    enabled: !!address,
+    select: ({ result, error }) => {
       if (error) {
         throw new Error(error);
       } else {
@@ -26,7 +27,6 @@ export const useTokenBalanceQuery = (address: string, ticker: string = 'TRIO') =
           balance: Number(result[0].available_balance) / BRC20_CONVERSION_FACTOR
         };
       }
-    },
-    enabled: !!address
+    }
   });
 };

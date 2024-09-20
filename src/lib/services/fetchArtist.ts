@@ -2,13 +2,23 @@ import { useQuery } from '@tanstack/react-query';
 import { isSuccess } from '../utilities';
 import { getArtist } from '../supabase/artists';
 
-export const useArtistQuery = (id: string) => {
+export const useArtistQuery = (slug: string) => {
   return useQuery({
-    queryKey: ['artist', id],
-    queryFn: async () => {
-      const { data, status, error } = await getArtist(id);
-      if (isSuccess(status) && data) {
+    queryKey: ['artist', slug],
+    queryFn: () => getArtist(slug),
+    enabled: !!slug,
+    select: ({ status, data, error }) => {
+      if (isSuccess(status)) {
+        if (!data) {
+          throw new Error('No artist data found');
+        }
         return data[0];
+      } else {
+        if (error) {
+          throw new Error(error.message);
+        } else {
+          throw new Error('Error fetching artist');
+        }
       }
     }
   });
