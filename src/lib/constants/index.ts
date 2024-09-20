@@ -21,6 +21,7 @@ export const SESSION_TOKEN_NAME = `${CLEAN_APP_NAME}.session-token`;
 
 export const USE_LOW_POSTAGE = true;
 export const ONE_BITCOIN = 100000000;
+export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
 export const EXPLORER_URL = process.env.ORDINALS_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
 export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';

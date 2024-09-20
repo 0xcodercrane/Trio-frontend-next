@@ -6,23 +6,24 @@ import { shortenAddress } from '@/lib/utilities';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useContext, useState } from 'react';
 import { BuyTrioTab } from './BuyTrio';
+import { PointsPane } from '../PointsPane/PointsPane';
 
 enum EProfilePanes {
   ACCOUNT = 'account',
   BUY_TRIO = 'buy trio',
   ORDERS = 'orders',
   COLLECTED = 'collected',
-  POINTS = 'points'
+  POINTS = 'trio points'
 }
 
 const ProfilePaneValues = Object.values(EProfilePanes);
 
 const ProfilePaneConfig = {
-  [EProfilePanes.ACCOUNT]: () => <div className='text-white'>Account</div>,
+  [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
   [EProfilePanes.ORDERS]: () => <div className='text-white'>Orders</div>,
   [EProfilePanes.COLLECTED]: () => <div className='text-white'>Collected</div>,
-  [EProfilePanes.POINTS]: () => <div className='text-white'>Points</div>
+  [EProfilePanes.POINTS]: () => <PointsPane />
 };
 
 export default function ProfilePane() {
@@ -65,7 +66,7 @@ export default function ProfilePane() {
             </div>
           ))}
         </div>
-        <div className='mt-2'>{ProfilePaneConfig[activePane]()}</div>
+        <div className='mt-3'>{ProfilePaneConfig[activePane]()}</div>
       </div>
     </Container>
   );

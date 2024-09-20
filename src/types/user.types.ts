@@ -19,3 +19,12 @@ export type TUserProfile = {
   avatar: string;
   username: string;
 };
+
+export type TReward = {
+  amount: number;
+  date: string;
+  refId: string;
+  type: string;
+  userId: string;
+  id: string;
+};

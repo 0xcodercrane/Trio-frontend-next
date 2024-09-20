@@ -13,9 +13,6 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   const src = useMemo(() => user?.profile?.avatar || null, [user]);
 
-  console.log('avatar');
-  console.log(user);
-
   if (loading)
     return (
       <div className='h-auto max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'>
