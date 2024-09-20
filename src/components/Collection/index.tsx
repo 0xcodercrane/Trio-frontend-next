@@ -1,28 +1,18 @@
 'use client';
 
-import { getEntireCollection } from '@/lib/supabase';
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { isSuccess } from '@/lib/utilities';
 import NotFound from '@/app/not-found';
 import { Loading } from '../common';
+import { useCollectionQuery } from '@/lib/services';
 
 interface CollectionProps {
   slug: string;
 }
 
 export default function Collection({ slug }: CollectionProps) {
-  const { data, isPending, error } = useQuery({
-    queryKey: ['collection', slug],
-    queryFn: async () => {
-      const { data, status } = await getEntireCollection(slug);
-      if (isSuccess(status) && data) {
-        return data[0];
-      }
-    }
-  });
+  const { data, isPending, error } = useCollectionQuery(slug);
 
   if (isPending) return <Loading />;
   if (!data)

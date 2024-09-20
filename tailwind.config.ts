@@ -57,6 +57,7 @@ const config = {
         'ob-black-lighter': '#131313',
         'ob-black-lightest': '#161616',
         'ob-grey': '#242424',
+        'ob-grey-lightest': '#B5B5B5',
         'ob-blue': '#3349FF',
         'ob-green': '#33FF81',
         'ob-red': '#FF3349',

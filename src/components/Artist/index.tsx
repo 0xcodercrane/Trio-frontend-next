@@ -1,32 +1,17 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { isSuccess } from '@/lib/utilities';
 import NotFound from '@/app/not-found';
 import { Loading } from '../common';
-import { getArtist } from '@/lib/supabase/artists';
 import { Container } from '@/components/Container';
+import { useArtistQuery } from '@/lib/services/fetchArtist';
 
 interface ArtistProps {
   slug: string;
 }
 
 export default function Artist({ slug }: ArtistProps) {
-  const { data, isPending, error } = useQuery({
-    queryKey: ['artist', slug],
-    queryFn: async () => {
-      const { data, status, error } = await getArtist(slug);
-
-      console.log('------ data, status, error', data, status, error);
-      if (isSuccess(status) && data) {
-        return data[0];
-      }
-    }
-  });
-
-  console.log('data', data);
-
+  const { data, isPending, error } = useArtistQuery(slug);
   if (isPending) return <Loading />;
   if (!data)
     return (

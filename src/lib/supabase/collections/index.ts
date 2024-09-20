@@ -9,7 +9,7 @@ export const getEntireCollection = async (slug: string) =>
           name,
           slug
         ),
-        inscriptions: inscriptions (
+        inscriptions: inscriptions!fk_collection_id (
             name,
             file_type,
             inscription_id,
