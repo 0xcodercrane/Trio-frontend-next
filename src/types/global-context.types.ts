@@ -7,10 +7,11 @@ export enum EMenuType {
   WALLET = 'wallet',
   FEE = 'fee',
   MOBILE = 'mobile'
-} 
+}
 
 export interface IGlobalContext {
   menuDisclosure: IDisclosure;
   menuType: EMenuType;
+  menuBG: string;
   setMenuType: (type: EMenuType) => void;
 }

@@ -1,4 +1,3 @@
-
 # Overview
 
 This repository is a boilerplate codebase for building a frontend application that interfaces with the Bitcoin Ordinals ecosystem. Out of the box, this application comes with the following technologies.
@@ -157,10 +156,6 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Roboto Mono.
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -203,11 +198,11 @@ You may start your database in test or production mode. If you start your databa
 
 There are two places to look for credentials in the firebase admin dashboard.
 
-1. Public Credentials: ⚙️ *> Project Settings > General*
-Copy the relevant environment variables to your `.env`
+1. Public Credentials: ⚙️ _> Project Settings > General_
+   Copy the relevant environment variables to your `.env`
 
-2. Private Credentials: ⚙️ > *Project Settings > Service Accounts > Generate New Private Key (button)*
-This will download a `service_account.json` file, in which you will find the strings you need to seed your `.env with`
+2. Private Credentials: ⚙️ > _Project Settings > Service Accounts > Generate New Private Key (button)_
+   This will download a `service_account.json` file, in which you will find the strings you need to seed your `.env with`
 
 🔥 **Danger** 🔥: Be careful with the keys in `service_account.json`. Exposing this to the public will give the possessor `admin` access to your entire firebase project.
 

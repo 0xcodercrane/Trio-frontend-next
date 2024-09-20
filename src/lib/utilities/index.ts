@@ -1,5 +1,5 @@
 import { ONE_BITCOIN } from '../constants';
-
+export * from './network';
 
 export const shortenString = (str: string, firstAmount: number, lastAmount: number) => {
   if (!str) return '';
@@ -17,5 +17,3 @@ export const shortenAddress = (address: string) => {
 export const satsToBitcoin = (sats: number) => {
   return sats / ONE_BITCOIN;
 };
-
-

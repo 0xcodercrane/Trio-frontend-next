@@ -5,9 +5,8 @@ export interface IDisclosure {
   open: () => void;
   close: () => void;
   toggle: () => void;
-};
+}
 export const useDisclosure = (defaultOpen = false): IDisclosure => {
-  
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   const open = () => {
@@ -17,7 +16,7 @@ export const useDisclosure = (defaultOpen = false): IDisclosure => {
   const close = () => {
     setIsOpen(false);
   };
-  
+
   const toggle = () => (isOpen ? close() : open());
 
   return { isOpen, open, close, toggle };

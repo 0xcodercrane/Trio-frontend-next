@@ -1,8 +1,7 @@
-
-export function Container ({ children }: { children: React.ReactNode }) {
+export function Container({ children, maxWidth }: { children: React.ReactNode; maxWidth?: number }) {
   return (
-    <div className='max-w-[--global-max-width] h-full'>
-      {children}
+    <div className={'relative flex h-full w-full flex-row justify-center'}>
+      <div className={`w-full ${maxWidth ? `max-w-[${maxWidth}px]` : 'max-w-[--global-max-width]'}`}>{children}</div>
     </div>
   );
-};
+}

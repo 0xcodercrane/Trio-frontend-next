@@ -14,6 +14,10 @@ if (!admin.apps.length) {
     projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
     credential: admin.credential.cert(ServiceAccount)
   });
-};
+}
+
+const firestoreAdmin = admin.firestore();
+
+export { firestoreAdmin };
 
 export default admin;

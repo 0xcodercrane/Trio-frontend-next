@@ -3,7 +3,6 @@ import { SESSION_TOKEN_NAME } from '../constants';
 import admin from '@/app/api/firebase';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-
 export interface CustomSession extends Session {
   user: {
     id?: string; // Assuming 'id' is a string. Adjust the type as necessary.
@@ -32,6 +31,7 @@ export const authOptions: NextAuthOptions = {
       if (user) token.id = user.id;
       return token;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: any) {
       const customSession = session as CustomSession;
       if (!session.user) customSession.user = {};

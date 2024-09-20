@@ -14,6 +14,7 @@ export async function POST(req: Request) {
     } else {
       throw new Error('Invalid signature');
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return Response.json({ success: false, error: 'Internal server error' });
   }
