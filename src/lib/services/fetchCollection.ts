@@ -7,17 +7,6 @@ export const useCollectionQuery = (slug: string) => {
     queryKey: ['collection', slug],
     queryFn: () => getEntireCollection(slug),
     enabled: !!slug,
-    select: ({ status, data, error }) => {
-      if (isSuccess(status)) {
-        if (!data) return null;
-        return data[0];
-      } else {
-        if (error) {
-          throw new Error(error.message);
-        } else {
-          throw new Error('Error fetching collection');
-        }
-      }
-    }
+    select: ({ data }) => (data && data[0]) || null
   });
 };
