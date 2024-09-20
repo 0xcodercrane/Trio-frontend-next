@@ -9,9 +9,7 @@ export const useCollectionQuery = (slug: string) => {
     enabled: !!slug,
     select: ({ status, data, error }) => {
       if (isSuccess(status)) {
-        if (!data) {
-          throw new Error('No collection data found');
-        }
+        if (!data) return null;
         return data[0];
       } else {
         if (error) {
