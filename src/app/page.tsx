@@ -1,6 +1,6 @@
 import { Container } from '@/components/Container';
 import { LaunchACollection } from '@/components/CTAs';
-import { Button } from '@/components/ui/button';
+import FeaturedCategories from '@/components/FeaturedCategories';
 import { DEFAULT_METADATA } from '@/lib/constants';
 import { Metadata } from 'next';
 
@@ -21,6 +21,8 @@ export default function Home() {
       </div>
 
       <LaunchACollection />
+
+      <FeaturedCategories />
     </div>
   );
 }
