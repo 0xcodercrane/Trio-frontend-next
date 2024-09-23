@@ -10,3 +10,6 @@ export const getArtist = async (slug: string) =>
         )`
     )
     .eq('slug', slug);
+
+export const getFeaturedArtists = async () =>
+  supabase.from('artists').select('*').order('feature_rank', { ascending: true }).limit(4);

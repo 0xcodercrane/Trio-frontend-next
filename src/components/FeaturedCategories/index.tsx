@@ -1,5 +1,7 @@
-import { Heart } from 'lucide-react';
+'use client';
+
 import { Container } from '../Container';
+import Favorite from '../Favorite';
 
 export default function FeaturedCategories() {
   return (
@@ -30,8 +32,8 @@ export default function FeaturedCategories() {
                   key={index}
                   className='relative flex min-h-[350px] max-w-[350px] items-center justify-start rounded-xl bg-ob-black-light p-6 md:basis-1/4'
                 >
-                  <div className='absolute right-3 top-3 flex h-[30px] w-[30px] items-center justify-center rounded-full bg-white hover:cursor-pointer hover:opacity-80'>
-                    <Heart color='black' size={15} />
+                  <div className='absolute right-3 top-3 hover:cursor-pointer hover:opacity-80'>
+                    <Favorite action={() => {}} />
                   </div>
                   <h3 className='font-normal'>{label}</h3>
                 </div>
