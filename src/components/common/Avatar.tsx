@@ -15,7 +15,7 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   if (loading)
     return (
-      <div className='h-auto max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'>
+      <div className='h-auto max-h-[--button-height-md] w-full max-w-[--button-height-md] rounded-full bg-white p-[0.75rem] text-black'>
         <Loading />
       </div>
     );
@@ -23,7 +23,7 @@ export default function Avatar({ onClick }: AvatarProps) {
   if (!src) {
     return (
       <User
-        className='h-auto max-h-[48px] w-full max-w-[48px] rounded-full bg-white p-[0.75rem] text-black'
+        className='h-auto max-h-[--button-height-md] w-full max-w-[--button-height-md] rounded-full bg-white p-[0.75rem] text-black'
         onClick={onClick}
       />
     );

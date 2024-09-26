@@ -10,7 +10,7 @@ const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableE
 Table.displayName = 'Table';
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
-  ({ className, ...props }, ref) => <thead ref={ref} className={cn('[&_tr]:border-b', className)} {...props} />
+  ({ className, ...props }, ref) => <thead ref={ref} className={cn('bg-ob-black [&_tr]:border-b', className)} {...props} />
 );
 TableHeader.displayName = 'TableHeader';
 
@@ -21,7 +21,7 @@ TableBody.displayName = 'TableBody';
 
 const TableFooter = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <tfoot ref={ref} className={cn('border-t bg-muted/50 font-medium [&>tr]:last:border-b-0', className)} {...props} />
+    <tfoot ref={ref} className={cn('mt-4 font-medium [&>tr]:last:border-b-0', className)} {...props} />
   )
 );
 TableFooter.displayName = 'TableFooter';
@@ -30,7 +30,10 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
   ({ className, ...props }, ref) => (
     <tr
       ref={ref}
-      className={cn('border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted', className)}
+      className={cn(
+        'even:bg-ob-grey-dark border-b border-none transition-colors odd:bg-ob-grey data-[state=selected]:bg-muted',
+        className
+      )}
       {...props}
     />
   )
@@ -42,7 +45,7 @@ const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<
     <th
       ref={ref}
       className={cn(
-        'h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
+        'h-12 px-4 text-left align-middle font-medium text-muted-foreground text-white [&:has([role=checkbox])]:pr-0',
         className
       )}
       {...props}

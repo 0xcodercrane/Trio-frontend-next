@@ -43,10 +43,7 @@ export const PointsPane = () => {
                   {rewardsSuccess &&
                     rewards.length > 0 &&
                     rewards.map((reward, index) => (
-                      <TableRow
-                        key={index}
-                        className='even:bg-ob-grey-dark rounded-sm border-none text-xs text-white odd:bg-ob-grey'
-                      >
+                      <TableRow key={index} className='rounded-sm border-none text-xs text-white'>
                         <TableCell className='py-3'>{formatDate(reward.date)}</TableCell>
                         <TableCell className='py-3'>{reward.amount}</TableCell>
                         <TableCell className='py-3 capitalize'>{reward.type}</TableCell>

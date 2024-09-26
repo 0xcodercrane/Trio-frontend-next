@@ -32,7 +32,10 @@
     --global-max-width: 1500px;
     --header-height: 96px;
     --header-content-height: 48px;
-    --max-button-height: 48px;
+    --button-height-sm: 36px;
+    --button-height-md: 48px;
+    --button-height-lg: 60px;
+    --section-vertical-padding: 48px;
   }
 
   .dark {

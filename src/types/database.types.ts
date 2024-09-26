@@ -778,3 +778,21 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
     ? PublicSchema['Enums'][PublicEnumNameOrOptions]
     : never;
+
+type AttributeCategory = Pick<Database['public']['Tables']['attribute_categories']['Row'], 'name'>;
+
+type Attribute = Pick<Database['public']['Tables']['attributes']['Row'], 'value' | 'value_type'> & {
+  category: AttributeCategory;
+};
+type Artist = Pick<Database['public']['Tables']['artists']['Row'], 'name' | 'slug'>;
+
+export type Inscription = Pick<
+  Database['public']['Tables']['inscriptions']['Row'],
+  'name' | 'file_type' | 'inscription_id'
+> & {
+  attributes: Attribute[];
+};
+export type Collection = Database['public']['Tables']['collections']['Row'] & {
+  artist: Artist;
+  inscriptions: Inscription[];
+};

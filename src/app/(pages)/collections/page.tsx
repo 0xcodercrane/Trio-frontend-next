@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <div className='h-full w-screen bg-ob-black-light'>
       <Container>
-        <div className='flex h-[90vh] w-full flex-col items-center justify-center py-8'>
+        <div className='flex h-[calc(100vh-var(--header-height))] w-full flex-col items-center justify-center py-8'>
           <div className='flex h-full w-1/2 flex-col items-center justify-center gap-8 bg-ob-black-light'>
             <h1 className='font-bold'>Collections</h1>
             <span className='text-center text-lg font-thin text-ob-grey-lightest'>

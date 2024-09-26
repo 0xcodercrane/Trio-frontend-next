@@ -26,9 +26,23 @@ export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 export const EXPLORER_URL = process.env.ORDINALS_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
 export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';
 
-export enum SUPPORTED_WALLETS {
+export enum ESUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
   MAGIC_EDEN = 'magic-eden',
   LEATHER = 'leather'
+}
+
+export enum EFILTERS {
+  MOST_LIKED = 'most liked',
+  TRENDING = 'trending',
+  BIGGEST_GAINERS = 'biggest gainers',
+  BIGGEST_LOSERS = 'biggest losers'
+}
+
+export const FiltersValues = Object.values(EFILTERS);
+
+export enum EVIEW_TYPES {
+  GRID = 'grid',
+  LIST = 'list'
 }

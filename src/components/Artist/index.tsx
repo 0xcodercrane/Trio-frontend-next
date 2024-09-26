@@ -25,7 +25,7 @@ export default function Artist({ slug }: ArtistProps) {
   return (
     <>
       <Container>
-        <div className='z-10 mt-[--header-height] flex h-[90vh] max-h-[90vh] flex-row px-4 pb-12 md:px-16'>
+        <div className='z-10 mt-[--header-height] flex h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))] flex-row px-4 pb-12 md:px-16'>
           <div className='flex w-full flex-row flex-wrap'>
             <div className='flex w-1/2 flex-col justify-end gap-4'>
               <div className='flex flex-row gap-4'>
