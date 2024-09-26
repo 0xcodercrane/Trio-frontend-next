@@ -4,3 +4,4 @@ export * from './fetchWalletBalance';
 export * from './fetchCollection';
 export * from './fetchArtist';
 export * from './fetchFeaturedArtists';
+export * from './inscriptions';

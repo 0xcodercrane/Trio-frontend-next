@@ -5,11 +5,11 @@ import Favorite from '../Favorite';
 
 export default function FeaturedCategories() {
   return (
-    <div className='h-50vh flex w-screen justify-center bg-ob-black py-12'>
+    <div className='h-50vh flex w-full justify-center bg-ob-black py-12'>
       <Container padding>
         <div className='flex flex-col'>
           <div className='flex flex-row justify-between py-12'>
-            <h3>Featured Catgegories</h3>
+            <h3>Featured Categories</h3>
             <span>View all Collections (3)</span>
           </div>
           <div className='flex flex-row gap-4'>
