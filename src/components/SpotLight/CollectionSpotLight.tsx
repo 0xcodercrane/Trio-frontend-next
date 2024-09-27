@@ -1,9 +1,9 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useCollectionQuery } from '@/lib/services';
+import { useCollectionBySlugQuery } from '@/lib/services';
 
 export function CollectionSpotLight({ slug }: { slug: string }) {
-  const { data, isPending, error } = useCollectionQuery(slug);
+  const { data, isPending, error } = useCollectionBySlugQuery(slug);
   return (
     <div className='flex h-[80vh] flex-row'>
       <div className='flex h-full w-1/2 flex-col justify-center gap-8 py-24 text-white'>

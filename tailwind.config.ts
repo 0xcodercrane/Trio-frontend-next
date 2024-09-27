@@ -3,6 +3,16 @@ import tailwindcssAnimate from 'tailwindcss-animate';
 
 const config = {
   darkMode: ['class'],
+  safelist: [
+    'bg-gradient-to-b',
+    'bg-gradient-to-bl',
+    'bg-gradient-to-br',
+    'bg-gradient-to-l',
+    'bg-gradient-to-r',
+    'bg-gradient-to-t',
+    'bg-gradient-to-tl',
+    'bg-gradient-to-tr'
+  ],
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
@@ -71,6 +81,13 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
+        'ob-white-20': 'rgba(255, 255, 255, 0.2)',
+        'ob-white-30': 'rgba(255, 255, 255, 0.3)',
+        'ob-white-40': 'rgba(255, 255, 255, 0.4)',
+        'ob-white-50': 'rgba(255, 255, 255, 0.5)',
+        'ob-white-60': 'rgba(255, 255, 255, 0.6)',
+        'ob-white-70': 'rgba(255, 255, 255, 0.7)',
+        'ob-white-80': 'rgba(255, 255, 255, 0.8)',
         'ob-menu': '#646464',
         'ob-black': '#0D0D0D',
         'ob-black-light': '#1b1b1b',
@@ -78,10 +95,16 @@ const config = {
         'ob-black-lightest': '#161616',
         'ob-grey': '#242424',
         'ob-grey-light': '#252525',
+        'ob-grey-lighter': '#727272',
         'ob-grey-lightest': '#B5B5B5',
         'ob-blue': '#3349FF',
-        'ob-green': '#33FF81',
-        'ob-red': '#FF3349',
+        'ob-green-light': '#33FF81',
+        'ob-green': '#13C657',
+        'ob-red-dark': '#E60019',
+        'ob-red': '#FF001B',
+        'ob-red-light': '#FF1A32',
+        'ob-red-lighter': '#FF3349',
+        'ob-red-lightest': '#FF6677',
         'ob-turquoise': '#30D5C8'
       },
       borderRadius: {

@@ -31,6 +31,7 @@
     --chart-5: 27 87% 67%;
     --global-max-width: 1500px;
     --header-height: 96px;
+    --top-section-height: calc(100vh - var(--header-height));
     --header-content-height: 48px;
     --button-height-sm: 36px;
     --button-height-md: 48px;

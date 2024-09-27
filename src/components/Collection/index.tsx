@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import NotFound from '@/app/not-found';
 import { Loading } from '../common';
-import { useCollectionQuery } from '@/lib/services';
+import { useCollectionBySlugQuery } from '@/lib/services';
 import { Container } from '../Container';
 import { Panels } from './panels';
 
@@ -14,7 +14,7 @@ interface CollectionProps {
 }
 
 export default function Collection({ slug }: CollectionProps) {
-  const { data, isPending, error } = useCollectionQuery(slug);
+  const { data, isPending, error } = useCollectionBySlugQuery(slug);
 
   if (isPending) return <Loading />;
   if (!data)

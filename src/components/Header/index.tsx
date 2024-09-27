@@ -16,7 +16,7 @@ export default function Header() {
 
   return (
     <header
-      className={`relative z-20 m-auto grid h-[--header-height] w-full max-w-[--global-max-width] grid-cols-[1fr_1.5fr_1fr] px-4 md:px-16 ${menuBG} -mb-24 items-center gap-4`}
+      className={`relative z-20 m-auto grid h-[--header-height] w-full max-w-[--global-max-width] grid-cols-[1fr_1.5fr_1fr] px-4 md:px-16 2xl:px-0 ${menuBG} -mb-24 items-center gap-4`}
     >
       <div className='flex items-center'>
         <Link href='/'>

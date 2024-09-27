@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { AboutPanel } from './AboutPanel';
 import { ActivityPanel } from './ActivityPanel';
 import { FilterPanel } from './FilterPanel';
+import { useCollectionByIdQuery } from '@/lib/services';
+import LoadingScreen from '@/components/common/LoadingScreen';
 
 enum ETABS {
   ITEMS = 'items',
@@ -19,7 +21,7 @@ enum ETABS {
 const TabValues = Object.values(ETABS);
 export const Panels = ({ collection }: { collection: Collection }) => {
   const [currentTab, setCurrentTab] = useState(ETABS.ITEMS);
-  const [viewType, setViewType] = useState(EVIEW_TYPES.GRID);
+  const [viewType, setViewType] = useState(EVIEW_TYPES.LIST);
 
   const renderTab = () => {
     switch (currentTab) {
@@ -77,3 +79,14 @@ export const Panels = ({ collection }: { collection: Collection }) => {
     </div>
   );
 };
+
+export default function PanelsWrapper({ collectionId }: { collectionId: number | undefined | null }) {
+  const { data, isPending, error } = useCollectionByIdQuery(collectionId!);
+
+  if (isPending) return <LoadingScreen />;
+
+  if (!data) return <>No data</>;
+
+  // @ts-expect-error - TODO: figure out how to pull in the right type from the join query in supabase
+  return <Panels collection={data} />;
+}

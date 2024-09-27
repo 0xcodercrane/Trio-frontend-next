@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 
 //TODO - Figure out the type for objects receives as a result of a join from supabase
 export default function InscriptionsTable({ inscriptions }: { inscriptions: Inscription[] }) {
+  if (!inscriptions) return null;
   return (
     <div className='w-full'>
       <Table className='w-full'>
