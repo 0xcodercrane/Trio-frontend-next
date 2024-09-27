@@ -14,14 +14,14 @@ import {
 } from '@/lib/constants/imgs';
 import { signInWithCustomToken } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { SUPPORTED_WALLETS, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
+import { ESUPPORTED_WALLETS, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
 import { UNISAT, XVERSE, MAGIC_EDEN, LEATHER } from '@omnisat/lasereyes';
 
 const WALLET_OPTIONS: {
-  [key in SUPPORTED_WALLETS]: {
+  [key in ESUPPORTED_WALLETS]: {
     name: string;
     icon: StaticImageData | string;
     provider: typeof XVERSE | typeof UNISAT | typeof MAGIC_EDEN | typeof LEATHER;
@@ -103,7 +103,7 @@ export default function WalletConnectionPane() {
 
     // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
     if (connected) {
-      const signMessageForFirebase = async (wallet: SUPPORTED_WALLETS) => {
+      const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
         try {
           const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
           if (!signedMessage) return toast.error('Failed to sign message');
@@ -129,7 +129,7 @@ export default function WalletConnectionPane() {
     }
   }, [connected]);
 
-  const handleConnect = async (provider: SUPPORTED_WALLETS) => {
+  const handleConnect = async (provider: ESUPPORTED_WALLETS) => {
     try {
       await connect(provider);
     } catch (error) {

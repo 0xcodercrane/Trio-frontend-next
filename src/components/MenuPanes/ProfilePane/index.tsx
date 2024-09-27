@@ -57,13 +57,9 @@ export default function ProfilePane() {
         </div>
         <div className='flex flex-row flex-wrap items-center justify-start gap-2 md:flex-nowrap'>
           {ProfilePaneValues.map((pane, index) => (
-            <div
-              className={`flex min-h-[48px] items-center justify-center rounded-full bg-ob-grey capitalize text-white ${activePane === pane ? '!bg-white !text-ob-black' : ''} cursor-pointer`}
-              onClick={() => setActivePane(pane)}
-              key={index}
-            >
-              <span className='px-8 py-4'>{pane}</span>
-            </div>
+            <Button size='sm' key={index} onClick={() => setActivePane(pane)}>
+              {pane}
+            </Button>
           ))}
         </div>
         <div className='mt-3'>{ProfilePaneConfig[activePane]()}</div>

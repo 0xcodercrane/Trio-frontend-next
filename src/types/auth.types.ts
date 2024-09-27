@@ -1,11 +1,11 @@
-import { SUPPORTED_WALLETS } from '@/lib/constants';
+import { ESUPPORTED_WALLETS } from '@/lib/constants';
 
 export interface IWallet {
   ordinalsAddress: string;
   ordinalsPublicKey: string;
   paymentAddress: string;
   paymentPublicKey: string;
-  wallet: SUPPORTED_WALLETS;
+  wallet: ESUPPORTED_WALLETS;
 }
 
 export interface IAuthContext {

@@ -1,32 +1,17 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { isSuccess } from '@/lib/utilities';
 import NotFound from '@/app/not-found';
 import { Loading } from '../common';
-import { getArtist } from '@/lib/supabase/artists';
 import { Container } from '@/components/Container';
+import { useArtistQuery } from '@/lib/services/fetchArtist';
 
 interface ArtistProps {
   slug: string;
 }
 
 export default function Artist({ slug }: ArtistProps) {
-  const { data, isPending, error } = useQuery({
-    queryKey: ['artist', slug],
-    queryFn: async () => {
-      const { data, status, error } = await getArtist(slug);
-
-      console.log('------ data, status, error', data, status, error);
-      if (isSuccess(status) && data) {
-        return data[0];
-      }
-    }
-  });
-
-  console.log('data', data);
-
+  const { data, isPending, error } = useArtistQuery(slug);
   if (isPending) return <Loading />;
   if (!data)
     return (
@@ -40,7 +25,7 @@ export default function Artist({ slug }: ArtistProps) {
   return (
     <>
       <Container>
-        <div className='z-10 mt-[--header-height] flex h-[90vh] max-h-[90vh] flex-row px-4 pb-12 md:px-16'>
+        <div className='z-10 mt-[--header-height] flex h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))] flex-row px-4 pb-12 md:px-16'>
           <div className='flex w-full flex-row flex-wrap'>
             <div className='flex w-1/2 flex-col justify-end gap-4'>
               <div className='flex flex-row gap-4'>

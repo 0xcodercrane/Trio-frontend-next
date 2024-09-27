@@ -16,17 +16,11 @@ export const fetchTokenBalance = async (address: string, ticker: string = 'TRIO'
 export const useTokenBalanceQuery = (address: string, ticker: string = 'TRIO') => {
   return useQuery({
     queryKey: ['wallet-token-balance', address, ticker],
-    queryFn: async () => {
-      const { result, error } = await fetchTokenBalance(address, ticker);
-      if (error) {
-        throw new Error(error);
-      } else {
-        return {
-          ...result[0],
-          balance: Number(result[0].available_balance) / BRC20_CONVERSION_FACTOR
-        };
-      }
-    },
-    enabled: !!address
+    queryFn: async () => fetchTokenBalance(address, ticker),
+    enabled: !!address,
+    select: ({ result }) => ({
+      ...result[0],
+      balance: Number(result[0].available_balance) / BRC20_CONVERSION_FACTOR || 0
+    })
   });
 };
