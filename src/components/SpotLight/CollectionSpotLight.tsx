@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useCollectionBySlugQuery } from '@/lib/services';
+import { MediaWrapper } from '../common/MediaViewer';
 
 export function CollectionSpotLight({ slug }: { slug: string }) {
   const { data, isPending, error } = useCollectionBySlugQuery(slug);
@@ -13,8 +14,13 @@ export function CollectionSpotLight({ slug }: { slug: string }) {
           View Collections
         </Button>
       </div>
-      <div className='flex w-1/2 items-center justify-center'>
-        <div className='h-[450px] w-[450px] rounded-xl bg-[#252525]'></div>
+      <div className='flex h-full w-1/2 items-center justify-center'>
+        <MediaWrapper
+          id={data?.inscriptions[0].inscription_id}
+          square
+          size={350}
+          className='relative overflow-hidden rounded-xl'
+        />
       </div>
     </div>
   );

@@ -42,6 +42,7 @@ export enum EFILTERS {
 
 export const FiltersValues = Object.values(EFILTERS);
 
+// We support list view and grid view most places and on most tables
 export enum EVIEW_TYPES {
   GRID = 'grid',
   LIST = 'list'

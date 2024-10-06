@@ -11,7 +11,8 @@ const config = {
     'bg-gradient-to-r',
     'bg-gradient-to-t',
     'bg-gradient-to-tl',
-    'bg-gradient-to-tr'
+    'bg-gradient-to-tr',
+    'w-[350px]'
   ],
   content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   prefix: '',

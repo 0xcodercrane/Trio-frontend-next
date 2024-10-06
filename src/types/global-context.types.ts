@@ -1,4 +1,4 @@
-import { IDisclosure } from '@/lib/hooks';
+import { Disclosure } from '@/lib/hooks/useDisclosure';
 
 export enum EMenuType {
   PROFILE = 'profile',
@@ -10,7 +10,7 @@ export enum EMenuType {
 }
 
 export interface IGlobalContext {
-  menuDisclosure: IDisclosure;
+  menuDisclosure: Disclosure;
   menuType: EMenuType;
   menuBG: string;
   setMenuType: (type: EMenuType) => void;
