@@ -20,7 +20,7 @@ const buttonVariants = cva(
         default: 'h-[--button-height-md] px-8 min-w-[80px] max-w-[160px] w-auto',
         sm: 'h-[--button-height-sm] px-3 text-sm max-w-[120px]',
         lg: 'h-[--button-height-lg] px-8 text-lg',
-        icon: 'w-10'
+        icon: 'xs:max-h-[--button-height-sm] xs:max-w-[--button-height-sm] sm:max-h-[--button-height-md] sm:max-w-[--button-height-md] md:max-h-[--button-height-lg] md:max-w-[--button-height-lg] w-auto'
       }
     },
     defaultVariants: {

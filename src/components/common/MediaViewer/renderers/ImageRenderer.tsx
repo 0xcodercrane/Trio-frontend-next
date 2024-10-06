@@ -1,3 +1,5 @@
+import { Skeleton } from '@/components/ui/skeleton';
+import Image from 'next/image';
 import { memo, useEffect, useState } from 'react';
 import React from 'react';
 
@@ -16,11 +18,20 @@ export const ImageRenderer = memo(({ content }: { content: Blob }) => {
   }, [content]);
 
   if (!url) {
-    return <p>Loading image...</p>;
+    return <Skeleton className='h-full min-h-[48px] w-full min-w-[48px]' />;
   }
 
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={url} alt='inscription' style={{ imageRendering: 'pixelated', height: '30vh' }} />;
+  return (
+    <Image
+      src={url}
+      alt='inscription'
+      className='h-full w-full'
+      loading='lazy'
+      style={{ imageRendering: 'pixelated' }}
+      width={1000}
+      height={1000}
+    />
+  );
 });
 
 ImageRenderer.displayName = 'ImageRenderer';

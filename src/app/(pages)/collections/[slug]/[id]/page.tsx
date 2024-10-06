@@ -2,6 +2,7 @@
 
 import BuyNow from '@/components/BuyNow';
 import PanelsWrapper from '@/components/Collection/panels';
+import { MediaWrapper } from '@/components/common/MediaViewer';
 import { Container } from '@/components/Container';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCollectionItemQuery } from '@/lib/services/fetchCollectionItem';
@@ -15,8 +16,8 @@ export default function Page({ params }: { params: { slug: string; id: string } 
       <div className='flex h-auto min-h-[--top-section-height] w-full flex-col items-center justify-center bg-ob-black-light pt-[--header-height]'>
         <Container padding>
           <div className='flex h-full flex-row items-center justify-center'>
-            <div className='h-full basis-1/2 pt-12'>
-              <Skeleton className='h-full max-h-[650px] w-full max-w-[650px] rounded-xl bg-ob-grey'></Skeleton>
+            <div className='flex h-full basis-1/2 items-center justify-center'>
+              <MediaWrapper id={data?.inscription_id} size={650} square className='relative overflow-hidden rounded-xl' />
             </div>
 
             <div className='flex h-full basis-1/2 flex-col items-start justify-start gap-8 px-12 py-24'>
@@ -33,7 +34,7 @@ export default function Page({ params }: { params: { slug: string; id: string } 
                 )}
                 {!isPending && (
                   <div className='flex w-1/2 flex-row justify-start gap-4'>
-                    <span>{data?.collection?.name}</span>
+                    <span>{data?.collection[0]?.artist && data?.collection[0].artist.name}</span>
                     <span>By ARTIST NAME</span>
                   </div>
                 )}

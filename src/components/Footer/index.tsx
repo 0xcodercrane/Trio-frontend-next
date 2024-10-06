@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Footer() {
@@ -54,12 +55,12 @@ export default function Footer() {
           </div>
           <div className='flex items-center'>
             <span className='mr-2 text-sm font-bold'>Powered by</span>
-            <img src='/img/ob-logo.svg' alt='OrdinalsBot Logo' width={100} height={24} />
+            <Image src='/img/ob-logo.svg' alt='OrdinalsBot Logo' width={100} height={24} loading='lazy' />
           </div>
           <div className='flex space-x-4'>
             {['instagram', 'x', 'telegram', 'discord'].map((social) => (
               <Link key={social} href={`#${social}`} className='transition-opacity hover:opacity-75'>
-                <img src={`/img/socials/${social}.svg`} alt={`${social} icon`} width={24} height={24} />
+                <Image src={`/img/socials/${social}.svg`} alt={`${social} icon`} width={24} height={24} loading='lazy' />
               </Link>
             ))}
           </div>

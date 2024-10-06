@@ -4,6 +4,7 @@ import { useInscriptionDataQuery } from './useInscriptionDataQuery';
 import { HTMLRenderer, ImageRenderer, SVGRenderer, TextRenderer } from './renderers';
 import { MediaRenderer } from './renderers/MediaRenderer';
 import { useMemo } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface BaseRendererProps {
   type: string;
@@ -61,7 +62,7 @@ const getContentType = (mimeType: string): ContentType => {
   return 'unsupported';
 };
 
-export const MediaViewer = ({ id }: { id: string }) => {
+const MediaViewer = ({ id }: { id: string }) => {
   const { data, isLoading, error } = useInscriptionDataQuery(id);
 
   const content = useMemo(() => {
@@ -78,9 +79,11 @@ export const MediaViewer = ({ id }: { id: string }) => {
     }
   }, [data, id]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Skeleton className='h-full w-full' />;
   if (error) return <div>Error: {error.message}</div>;
   if (!content) return <div>No data available</div>;
 
   return content;
 };
+
+export default MediaViewer;
