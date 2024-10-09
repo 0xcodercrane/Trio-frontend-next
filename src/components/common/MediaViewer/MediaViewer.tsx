@@ -5,6 +5,7 @@ import { HTMLRenderer, ImageRenderer, SVGRenderer, TextRenderer } from './render
 import { MediaRenderer } from './renderers/MediaRenderer';
 import { useMemo } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import InscriptionSkeleton from '@/components/Skeletons/InscriptionSkeleton';
 
 interface BaseRendererProps {
   type: string;
@@ -79,7 +80,7 @@ const MediaViewer = ({ id }: { id: string }) => {
     }
   }, [data, id]);
 
-  if (isLoading) return <Skeleton className='h-full w-full' />;
+  if (isLoading) return <InscriptionSkeleton />;
   if (error) return <div>Error: {error.message}</div>;
   if (!content) return <div>No data available</div>;
 

@@ -1,15 +1,16 @@
 'use client';
 
 import BuyNow from '@/components/BuyNow';
-import PanelsWrapper from '@/components/Collection/panels';
+import { PanelsWrapper } from '@/components/Collection/FilterPanels';
 import { MediaWrapper } from '@/components/common/MediaViewer';
 import { Container } from '@/components/Container';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useCollectionItemQuery } from '@/lib/services/fetchCollectionItem';
+import { useCollectionItemByIdQuery } from '@/lib/services';
+import Link from 'next/link';
 
 export default function Page({ params }: { params: { slug: string; id: string } }) {
   const { slug, id } = params;
-  const { data, isPending, error } = useCollectionItemQuery(slug, id);
+  const { data, isPending, error } = useCollectionItemByIdQuery(slug, id);
 
   return (
     <div className='flex h-auto w-full flex-col'>
@@ -17,7 +18,14 @@ export default function Page({ params }: { params: { slug: string; id: string } 
         <Container padding>
           <div className='flex h-full flex-row items-center justify-center'>
             <div className='flex h-full basis-1/2 items-center justify-center'>
-              <MediaWrapper id={data?.inscription_id} size={650} square className='relative overflow-hidden rounded-xl' />
+              <div className='max-h-[--inscription-largest] max-w-[--inscription-largest]'>
+                <MediaWrapper
+                  id={data?.inscription_id}
+                  size={'full'}
+                  square
+                  className='relative overflow-hidden rounded-xl'
+                />
+              </div>
             </div>
 
             <div className='flex h-full basis-1/2 flex-col items-start justify-start gap-8 px-12 py-24'>
@@ -34,8 +42,8 @@ export default function Page({ params }: { params: { slug: string; id: string } 
                 )}
                 {!isPending && (
                   <div className='flex w-1/2 flex-row justify-start gap-4'>
-                    <span>{data?.collection[0]?.artist && data?.collection[0].artist.name}</span>
-                    <span>By ARTIST NAME</span>
+                    {/* @ts-ignore */}
+                    <Link href={`/artists/${data?.collection?.artist?.slug}`}>By {data?.collection?.artist?.name}</Link>
                   </div>
                 )}
               </div>

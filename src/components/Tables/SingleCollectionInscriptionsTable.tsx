@@ -1,9 +1,9 @@
-import { Inscription } from '@/types/database.types';
+import { Inscription } from '@/types/database';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { MediaWrapper } from '../common/MediaViewer';
 
 //TODO - Figure out the type for objects receives as a result of a join from supabase
-export default function InscriptionsTable({
+export default function SingleCollectionInscriptionsTable({
   inscriptions,
   nextPageLoading
 }: {
@@ -17,14 +17,9 @@ export default function InscriptionsTable({
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Chain</TableHead>
-            <TableHead>Floor</TableHead>
+            <TableHead>Last Sold</TableHead>
             <TableHead>% Change</TableHead>
-            <TableHead>Vol (30D)</TableHead>
-            <TableHead>Vol (7D)</TableHead>
-            <TableHead>Assets</TableHead>
-            <TableHead>Date Created</TableHead>
-            <TableHead></TableHead>
+            <TableHead>Rare Sats</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody style={{ gap: 4 }}>
@@ -32,21 +27,19 @@ export default function InscriptionsTable({
             return (
               <TableRow key={index}>
                 <TableCell>
-                  <div className='flex h-[48px] flex-row items-center gap-2'>
-                    <MediaWrapper
-                      id={inscription.inscription_id}
-                      size={48}
-                      square
-                      className={`relative rounded-xl ${nextPageLoading ? 'blur-sm' : ''}`}
-                    />
+                  <div className='flex h-[--inscription-tiniest] min-h-[--inscription-tiniest] flex-row items-center gap-2'>
+                    <div className='h-[--inscription-tiniest] w-[--inscription-tiniest]'>
+                      <MediaWrapper
+                        id={inscription.inscription_id}
+                        size={48}
+                        square
+                        blur={nextPageLoading}
+                        className={`relative overflow-hidden rounded-sm`}
+                      />
+                    </div>
                     <span className='text-lg font-bold'>{inscription.name}</span>
                   </div>
                 </TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell></TableCell>

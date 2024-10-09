@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { useCollectionBySlugQuery } from '@/lib/services';
 import { MediaWrapper } from '../common/MediaViewer';
+import InscriptionSkeleton from '../Skeletons/InscriptionSkeleton';
 
 export function CollectionSpotLight({ slug }: { slug: string }) {
   const { data, isPending, error } = useCollectionBySlugQuery(slug);
@@ -15,12 +16,15 @@ export function CollectionSpotLight({ slug }: { slug: string }) {
         </Button>
       </div>
       <div className='flex h-full w-1/2 items-center justify-center'>
-        <MediaWrapper
-          id={data?.inscriptions[0].inscription_id}
-          square
-          size={350}
-          className='relative overflow-hidden rounded-xl'
-        />
+        {isPending && <InscriptionSkeleton />}
+        {!isPending && (
+          <MediaWrapper
+            id={data?.inscriptions[0].inscription_id}
+            square
+            size={350}
+            className='relative overflow-hidden rounded-xl'
+          />
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useArtistQuery } from '@/lib/services/fetchArtist';
+import { useArtistQuery } from '@/lib/services';
+import InscriptionSkeleton from '../Skeletons/InscriptionSkeleton';
+import { MediaWrapper } from '../common/MediaViewer';
 
 export function ArtistSpotLight({ slug }: { slug: string }) {
   const { data, isPending, error } = useArtistQuery(slug);
@@ -15,7 +17,15 @@ export function ArtistSpotLight({ slug }: { slug: string }) {
         </Button>
       </div>
       <div className='flex w-1/2 items-center justify-center'>
-        <div className='h-[450px] w-[450px] rounded-xl bg-[#252525]'></div>
+        {isPending && <InscriptionSkeleton />}
+        {!isPending && (
+          <MediaWrapper
+            id={data?.collections && data.collections[0].inscriptions?.inscription_id}
+            square
+            size={350}
+            className='relative overflow-hidden rounded-xl'
+          />
+        )}
       </div>
     </div>
   );

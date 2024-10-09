@@ -1,10 +1,15 @@
 import { create } from 'zustand';
 import { FilterState } from './filter.types';
+import { ESIZES, EVIEW_TYPES } from '@/lib/constants';
 
 const DEFAULT_MAX = 100;
 
 export const useFilter = create<FilterState>()((set, get) => ({
   filters: {},
+  viewType: EVIEW_TYPES.LIST,
+  setViewType: (viewType: EVIEW_TYPES) => set({ viewType }),
+  size: ESIZES.MD,
+  setSize: (size: ESIZES) => set({ size }),
   offset: 0,
   limit: 10,
   max: DEFAULT_MAX,
@@ -25,19 +30,3 @@ export const useFilter = create<FilterState>()((set, get) => ({
     set({ offset: newOffset });
   }
 }));
-
-// Usage in a component:
-const FilterComponent = () => {
-  const { filters, setFilters } = useFilter();
-  // ... rest of the component
-};
-
-const PaginationComponent = () => {
-  const { offset, limit, nextPage, prevPage, max } = useFilter();
-  // ... rest of the component
-};
-
-const ResultsComponent = () => {
-  const { filters, offset, limit } = useFilter();
-  // Use these values to fetch and display results
-};

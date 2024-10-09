@@ -35,6 +35,10 @@ const COLLECTION_ITEM_QUERY = `
 
 const INSCRIPTIONS_BY_COLLECTION_ID_QUERY = `
     *, 
+    collection: collections!collection_id (
+      name,
+      slug
+    ),
     attributes: attributes (
       value,
       value_type,
