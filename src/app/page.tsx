@@ -3,6 +3,7 @@ import { LaunchACollection } from '@/components/CTAs';
 import FeaturedArtists from '@/components/FeaturedArtists';
 import FeaturedCategories from '@/components/FeaturedCategories';
 import PopularCollections from '@/components/PopularCollections';
+import TopSellers from '@/components/TopSellers';
 import { DEFAULT_METADATA } from '@/lib/constants';
 import { Metadata } from 'next';
 
@@ -21,6 +22,8 @@ export default function Home() {
           </div>
         </Container>
       </div>
+
+      <TopSellers />
 
       <FeaturedCategories />
       <FeaturedArtists />

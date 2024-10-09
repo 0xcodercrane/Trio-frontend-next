@@ -42,8 +42,21 @@ export enum EFILTERS {
 
 export const FiltersValues = Object.values(EFILTERS);
 
+export enum ESIZES {
+  XS = 'xs',
+  SM = 'sm',
+  MD = 'md',
+  LG = 'lg',
+  XL = 'xl',
+  XXL = '2xl'
+}
+
+export const SizesValues = Object.values(ESIZES);
+
 // We support list view and grid view most places and on most tables
 export enum EVIEW_TYPES {
   GRID = 'grid',
   LIST = 'list'
 }
+
+export const ViewTypeValues = Object.values(EVIEW_TYPES);

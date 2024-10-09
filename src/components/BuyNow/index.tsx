@@ -14,11 +14,8 @@ export default function BuyNow() {
         <Button size='lg' variant='secondary'>
           Buy Now
         </Button>
-        <div className='flex flex-col justify-between'>
-          <Tag label='1000' variant='success' />
-          <span className='flex w-full flex-row items-center justify-between text-ob-grey-lightest'>
-            What is XP? <Info size={18} className='ml-1' />
-          </span>
+        <div className='flex h-full flex-col items-center justify-center'>
+          <Tag label='+ 1,000 XP' variant='default' />
         </div>
       </div>
       <span className='text-bold text-ob-grey-lighter'>

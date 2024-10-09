@@ -138,7 +138,7 @@ export type Database = {
           discord_link: string | null;
           icon: string | null;
           id: number;
-          inscription_icon: string | null;
+          inscription_icon: number | null;
           is_under_review: boolean | null;
           name: string;
           slug: string;
@@ -151,7 +151,7 @@ export type Database = {
           discord_link?: string | null;
           icon?: string | null;
           id?: number;
-          inscription_icon?: string | null;
+          inscription_icon?: number | null;
           is_under_review?: boolean | null;
           name: string;
           slug: string;
@@ -164,7 +164,7 @@ export type Database = {
           discord_link?: string | null;
           icon?: string | null;
           id?: number;
-          inscription_icon?: string | null;
+          inscription_icon?: number | null;
           is_under_review?: boolean | null;
           name?: string;
           slug?: string;
@@ -177,6 +177,13 @@ export type Database = {
             columns: ['artist_id'];
             isOneToOne: false;
             referencedRelation: 'artists';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_inscription_icon';
+            columns: ['inscription_icon'];
+            isOneToOne: false;
+            referencedRelation: 'inscriptions';
             referencedColumns: ['id'];
           }
         ];
@@ -305,8 +312,7 @@ export type Database = {
       };
       orderbook: {
         Row: {
-          broadcast_tx_id: string | null;
-          delist_at: string | null;
+          delisted_at: string | null;
           id: number;
           index_in_maker_psbt: number;
           maker_ordinal_address_id: number;
@@ -321,17 +327,15 @@ export type Database = {
           platform_maker_fee: number;
           platform_taker_fee: number;
           price: number;
-          psbt: string;
-          relist_at: string | null;
+          psbt: string | null;
+          relisted_at: string | null;
+          relisted_price: number | null;
           side: string;
-          sold_at: string | null;
           status: Database['public']['Enums']['order_book_status'];
-          transaction_id: string | null;
           utxo_id: number;
         };
         Insert: {
-          broadcast_tx_id?: string | null;
-          delist_at?: string | null;
+          delisted_at?: string | null;
           id?: number;
           index_in_maker_psbt: number;
           maker_ordinal_address_id: number;
@@ -346,17 +350,15 @@ export type Database = {
           platform_maker_fee?: number;
           platform_taker_fee?: number;
           price: number;
-          psbt: string;
-          relist_at?: string | null;
+          psbt?: string | null;
+          relisted_at?: string | null;
+          relisted_price?: number | null;
           side: string;
-          sold_at?: string | null;
           status: Database['public']['Enums']['order_book_status'];
-          transaction_id?: string | null;
           utxo_id: number;
         };
         Update: {
-          broadcast_tx_id?: string | null;
-          delist_at?: string | null;
+          delisted_at?: string | null;
           id?: number;
           index_in_maker_psbt?: number;
           maker_ordinal_address_id?: number;
@@ -371,12 +373,11 @@ export type Database = {
           platform_maker_fee?: number;
           platform_taker_fee?: number;
           price?: number;
-          psbt?: string;
-          relist_at?: string | null;
+          psbt?: string | null;
+          relisted_at?: string | null;
+          relisted_price?: number | null;
           side?: string;
-          sold_at?: string | null;
           status?: Database['public']['Enums']['order_book_status'];
-          transaction_id?: string | null;
           utxo_id?: number;
         };
         Relationships: [
@@ -552,34 +553,34 @@ export type Database = {
       };
       trade_history: {
         Row: {
-          fee_rate: number;
+          fee_rate: number | null;
           id: number;
           order_id: number;
           status: Database['public']['Enums']['trade_history_status'];
-          taker_ordinal_address_id: number;
-          taker_payment_address_id: number;
+          taker_ordinal_address_id: number | null;
+          taker_payment_address_id: number | null;
           timestamp: string;
-          transaction_id: string;
+          transaction_id: string | null;
         };
         Insert: {
-          fee_rate: number;
+          fee_rate?: number | null;
           id?: number;
           order_id: number;
           status: Database['public']['Enums']['trade_history_status'];
-          taker_ordinal_address_id: number;
-          taker_payment_address_id: number;
+          taker_ordinal_address_id?: number | null;
+          taker_payment_address_id?: number | null;
           timestamp?: string;
-          transaction_id: string;
+          transaction_id?: string | null;
         };
         Update: {
-          fee_rate?: number;
+          fee_rate?: number | null;
           id?: number;
           order_id?: number;
           status?: Database['public']['Enums']['trade_history_status'];
-          taker_ordinal_address_id?: number;
-          taker_payment_address_id?: number;
+          taker_ordinal_address_id?: number | null;
+          taker_payment_address_id?: number | null;
           timestamp?: string;
-          transaction_id?: string;
+          transaction_id?: string | null;
         };
         Relationships: [
           {
@@ -687,20 +688,10 @@ export type Database = {
           collection_id: number;
         }[];
       };
-      wipe_public_schema: {
-        Args: Record<PropertyKey, never>;
-        Returns: undefined;
-      };
     };
     Enums: {
-      order_book_status:
-        | 'active'
-        | 'inactive'
-        | 'pending_taker_confirmation'
-        | 'pending_maker_confirmation'
-        | 'awaiting_relist_confirmation'
-        | 'awaiting_delist_confirmation';
-      trade_history_status: 'mempool' | 'confirmed' | 'sniped';
+      order_book_status: 'active' | 'inactive' | 'pending_taker_confirmation' | 'pending_maker_confirmation' | 'broadcast';
+      trade_history_status: 'mempool' | 'confirmed' | 'sniped' | 'initiated';
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -778,21 +769,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
     ? PublicSchema['Enums'][PublicEnumNameOrOptions]
     : never;
-
-type AttributeCategory = Pick<Database['public']['Tables']['attribute_categories']['Row'], 'name'>;
-
-type Attribute = Pick<Database['public']['Tables']['attributes']['Row'], 'value' | 'value_type'> & {
-  category: AttributeCategory;
-};
-type Artist = Pick<Database['public']['Tables']['artists']['Row'], 'name' | 'slug'>;
-
-export type Inscription = Pick<
-  Database['public']['Tables']['inscriptions']['Row'],
-  'name' | 'file_type' | 'inscription_id'
-> & {
-  attributes: Attribute[];
-};
-export type Collection = Database['public']['Tables']['collections']['Row'] & {
-  artist: Artist;
-  inscriptions: Inscription[];
-};

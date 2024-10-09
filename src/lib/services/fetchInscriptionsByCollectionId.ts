@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { getFeaturedArtists, getInscriptionsByCollectionId } from '../supabase';
+import { getInscriptionsByCollectionId } from '../supabase';
 import { TPagination } from '../hooks/usePagination/pagination.types';
 
 export const useInscriptionsByCollectionId = (id: number, pagination: TPagination) => {

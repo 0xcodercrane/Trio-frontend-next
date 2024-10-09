@@ -13,6 +13,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
   });
 
+  response.headers.set('Cache-Control', 's-maxage=604800, stale-while-revalidate');
+
   if (!response.ok) {
     return NextResponse.json({ error: 'Failed to fetch inscription content' }, { status: response.status });
   }

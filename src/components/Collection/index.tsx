@@ -4,10 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import NotFound from '@/app/not-found';
-import { Loading } from '../common';
+import { Loading } from '@/components/common';
 import { useCollectionBySlugQuery } from '@/lib/services';
-import { Container } from '../Container';
-import { Panels } from './panels';
+import { Container } from '@/components/Container';
+import { PanelsWrapper } from '@/components/Collections/FilterPanels';
 
 interface CollectionProps {
   slug: string;
@@ -140,7 +140,7 @@ export default function Collection({ slug }: CollectionProps) {
       </Container>
 
       {/* @ts-expect-error - TODO: figure out how to pull in the right type from the join query in supabase */}
-      <Panels collection={data} />
+      <PanelsWrapper collection={data} />
     </div>
   );
 }

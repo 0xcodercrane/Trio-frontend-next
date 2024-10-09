@@ -2,8 +2,8 @@
 
 import { Container } from '@/components/Container';
 import { useFeaturedArtistsQuery } from '@/lib/services';
-import Favorite from '../Favorite';
 import { MediaWrapper } from '../common/MediaViewer';
+import { InscriptionOverlay } from '@/components/InscriptionOverlay';
 
 export default function FeaturedArtists() {
   const { data: artists, isPending, error } = useFeaturedArtistsQuery();
@@ -28,17 +28,11 @@ export default function FeaturedArtists() {
                     size='full'
                     className='overflow-hidden rounded-xl'
                   ></MediaWrapper>
-                  <div className='absolute bottom-0 z-10 flex h-full w-full flex-col justify-end rounded-xl'>
-                    {
-                      <div className='absolute right-3 top-3 hover:cursor-pointer hover:opacity-80'>
-                        <Favorite action={() => {}} />
-                      </div>
-                    }
-                    <div className='flex w-full flex-row items-center justify-between rounded-b-xl bg-[#000]/[0.50] px-4 py-2 text-center backdrop-blur-2xl'>
-                      <span className='text-left font-extrabold capitalize'>{name}</span>
-                      <span className='text-xs font-extrabold'>#{feature_rank}</span>
-                    </div>
-                  </div>
+                  <InscriptionOverlay
+                    id='6e6093d576b77ae8a1ecd31d6685fa466391601cbd58bf3348c255c4085ec869i0'
+                    name='test'
+                    rank={feature_rank}
+                  />
                 </div>
               );
             })}

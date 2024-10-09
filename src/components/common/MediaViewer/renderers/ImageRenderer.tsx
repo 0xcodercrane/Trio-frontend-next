@@ -18,16 +18,18 @@ export const ImageRenderer = memo(({ content }: { content: Blob }) => {
   }, [content]);
 
   if (!url) {
-    return <Skeleton className='h-full min-h-[48px] w-full min-w-[48px]' />;
+    return (
+      <Skeleton className='h-full max-h-[--inscription-largest] min-h-[--inscription-tiniest] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]' />
+    );
   }
 
   return (
     <Image
       src={url}
-      alt='inscription'
+      alt={`bitcoin inscription`}
       className='h-full w-full'
       loading='lazy'
-      style={{ imageRendering: 'pixelated' }}
+      style={{ imageRendering: 'pixelated', objectFit: 'cover' }}
       width={1000}
       height={1000}
     />

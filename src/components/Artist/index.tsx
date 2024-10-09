@@ -4,7 +4,7 @@ import Link from 'next/link';
 import NotFound from '@/app/not-found';
 import { Loading } from '../common';
 import { Container } from '@/components/Container';
-import { useArtistQuery } from '@/lib/services/fetchArtist';
+import { useArtistQuery } from '@/lib/services';
 
 interface ArtistProps {
   slug: string;

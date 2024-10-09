@@ -1,3 +1,4 @@
-import InscriptionsTable from './InscriptionsTable';
+import MultiCollectionInscriptionsTable from './MultiCollectionInscriptionsTable';
+import SingleCollectionInscriptionsTable from './SingleCollectionInscriptionsTable';
 
-export { InscriptionsTable };
+export { MultiCollectionInscriptionsTable, SingleCollectionInscriptionsTable };

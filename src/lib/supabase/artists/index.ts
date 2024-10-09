@@ -6,7 +6,10 @@ export const getArtist = async (slug: string) =>
       `
       *,
       collections: collections (
-          name
+          name,
+          inscriptions: inscriptions (
+            inscription_id
+          )
         )`
     )
     .eq('slug', slug);

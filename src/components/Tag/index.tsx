@@ -1,5 +1,6 @@
 'use client';
 
+import { Info } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 interface TagProps {
@@ -46,13 +47,12 @@ export const Tag = ({ variant = 'default', label }: TagProps) => {
   }, []);
 
   return (
-    <div className='relative max-h-[24px] min-w-[96px] rounded-sm p-[1px] shadow-lg'>
+    <div className='relative h-[--button-height-sm] max-h-[--button-height-md] min-w-[96px] rounded-sm p-[1px] shadow-lg'>
       <div className={`absolute inset-0 h-full w-full rounded-sm ${outer} duration-100 ease-in-out`}></div>
-      <span
-        className={`relative flex h-full w-full items-center justify-center rounded-sm px-4 text-center font-bold ${inner} `}
-      >
-        {label}
-      </span>
+      <div className={`relative flex h-full w-full flex-row items-center justify-between rounded-sm px-2 ${inner} gap-2`}>
+        <span className={`text-center text-sm font-semibold`}>{label}</span>
+        <Info size={12} />
+      </div>
     </div>
   );
 };
