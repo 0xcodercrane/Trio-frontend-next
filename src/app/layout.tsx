@@ -30,7 +30,6 @@ export default async function RootLayout({
   children
 }: Readonly<{
   children: NonNullable<React.ReactNode>;
-  metadata: Metadata;
 }>) {
   const session = await getServerSession(authOptions);
 
