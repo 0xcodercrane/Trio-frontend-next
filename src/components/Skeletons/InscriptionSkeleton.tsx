@@ -8,7 +8,7 @@ interface InscriptionSkeletonProps {
 }
 
 export default function InscriptionSkeleton({ size = '--inscription-larger' }: InscriptionSkeletonProps) {
-  const width = useMemo(() => getWidth(true, size), [size]);
-  const height = useMemo(() => getHeight(true, size), [size]);
-  return <Skeleton className={`${getWidth(true, size)} ${getHeight(true, size)}`} />;
+  const width = useMemo(() => getWidth(size), [size]);
+  const height = useMemo(() => getHeight(size), [size]);
+  return <Skeleton className={`${getWidth(width)} ${getHeight(height)}`} />;
 }
