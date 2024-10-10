@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { EFILTERS, EVIEW_TYPES } from '@/lib/constants';
 import { InscriptionsGrid } from '@/components/Grids';
-import { SingleCollectionInscriptionsTable } from '@/components/Tables';
 import { useFilter } from '@/lib/hooks/useFilter';
 import { useRandomInscriptionsQuery } from '@/lib/services';
 import { Filters } from '@/components/FilterPanel';
+import { MultiCollectionInscriptionsTable } from '@/components/Tables';
 
 export const MultiCollectionFilterPanel = () => {
   const [currentFilter, setCurrentFilter] = useState(EFILTERS.MOST_LIKED);
@@ -25,8 +25,7 @@ export const MultiCollectionFilterPanel = () => {
           // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
           <InscriptionsGrid inscriptions={data} />
         ) : (
-          // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
-          <SingleCollectionInscriptionsTable inscriptions={data} nextPageLoading={isPlaceholderData} />
+          <MultiCollectionInscriptionsTable inscriptions={data} nextPageLoading={isPlaceholderData} />
         )}
       </div>
     </div>

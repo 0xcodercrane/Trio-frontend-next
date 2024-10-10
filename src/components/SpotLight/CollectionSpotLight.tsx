@@ -15,13 +15,12 @@ export function CollectionSpotLight({ slug }: { slug: string }) {
           View Collections
         </Button>
       </div>
-      <div className='flex h-full w-1/2 items-center justify-center'>
-        {isPending && <InscriptionSkeleton />}
+      <div className='flex w-1/2 items-center justify-center'>
+        {isPending && <InscriptionSkeleton size='--inscription-larger' />}
         {!isPending && (
           <MediaWrapper
             id={data?.inscriptions[0].inscription_id}
-            square
-            size={350}
+            size='--inscription-larger'
             className='relative overflow-hidden rounded-xl'
           />
         )}

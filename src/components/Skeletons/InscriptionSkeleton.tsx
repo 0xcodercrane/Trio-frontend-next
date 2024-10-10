@@ -1,13 +1,14 @@
 import { Dimensions } from '@/types/global.types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getHeight, getWidth } from '../common/MediaViewer/MediaWrapper';
+import { useMemo } from 'react';
 
 interface InscriptionSkeletonProps {
-  dimensions?: Dimensions;
+  size?: Dimensions | string;
 }
 
-export default function InscriptionSkeleton({
-  dimensions = { width: '--inscription-default', height: '--inscription-default' }
-}: InscriptionSkeletonProps) {
-  const { width, height } = dimensions;
-  return <Skeleton className={`w-[${width}] h-[${height}] max-h-full min-h-full min-w-full max-w-full`} />;
+export default function InscriptionSkeleton({ size = '--inscription-larger' }: InscriptionSkeletonProps) {
+  const width = useMemo(() => getWidth(true, size), [size]);
+  const height = useMemo(() => getHeight(true, size), [size]);
+  return <Skeleton className={`${getWidth(true, size)} ${getHeight(true, size)}`} />;
 }

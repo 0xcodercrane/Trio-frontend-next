@@ -17,12 +17,11 @@ export function ArtistSpotLight({ slug }: { slug: string }) {
         </Button>
       </div>
       <div className='flex w-1/2 items-center justify-center'>
-        {isPending && <InscriptionSkeleton />}
+        {isPending && <InscriptionSkeleton size='--inscription-larger' />}
         {!isPending && (
           <MediaWrapper
-            id={data?.collections && data.collections[0].inscriptions?.inscription_id}
-            square
-            size={350}
+            id={data?.collections && data.collections[0].inscriptions[0].inscription_id}
+            size='--inscription-larger'
             className='relative overflow-hidden rounded-xl'
           />
         )}

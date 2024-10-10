@@ -31,8 +31,7 @@ export default function SingleCollectionInscriptionsTable({
                     <div className='h-[--inscription-tiniest] w-[--inscription-tiniest]'>
                       <MediaWrapper
                         id={inscription.inscription_id}
-                        size={48}
-                        square
+                        size='full'
                         blur={nextPageLoading}
                         className={`relative overflow-hidden rounded-sm`}
                       />

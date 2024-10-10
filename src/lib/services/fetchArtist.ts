@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { isSuccess } from '../utilities';
-import { getArtist } from '../supabase/artists';
+import { getArtistBySlug } from '../supabase/artists';
 
 export const useArtistQuery = (slug: string) => {
   return useQuery({
     queryKey: ['artist', slug],
-    queryFn: () => getArtist(slug),
+    queryFn: () => getArtistBySlug(slug),
     enabled: !!slug,
     select: ({ data }) => (data && data[0]) || null
   });

@@ -30,7 +30,7 @@ export default function FeaturedArtists() {
                   ></MediaWrapper>
                   <InscriptionOverlay
                     id='6e6093d576b77ae8a1ecd31d6685fa466391601cbd58bf3348c255c4085ec869i0'
-                    name='test'
+                    name={name}
                     rank={feature_rank}
                   />
                 </div>
