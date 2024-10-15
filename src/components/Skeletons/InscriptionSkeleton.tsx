@@ -1,7 +1,7 @@
 import { Dimensions } from '@/types/global.types';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getHeight, getWidth } from '../common/MediaViewer/MediaWrapper';
 import { useMemo } from 'react';
+import { getHeight, getWidth } from '@/lib/utilities';
 
 interface InscriptionSkeletonProps {
   size?: Dimensions | string;

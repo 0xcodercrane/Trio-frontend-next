@@ -1,5 +1,5 @@
-import SplashPageLayout from './SplashPageLayout';
 import HeroLayout from './HeroLayout';
 import HeroCarouselLayout from './HeroCarouselLayout';
+import SplashPageLayout from './SplashPageLayout';
 
-export { SplashPageLayout, HeroLayout, HeroCarouselLayout };
+export { HeroLayout, HeroCarouselLayout, SplashPageLayout };

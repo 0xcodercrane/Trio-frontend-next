@@ -1,10 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { Container } from '@/components/Container';
 
 export default function Footer() {
   return (
     <footer className='w-full bg-black pb-8 pt-12 text-white'>
-      <div className='mx-auto max-w-[100%] px-4 sm:px-6 lg:px-12'>
+      <Container padding>
         <div className='mb-32 grid grid-cols-1 gap-8 md:grid-cols-3'>
           <div className='flex flex-col items-start'>
             <img src='/img/ob-logo.svg' alt='OrdinalsBot Logo' width={200} height={50} />
@@ -65,7 +66,7 @@ export default function Footer() {
             ))}
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }

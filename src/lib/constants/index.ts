@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 export * from './imgs';
 export * from './time';
 
-export const APP_NAME = 'Tr.io Marketplace';
+export const APP_NAME = 'Trio Marketplace';
 const CLEAN_APP_NAME = APP_NAME.replace(/ /g, '-').toLowerCase();
 
 export const DEFAULT_METADATA: Metadata = {
@@ -30,7 +30,9 @@ export enum ESUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
   MAGIC_EDEN = 'magic-eden',
-  LEATHER = 'leather'
+  LEATHER = 'leather',
+  OKX = 'okx',
+  OYL = 'oyl'
 }
 
 export enum EFILTERS {

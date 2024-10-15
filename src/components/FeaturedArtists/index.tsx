@@ -2,17 +2,17 @@
 
 import { Container } from '@/components/Container';
 import { useFeaturedArtistsQuery } from '@/lib/services';
-import { MediaWrapper } from '../common/MediaViewer';
+import { MediaWrapper } from '../common';
 import { InscriptionOverlay } from '@/components/InscriptionOverlay';
 
 export default function FeaturedArtists() {
   const { data: artists, isPending, error } = useFeaturedArtistsQuery();
   if (!artists) return null;
   return (
-    <div className='h-50vh flex w-screen justify-center bg-ob-black-light py-12'>
+    <div className='h-50vh flex w-screen justify-center bg-ob-black-light py-16'>
       <Container padding>
         <div className='flex flex-col'>
-          <div className='flex flex-row justify-between py-12'>
+          <div className='flex flex-row justify-between py-16'>
             <h3>Featured Artists</h3>
             <span className='font-thin'>View all Artists ( {artists.length} )</span>
           </div>
@@ -21,12 +21,13 @@ export default function FeaturedArtists() {
               return (
                 <div
                   key={index}
-                  className='relative flex min-h-[350px] max-w-[350px] items-center justify-start rounded-xl bg-ob-black md:basis-1/4'
+                  className='relative flex min-h-[--inscription-default] items-center justify-start rounded-xl bg-ob-black md:basis-1/4'
                 >
                   <MediaWrapper
                     id='6e6093d576b77ae8a1ecd31d6685fa466391601cbd58bf3348c255c4085ec869i0'
                     size='full'
                     className='overflow-hidden rounded-xl'
+                    blur={isPending}
                   ></MediaWrapper>
                   <InscriptionOverlay
                     id='6e6093d576b77ae8a1ecd31d6685fa466391601cbd58bf3348c255c4085ec869i0'

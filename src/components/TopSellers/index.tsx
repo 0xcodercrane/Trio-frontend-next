@@ -1,5 +1,5 @@
-import { MediaWrapper } from '../common/MediaViewer';
-import { Container } from '../Container';
+import { MediaWrapper } from '@/components/common';
+import { Container } from '@/components/Container';
 
 export default function TopSellers() {
   return (

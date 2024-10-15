@@ -1,6 +1,6 @@
 import { Inscription } from '@/types/database';
 import { Container } from '@/components/Container';
-import { MediaWrapper } from '@/components/common/MediaViewer';
+import { MediaWrapper } from '@/components/common';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
 import { InscriptionOverlay } from '../InscriptionOverlay';

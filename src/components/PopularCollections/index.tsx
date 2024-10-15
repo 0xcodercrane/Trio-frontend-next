@@ -4,7 +4,7 @@ import Section from '@/components/Section';
 export default function PopularCollections() {
   return (
     <Section className='bg-ob-black-lighter'>
-      <div className='flex flex-row justify-between py-12'>
+      <div className='flex flex-row justify-between py-16'>
         <h3>Popular Collections</h3>
         <span>View all Collections (3)</span>
       </div>

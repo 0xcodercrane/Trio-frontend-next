@@ -11,7 +11,8 @@ const buttonVariants = cva(
       variant: {
         default: 'bg-ob-grey-light text-primary-foreground hover:bg-white/5 border border-ob-grey-light capitalize',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+        outline:
+          'border border-input bg-background hover:bg-accent hover:text-accent-foreground border-zinc-700 bg-zinc-900 text-zinc-400 transition-colors hover:bg-zinc-800 *:grayscale *:hover:grayscale-0',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:text-accent-foreground text-ob-white-40 hover:text-ob-white-80',
         link: 'text-primary underline-offset-4 hover:underline'
@@ -20,7 +21,14 @@ const buttonVariants = cva(
         default: 'h-[--button-height-md] px-8 min-w-[80px] max-w-[160px] w-auto',
         sm: 'h-[--button-height-sm] px-3 text-sm max-w-[120px]',
         lg: 'h-[--button-height-lg] px-8 text-lg',
-        icon: 'xs:max-h-[--button-height-sm] xs:max-w-[--button-height-sm] sm:max-h-[--button-height-md] sm:max-w-[--button-height-md] md:max-h-[--button-height-lg] md:max-w-[--button-height-lg] w-auto'
+        icon: `
+          xs:max-h-[--button-height-sm] xs:w-[--button-height-sm]
+          xs:max-w-[--button-height-sm] 
+          sm:max-h-[--button-height-md] sm:w-[--button-height-md]
+          sm:max-w-[--button-height-md] 
+          md:max-h-[--button-height-md] md: min-h-[--button-height-md] h-[--button-height-md]
+          md:min-w-[--button-height-md] md:max-w-[--button-height-md] md:w-[--button-height-md]
+        `
       }
     },
     defaultVariants: {

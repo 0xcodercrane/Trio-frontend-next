@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useCollectionBySlugQuery } from '@/lib/services';
-import { MediaWrapper } from '../common/MediaViewer';
+import { MediaWrapper } from '../common';
 import InscriptionSkeleton from '../Skeletons/InscriptionSkeleton';
 
 export function CollectionSpotLight({ slug }: { slug: string }) {

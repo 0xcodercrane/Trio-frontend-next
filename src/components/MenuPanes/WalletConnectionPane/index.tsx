@@ -1,47 +1,56 @@
 'use client';
 
-import React, { useContext, useEffect } from 'react';
+import React, { FC, ReactElement, useContext, useEffect, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import Image, { StaticImageData } from 'next/image';
 import { ChevronRight } from 'lucide-react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
-import { useLaserEyes } from '@omnisat/lasereyes';
-import {
-  UNISAT as unisatLogo,
-  MAGIC_EDEN as magicEdenLogo,
-  XVERSE as xVerseLogo,
-  LEATHER as LeatherLogo
-} from '@/lib/constants/imgs';
 import { signInWithCustomToken } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { ESUPPORTED_WALLETS, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
-import { UNISAT, XVERSE, MAGIC_EDEN, LEATHER } from '@omnisat/lasereyes';
+import {
+  UNISAT,
+  XVERSE,
+  MAGIC_EDEN,
+  LEATHER,
+  OKX,
+  OYL,
+  useLaserEyes,
+  OylLogo,
+  UnisatLogo,
+  MagicEdenLogo,
+  LeatherLogo,
+  XverseLogo,
+  OkxLogo
+} from '@omnisat/lasereyes';
+import { Container } from '@/components/Container';
 
 const WALLET_OPTIONS: {
   [key in ESUPPORTED_WALLETS]: {
     name: string;
-    icon: StaticImageData | string;
-    provider: typeof XVERSE | typeof UNISAT | typeof MAGIC_EDEN | typeof LEATHER;
+    icon: StaticImageData | ReactElement;
+    provider: typeof XVERSE | typeof UNISAT | typeof MAGIC_EDEN | typeof LEATHER | typeof OKX | typeof OYL;
     recommended?: boolean;
   };
 } = {
   [XVERSE]: {
     name: 'Xverse',
-    icon: xVerseLogo,
+    icon: <XverseLogo size={24} />,
     provider: XVERSE,
     recommended: true
   },
-  [UNISAT]: { name: 'Unisat', icon: unisatLogo, provider: UNISAT },
+  [UNISAT]: { name: 'Unisat', icon: <UnisatLogo size={24} />, provider: UNISAT },
   [MAGIC_EDEN]: {
     name: 'Magic Eden',
-    icon: magicEdenLogo,
+    icon: <MagicEdenLogo size={24} />,
     provider: MAGIC_EDEN
   },
-  [LEATHER]: { name: 'Leather', icon: LeatherLogo, provider: LEATHER }
-  // { name: 'OKX', icon: '/img/okx-logo.svg', provider: 'OKX' }, // TODO do we support?
+  [LEATHER]: { name: 'Leather', icon: <LeatherLogo size={24} />, provider: LEATHER },
+  [OYL]: { name: 'OYL', icon: <OylLogo size={24} />, provider: OYL },
+  [OKX]: { name: 'OKX', icon: <OkxLogo size={24} />, provider: OKX }
 };
 
 export default function WalletConnectionPane() {
@@ -58,7 +67,12 @@ export default function WalletConnectionPane() {
     paymentPublicKey,
     provider,
     isInitializing,
-    hasUnisat
+    hasUnisat,
+    hasXverse,
+    hasOkx,
+    hasMagicEden,
+    hasLeather,
+    hasOyl
   } = useLaserEyes();
 
   const signIntoFirebase = async (address: string, signature: string) => {
@@ -131,45 +145,64 @@ export default function WalletConnectionPane() {
 
   const handleConnect = async (provider: ESUPPORTED_WALLETS) => {
     try {
-      await connect(provider);
+      await connect(provider as any);
     } catch (error) {
       toast.error('User denied connection request');
     }
   };
 
+  const WalletInstallationMatrix = useMemo(() => {
+    return {
+      [ESUPPORTED_WALLETS.UNISAT]: hasUnisat,
+      [ESUPPORTED_WALLETS.XVERSE]: hasXverse,
+      [ESUPPORTED_WALLETS.MAGIC_EDEN]: hasMagicEden,
+      [ESUPPORTED_WALLETS.LEATHER]: hasLeather,
+      [ESUPPORTED_WALLETS.OKX]: hasOkx,
+      [ESUPPORTED_WALLETS.OYL]: hasOyl
+    };
+  }, [hasUnisat, hasXverse, hasMagicEden, hasLeather, hasLeather, hasOkx, hasOyl]);
+
   return (
-    <div className='flex h-full flex-col items-center justify-center bg-ob-black p-6 text-white'>
-      <h2 className='mb-8 text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>
-      <div className='w-full max-w-md space-y-4'>
-        {!connected &&
-          Object.entries(WALLET_OPTIONS).map(
-            ([key, wallet]) =>
-              (key !== UNISAT || (key === UNISAT && hasUnisat)) && (
-                <Button
-                  key={wallet.name}
-                  variant='outline'
-                  className='w-full justify-between border-zinc-700 bg-zinc-900 text-zinc-400 transition-colors hover:bg-zinc-800 hover:text-white'
-                  // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
-                  onClick={() => handleConnect(key)}
-                >
-                  <div className='flex items-center'>
-                    <Image
-                      src={wallet.icon}
-                      alt={`${wallet.name} logo`}
-                      width={24}
-                      height={24}
-                      className='mr-3 grayscale filter hover:grayscale-0'
-                    />
-                    {wallet.name}
-                    {wallet.recommended && (
-                      <span className='ml-2 rounded-full bg-zinc-800 px-2 py-1 text-xs'>Recommended</span>
-                    )}
-                  </div>
-                  <ChevronRight size={20} className='hover:text-white' />
-                </Button>
-              )
-          )}
+    <Container padding>
+      <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-black text-white'>
+        <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>
+        <div className='flex w-full flex-col items-center justify-center gap-4'>
+          {!connected &&
+            Object.entries(WALLET_OPTIONS).map(([key, wallet]) => {
+              return (
+                WalletInstallationMatrix[key as ESUPPORTED_WALLETS] && (
+                  <Button
+                    key={wallet.name}
+                    variant='outline'
+                    className='w-full min-w-fit max-w-[33%] justify-between hover:text-white'
+                    // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
+                    onClick={() => handleConnect(key)}
+                  >
+                    <div className='flex w-full flex-row items-center gap-2'>
+                      <div className='max-h-[var(--button-height-xs)] max-w-[var(--button-height-xs)]'>
+                        {React.isValidElement(wallet.icon) ? wallet.icon : null}
+                      </div>
+                      <span>{wallet.name}</span>
+                      {key === ESUPPORTED_WALLETS.XVERSE && (
+                        <span className='rounded-full bg-zinc-800 px-2 py-1 text-xs'>Recommended</span>
+                      )}
+                    </div>
+                    <ChevronRight size={20} className='hover:text-white' />
+                  </Button>
+                )
+              );
+            })}
+        </div>
       </div>
-    </div>
+    </Container>
   );
 }
+
+const showWallet = (
+  wallet: ESUPPORTED_WALLETS,
+  has: {
+    [key in ESUPPORTED_WALLETS]: boolean;
+  }
+) => {
+  return has[wallet];
+};

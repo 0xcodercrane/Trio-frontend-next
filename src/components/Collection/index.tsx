@@ -7,7 +7,7 @@ import NotFound from '@/app/not-found';
 import { Loading } from '@/components/common';
 import { useCollectionBySlugQuery } from '@/lib/services';
 import { Container } from '@/components/Container';
-import { PanelsWrapper } from '@/components/Collections/FilterPanels';
+import { PanelsWrapper } from '@/components/Collection/FilterPanels';
 
 interface CollectionProps {
   slug: string;
@@ -139,8 +139,7 @@ export default function Collection({ slug }: CollectionProps) {
         </div>
       </Container>
 
-      {/* @ts-expect-error - TODO: figure out how to pull in the right type from the join query in supabase */}
-      <PanelsWrapper collection={data} />
+      <PanelsWrapper slug={slug} />
     </div>
   );
 }
