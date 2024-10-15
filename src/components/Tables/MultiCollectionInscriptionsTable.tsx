@@ -1,6 +1,9 @@
+'use client';
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { MediaWrapper } from '../common/MediaViewer';
+import { MediaWrapper } from '../common';
 import { RandomInscriptionRow } from '@/lib/supabase/inscriptions';
+import { useRouter } from 'next/navigation';
 
 //TODO - Figure out the type for objects receives as a result of a join from supabase
 export default function MultiCollectionInscriptionsTable({
@@ -10,6 +13,7 @@ export default function MultiCollectionInscriptionsTable({
   inscriptions: RandomInscriptionRow[];
   nextPageLoading: boolean;
 }) {
+  const router = useRouter();
   if (!inscriptions) return null;
   return (
     <div className='w-full'>
@@ -29,7 +33,11 @@ export default function MultiCollectionInscriptionsTable({
         <TableBody style={{ gap: 4 }}>
           {inscriptions.map((inscription, index) => {
             return (
-              <TableRow key={index}>
+              <TableRow
+                key={index}
+                onClick={() => router.push(`/collections/${inscription.collection?.slug}/${inscription.inscription_id}`)}
+                className='cursor-pointer'
+              >
                 <TableCell>
                   <div className='flex h-[--inscripiton-tiniest] flex-row items-center gap-2'>
                     <MediaWrapper

@@ -1,17 +1,18 @@
 'use client';
 
+import { EComponentVariants } from '@/types';
 import { Info } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 interface TagProps {
-  variant?: 'default' | 'error' | 'disabled' | 'success';
+  variant?: EComponentVariants;
   label: string;
 }
 
 const SPIN_INTERVAL = 75;
 
 const DIRECTIONS = ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'];
-export const Tag = ({ variant = 'default', label }: TagProps) => {
+export default function Tag({ variant = EComponentVariants.Default, label }: TagProps) {
   const [tick, setTick] = useState(0);
 
   const { inner, outer } = useMemo(() => {
@@ -20,7 +21,7 @@ export const Tag = ({ variant = 'default', label }: TagProps) => {
       case 'success':
         return {
           inner: 'bg-ob-black text-white',
-          outer: `bg-gradient-to-${DIRECTIONS[tick % DIRECTIONS.length]} from-ob-green-light to-ob-green`
+          outer: `bg-gradient-to-${dir} from-ob-green-light to-ob-green`
         };
       case 'disabled':
         return {
@@ -30,12 +31,17 @@ export const Tag = ({ variant = 'default', label }: TagProps) => {
       case 'error':
         return {
           inner: 'bg-ob-black text-white',
-          outer: `bg-gradient-to-${DIRECTIONS[tick % DIRECTIONS.length]} from-ob-red-lightest via-ob-red-light to-ob-red-dark`
+          outer: `bg-gradient-to-${dir} from-ob-red-lightest via-ob-red-light to-ob-red-dark`
+        };
+      case 'info':
+        return {
+          inner: 'bg-ob-black text-white',
+          outer: `bg-gradient-to-${dir} from-ob-blue to-ob-blue-lightest`
         };
       default:
         return {
           inner: 'bg-ob-black text-white',
-          outer: `bg-gradient-to-${DIRECTIONS[tick % DIRECTIONS.length]} from-ob-blue to-ob-green`
+          outer: `bg-gradient-to-${dir} from-ob-blue to-ob-green`
         };
     }
   }, [variant, tick]);
@@ -55,4 +61,4 @@ export const Tag = ({ variant = 'default', label }: TagProps) => {
       </div>
     </div>
   );
-};
+}

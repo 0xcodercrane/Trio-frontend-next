@@ -1,23 +1,42 @@
-import Image from 'next/image';
 import { ReactNode } from 'react';
-import HeroLayout from './HeroLayout';
+import { MediaWrapper } from '../common';
+import Image from 'next/image';
 
-export default function SplashPageLayout({ children }: { children: ReactNode }) {
+interface SplashPageLayoutProps {
+  children: ReactNode;
+  orientation?: 'ltr' | 'rtl';
+  media: {
+    type: 'inscription' | 'img';
+    id?: string;
+    src?: string;
+  };
+  className?: string;
+}
+
+export default function SplashPageLayout({
+  children,
+  orientation = 'ltr',
+  media: { type, id, src },
+  className
+}: SplashPageLayoutProps) {
   return (
-    <div className='relative'>
-      <HeroLayout className='absolute'>
-        <div className='absolute z-20 mt-[--header-height] h-full w-full bg-gradient-to-t from-ob-black via-ob-black/[0.80] to-transparent'></div>
-        <Image
-          src='/img/placeholder-hero.jpg'
-          alt={`some hero image`}
-          className='w-full'
-          width={1000}
-          height={1000}
-          style={{ objectFit: 'cover', maxHeight: 'calc(100vh-var(--header-height))' }}
-        />
-      </HeroLayout>
-
-      <div>{children}</div>
+    <div
+      className={`flex max-h-[80vh] flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}
+    >
+      <div className='flex basis-1/2 items-center justify-center'>
+        {type === 'inscription' ? (
+          <MediaWrapper id={id} size='full' className='relative overflow-hidden rounded-xl' />
+        ) : (
+          <Image
+            src={src ?? ''}
+            alt='some hero image'
+            width={1000}
+            height={1000}
+            className='relative overflow-hidden rounded-xl'
+          />
+        )}
+      </div>
+      <div className='flex basis-1/2 flex-col justify-center'>{children}</div>
     </div>
   );
 }

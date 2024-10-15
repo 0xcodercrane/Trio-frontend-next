@@ -5,13 +5,14 @@ import { Filters } from '../../FilterPanel/Filters';
 import { EFILTERS, EVIEW_TYPES } from '@/lib/constants';
 import { InscriptionsGrid } from '@/components/Grids';
 import { SingleCollectionInscriptionsTable } from '@/components/Tables';
-import { useInscriptionsByCollectionId } from '@/lib/services';
 import { useFilter } from '@/lib/hooks/useFilter';
+import { useInscriptionsByCollectionSlug } from '@/lib/services/fetchInscriptionsByCollectionSlug';
 
-export const SingleCollectionFilterPanel = ({ collectionId }: { collectionId: number }) => {
+export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
   const [currentFilter, setCurrentFilter] = useState(EFILTERS.MOST_LIKED);
+
   const { offset, limit, viewType } = useFilter();
-  const { data, isPending, error, isPlaceholderData } = useInscriptionsByCollectionId(collectionId!, {
+  const { data, isPending, error, isPlaceholderData } = useInscriptionsByCollectionSlug(slug, {
     offset,
     limit
   });

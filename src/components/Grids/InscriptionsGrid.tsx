@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { Inscription } from '@/types/database';
-import { MediaWrapper } from '../common/MediaViewer';
+import { MediaWrapper } from '../common';
 import { InscriptionOverlay } from '../InscriptionOverlay';
 import { Skeleton } from '../ui/skeleton';
 import { useRouter } from 'next/navigation';

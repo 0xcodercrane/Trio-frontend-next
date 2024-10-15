@@ -11,9 +11,9 @@ const COLLECTION_QUERY = `*,
       file_type,
       inscription_id,
       attributes: attributes (
-      value,
-      value_type,
-      category: attribute_categories (name)
+        value,
+        value_type,
+        category: attribute_categories (name)
       )
   )`;
 
@@ -56,5 +56,14 @@ export const getInscriptionsByCollectionId = async (collectionId: number, pagina
     .eq('collection_id', collectionId)
     .range(pagination.offset, pagination.offset + pagination.limit - 1);
 
+export const getInscriptionsByCollectionSlug = async (slug: string, pagination: TPagination) =>
+  supabase
+    .from('collections')
+    .select(COLLECTION_QUERY)
+    .eq('slug', slug)
+    .range(pagination.offset, pagination.offset + pagination.limit - 1);
+
 export const getCollectionItem = async (id: string) =>
   supabase.from('inscriptions').select(COLLECTION_ITEM_QUERY).eq('inscription_id', id);
+
+export const getCollectionIdFromSlug = async (slug: string) => supabase.from('collections').select('id').eq('slug', slug);

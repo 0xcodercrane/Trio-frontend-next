@@ -3,29 +3,28 @@
 import { Button } from '@/components/ui/button';
 import { useArtistQuery } from '@/lib/services';
 import InscriptionSkeleton from '../Skeletons/InscriptionSkeleton';
-import { MediaWrapper } from '../common/MediaViewer';
+import { MediaWrapper } from '../common';
+import Section from '../Section';
+import { SplashPageLayout } from '../Layouts';
+import { useRouter } from 'next/navigation';
 
 export function ArtistSpotLight({ slug }: { slug: string }) {
   const { data, isPending, error } = useArtistQuery(slug);
+  const router = useRouter();
   return (
-    <div className='flex h-[80vh] flex-row'>
-      <div className='flex h-full w-1/2 flex-col justify-center gap-8 py-24 text-white'>
-        <h2 className='font-bold capitalize'>Artist Spotlight</h2>
-        <span className='text-ob-grey-lightest'>{data?.description}</span>
-        <Button variant='secondary' className='capitalize'>
-          View Artist
-        </Button>
-      </div>
-      <div className='flex w-1/2 items-center justify-center'>
-        {isPending && <InscriptionSkeleton size='--inscription-larger' />}
-        {!isPending && (
-          <MediaWrapper
-            id={data?.collections && data.collections[0].inscriptions[0].inscription_id}
-            size='--inscription-larger'
-            className='relative overflow-hidden rounded-xl'
-          />
-        )}
-      </div>
-    </div>
+    <Section className='bg-ob-black' padding={false} paddingLeft={false}>
+      <SplashPageLayout
+        media={{ type: 'inscription', id: data?.collections && data.collections[0].inscriptions[0].inscription_id }}
+        orientation='rtl'
+      >
+        <div className='flex flex-col gap-4'>
+          <h2 className='font-bold capitalize'>About {data?.name}</h2>
+          <span className='text-ob-grey-lightest'>{data?.description}</span>
+          <Button variant='secondary' className='capitalize' onClick={() => router.push(`/artists/${slug}`)}>
+            View Artist
+          </Button>
+        </div>
+      </SplashPageLayout>
+    </Section>
   );
 }

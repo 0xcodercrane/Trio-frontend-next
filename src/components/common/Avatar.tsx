@@ -1,8 +1,10 @@
+'use client';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { User } from 'lucide-react';
 import Image from 'next/image';
 import { useContext, useMemo } from 'react';
 import { Loading } from '.';
+import { Button } from '../ui/button';
 
 interface AvatarProps {
   onClick?: () => void;
@@ -22,10 +24,9 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   if (!src) {
     return (
-      <User
-        className='h-auto max-h-[--button-height-md] w-full max-w-[--button-height-md] rounded-full bg-white p-[0.75rem] text-black'
-        onClick={onClick}
-      />
+      <Button variant='secondary' onClick={onClick} size='icon'>
+        <User />
+      </Button>
     );
   }
 

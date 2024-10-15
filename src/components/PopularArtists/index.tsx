@@ -5,7 +5,7 @@ import { Skeleton } from '../ui/skeleton';
 export default function PopularArtists() {
   return (
     <Section>
-      <div className='flex flex-row justify-between py-12'>
+      <div className='flex flex-row justify-between py-16'>
         <h3>Popular Artists</h3>
         <span>View all Collections (3)</span>
       </div>
