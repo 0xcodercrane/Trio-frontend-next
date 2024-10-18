@@ -3,8 +3,6 @@ import { firestore, auth } from '../firebase';
 import { useQuery } from '@tanstack/react-query';
 
 import { TReward } from '../../types/user.types';
-import { useContext } from 'react';
-import { AuthContext } from '@/app/providers/AuthContext';
 
 const rewardsRef = collection(firestore, 'rewards');
 
@@ -29,12 +27,11 @@ export const fetchRewards = async (userId?: string): Promise<TReward[]> => {
 };
 
 export const useRewardsQuery = () => {
-  const { isAuthenticated } = useContext(AuthContext);
   const userId = auth.currentUser?.uid;
 
   return useQuery<TReward[], Error>({
     queryKey: ['rewards', userId],
     queryFn: () => fetchRewards(userId),
-    enabled: !!isAuthenticated
+    enabled: !!userId
   });
 };

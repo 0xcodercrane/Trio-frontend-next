@@ -12,8 +12,8 @@ export default function LaunchACollection() {
   const { data, isPending, error } = useRandomInscriptionsQuery({ limit: 8, offset: 0 });
 
   return (
-    <div className='flex h-full max-h-[100vh] w-full flex-row items-center justify-center overflow-hidden bg-ob-black-lighter'>
-      <Container className='!w-1/2' paddingLeft>
+    <Container padding className='bg-ob-black-lighter'>
+      <div className='flex h-full max-h-[100vh] w-full flex-row items-center justify-center overflow-hidden'>
         <div className='flex flex-col gap-4'>
           <h2 className='bold capitalize'>Launch a Collection</h2>
           <span>
@@ -22,40 +22,40 @@ export default function LaunchACollection() {
           </span>
           <Button variant='secondary'>Launch</Button>
         </div>
-      </Container>
 
-      <div className='flex w-1/2 flex-row items-center justify-center gap-4'>
-        <div className='-mb-96 flex h-full w-2/5 flex-col gap-4'>
-          {(isPending || error) && <VerticalInscriptionsSkeleton />}
-          {!isPending &&
-            data &&
-            data.map((inscription, index) => {
-              return (
-                <MediaWrapper
-                  key={index}
-                  id={inscription.inscription_id}
-                  className='relative h-[--inscription-large] max-h-[--inscription-large] w-full overflow-hidden rounded-xl'
-                />
-              );
-            })}
-        </div>
+        <div className='flex w-1/2 flex-row items-center justify-center gap-4'>
+          <div className='-mb-96 flex h-full w-2/5 flex-col gap-4'>
+            {(isPending || error) && <VerticalInscriptionsSkeleton />}
+            {!isPending &&
+              data &&
+              data.map((inscription, index) => {
+                return (
+                  <MediaWrapper
+                    key={index}
+                    id={inscription.inscription_id}
+                    className='relative h-[--inscription-large] max-h-[--inscription-large] w-full overflow-hidden rounded-xl'
+                  />
+                );
+              })}
+          </div>
 
-        <div className='mb-32 flex h-full w-2/5 flex-col gap-4'>
-          {(isPending || error) && <VerticalInscriptionsSkeleton />}
-          {!isPending &&
-            data &&
-            data.slice(5, 8).map((inscription, index) => {
-              return (
-                <MediaWrapper
-                  key={index}
-                  id={inscription.inscription_id}
-                  className='relative h-[--inscription-large] max-h-[--inscription-large] w-full overflow-hidden rounded-xl'
-                />
-              );
-            })}
+          <div className='mb-32 flex h-full w-2/5 flex-col gap-4'>
+            {(isPending || error) && <VerticalInscriptionsSkeleton />}
+            {!isPending &&
+              data &&
+              data.slice(5, 8).map((inscription, index) => {
+                return (
+                  <MediaWrapper
+                    key={index}
+                    id={inscription.inscription_id}
+                    className='relative h-[--inscription-large] max-h-[--inscription-large] w-full overflow-hidden rounded-xl'
+                  />
+                );
+              })}
+          </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

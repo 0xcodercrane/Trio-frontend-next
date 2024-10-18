@@ -1,13 +1,13 @@
 'use client';
 
-import React, { FC, ReactElement, useContext, useEffect, useMemo } from 'react';
+import React, { ReactElement, useContext, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import Image, { StaticImageData } from 'next/image';
+import { StaticImageData } from 'next/image';
 import { ChevronRight } from 'lucide-react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { signInWithCustomToken } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { ESUPPORTED_WALLETS, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
+import { ESUPPORTED_WALLETS, NETWORK, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { signIn } from 'next-auth/react';
 import { toast } from 'sonner';
@@ -27,6 +27,8 @@ import {
   OkxLogo
 } from '@omnisat/lasereyes';
 import { Container } from '@/components/Container';
+import LoadingScreen from '@/components/common/LoadingScreen';
+import { Loading } from '@/components/common';
 
 const WALLET_OPTIONS: {
   [key in ESUPPORTED_WALLETS]: {
@@ -56,6 +58,12 @@ const WALLET_OPTIONS: {
 export default function WalletConnectionPane() {
   const { menuDisclosure } = useContext(GlobalContext);
   const { loginWithWallet, loading, logout } = useContext(AuthContext);
+
+  const [loginStates, setLoginStates] = useState({
+    connect: false,
+    sign: false,
+    loading: false
+  });
 
   const {
     connect,
@@ -117,10 +125,15 @@ export default function WalletConnectionPane() {
 
     // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
     if (connected) {
+      setLoginStates({ connect: true, sign: false, loading: true });
       const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
         try {
           const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
-          if (!signedMessage) return toast.error('Failed to sign message');
+          if (!signedMessage) {
+            setLoginStates({ connect: false, sign: false, loading: false });
+            logout();
+            return toast.error('Failed to sign message');
+          }
           const signInResult = await signIntoFirebase(address, signedMessage);
 
           if (signInResult) {
@@ -146,7 +159,11 @@ export default function WalletConnectionPane() {
   const handleConnect = async (provider: ESUPPORTED_WALLETS) => {
     try {
       await connect(provider as any);
-    } catch (error) {
+      setLoginStates({ connect: true, sign: false, loading: true });
+    } catch (error: any) {
+      if (error.message.includes('Please switch networks')) {
+        return toast.error(`Please switch your wallets to ${NETWORK}`);
+      }
       toast.error('User denied connection request');
     }
   };
@@ -163,11 +180,16 @@ export default function WalletConnectionPane() {
   }, [hasUnisat, hasXverse, hasMagicEden, hasLeather, hasLeather, hasOkx, hasOyl]);
 
   return (
-    <Container padding>
+    <Container padding justify='center'>
       <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-black text-white'>
-        <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>
+        {!loginStates.connect && <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>}
+
         <div className='flex w-full flex-col items-center justify-center gap-4'>
-          {!connected &&
+          {loginStates.connect && !loginStates.sign && (
+            <span className='text-2xl'>Connecting wallet... please sign the message</span>
+          )}
+          {loginStates.loading && <Loading />}
+          {!loginStates.connect &&
             Object.entries(WALLET_OPTIONS).map(([key, wallet]) => {
               return (
                 WalletInstallationMatrix[key as ESUPPORTED_WALLETS] && (
@@ -197,12 +219,3 @@ export default function WalletConnectionPane() {
     </Container>
   );
 }
-
-const showWallet = (
-  wallet: ESUPPORTED_WALLETS,
-  has: {
-    [key in ESUPPORTED_WALLETS]: boolean;
-  }
-) => {
-  return has[wallet];
-};

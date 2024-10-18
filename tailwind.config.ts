@@ -179,6 +179,8 @@ const config = {
         'ob-grey-lighter': '#727272',
         'ob-grey-lightest': '#B5B5B5',
         'ob-text-grey': '#868686',
+
+        // Blues
         'ob-blue-darkest': '#0007A8',
         'ob-blue-darker': '#001BC5',
         'ob-blue-dark': '#0032E2',
@@ -186,13 +188,22 @@ const config = {
         'ob-blue-light': '#4D60FF',
         'ob-blue-lighter': '#6676FF',
         'ob-blue-lightest': '#808DFF',
+
+        // Greens
         'ob-green': '#13C657',
         'ob-green-light': '#33FF81',
+
+        // Reds
         'ob-red-dark': '#E60019',
         'ob-red': '#FF001B',
         'ob-red-light': '#FF1A32',
         'ob-red-lighter': '#FF3349',
         'ob-red-lightest': '#FF6677',
+
+        // Yellows
+        'ob-yellow': '#ffbb33',
+
+        // Turquoise
         'ob-turquoise': '#30D5C8'
       },
       borderRadius: {
