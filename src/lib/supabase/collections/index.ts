@@ -1,7 +1,8 @@
 import { TPagination } from '@/lib/hooks/usePagination/pagination.types';
 import supabase from '../';
 
-const COLLECTION_QUERY = `*,
+const COLLECTION_QUERY = `
+  *,
   artist: artists (
     name,
     slug

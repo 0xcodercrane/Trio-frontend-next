@@ -9,7 +9,7 @@ export default function FeaturedArtists() {
   const { data: artists, isPending, error } = useFeaturedArtistsQuery();
   if (!artists) return null;
   return (
-    <div className='h-50vh flex w-screen justify-center bg-ob-black-light py-16'>
+    <div className='h-50vh flex justify-center bg-ob-black-light py-16'>
       <Container padding>
         <div className='flex flex-col'>
           <div className='flex flex-row justify-between py-16'>

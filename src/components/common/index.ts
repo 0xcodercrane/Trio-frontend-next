@@ -5,5 +5,6 @@ import Chit from './Chit';
 import FadeIn from './FadeIn';
 export * from './MediaViewer';
 import Divider from './Divider';
+import Stat from './Stat';
 
-export { Loading, Avatar, Tag, Chit, FadeIn, Divider };
+export { Loading, Avatar, Tag, Chit, FadeIn, Divider, Stat };

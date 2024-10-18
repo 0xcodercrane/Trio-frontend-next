@@ -6,3 +6,5 @@ export * from './order-flow.types';
 export * from './database';
 export * from './styles';
 export * from './services';
+export * from './points';
+export * from './notifications';

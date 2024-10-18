@@ -7,6 +7,7 @@ import { useLaserEyes } from '@omnisat/lasereyes';
 import { useContext, useState } from 'react';
 import { BuyTrioTab } from './BuyTrio';
 import { PointsPane } from '../PointsPane/PointsPane';
+import OrdersPane from '../OrdersPane';
 
 enum EProfilePanes {
   ACCOUNT = 'account',
@@ -21,7 +22,7 @@ const ProfilePaneValues = Object.values(EProfilePanes);
 const ProfilePaneConfig = {
   [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
-  [EProfilePanes.ORDERS]: () => <div className='text-white'>Orders</div>,
+  [EProfilePanes.ORDERS]: () => <OrdersPane />,
   [EProfilePanes.COLLECTED]: () => <div className='text-white'>Collected</div>,
   [EProfilePanes.POINTS]: () => <PointsPane />
 };
@@ -58,7 +59,12 @@ export default function ProfilePane() {
           </div>
           <div className='flex flex-row flex-wrap items-center justify-start gap-2 md:flex-nowrap'>
             {ProfilePaneValues.map((pane, index) => (
-              <Button size='sm' key={index} onClick={() => setActivePane(pane)}>
+              <Button
+                size='sm'
+                key={index}
+                onClick={() => setActivePane(pane)}
+                className={activePane === pane ? 'active' : ''}
+              >
                 {pane}
               </Button>
             ))}

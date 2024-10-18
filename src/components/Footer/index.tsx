@@ -7,8 +7,11 @@ export default function Footer() {
     <footer className='w-full bg-black pb-8 pt-12 text-white'>
       <Container padding>
         <div className='mb-32 grid grid-cols-1 gap-8 md:grid-cols-3'>
-          <div className='flex flex-col items-start'>
+          <div className='flex flex-col items-start gap-4'>
             <img src='/img/ob-logo.svg' alt='OrdinalsBot Logo' width={200} height={50} />
+            <span className='w-full text-left italic text-ob-grey-lightest'>
+              Connected to <span className='font-bold text-ob-green-light'>{process.env.NEXT_PUBLIC_NETWORK}</span>
+            </span>
           </div>
           <div className='col-span-2 grid grid-cols-2 gap-8'>
             <div>

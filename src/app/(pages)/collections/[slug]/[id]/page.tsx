@@ -12,6 +12,7 @@ import Link from 'next/link';
 
 export default function Page({ params }: { params: { slug: string; id: string } }) {
   const { slug, id } = params;
+
   const { data, isPending, error } = useCollectionItemByIdQuery(slug, id);
 
   return (

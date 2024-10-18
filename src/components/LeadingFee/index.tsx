@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Chit } from '@/components/common';
 import { EComponentVariants, EOrderFlowStates } from '@/types';
 import { Button } from '../ui/button';
-import CustomFeeInput from '../CustomFeeInput';
+import CustomFeeInput from '../Inputs/CustomFeeInput';
 import { useOrderFlow } from '@/lib/hooks/useOrderFlow';
 
 export default function LeadingFee({ orderId }: { orderId: string }) {
