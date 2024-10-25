@@ -17,5 +17,3 @@ export const useDisclosure = (defaultOpen = false): Disclosure => {
 };
 
 export type { Disclosure };
-
-export default useDisclosure;

@@ -63,3 +63,5 @@ export enum EVIEW_TYPES {
 
 export const ViewTypeValues = Object.values(EVIEW_TYPES);
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK?.toLowerCase() || 'mainnet';
+
+export const DEFAULT_FEE_RATE = 3;

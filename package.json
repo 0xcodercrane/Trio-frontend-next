@@ -17,6 +17,7 @@
     "@omnisat/lasereyes": "^0.0.80",
     "@radix-ui/react-dropdown-menu": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
+    "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
     "@tanstack/lit-form": "^0.26.4",
     "@tanstack/react-form": "^0.26.4",
