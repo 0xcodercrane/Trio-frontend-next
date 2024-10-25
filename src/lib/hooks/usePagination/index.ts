@@ -41,4 +41,4 @@ const usePagination = ({ initialOffset = 0, initialLimit = 10, max }: UsePaginat
   };
 };
 
-export default usePagination;
+export { usePagination };

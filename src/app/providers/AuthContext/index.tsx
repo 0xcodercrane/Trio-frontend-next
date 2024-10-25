@@ -76,7 +76,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       onSnapshot(pointsRef, (points: DocumentData) => {
         setUser((prevUser) => ({
           ...prevUser,
-          points: points.data().currentBalance
+          points: points.data()?.currentBalance
         }));
       });
       setLoading(false);

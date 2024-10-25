@@ -3,6 +3,9 @@ import { Collection } from '@/types';
 import { Button } from '@/components/ui/button';
 import CustomFeeInput from '@/components/Inputs/CustomFeeInput';
 
+// Replace this with actual data when implementing logic here.
+const TX_VIRTUAL_SIZE_PLACEHOLDER = 21;
+
 type TOrder = {
   id: string;
   collection: Partial<Collection>;
@@ -142,7 +145,7 @@ export default function UserOrdersTable() {
               <span className={`${mapBidStatusToTextColor(bidStatus)} font-bold uppercase`}>{bidStatus}</span>
             </TableCell>
             <TableCell>
-              <CustomFeeInput />
+              <CustomFeeInput txVirtualSize={TX_VIRTUAL_SIZE_PLACEHOLDER} />
             </TableCell>
             <TableCell>
               <Button onClick={() => {}} variant={mapOrderBidStatusToVariant(bidStatus)}>

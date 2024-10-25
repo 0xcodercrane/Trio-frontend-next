@@ -2,6 +2,7 @@ import { ONE_BITCOIN } from '../constants';
 export * from './network';
 export * from './style';
 export * from './date';
+export * from './format';
 
 export const shortenString = (str: string, firstAmount: number, lastAmount: number) => {
   if (!str) return '';
