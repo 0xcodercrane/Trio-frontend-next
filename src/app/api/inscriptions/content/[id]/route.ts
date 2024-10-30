@@ -1,4 +1,6 @@
+import { INSCRIPTIONS_CONTENT_CACHE_AGE } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
+
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   const id = params.id;
 
@@ -10,10 +12,17 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   const response = await fetch(`${process.env.ORDINALSBOT_EXPLORER_URL}/content/${id}`, {
     headers: {
       Accept: '*/*' // Accept any content type
+    },
+    cache: 'force-cache',
+    next: {
+      tags: [`inscriptions-content-${id}`]
     }
   });
 
-  response.headers.set('Cache-Control', 's-maxage=604800, stale-while-revalidate');
+  response.headers.set(
+    'Cache-Control',
+    `s-maxage=${INSCRIPTIONS_CONTENT_CACHE_AGE.as('seconds')}, stale-while-revalidate, stale-if-error`
+  );
 
   if (!response.ok) {
     return NextResponse.json({ error: 'Failed to fetch inscription content' }, { status: response.status });

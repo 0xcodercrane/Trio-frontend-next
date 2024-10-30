@@ -1,3 +1,4 @@
+import { INSCRIPTIONS_DETAILS_CACHE_AGE } from '@/lib/constants';
 import { useQuery } from '@tanstack/react-query';
 
 export interface InscriptionDetails {
@@ -22,7 +23,10 @@ export interface InscriptionDetails {
 }
 
 export const fetchInscriptionDetails = async (id: string): Promise<InscriptionDetails> => {
-  const response = await fetch(`/api/inscriptions/details/${id}`);
+  const response = await fetch(`/api/inscriptions/details/${id}`, {
+    cache: 'force-cache',
+    next: { revalidate: INSCRIPTIONS_DETAILS_CACHE_AGE.as('seconds') }
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch inscriptions list');

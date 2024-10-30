@@ -34,7 +34,7 @@ const Providers: FC<ProvidersProps> = ({ children, session }) => {
   return (
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
       <LaserEyesProvider config={{ network: MAINNET }}>
-        <SessionProvider session={session} refetchInterval={5 * ONE_MINUTE.seconds} refetchOnWindowFocus={true}>
+        <SessionProvider session={session} refetchInterval={5 * ONE_MINUTE.as('seconds')} refetchOnWindowFocus={true}>
           <QueryClientProvider client={client}>
             <AuthContextProvider>
               <GlobalContextProvider>{children}</GlobalContextProvider>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 export * from './imgs';
 export * from './time';
+export * from './cache';
 
 export const APP_NAME = 'Trio Marketplace';
 const CLEAN_APP_NAME = APP_NAME.replace(/ /g, '-').toLowerCase();

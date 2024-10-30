@@ -1,7 +1,9 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 export const fetchInscriptionContent = async (id: string, contentType: string): Promise<string | Blob> => {
-  const response = await fetch(`/api/inscriptions/content/${id}`);
+  const response = await fetch(`/api/inscriptions/content/${id}`, {
+    cache: 'force-cache'
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch inscription content');
