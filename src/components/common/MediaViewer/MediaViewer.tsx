@@ -4,7 +4,6 @@ import { useInscriptionDataQuery } from './useInscriptionDataQuery';
 import { HTMLRenderer, ImageRenderer, SVGRenderer, TextRenderer } from './renderers';
 import { MediaRenderer } from './renderers/MediaRenderer';
 import { useMemo } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 import InscriptionSkeleton from '@/components/Skeletons/InscriptionSkeleton';
 
 interface BaseRendererProps {

@@ -33,7 +33,9 @@ export enum ESUPPORTED_WALLETS {
   MAGIC_EDEN = 'magic-eden',
   LEATHER = 'leather',
   OKX = 'okx',
-  OYL = 'oyl'
+  OYL = 'oyl',
+  PHANTOM = 'phantom',
+  WIZZ = 'wizz'
 }
 
 export enum EFILTERS {

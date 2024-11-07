@@ -170,10 +170,12 @@ const config = {
         'ob-white-60': 'rgba(255, 255, 255, 0.6)',
         'ob-white-70': 'rgba(255, 255, 255, 0.7)',
         'ob-white-80': 'rgba(255, 255, 255, 0.8)',
+
         'ob-black': '#0D0D0D',
         'ob-black-light': '#1b1b1b',
         'ob-black-lighter': '#131313',
         'ob-black-lightest': '#161616',
+
         'ob-grey': '#242424',
         'ob-grey-light': '#252525',
         'ob-grey-lighter': '#727272',
