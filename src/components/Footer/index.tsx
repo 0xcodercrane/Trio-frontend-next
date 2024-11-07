@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/Container';
+import { NETWORK } from '@/lib/constants';
 
 export default function Footer() {
   return (
@@ -10,7 +11,7 @@ export default function Footer() {
           <div className='flex flex-col items-start gap-4'>
             <img src='/img/ob-logo.svg' alt='OrdinalsBot Logo' width={200} height={50} />
             <span className='w-full text-left italic text-ob-grey-lightest'>
-              Connected to <span className='font-bold text-ob-green-light'>{process.env.NEXT_PUBLIC_NETWORK}</span>
+              Connected to <span className='font-bold text-ob-green-light'>{NETWORK}</span>
             </span>
           </div>
           <div className='col-span-2 grid grid-cols-2 gap-8'>

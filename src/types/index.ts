@@ -8,5 +8,7 @@ export * from './styles';
 export * from './services';
 export * from './points';
 export * from './notifications';
+export * from './response.types';
+export * from './inscription.types';
 export * from './prices.types';
 export * from './fee-rate.types';

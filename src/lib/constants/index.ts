@@ -24,8 +24,15 @@ export const USE_LOW_POSTAGE = true;
 export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
-export const EXPLORER_URL = process.env.ORDINALS_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
+export const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
+export const ORDINALSBOT_API_URL = process.env.ORDINALSBOT_API;
+export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ordinalsbot.com';
+export const ORDINALSBOT_API_KEY = process.env.ORDINALSBOT_API_KEY;
+
 export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';
+
+export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export enum ESUPPORTED_WALLETS {
   UNISAT = 'unisat',

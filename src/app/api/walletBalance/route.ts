@@ -1,3 +1,4 @@
+import { ORDINALSBOT_API_KEY, PUBLIC_API_URL } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -9,14 +10,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Address is required' }, { status: 400 });
   }
 
-  const apiUrl = new URL(`${process.env.NEXT_PUBLIC_API_URL}/opi/v1/brc20/get_current_balance_of_wallet`);
+  const apiUrl = new URL(`${PUBLIC_API_URL}/opi/v1/brc20/get_current_balance_of_wallet`);
   apiUrl.searchParams.append('address', address);
   apiUrl.searchParams.append('ticker', ticker);
 
   try {
     const response = await fetch(apiUrl, {
       headers: {
-        'x-api-key': process.env.ORDINALSBOT_API_KEY as string
+        'x-api-key': ORDINALSBOT_API_KEY as string
       }
     });
 

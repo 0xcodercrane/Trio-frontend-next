@@ -8,5 +8,6 @@ export * from './fetchFeaturedArtists';
 export * from './inscriptions';
 export * from './fetchInscriptionsByCollectionId';
 export * from './fetchRandomInscriptions';
+export * from './fetchOrderBook';
 export * from './fetchPrices';
 export * from './fetchFeeRates';

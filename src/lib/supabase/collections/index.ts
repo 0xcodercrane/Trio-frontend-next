@@ -46,6 +46,20 @@ const INSCRIPTIONS_BY_COLLECTION_ID_QUERY = `
       category: attribute_categories (name)
     )
   `;
+
+const COLLECTIONS_WITH_ORDERBOOK_QUERY = `
+  *,
+  inscriptions!collection_id!inner (
+    *,
+    utxo_contents!inner (
+      utxos!inner (
+        *,
+        orderbook!inner (*)
+      )
+    )
+  )
+`;
+
 export const getEntireCollectionBySlug = async (slug: string) =>
   supabase.from('collections').select(COLLECTION_QUERY).eq('slug', slug);
 export const getEntireCollectionById = async (id: number) =>
@@ -68,3 +82,9 @@ export const getCollectionItem = async (id: string) =>
   supabase.from('inscriptions').select(COLLECTION_ITEM_QUERY).eq('inscription_id', id);
 
 export const getCollectionIdFromSlug = async (slug: string) => supabase.from('collections').select('id').eq('slug', slug);
+
+export const getCollectionsWithOrderbooks = async ({ offset, limit }: TPagination) =>
+  supabase
+    .from('collections')
+    .select(COLLECTIONS_WITH_ORDERBOOK_QUERY)
+    .range(offset, offset + limit - 1);

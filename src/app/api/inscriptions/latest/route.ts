@@ -1,8 +1,9 @@
+import { EXPLORER_URL } from '@/lib/constants';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const url = `${process.env.ORDINALSBOT_EXPLORER_URL}/inscriptions`;
+    const url = `${EXPLORER_URL}/inscriptions`;
 
     const response = await fetch(url, {
       headers: {

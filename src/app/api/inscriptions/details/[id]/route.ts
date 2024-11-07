@@ -1,4 +1,4 @@
-import { INSCRIPTIONS_DETAILS_CACHE_AGE } from '@/lib/constants';
+import { EXPLORER_URL, INSCRIPTIONS_DETAILS_CACHE_AGE } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     return NextResponse.json({ error: 'Inscription ID is required' }, { status: 400 });
   }
 
-  const response = await fetch(`${process.env.ORDINALSBOT_EXPLORER_URL}/inscription/${id}`, {
+  const response = await fetch(`${EXPLORER_URL}/inscription/${id}`, {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json'

@@ -6,6 +6,7 @@ import { shortenAddress } from '@/lib/utilities';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useContext, useState } from 'react';
 import { BuyTrioTab } from './BuyTrio';
+import { MyAssetsTab } from './MyAssetsTab';
 import { PointsPane } from '../PointsPane/PointsPane';
 import OrdersPane from '../OrdersPane';
 
@@ -13,7 +14,7 @@ enum EProfilePanes {
   ACCOUNT = 'account',
   BUY_TRIO = 'buy trio',
   ORDERS = 'orders',
-  COLLECTED = 'collected',
+  MY_ASSETS = 'My Assets',
   POINTS = 'trio points'
 }
 
@@ -23,7 +24,7 @@ const ProfilePaneConfig = {
   [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
   [EProfilePanes.ORDERS]: () => <OrdersPane />,
-  [EProfilePanes.COLLECTED]: () => <div className='text-white'>Collected</div>,
+  [EProfilePanes.MY_ASSETS]: () => <MyAssetsTab />,
   [EProfilePanes.POINTS]: () => <PointsPane />
 };
 
