@@ -1,15 +1,10 @@
 'use client';
 
-import React, { ReactElement, useContext, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { StaticImageData } from 'next/image';
 import { ChevronRight, MonitorDown } from 'lucide-react';
-import { GlobalContext } from '@/app/providers/GlobalContext';
-import { signInWithCustomToken } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-import { ESUPPORTED_WALLETS, NETWORK, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
-import { AuthContext } from '@/app/providers/AuthContext';
-import { signIn } from 'next-auth/react';
+import { ESUPPORTED_WALLETS, NETWORK } from '@/lib/constants';
 import { toast } from 'sonner';
 import {
   UNISAT,
@@ -77,107 +72,13 @@ const WALLET_OPTIONS: {
 };
 
 export default function WalletConnectionPane() {
-  const { menuDisclosure } = useContext(GlobalContext);
-  const { loginWithWallet, loading, logout } = useContext(AuthContext);
-
   const [loginStates, setLoginStates] = useState({
     connect: false,
     sign: false,
     loading: false
   });
 
-  const {
-    connect,
-    connected,
-    address,
-    publicKey,
-    signMessage,
-    paymentAddress,
-    paymentPublicKey,
-    provider,
-    isInitializing,
-    hasUnisat,
-    hasXverse,
-    hasOkx,
-    hasMagicEden,
-    hasLeather,
-    hasOyl,
-    hasPhantom,
-    hasWizz
-  } = useLaserEyes();
-
-  const signIntoFirebase = async (address: string, signature: string) => {
-    try {
-      const response = await fetch('/api/auth/customToken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ address, signature }) // Send the address and its signature
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch custom token');
-      }
-
-      const data = await response.json();
-      const customToken = data.customToken;
-
-      // Use the custom token to authenticate with Firebase
-      try {
-        await signInWithCustomToken(auth, customToken);
-
-        const idToken = await auth.currentUser?.getIdToken(true);
-        if (idToken) {
-          // Sign in with next-auth, which establishes a session
-          await signIn('credentials', { redirect: false, idToken });
-          return true;
-        }
-      } catch (error) {
-        console.error('Error signing in with custom token:', error);
-        return false;
-      }
-    } catch (error) {
-      console.error('Fetch Error: ', error);
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    if (isInitializing || auth.currentUser || loading) return;
-
-    // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
-    if (connected) {
-      setLoginStates({ connect: true, sign: false, loading: true });
-      const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
-        try {
-          const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
-          if (!signedMessage) {
-            setLoginStates({ connect: false, sign: false, loading: false });
-            logout();
-            return toast.error('Failed to sign message');
-          }
-          const signInResult = await signIntoFirebase(address, signedMessage);
-
-          if (signInResult) {
-            menuDisclosure.close();
-            return loginWithWallet({
-              ordinalsAddress: address,
-              ordinalsPublicKey: publicKey,
-              paymentAddress,
-              paymentPublicKey,
-              wallet
-            });
-          }
-        } catch (error) {
-          toast.error('User rejected request');
-          logout();
-        }
-      };
-
-      signMessageForFirebase(provider);
-    }
-  }, [connected]);
+  const { connect, hasUnisat, hasXverse, hasOkx, hasMagicEden, hasLeather, hasOyl, hasPhantom, hasWizz } = useLaserEyes();
 
   const handleConnect = async (provider: ESUPPORTED_WALLETS) => {
     try {

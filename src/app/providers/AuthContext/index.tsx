@@ -1,13 +1,17 @@
 'use client';
-import { signOut } from 'next-auth/react';
-import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
+import { signIn, signOut } from 'next-auth/react';
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import { IAuthContext, IWallet } from '../../../types/auth.types';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { onAuthStateChanged, signInWithCustomToken, User } from 'firebase/auth';
 import { auth, firestore } from '@/lib/firebase';
-import { WALLET_COOKIE } from '@/lib/constants';
+import { ESUPPORTED_WALLETS, NETWORK, WALLET_COOKIE, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
+import { useLaserEyes } from '@omnisat/lasereyes';
+import { toast } from 'sonner';
+import { GlobalContext } from '../GlobalContext';
+import { mapAppNetworkToWalletString } from '@/lib/utilities';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AuthContext = createContext<IAuthContext>({} as any);
@@ -17,6 +21,22 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
   const [loading, setLoading] = useState<boolean>(true);
   const [wallet, setWallet] = useState<IWallet | null>(null);
   const [user, setUser] = useState<TUser | null>(null);
+
+  const { menuDisclosure } = useContext(GlobalContext);
+
+  const {
+    connected,
+    address,
+    publicKey,
+    signMessage,
+    paymentAddress,
+    paymentPublicKey,
+    provider,
+    isInitializing,
+    network,
+    getNetwork,
+    switchNetwork
+  } = useLaserEyes();
 
   const isAuthenticated = useMemo(() => {
     return auth?.currentUser ? true : false;
@@ -90,6 +110,91 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     const unsubscribe = onAuthStateChanged(auth, authStateChanged);
     return () => unsubscribe();
   }, []);
+
+  const signIntoFirebase = async (address: string, signature: string) => {
+    try {
+      const response = await fetch('/api/auth/customToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ address, signature }) // Send the address and its signature
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch custom token');
+      }
+
+      const data = await response.json();
+      const customToken = data.customToken;
+
+      // Use the custom token to authenticate with Firebase
+      try {
+        await signInWithCustomToken(auth, customToken);
+
+        const idToken = await auth.currentUser?.getIdToken(true);
+        if (idToken) {
+          // Sign in with next-auth, which establishes a session
+          await signIn('credentials', { redirect: false, idToken });
+          return true;
+        }
+      } catch (error) {
+        console.error('Error signing in with custom token:', error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Fetch Error: ', error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (isInitializing || auth.currentUser || loading) return;
+
+    // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
+    if (connected) {
+      const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
+        try {
+          const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
+          if (!signedMessage) {
+            logout();
+            return toast.error('Failed to sign message');
+          }
+          const signInResult = await signIntoFirebase(address, signedMessage);
+
+          if (signInResult) {
+            menuDisclosure.close();
+            return loginWithWallet({
+              ordinalsAddress: address,
+              ordinalsPublicKey: publicKey,
+              paymentAddress,
+              paymentPublicKey,
+              wallet
+            });
+          }
+        } catch (error) {
+          toast.error('User rejected request');
+          logout();
+        }
+      };
+
+      signMessageForFirebase(provider);
+    }
+  }, [connected]);
+
+  useEffect(() => {
+    const sw = async () => {
+      if (network !== NETWORK) {
+        console.log('-a');
+        console.log(mapAppNetworkToWalletString(NETWORK));
+        await switchNetwork(mapAppNetworkToWalletString(NETWORK));
+        console.log('-b');
+        console.log(await getNetwork());
+      }
+    };
+
+    sw();
+  }, [network, NETWORK]);
 
   return (
     <AuthContext.Provider

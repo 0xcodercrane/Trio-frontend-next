@@ -1,3 +1,8 @@
-export function isSuccess(statusCode: number) {
-  return statusCode > 199 && statusCode < 400;
+export const mapAppNetworkToWalletString = (network: string) => {
+  switch (network.toLowerCase()) {
+    case 'signet': return 'signet';
+    case 'testnet': return 'testnet';
+    case 'mainnet':
+    default: return 'mainnet';
+  }
 }
