@@ -181,6 +181,10 @@ const config = {
         'ob-grey-lighter': '#727272',
         'ob-grey-lightest': '#B5B5B5',
         'ob-text-grey': '#868686',
+        // Added for creators launchpad
+        'ob-dark-grey': '#343434',
+        'ob-darker-grey': '#353535',
+        'ob-light-grey': '#5E5D5D',
 
         // Blues
         'ob-blue-darkest': '#0007A8',
