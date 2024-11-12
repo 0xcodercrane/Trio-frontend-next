@@ -18,9 +18,9 @@ export default function Page({ params }: { params: { slug: string; id: string } 
   return (
     <div className='flex h-auto w-full flex-col bg-ob-black-light'>
       <Section className='flex items-center justify-center'>
-        <SplashPageLayout media={{ type: 'inscription', id }}>
+        <SplashPageLayout media={{ type: 'inscription', id }} childrenWrapperJustify='start'>
           <Container paddingLeft className='basis-1/2'>
-            <div className='flex h-full flex-col justify-center'>
+            <div className='flex h-full flex-col justify-start'>
               <div className='w-full'>
                 {isPending && <Skeleton className='mb-2 h-12 w-2/3' />}
                 {!isPending && <h2 className='mb-2'>{data?.name}</h2>}
@@ -40,7 +40,7 @@ export default function Page({ params }: { params: { slug: string; id: string } 
                 )}
               </div>
               <Divider className='my-4' />
-              <OrderFlow />
+              <OrderFlow inscriptionId={id} />
             </div>
           </Container>
         </SplashPageLayout>

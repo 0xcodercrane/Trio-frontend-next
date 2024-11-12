@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { id, takerPaymentAddress, takerPaymentPublicKey, takerOrdinalAddress, utxos } = await req.json();
+    const { id, takerPaymentAddress, takerPaymentPublicKey, takerOrdinalAddress, utxos, feeRate } = await req.json();
 
     if (!id || !takerPaymentAddress || !takerPaymentPublicKey || !takerOrdinalAddress) {
       return NextResponse.json({ error: 'Invalid request params' }, { status: 400 });
@@ -19,11 +19,12 @@ export async function POST(req: Request) {
         takerPaymentAddress,
         takerPaymentPublicKey,
         takerOrdinalAddress,
-        feeRate: 1
+        feeRate
       })
     });
 
     if (!response.ok) {
+      console.error(await response.text());
       return NextResponse.json({ error: 'Failed to create offer' }, { status: response.status });
     }
 

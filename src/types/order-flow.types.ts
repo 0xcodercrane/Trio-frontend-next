@@ -6,6 +6,6 @@ export enum EOrderFlowStates {
 export interface OrderFlowState {
   state: EOrderFlowStates;
   setOrderFlowState: (state: EOrderFlowStates) => void;
-  txVirtualSize: number | undefined; // in virtual bytes
-  setTxVirtualSize: (txPriceUsd: number) => void;
+  txId: string | null;
+  setTxId: (txId: string) => void;
 }

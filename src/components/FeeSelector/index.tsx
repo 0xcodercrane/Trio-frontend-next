@@ -11,15 +11,15 @@ import { useOrderFlow, useFeeRates } from '@/lib/hooks';
 
 interface FeeSelectorProps {
   feeOptions?: Partial<{ [key in EFeeOptions]: boolean }>;
+  txVirtualSize?: number;
 }
 
-export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS }: FeeSelectorProps) {
+export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtualSize }: FeeSelectorProps) {
   // Local state
   const [selectedFeeOption, setSelectedFeeOption] = useState<EFeeOptions>(DEFAULT_FEE);
   const [customFee, setCustomFee] = useState<number>();
   const { data: feeRatesData, isPending: isFeeRatesPending, setFeeRate } = useFeeRates();
   const { satsToUsd } = usePrices();
-  const { txVirtualSize } = useOrderFlow();
 
   useEffect(() => {
     if (feeRatesData && !customFee) {
@@ -86,7 +86,7 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS }: FeeSel
                       </div>
                     ) : (
                       <div className='text-sm text-ob-grey-lightest'>
-                        {currentFeeRate} sats/vB ~{formatUsdValue(satsToUsd(txFee) || 0)}
+                        {currentFeeRate} sats/vB ~{satsToUsd(txFee).formatted}
                       </div>
                     )}
                   </label>

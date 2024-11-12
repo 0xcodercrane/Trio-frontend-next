@@ -11,3 +11,4 @@ export * from './fetchRandomInscriptions';
 export * from './fetchOrderBook';
 export * from './fetchPrices';
 export * from './fetchFeeRates';
+export * from './fetchTradeHistory';

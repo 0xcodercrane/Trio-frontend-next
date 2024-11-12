@@ -10,7 +10,6 @@ import { useListings } from '@/lib/hooks';
 
 export default function PopularCollections() {
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [transactionId, setTransactionId] = useState('');
   const satsToBitcoin = (sats: number) => sats / 100000000;
   const { wallet } = useContext(AuthContext);
   const { buyListing } = useListings();
@@ -41,8 +40,7 @@ export default function PopularCollections() {
   }, [currentPage]);
 
   const handleBuyListing = async (id: number) => {
-    const txId = await buyListing(id);
-    setTransactionId(txId);
+    const txId = await buyListing(id, 8);
   };
 
   return (

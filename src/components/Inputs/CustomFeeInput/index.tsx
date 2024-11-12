@@ -13,9 +13,7 @@ export default function CustomFeeInput({ txVirtualSize, value, ...props }: Custo
   return (
     <div className='flex w-full flex-row items-center justify-between rounded-sm bg-ob-black pr-2 ring-1 ring-ob-white-20'>
       <Input className='min-w-12 grow border-none bg-ob-black pl-2 text-ob-grey-lightest' type='number' {...props} />
-      <span className='text-nowrap pl-1 text-sm text-ob-grey-lightest'>
-        sats/vB | {formatUsdValue(satsToUsd(feeInUsd) || 0)}
-      </span>
+      <span className='text-nowrap pl-1 text-sm text-ob-grey-lightest'>sats/vB | {satsToUsd(feeInUsd).formatted}</span>
     </div>
   );
 }

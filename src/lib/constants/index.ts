@@ -75,3 +75,8 @@ export const ViewTypeValues = Object.values(EVIEW_TYPES);
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK?.toLowerCase() || 'mainnet';
 
 export const DEFAULT_FEE_RATE = 3;
+
+// TODO: Calculate actual fee estimates.
+export const ESTIMATED_TX_FEE = {
+  SINGLE_INSCRIPTION_BUY: 522.5
+};

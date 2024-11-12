@@ -78,5 +78,17 @@ export const getOrderbookWithSpecialRanges = async ({ offset, limit }: TPaginati
     .eq('status', 'active')
     .range(offset, offset + limit - 1);
 
+// Gets all orderbook items tied to the address.
+export const getOrderbookByAddress = async (address: string) =>
+  supabase.rpc('get_orderbook_by_address', { _address: address });
+
+// Returns all orderbook items tied to inscription id -> full listing history
+export const getOrderbookByInscriptionId = async (inscriptionId: string) =>
+  supabase.rpc('get_orderbook_by_inscription_id', { _inscription_id: inscriptionId });
+
+// Returns all orderbook items tied to inscription id -> full listing history
+export const getOrderbookByCollectionSlug = async (collectionSlug: string) =>
+  supabase.rpc('get_orderbook_by_collection_slug', { _collection_slug: collectionSlug });
+
 export const getOrderbookById = async (id: number) =>
   supabase.from('orderbook').select(ORDERBOOK_BY_ID).eq('id', id).single();

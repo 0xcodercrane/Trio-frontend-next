@@ -1,5 +1,7 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import {
+  getOrderbookByAddress,
+  getOrderbookByInscriptionId,
   getOrderbookById,
   getOrderbookWithInscriptions,
   getOrderbookWithRunes,
@@ -8,6 +10,24 @@ import {
 import { TPagination } from '../hooks/usePagination/pagination.types';
 
 const PAGINATION_LIMIT = 20;
+
+export const useOrderbookByInscriptionId = (inscriptionId: string | undefined) =>
+  useQuery({
+    queryKey: ['orderbook-by-inscription-id', inscriptionId],
+    queryFn: async () => (inscriptionId ? await getOrderbookByInscriptionId(inscriptionId) : undefined),
+    enabled: !!inscriptionId,
+    select: (result) => result?.data
+  });
+
+export const useOrderbookByAddress = (address: string | undefined) => {
+  const { data } = useQuery({
+    queryKey: ['orderbook-by-address', address],
+    queryFn: async () => address && (await getOrderbookByAddress(address)),
+    enabled: !!address
+    // select: ({ data }) => (data && data) || []
+  });
+  return;
+};
 
 export const useActiveOrderbookWithInscriptionsQuery = () => {
   return useInfiniteQuery({
