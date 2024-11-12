@@ -4,14 +4,13 @@ import { createContext, ReactNode, useContext, useEffect, useMemo, useState } fr
 import { IAuthContext, IWallet } from '../../../types/auth.types';
 import { onAuthStateChanged, signInWithCustomToken, User } from 'firebase/auth';
 import { auth, firestore } from '@/lib/firebase';
-import { ESUPPORTED_WALLETS, NETWORK, WALLET_COOKIE, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
+import { ESUPPORTED_WALLETS, WALLET_COOKIE, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { toast } from 'sonner';
 import { GlobalContext } from '../GlobalContext';
-import { mapAppNetworkToWalletString } from '@/lib/utilities';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AuthContext = createContext<IAuthContext>({} as any);
@@ -181,20 +180,6 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       signMessageForFirebase(provider);
     }
   }, [connected]);
-
-  useEffect(() => {
-    const sw = async () => {
-      if (network !== NETWORK) {
-        console.log('-a');
-        console.log(mapAppNetworkToWalletString(NETWORK));
-        await switchNetwork(mapAppNetworkToWalletString(NETWORK));
-        console.log('-b');
-        console.log(await getNetwork());
-      }
-    };
-
-    sw();
-  }, [network, NETWORK]);
 
   return (
     <AuthContext.Provider

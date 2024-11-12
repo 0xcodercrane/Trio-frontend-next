@@ -1,8 +1,11 @@
-export const mapAppNetworkToWalletString = (network: string) => {
+export const mapAppNetworkToLaserEyesNetwork = (network: string) => {
   switch (network.toLowerCase()) {
-    case 'signet': return 'signet';
-    case 'testnet': return 'testnet';
+    case 'signet':
+      return 'signet';
+    case 'testnet':
+      return 'testnet';
     case 'mainnet':
-    default: return 'mainnet';
+    default:
+      return 'mainnet';
   }
-}
+};
