@@ -28,9 +28,9 @@ export const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://exp
 export const ORDINALSBOT_API_URL = process.env.ORDINALSBOT_API;
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ordinalsbot.com';
 export const ORDINALSBOT_API_KEY = process.env.ORDINALSBOT_API_KEY;
-export const MARKETPLACE_API_KEY = process.env.ORDINALSBOT_MARKETPLACE_API_KEY;
 
-export const MARKETPLACE_API_URL = `${PUBLIC_API_URL}/marketplace`;
+export const ORDINALSBOT_MARKETPLACE_API_KEY = process.env.ORDINALSBOT_MARKETPLACE_API_KEY;
+export const ORDINALSBOT_MARKETPLACE_API_URL = `${process.env.ORDINALSBOT_MARKETPLACE_API_URL}`;
 
 export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';
 

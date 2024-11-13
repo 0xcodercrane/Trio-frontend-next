@@ -1,14 +1,14 @@
-import { MARKETPLACE_API_KEY, MARKETPLACE_API_URL } from '@/lib/constants';
+import { ORDINALSBOT_MARKETPLACE_API_KEY, ORDINALSBOT_MARKETPLACE_API_URL } from '@/lib/constants';
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
     const { address, publicKey, feeRate } = await req.json();
-    const response = await fetch(`${MARKETPLACE_API_URL}/inscriptions/setup-padding`, {
+    const response = await fetch(`${ORDINALSBOT_MARKETPLACE_API_URL}/inscriptions/setup-padding`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': `${MARKETPLACE_API_KEY}`
+        'x-api-key': `${ORDINALSBOT_MARKETPLACE_API_KEY}`
       },
       body: JSON.stringify({ address, publicKey, numOfOutPuts: 3, feeRate })
     });

@@ -1,9 +1,9 @@
-import { useOrderFlow } from '@/lib/hooks/useOrderFlow';
 import { Button } from '../ui/button';
 import { useListings } from '@/lib/hooks';
 import { ChangeEvent, useState } from 'react';
 import { Input } from '../ui/input';
 import Link from 'next/link';
+import { bitcoinToSats } from '@/lib/utilities';
 
 interface BuyNowProps {
   inscriptionId: string | undefined;
@@ -11,7 +11,7 @@ interface BuyNowProps {
 
 export default function ListItem({ inscriptionId }: BuyNowProps) {
   const { listInscriptions } = useListings();
-  const { setOrderFlowState, setTxId } = useOrderFlow();
+
   const [price, setPrice] = useState<string>('0');
 
   const handlePriceChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +19,7 @@ export default function ListItem({ inscriptionId }: BuyNowProps) {
   };
 
   const handleList = async () => {
-    const priceInSats = parseFloat(price) * 100000000;
+    const priceInSats = bitcoinToSats(parseFloat(price));
     if (!inscriptionId || !priceInSats) {
       return;
     }

@@ -1,4 +1,4 @@
-import { ORDINALSBOT_API_URL, ORDINALSBOT_API_KEY } from '@/lib/constants';
+import { ORDINALSBOT_MARKETPLACE_API_URL, ORDINALSBOT_MARKETPLACE_API_KEY } from '@/lib/constants';
 import { NextResponse } from 'next/server';
 
 export async function PUT(req: Request) {
@@ -8,11 +8,11 @@ export async function PUT(req: Request) {
     if (!listingIds || !signedPSBT) {
       return NextResponse.json({ error: 'Invalid request params' }, { status: 400 });
     }
-    const response = await fetch(`${ORDINALSBOT_API_URL}/listings/confirm`, {
+    const response = await fetch(`${ORDINALSBOT_MARKETPLACE_API_URL}/listings/confirm`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': `${ORDINALSBOT_API_KEY}`
+        'x-api-key': `${ORDINALSBOT_MARKETPLACE_API_KEY}`
       },
       body: JSON.stringify({
         listingIds,

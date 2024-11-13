@@ -10,7 +10,13 @@ import { useFilter } from '@/lib/hooks/useFilter';
 import { mapSizeToGlobalVar } from '../FilterPanel/FilterPanelHeader/SizeSelector';
 import { ESIZES } from '@/lib/constants';
 
-export default function InscriptionsGrid({ inscriptions, loading }: { inscriptions: Inscription[]; loading: boolean }) {
+export default function InscriptionsGrid({
+  inscriptions,
+  loading
+}: {
+  inscriptions: Array<{ inscription_id: string; name: string; price?: number }>;
+  loading: boolean;
+}) {
   const router = useRouter();
   const { size } = useFilter();
   return (
@@ -20,16 +26,14 @@ export default function InscriptionsGrid({ inscriptions, loading }: { inscriptio
           {loading ? (
             <Skeleton className='h-full max-h-[--inscription-largest] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest] xs:min-h-[--inscription-tiniest] md:min-h-[--inscription-large]' />
           ) : (
-            <div
-              onClick={() => router.push(`/collections/${inscription.collection.slug}/${inscription.inscription_id}`)}
-              className='cursor-pointer'
-            >
+            <div onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`)} className='cursor-pointer'>
               <MediaWrapper
                 id={inscription.inscription_id}
                 className='relative max-w-full overflow-hidden rounded-xl'
                 size={mapSizeToGlobalVar(size)}
                 square
               />
+              {/* TODO: Add price */}
               <InscriptionOverlay id={inscription.inscription_id} name={inscription.name || ''} />
             </div>
           )}

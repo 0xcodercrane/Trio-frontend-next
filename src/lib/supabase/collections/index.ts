@@ -78,7 +78,7 @@ export const getInscriptionsByCollectionSlug = async (slug: string, pagination: 
     .eq('slug', slug)
     .range(pagination.offset, pagination.offset + pagination.limit - 1);
 
-export const getCollectionItem = async (id: string) =>
+export const getInscriptionWithCollectionData = async (id: string) =>
   supabase.from('inscriptions').select(COLLECTION_ITEM_QUERY).eq('inscription_id', id);
 
 export const getCollectionIdFromSlug = async (slug: string) => supabase.from('collections').select('id').eq('slug', slug);

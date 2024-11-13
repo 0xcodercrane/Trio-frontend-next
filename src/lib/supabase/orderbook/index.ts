@@ -88,7 +88,7 @@ export const getOrderbookByInscriptionId = async (inscriptionId: string) =>
 
 // Returns all orderbook items tied to inscription id -> full listing history
 export const getOrderbookByCollectionSlug = async (collectionSlug: string) =>
-  supabase.rpc('get_orderbook_by_collection_slug', { _collection_slug: collectionSlug });
+  supabase.rpc('get_orderbook_by_collection_slug', { _collection_slug: collectionSlug }).eq('status', 'active');
 
 export const getOrderbookById = async (id: number) =>
   supabase.from('orderbook').select(ORDERBOOK_BY_ID).eq('id', id).single();

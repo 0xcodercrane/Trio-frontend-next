@@ -27,6 +27,16 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
     }
   }, [feeRatesData, customFee]);
 
+  useEffect(() => {
+    if (selectedFeeOption === EFeeOptions.CUSTOM) {
+      if (!!customFee) {
+        setFeeRate(customFee);
+      }
+    } else if (feeRatesData) {
+      setFeeRate(feeRatesData[feeOptionsConfig[selectedFeeOption].dbKey]);
+    }
+  }, [selectedFeeOption, customFee]);
+
   const feeOptionsToRender = useMemo(
     () => [...Object.values(EFeeOptions).filter((feeType) => !!feeOptions[feeType]), EFeeOptions.CUSTOM],
     [feeOptions]

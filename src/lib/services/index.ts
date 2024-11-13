@@ -2,7 +2,7 @@ export * from './fetchTrioInfo';
 export * from './fetchUserRewards';
 export * from './fetchWalletBalance';
 export * from './fetchCollection';
-export * from './fetchCollectionItem';
+export * from './fetchInscriptionWithCollectionData';
 export * from './fetchArtist';
 export * from './fetchFeaturedArtists';
 export * from './inscriptions';

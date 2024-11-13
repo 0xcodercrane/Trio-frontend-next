@@ -5,7 +5,8 @@ import {
   getOrderbookById,
   getOrderbookWithInscriptions,
   getOrderbookWithRunes,
-  getOrderbookWithSpecialRanges
+  getOrderbookWithSpecialRanges,
+  getOrderbookByCollectionSlug
 } from '../supabase/orderbook';
 import { TPagination } from '../hooks/usePagination/pagination.types';
 
@@ -28,6 +29,14 @@ export const useOrderbookByAddress = (address: string | undefined) => {
   });
   return;
 };
+
+export const useActiveOrderbookByCollectionSlug = (collectionSlug: string | undefined) =>
+  useQuery({
+    queryKey: ['orderbook-by-collection-slug', collectionSlug],
+    queryFn: async () => (collectionSlug ? await getOrderbookByCollectionSlug(collectionSlug) : undefined),
+    enabled: !!collectionSlug,
+    select: (result) => result?.data
+  });
 
 export const useActiveOrderbookWithInscriptionsQuery = () => {
   return useInfiniteQuery({
