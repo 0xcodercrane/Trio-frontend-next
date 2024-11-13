@@ -27,9 +27,7 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
   }, [menuType, menuDisclosure.isOpen]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      menuDisclosure.close();
-    }
+    menuDisclosure.close();
   }, [isAuthenticated]);
 
   return (
