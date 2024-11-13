@@ -78,7 +78,7 @@ export const ViewTypeValues = Object.values(EVIEW_TYPES);
 export enum ENETWORK {
   MAINNET = 'mainnet',
   TESTNET = 'testnet',
-  SIGNET = 'signet',
+  SIGNET = 'signet'
 }
 export const NETWORK: ENETWORK = (process.env.NEXT_PUBLIC_NETWORK?.toLowerCase() || 'mainnet') as ENETWORK;
 
