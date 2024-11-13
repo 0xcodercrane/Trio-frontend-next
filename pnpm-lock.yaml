@@ -15,8 +15,8 @@ importers:
         specifier: ^10.2.9
         version: 10.2.9(next@14.2.4(@babel/core@7.25.7)(@opentelemetry/api@1.9.0)(@playwright/test@1.48.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(webpack@5.95.0)
       '@omnisat/lasereyes':
-        specifier: 0.0.116
-        version: 0.0.116(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))
+        specifier: 0.0.115
+        version: 0.0.115(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.1.2
         version: 2.1.2(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1493,14 +1493,14 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
 
-  '@omnisat/lasereyes-core@0.0.41':
-    resolution: {integrity: sha512-TueSLscWfr9wMn6TOy7Dffvi673eVGZs7i6beekQec3QQdc++V4aSkj6si48P3VP2KlBAR9ROh447DzG0dnvZw==}
+  '@omnisat/lasereyes-core@0.0.40':
+    resolution: {integrity: sha512-wU5pZ/kYmxPFovRVhUz84lXsdRNKxI2uFZPWieFeNNBj4YamURQ77nAGKvthtDUf0Z9xhd8UnDPr+v9Nql3Tew==}
 
-  '@omnisat/lasereyes-react@0.0.33':
-    resolution: {integrity: sha512-UQ1V9dYhSy6+ZKED7yewj7CIctW9hfOtj4ZuL/4qIm5LrVZza6LjxjutOBIszN6XNmoaEg3axXJI7c0x0zUpQQ==}
+  '@omnisat/lasereyes-react@0.0.32':
+    resolution: {integrity: sha512-/7X8NqGdHFodTUaiAZ+udPirL0EHgOZvNTBb2NS+44NAS9mk4rguuK8he/6GETmkIjw8Q29hfVCPaXEug384Xg==}
 
-  '@omnisat/lasereyes@0.0.116':
-    resolution: {integrity: sha512-AjpCuppvl+RPLhN9Dyp0JgzbLnVo5s9YivP1+A679EplckPc4R+VvwDOBNkBMRe/mcRGxrSaqdXt50rA3fj3FA==}
+  '@omnisat/lasereyes@0.0.115':
+    resolution: {integrity: sha512-prLzLwU6T8bqYmga1/fWklDnj9CSZgjVw0axZkxyzCo3WjtoLoKR+XNVMJPlEe0EpVSi2Yu9u/3IXkZ+gD4AUw==}
 
   '@opentelemetry/api@1.9.0':
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
@@ -6972,7 +6972,7 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@omnisat/lasereyes-core@0.0.41(typescript@5.6.2)':
+  '@omnisat/lasereyes-core@0.0.40(typescript@5.6.2)':
     dependencies:
       '@bitcoinerlab/secp256k1': 1.1.1
       '@cmdcode/crypto-utils': 2.4.6
@@ -6990,10 +6990,10 @@ snapshots:
       - debug
       - typescript
 
-  '@omnisat/lasereyes-react@0.0.33(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))':
+  '@omnisat/lasereyes-react@0.0.32(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))':
     dependencies:
       '@nanostores/react': 0.7.3(nanostores@0.11.3)(react@18.3.1)
-      '@omnisat/lasereyes-core': 0.0.41(typescript@5.6.2)
+      '@omnisat/lasereyes-core': 0.0.40(typescript@5.6.2)
       bootstrap: 5.3.3(@popperjs/core@2.11.8)
       nanostores: 0.11.3
       react: 18.3.1
@@ -7006,10 +7006,10 @@ snapshots:
       - typescript
       - vite
 
-  '@omnisat/lasereyes@0.0.116(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))':
+  '@omnisat/lasereyes@0.0.115(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))':
     dependencies:
-      '@omnisat/lasereyes-core': 0.0.41(typescript@5.6.2)
-      '@omnisat/lasereyes-react': 0.0.33(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))
+      '@omnisat/lasereyes-core': 0.0.40(typescript@5.6.2)
+      '@omnisat/lasereyes-react': 0.0.32(@popperjs/core@2.11.8)(typescript@5.6.2)(vite@5.4.10(@types/node@20.16.11)(terser@5.34.1))
       bip39: 3.1.0
     transitivePeerDependencies:
       - '@popperjs/core'

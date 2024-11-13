@@ -28,6 +28,9 @@ export const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://exp
 export const ORDINALSBOT_API_URL = process.env.ORDINALSBOT_API;
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ordinalsbot.com';
 export const ORDINALSBOT_API_KEY = process.env.ORDINALSBOT_API_KEY;
+export const MARKETPLACE_API_KEY = process.env.ORDINALSBOT_MARKETPLACE_API_KEY;
+
+export const MARKETPLACE_API_URL = `${PUBLIC_API_URL}/marketplace`;
 
 export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';
 
@@ -72,7 +75,12 @@ export enum EVIEW_TYPES {
 }
 
 export const ViewTypeValues = Object.values(EVIEW_TYPES);
-export const NETWORK = process.env.NEXT_PUBLIC_NETWORK?.toLowerCase() || 'mainnet';
+export enum ENETWORK {
+  MAINNET = 'mainnet',
+  TESTNET = 'testnet',
+  SIGNET = 'signet',
+}
+export const NETWORK: ENETWORK = (process.env.NEXT_PUBLIC_NETWORK?.toLowerCase() || 'mainnet') as ENETWORK;
 
 export const DEFAULT_FEE_RATE = 3;
 

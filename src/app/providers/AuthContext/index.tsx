@@ -5,7 +5,6 @@ import { IAuthContext, IWallet } from '../../../types/auth.types';
 import { onAuthStateChanged, signInWithCustomToken, User } from 'firebase/auth';
 import { auth, firestore } from '@/lib/firebase';
 import { ESUPPORTED_WALLETS, WALLET_COOKIE, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
-import { useRouter } from 'next/navigation';
 import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
 import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
 import { useLaserEyes } from '@omnisat/lasereyes';
@@ -16,13 +15,6 @@ import { GlobalContext } from '../GlobalContext';
 export const AuthContext = createContext<IAuthContext>({} as any);
 
 const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> }) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [wallet, setWallet] = useState<IWallet | null>(null);
-  const [user, setUser] = useState<TUser | null>(null);
-
-  const { menuDisclosure } = useContext(GlobalContext);
-
   const {
     connected,
     address,
@@ -32,14 +24,14 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     paymentPublicKey,
     provider,
     isInitializing,
-    network,
-    getNetwork,
-    switchNetwork
+    disconnect
   } = useLaserEyes();
 
-  const isAuthenticated = useMemo(() => {
-    return auth?.currentUser ? true : false;
-  }, [auth.currentUser]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [wallet, setWallet] = useState<IWallet | null>(null);
+  const [user, setUser] = useState<TUser | null>(null);
+
+  const isAuthenticated = useMemo(() => (auth?.currentUser ? true : false), [auth.currentUser]);
 
   const loginWithWallet = (wallet: IWallet) => {
     localStorage.setItem(WALLET_COOKIE, JSON.stringify(wallet));
@@ -47,12 +39,26 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
   };
 
   const logout = () => {
-    auth.signOut().then(() => {
-      localStorage.removeItem(WALLET_COOKIE);
-      setWallet(null);
-      setUser(null);
-      signOut({ redirect: false });
-    });
+    auth
+      .signOut()
+      .then(() => {
+        localStorage.removeItem(WALLET_COOKIE);
+
+        // local purge
+        setWallet(null);
+        setUser(null);
+        setLoading(false);
+
+        // disconnect lasereyes
+        disconnect();
+
+        // sign out of NextJS session
+        signOut({ redirect: false });
+      })
+      .catch((error) => {
+        console.error('Error signing out:', error);
+        toast.error('Failed to sign out');
+      });
   };
 
   const authStateChanged = async (firebaseUser: User | null) => {
@@ -105,11 +111,6 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, authStateChanged);
-    return () => unsubscribe();
-  }, []);
-
   const signIntoFirebase = async (address: string, signature: string) => {
     try {
       const response = await fetch('/api/auth/customToken', {
@@ -150,8 +151,10 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
   useEffect(() => {
     if (isInitializing || auth.currentUser || loading) return;
 
+    setLoading(true);
+
     // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
-    if (connected) {
+    if (connected && !auth.currentUser) {
       const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
         try {
           const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
@@ -162,7 +165,6 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
           const signInResult = await signIntoFirebase(address, signedMessage);
 
           if (signInResult) {
-            menuDisclosure.close();
             return loginWithWallet({
               ordinalsAddress: address,
               ordinalsPublicKey: publicKey,
@@ -170,6 +172,9 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
               paymentPublicKey,
               wallet
             });
+          } else {
+            logout();
+            return toast.error('Failed to sign into Firebase');
           }
         } catch (error) {
           toast.error('User rejected request');
@@ -180,6 +185,11 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       signMessageForFirebase(provider);
     }
   }, [connected]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, authStateChanged);
+    return () => unsubscribe();
+  }, []);
 
   return (
     <AuthContext.Provider
