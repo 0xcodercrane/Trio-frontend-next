@@ -13,6 +13,7 @@ import {
   LEATHER,
   OKX,
   OYL,
+  ORANGE,
   useLaserEyes,
   OylLogo,
   UnisatLogo,
@@ -40,6 +41,7 @@ const WALLET_OPTIONS: {
       | typeof OKX
       | typeof OYL
       | typeof PHANTOM
+      | typeof ORANGE
       | typeof WIZZ;
     recommended?: boolean;
     downloadUrl?: string;
@@ -68,7 +70,8 @@ const WALLET_OPTIONS: {
   [OYL]: { name: 'OYL', icon: <OylLogo size={24} />, provider: OYL, downloadUrl: 'https://www.oyl.io/' },
   [OKX]: { name: 'OKX', icon: <OkxLogo size={24} />, provider: OKX, downloadUrl: 'https://www.okx.com/download' },
   [PHANTOM]: { name: 'Phantom', icon: <PhantomLogo size={24} />, provider: PHANTOM, downloadUrl: 'https://phantom.app/' },
-  [WIZZ]: { name: 'Wizz', icon: <WizzLogo size={24} />, provider: WIZZ, downloadUrl: 'https://wizzwallet.io/' }
+  [ORANGE]: { name: 'Orange', icon: <span>🟠</span>, provider: ORANGE, downloadUrl: 'https://orangecrypto.com' },
+  [WIZZ]: { name: 'Wizz', icon: <WizzLogo size={24} />, provider: WIZZ, downloadUrl: 'https://wizzwallet.io' }
 };
 
 export default function WalletConnectionPane() {
@@ -78,7 +81,8 @@ export default function WalletConnectionPane() {
     loading: false
   });
 
-  const { connect, hasUnisat, hasXverse, hasOkx, hasMagicEden, hasLeather, hasOyl, hasPhantom, hasWizz } = useLaserEyes();
+  const { connect, hasUnisat, hasXverse, hasOkx, hasMagicEden, hasLeather, hasOyl, hasPhantom, hasWizz, hasOrange } =
+    useLaserEyes();
 
   const handleConnect = async (provider: ESUPPORTED_WALLETS) => {
     try {
@@ -101,9 +105,10 @@ export default function WalletConnectionPane() {
       [ESUPPORTED_WALLETS.OKX]: hasOkx,
       [ESUPPORTED_WALLETS.OYL]: hasOyl,
       [ESUPPORTED_WALLETS.PHANTOM]: hasPhantom,
-      [ESUPPORTED_WALLETS.WIZZ]: hasWizz
+      [ESUPPORTED_WALLETS.WIZZ]: hasWizz,
+      [ESUPPORTED_WALLETS.ORANGE]: hasOrange
     };
-  }, [hasUnisat, hasXverse, hasMagicEden, hasLeather, hasLeather, hasOkx, hasOyl, hasPhantom]);
+  }, [hasUnisat, hasXverse, hasMagicEden, hasLeather, hasLeather, hasOkx, hasOyl, hasPhantom, hasOrange, hasWizz]);
 
   return (
     <Container padding justify='center'>

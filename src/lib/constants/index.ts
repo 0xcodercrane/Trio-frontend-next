@@ -25,23 +25,22 @@ export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
 export const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
-export const ORDINALSBOT_API_URL = process.env.ORDINALSBOT_API;
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ordinalsbot.com';
-export const ORDINALSBOT_API_KEY = process.env.ORDINALSBOT_API_KEY;
+export const MEMPOOL_URL = process.env.NEXT_PUBLIC_MEMPOOL_URL || 'https://mempool.space';
+export const MEMPOOL_API_URL = process.env.NEXT_PUBLIC_MEMPOOL_API_URL || `${PUBLIC_API_URL}/mempool`
+export const ORDINALSBOT_MARKETPLACE_API_URL = process.env.ORDINALSBOT_MARKETPLACE_API_URL as string;
+export const ORDINALSBOT_PUBLIC_API_KEY = process.env.ORDINALSBOT_PUBLIC_API_KEY as string;
 
-export const ORDINALSBOT_MARKETPLACE_API_KEY = process.env.ORDINALSBOT_MARKETPLACE_API_KEY;
-export const ORDINALSBOT_MARKETPLACE_API_URL = `${process.env.ORDINALSBOT_MARKETPLACE_API_URL}`;
-
-export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';
-
-export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+export const ORDINALSBOT_MARKETPLACE_API_KEY = process.env.ORDINALSBOT_MARKETPLACE_API_KEY as string;
+export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
 export enum ESUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
   MAGIC_EDEN = 'magic-eden',
   LEATHER = 'leather',
+  ORANGE = 'orange',
   OKX = 'okx',
   OYL = 'oyl',
   PHANTOM = 'phantom',
