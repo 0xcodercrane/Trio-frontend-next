@@ -24,7 +24,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     });
 
     if (!response.ok) {
-      return NextResponse.json({ error: 'Failed to submit offer' }, { status: response.status });
+      return NextResponse.json({ error: await response.text() }, { status: response.status });
     }
 
     const data = await response.json();
