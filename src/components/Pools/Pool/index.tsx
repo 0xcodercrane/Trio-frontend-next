@@ -1,25 +1,14 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
-import { EPoolState, EPoolType, TLotteryPool, TProportionatePool } from '@/types';
-import { auth } from '@/lib/firebase';
+import { useMemo } from 'react';
+import { EPoolState, TLotteryPool, TProportionatePool } from '@/types';
 import { mapPoolToState } from '../helpers';
 import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
 import { formatBlock } from '@/lib/utilities';
 
 export default function Pool({ pool, children }: { pool: TLotteryPool | TProportionatePool; children: React.ReactNode }) {
   const { data: tip } = useBlockHeight();
-
-  const { type, startBlock, endBlock } = pool;
-
-  useEffect(() => {
-    if (!auth.currentUser) return;
-
-    const initPointsAllocation = async () => {};
-
-    if (type === EPoolType.PROPORTIONATE) initPointsAllocation();
-  }, []);
-
+  const { startBlock, endBlock } = pool;
   const poolState: EPoolState = useMemo(() => mapPoolToState(pool, tip), [pool, tip]);
 
   return (

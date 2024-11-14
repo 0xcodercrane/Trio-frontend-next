@@ -13,3 +13,4 @@ export * from './prices.types';
 export * from './states/fee-rate.types';
 export * from './pools';
 export * from './states';
+export * from './rewards';

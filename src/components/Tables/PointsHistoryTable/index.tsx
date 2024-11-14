@@ -10,12 +10,12 @@ export default function PointsHistoryTable() {
       <TableBody>
         {rewardsSuccess &&
           rewards.length > 0 &&
-          rewards.map((reward, index) => (
+          rewards.map(({ date, amount, type, id }, index) => (
             <TableRow key={index} className='rounded-sm border-none text-xs text-white'>
-              <TableCell className='py-3'>{formatDate(reward.date)}</TableCell>
-              <TableCell className='py-3'>{reward.amount}</TableCell>
-              <TableCell className='py-3 capitalize'>{reward.type}</TableCell>
-              <TableCell className='py-3 font-mono'>{reward.id}</TableCell>
+              <TableCell className='py-3'>{formatDate(date)}</TableCell>
+              <TableCell className='py-3'>{amount}</TableCell>
+              <TableCell className='py-3 capitalize'>{type}</TableCell>
+              <TableCell className='py-3 font-mono'>{id}</TableCell>
             </TableRow>
           ))}
       </TableBody>
