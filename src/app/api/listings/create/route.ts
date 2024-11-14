@@ -24,8 +24,7 @@ export async function POST(req: Request) {
     });
 
     if (!response.ok) {
-      console.error(await response.text());
-      return NextResponse.json({ error: 'Failed to create listing' }, { status: response.status });
+      return NextResponse.json({ error: await response.text() }, { status: response.status });
     }
 
     const data = await response.json();

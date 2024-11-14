@@ -13,8 +13,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({ address, publicKey, numOfOutPuts: 3, feeRate })
     });
     if (!response.ok) {
-      console.error(await response.text());
-      return NextResponse.json({ success: false, error: `Error setting up padding outputs for ${address}` });
+      return NextResponse.json({ error: await response.text() }, { status: response.status });
     }
 
     const data = await response.json();

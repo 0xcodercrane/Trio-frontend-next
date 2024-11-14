@@ -14,8 +14,7 @@ export async function POST(req: Request) {
       body: JSON.stringify({ address })
     });
     if (!response.ok) {
-      console.error(await response.text());
-      return NextResponse.json({ success: false, error: 'Failed to check padding outputs.' }, { status: response.status });
+      return NextResponse.json({ error: await response.text() }, { status: response.status });
     }
 
     const data = await response.json();

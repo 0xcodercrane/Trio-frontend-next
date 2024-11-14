@@ -21,7 +21,7 @@ export async function PUT(req: Request) {
     });
 
     if (!response.ok) {
-      return NextResponse.json({ error: 'Failed to confirm listing' }, { status: response.status });
+      return NextResponse.json({ error: await response.text() }, { status: response.status });
     }
 
     const data = await response.json();

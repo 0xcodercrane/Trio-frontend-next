@@ -12,5 +12,5 @@ export default function ArtistCarousel() {
   if (error) return <div>Error</div>;
   if (!data) return <LoadingScreen />;
   // @ts-ignore
-  return <Carousel inscriptions={data[0].collections[0].inscriptions.slice(0, 12)} loading={isPending} />;
+  return <Carousel inscriptions={data[0] ? data[0].collections[0].inscriptions.slice(0, 12) : []} loading={isPending} />;
 }
