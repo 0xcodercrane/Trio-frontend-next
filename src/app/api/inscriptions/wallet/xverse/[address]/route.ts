@@ -1,10 +1,23 @@
-import { NETWORK } from '@/lib/constants';
+import { ENETWORK, NETWORK } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, { params }: { params: { address: string } }) {
   try {
-    const xverseOrdinalApi =
-      NETWORK == 'mainnet' ? 'https://api-3.xverse.app/v1/address' : 'https://api-testnet.xverse.app/v1/address';
+    let xverseOrdinalApi = '';
+
+    switch (NETWORK) {
+      case ENETWORK.TESTNET:
+        xverseOrdinalApi = 'https://api-testnet.xverse.app/v1/address';
+        break;
+      case ENETWORK.SIGNET:
+        xverseOrdinalApi = 'https://api-signet.xverse.app/v1/address';
+        break;
+      case ENETWORK.MAINNET:
+      default:
+        xverseOrdinalApi = 'https://api-3.xverse.app/v1/address';
+        break;
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const limit = searchParams.get('limit') || 50;
     const offset = searchParams.get('offset') || 0;
