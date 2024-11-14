@@ -27,7 +27,7 @@ export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 export const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ordinalsbot.com';
 export const MEMPOOL_URL = process.env.NEXT_PUBLIC_MEMPOOL_URL || 'https://mempool.space';
-export const MEMPOOL_API_URL = process.env.NEXT_PUBLIC_MEMPOOL_API_URL || `${PUBLIC_API_URL}/mempool`
+export const MEMPOOL_API_URL = process.env.NEXT_PUBLIC_MEMPOOL_API_URL || `${PUBLIC_API_URL}/mempool`;
 export const ORDINALSBOT_MARKETPLACE_API_URL = process.env.ORDINALSBOT_MARKETPLACE_API_URL as string;
 export const ORDINALSBOT_PUBLIC_API_KEY = process.env.ORDINALSBOT_PUBLIC_API_KEY as string;
 
