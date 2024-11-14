@@ -28,9 +28,9 @@ export default function ListItem({ inscriptionId }: BuyNowProps) {
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='flex w-full flex-row items-center justify-between rounded-sm bg-ob-black pr-2 ring-1 ring-ob-white-20'>
+      <div className='flex w-full flex-row items-center justify-between rounded-sm bg-ob-purple-darkest pr-2 ring-1 ring-ob-white-20'>
         <Input
-          className='min-w-12 grow border-none bg-ob-black pl-2 text-ob-grey-lightest'
+          className='min-w-12 grow border-none bg-ob-purple-darkest pl-2 text-ob-grey-lightest'
           onChange={handlePriceChange}
           value={price}
         />

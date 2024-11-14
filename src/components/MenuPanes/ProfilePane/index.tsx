@@ -63,6 +63,7 @@ export default function ProfilePane() {
               <Button
                 size='sm'
                 key={index}
+                variant='tab'
                 onClick={() => setActivePane(pane)}
                 className={activePane === pane ? 'active' : ''}
               >

@@ -9,18 +9,21 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-ob-grey-light text-primary-foreground hover:bg-white/5 border border-ob-grey-light capitalize',
-        success: 'bg-ob-green-light border border-ob-green capitalize text-ob-black',
-        caution: 'bg-ob-yellow border border-ob-yellow capitalize text-ob-black',
+        default: 'bg-ob-yellow text-black hover:bg-ob-yellow/80',
+        success: 'bg-ob-green-light border border-ob-green text-ob-black',
+        caution: 'bg-ob-yellow border border-ob-yellow text-ob-black',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline:
-          'border border-input bg-background hover:bg-accent hover:text-accent-foreground border-zinc-700 bg-zinc-900 text-zinc-400 transition-colors hover:bg-zinc-800 *:grayscale *:hover:grayscale-0',
+          'border-2 border-input bg-transparent hover:bg-accent hover:text-accent-foreground border-white text-zinc-400 transition-colors hover:bg-zinc-800',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        ghost: 'hover:text-accent-foreground text-ob-white-40 hover:text-ob-white-80',
-        link: 'text-primary underline-offset-4 hover:underline'
+        ghost:
+          'hover:text-accent-foreground text-ob-white-40 hover:text-ob-white-80 *:grayscale *:hover:grayscale-0 border border-zinc-400',
+        link: 'text-primary underline-offset-4 hover:underline',
+        tab: 'bg-ob-purple text-white hover:bg-purple/80 active:text-black active:bg-white',
+        icon: 'bg-white text-black hover:bg-ob-white/80'
       },
       size: {
-        default: 'h-[--button-height-md] px-8 min-w-[80px] max-w-[160px] w-auto',
+        default: 'h-[--button-height-md] px-8 min-w-[80px] w-auto max-w-[160px]',
         sm: 'h-[--button-height-sm] px-3 text-sm max-w-[120px]',
         lg: 'h-[--button-height-lg] px-8 text-lg',
         icon: `

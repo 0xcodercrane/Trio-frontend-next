@@ -16,7 +16,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data, isPending, error } = useInscriptionWithCollectionData(id);
 
   return (
-    <div className='flex h-auto w-full flex-col bg-ob-black-light'>
+    <div className='flex h-auto w-full flex-col bg-ob-purple-dark'>
       <Section className='flex items-center justify-center'>
         <SplashPageLayout media={{ type: 'inscription', id }} childrenWrapperJustify='start'>
           <Container paddingLeft className='basis-1/2'>

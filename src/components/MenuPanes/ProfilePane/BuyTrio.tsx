@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const Card = ({ logo, label, link }: { logo: string; label: string; link: string }) => {
   return (
-    <div className='grid h-full items-center justify-items-center rounded-lg bg-ob-black-light p-6 shadow-md transition-all hover:shadow-xl'>
+    <div className='grid h-full items-center justify-items-center rounded-lg bg-ob-purple-dark p-6 shadow-md transition-all hover:shadow-xl'>
       <div className='flex h-full max-h-[128px] flex-col items-center justify-center space-y-4'>
         <Image src={logo} alt={label} width={128} height={100} className='h-full max-h-[128px]' />
 

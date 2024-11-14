@@ -112,7 +112,7 @@ export default function WalletConnectionPane() {
 
   return (
     <Container padding justify='center'>
-      <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-black text-white'>
+      <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-purple-darkest text-white'>
         {!loginStates.connect && <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>}
 
         <div className='flex w-full flex-col items-center justify-center gap-4'>
@@ -127,7 +127,7 @@ export default function WalletConnectionPane() {
                 WalletInstallationMatrix[key as ESUPPORTED_WALLETS] && (
                   <Button
                     key={wallet.name}
-                    variant='outline'
+                    variant='ghost'
                     className='w-full min-w-fit max-w-[33%] justify-between hover:text-white'
                     onClick={() => {
                       // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
@@ -140,9 +140,6 @@ export default function WalletConnectionPane() {
                         {React.isValidElement(wallet.icon) ? wallet.icon : null}
                       </div>
                       <span>{wallet.name}</span>
-                      {key === ESUPPORTED_WALLETS.XVERSE && (
-                        <span className='rounded-full bg-zinc-800 px-2 py-1 text-xs'>Recommended</span>
-                      )}
                     </div>
                     {hasWallet ? <ChevronRight size={20} className='hover:text-white' /> : <MonitorDown size={20} />}
                   </Button>

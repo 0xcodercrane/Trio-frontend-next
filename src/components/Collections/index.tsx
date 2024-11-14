@@ -6,7 +6,7 @@ import SpotLight from '@/components/SpotLight';
 import HomeCarouselLayout from '../Layouts/HeroCarouselLayout';
 export default function Collections() {
   return (
-    <div className='h-full w-screen bg-ob-black-light'>
+    <div className='h-full w-screen bg-ob-purple-dark'>
       <Container>
         <HomeCarouselLayout
           title='Collections'
@@ -18,7 +18,7 @@ export default function Collections() {
         />
       </Container>
 
-      <Container bgColor='bg-ob-black' padding>
+      <Container bgColor='bg-ob-purple-darkest' padding>
         <SpotLight type='collection' slug='lone-aliens' />
       </Container>
 

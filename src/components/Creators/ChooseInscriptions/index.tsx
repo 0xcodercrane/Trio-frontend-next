@@ -19,7 +19,7 @@ export const ChooseInscriptions = () => {
   const [uploadTab, setUploadTab] = useState<UploadTabs>(UploadTabs.FIRST);
 
   return (
-    <div className='w-full rounded-md bg-ob-black-light p-8 text-white'>
+    <div className='bg-ob-purple-darkest-light w-full rounded-md p-8 text-white'>
       <div className='flex flex-col gap-8'>
         <div className='text-xl'>Example</div>
 

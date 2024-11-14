@@ -13,7 +13,7 @@ export const DeterminePhases = () => {
   const [uploadType, setUploadType] = useState(UploadTypes.MANUALL);
 
   return (
-    <div className='flex w-full flex-col gap-12 rounded-md bg-ob-black text-white'>
+    <div className='flex w-full flex-col gap-12 rounded-md bg-ob-purple-darkest text-white'>
       <div className='flex'>
         <div className='border-3 flex w-28 items-center justify-center border-l border-ob-grey-light'>
           <div className='flex flex-col items-center gap-2'>
@@ -27,7 +27,7 @@ export const DeterminePhases = () => {
         </div>
 
         <div className='flex w-full flex-col gap-6'>
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
+          <div className='bg-ob-purple-darkest-light flex w-full flex-col gap-8 rounded-md p-8'>
             <div className='flex w-full justify-between'>
               <div className='flex items-center gap-2'>
                 <label className='font-bold'>Whitelist</label>
@@ -142,7 +142,7 @@ export const DeterminePhases = () => {
             </Button>
           </div>
 
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
+          <div className='bg-ob-purple-darkest-light flex w-full flex-col gap-8 rounded-md p-8'>
             <Button size={'sm'} variant={'secondary'}>
               Add Phase
             </Button>
@@ -163,7 +163,7 @@ export const DeterminePhases = () => {
         </div>
 
         <div className='flex w-full flex-col gap-6'>
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
+          <div className='bg-ob-purple-darkest-light flex w-full flex-col gap-8 rounded-md p-8'>
             <div className='flex w-full justify-between'>
               <div className='flex items-center gap-2'>
                 <label className='font-bold'>Whitelist</label>
@@ -278,7 +278,7 @@ export const DeterminePhases = () => {
             </Button>
           </div>
 
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
+          <div className='bg-ob-purple-darkest-light flex w-full flex-col gap-8 rounded-md p-8'>
             <Button size={'sm'} variant={'secondary'}>
               Add Phase
             </Button>
@@ -299,7 +299,7 @@ export const DeterminePhases = () => {
         </div>
 
         <div className='flex w-full flex-col gap-6'>
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
+          <div className='bg-ob-purple-darkest-light flex w-full flex-col gap-8 rounded-md p-8'>
             <div className='flex w-full justify-between'>
               <div className='flex items-center gap-2'>
                 <label className='font-bold'>Public</label>
@@ -369,7 +369,7 @@ export const DeterminePhases = () => {
             </Button>
           </div>
 
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
+          <div className='bg-ob-purple-darkest-light flex w-full flex-col gap-8 rounded-md p-8'>
             <Button size={'sm'} variant={'secondary'}>
               Add Phase
             </Button>

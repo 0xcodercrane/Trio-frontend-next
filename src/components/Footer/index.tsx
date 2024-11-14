@@ -5,7 +5,7 @@ import { NETWORK } from '@/lib/constants';
 
 export default function Footer() {
   return (
-    <footer className='w-full bg-black pb-8 pt-12 text-white'>
+    <footer className='w-full bg-ob-purple-darkest pb-8 pt-12 text-white'>
       <Container padding>
         <div className='mb-32 grid grid-cols-1 gap-8 md:grid-cols-3'>
           <div className='flex flex-col items-start gap-4'>

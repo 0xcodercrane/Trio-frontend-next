@@ -12,7 +12,7 @@ export default function LaunchACollection() {
   const { data, isPending, error } = useRandomInscriptionsQuery({ limit: 8, offset: 0 });
 
   return (
-    <Container padding className='bg-ob-black-lighter'>
+    <Container padding className='bg-ob-purple-dark'>
       <div className='flex h-full max-h-[100vh] w-full flex-row items-center justify-center overflow-hidden'>
         <div className='flex flex-col gap-4'>
           <h2 className='bold capitalize'>Launch a Collection</h2>
@@ -20,7 +20,12 @@ export default function LaunchACollection() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
             magna aliqua. Ut enim ad minim veniam.
           </span>
-          <Button variant='secondary'>Launch</Button>
+          <div className='flex flex-row gap-4'>
+            <Button className='min-w-[90px]'>Launch</Button>
+            <Button className='min-w-[90px]' variant='outline'>
+              View Collections
+            </Button>
+          </div>
         </div>
 
         <div className='flex w-1/2 flex-row items-center justify-center gap-4'>

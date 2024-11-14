@@ -7,7 +7,7 @@ import LaunchACollection from '../CTAs/LaunchACollection';
 
 export default function Artists() {
   return (
-    <div className='h-full bg-ob-black-light'>
+    <div className='h-full bg-ob-purple-dark'>
       <HeroCarouselLayout
         title='Artists'
         description='Browse through our curated Artists'
@@ -17,7 +17,7 @@ export default function Artists() {
         ]}
       />
 
-      <Container bgColor='bg-ob-black' padding>
+      <Container bgColor='bg-ob-purple-darkest' padding>
         <SpotLight type='artist' slug='keegan' />
       </Container>
 

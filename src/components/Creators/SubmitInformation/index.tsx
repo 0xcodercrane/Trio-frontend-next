@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export const SubmitInformation = () => {
   return (
-    <div className='w-full rounded-md bg-ob-black-light px-8 py-12 text-white'>
+    <div className='w-full rounded-md bg-ob-purple-dark px-8 py-12 text-white'>
       <div className='grid w-full grid-cols-1 gap-4 xl:grid-cols-2 xl:gap-8'>
         <div className='flex w-full flex-col gap-4'>
           <div className='flex w-full flex-col gap-1'>
