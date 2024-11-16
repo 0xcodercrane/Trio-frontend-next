@@ -1,10 +1,9 @@
 'use client';
-import * as v from 'valibot';
 import { Button } from '@/components/ui/button';
-import Phase from '../Phase';
-import { ESteps, TPhaseConfig } from '../Launchpad';
 import { v4 as uuidv4 } from 'uuid';
-import { FormApi } from '@tanstack/react-form';
+import * as v from 'valibot';
+import { ESteps, TPhaseConfig } from '../Launchpad';
+import Phase from '../Phase';
 
 export const phaseSchema = v.object({
   price: v.pipe(v.number(), v.minValue(0.00000546, 'Price cannot be empty')),
@@ -30,34 +29,7 @@ export const DeterminePhases = ({
   handleSubmitProject,
   setPhaseConfigData
 }: {
-  form: FormApi<
-    {
-      data: {
-        price: number;
-        allocation: number;
-        startDate: string;
-        endDate: string;
-        startTime: string;
-        endTime: string;
-        allowList?: string | undefined;
-      }[];
-    },
-    undefined
-  > &
-    ReactFormApi<
-      {
-        data: {
-          price: number;
-          allocation: number;
-          startDate: string;
-          endDate: string;
-          startTime: string;
-          endTime: string;
-          allowList?: string | undefined;
-        }[];
-      },
-      undefined
-    >;
+  form: any;
   phaseConfig: TPhaseConfig[];
   setStep: (step: number) => void;
   handleSubmitProject: () => void;
