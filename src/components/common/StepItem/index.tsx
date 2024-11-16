@@ -13,8 +13,8 @@ export const StepItem: React.FC<{
   return (
     <li
       onClick={() => onClick(number)}
-      className={`group flex min-h-16 min-w-72 cursor-pointer items-center gap-2 rounded-md px-5 py-2 font-sans transition-all duration-200 hover:bg-[#353535] hover:text-white ${
-        isCurrent ? 'bg-[#353535] text-white' : isCompleted ? 'text-white' : 'text-ob-text-grey'
+      className={`group flex min-h-16 min-w-72 cursor-pointer items-center gap-2 rounded-md px-4 py-2 font-sans transition-all duration-200 hover:bg-[35] hover:text-white lg:px-5 ${
+        isCurrent ? 'bg-ob-darker-grey text-white' : isCompleted ? 'text-white' : 'text-ob-text-grey'
       }`}
     >
       <span

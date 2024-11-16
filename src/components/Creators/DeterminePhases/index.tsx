@@ -1,380 +1,175 @@
+'use client';
+import * as v from 'valibot';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import Image from 'next/image';
-import { useState } from 'react';
+import Phase from '../Phase';
+import { ESteps, TPhaseConfig } from '../Launchpad';
+import { v4 as uuidv4 } from 'uuid';
+import { FormApi } from '@tanstack/react-form';
 
-export enum UploadTypes {
-  MANUALL = 1,
-  CSV = 2
-}
+export const phaseSchema = v.object({
+  price: v.pipe(v.number(), v.minValue(0.00000546, 'Price cannot be empty')),
+  allocation: v.pipe(v.number(), v.minValue(1, 'Allocation cannot be empty')),
+  startDate: v.pipe(v.string(), v.nonEmpty('Start date cannot be empty')),
+  endDate: v.pipe(v.string(), v.nonEmpty('End date cannot be empty')),
+  startTime: v.pipe(v.string(), v.nonEmpty('Start time cannot be empty')),
+  endTime: v.pipe(v.string(), v.nonEmpty('End time cannot be empty')),
+  allowList: v.optional(v.string())
+});
 
-export const DeterminePhases = () => {
-  const [uploadType, setUploadType] = useState(UploadTypes.MANUALL);
+export const phaseDataSchema = v.object({
+  data: v.array(phaseSchema)
+});
+
+export type TPhaseDataSchema = v.InferInput<typeof phaseDataSchema>;
+export type TPhaseSchema = v.InferInput<typeof phaseSchema>;
+
+export const DeterminePhases = ({
+  form,
+  phaseConfig,
+  setStep,
+  handleSubmitProject,
+  setPhaseConfigData
+}: {
+  form: FormApi<
+    {
+      data: {
+        price: number;
+        allocation: number;
+        startDate: string;
+        endDate: string;
+        startTime: string;
+        endTime: string;
+        allowList?: string | undefined;
+      }[];
+    },
+    undefined
+  > &
+    ReactFormApi<
+      {
+        data: {
+          price: number;
+          allocation: number;
+          startDate: string;
+          endDate: string;
+          startTime: string;
+          endTime: string;
+          allowList?: string | undefined;
+        }[];
+      },
+      undefined
+    >;
+  phaseConfig: TPhaseConfig[];
+  setStep: (step: number) => void;
+  handleSubmitProject: () => void;
+  setPhaseConfigData: (newConfig: TPhaseConfig[]) => void;
+}) => {
+  const handleAddNewPhaseConfig = (index: number, newConfig: TPhaseConfig) => {
+    try {
+      form.insertFieldValue('data', index + 1, {
+        price: 0,
+        allocation: 0,
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        allowList: ''
+      });
+
+      const updatedConfig: TPhaseConfig[] = [...phaseConfig.slice(0, index + 1), newConfig, ...phaseConfig.slice(index + 1)];
+      setPhaseConfigData(updatedConfig);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeletedPhaseConfig = (index: number) => {
+    try {
+      form.removeFieldValue('data', index);
+      const updatedConfig: TPhaseConfig[] = [...phaseConfig.slice(0, index), ...phaseConfig.slice(index + 1)];
+      setPhaseConfigData(updatedConfig);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleToggleIsFinished = (index: number, isFinished: boolean) => {
+    const updatedConfig: TPhaseConfig[] = [...phaseConfig];
+    if (updatedConfig[index]) {
+      updatedConfig[index] = {
+        ...updatedConfig[index],
+        isFinished: isFinished
+      };
+    }
+
+    setPhaseConfigData(updatedConfig);
+  };
+
+  const handleGoToNextStep = () => {
+    try {
+      v.parse(phaseDataSchema, form.state.values);
+      setStep(ESteps.DETERMINE + 1);
+      handleSubmitProject();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className='flex w-full flex-col gap-12 rounded-md bg-ob-black text-white'>
-      <div className='flex'>
-        <div className='border-3 flex w-28 items-center justify-center border-l border-ob-grey-light'>
-          <div className='flex flex-col items-center gap-2'>
-            <span className='font-bold'>Phase</span>
-            <span
-              className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#5E5D5D] text-sm font-bold text-white`}
-            >
-              1
-            </span>
-          </div>
-        </div>
-
-        <div className='flex w-full flex-col gap-6'>
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
-            <div className='flex w-full justify-between'>
-              <div className='flex items-center gap-2'>
-                <label className='font-bold'>Whitelist</label>
-                <div className='rounded-sm bg-white p-2'>
-                  <Image width={10} height={10} src={'/img/creators/pen.svg'} alt='pen' />
-                </div>
-              </div>
-              <div className='flex gap-6'>
-                <div className='flex items-center gap-2'>
-                  <div className='rounded-sm bg-white p-2'>
-                    <Image width={10} height={10} src={'/img/creators/check.svg'} alt='pen' />
-                  </div>
-                  <label className='font-bold text-ob-grey-lighter'>Allowlist</label>
-                </div>
-                <div className='rounded-sm bg-white p-2'>
-                  <Image width={10} height={10} src={'/img/creators/times.svg'} alt='pen' />
-                </div>
-              </div>
-            </div>
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Start Date</label>
-                <Input
-                  type='date'
-                  placeholder='01/12/24'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>End Date</label>
-                <Input
-                  type='date'
-                  placeholder='01/12/24'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Start Time</label>
-                <Input
-                  type='text'
-                  placeholder='00:00'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>End Time</label>
-                <Input
-                  type='text'
-                  placeholder='00:00'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Price (BTC)</label>
-                <Input
-                  type='text'
-                  placeholder='0.001'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Allocation Limit</label>
-                <Input type='text' placeholder='5' className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none' />
-              </div>
-            </div>
-
-            <div className='flex flex-col gap-3'>
-              <div>Upload / Enter Addresses</div>
-
-              <div className='mt-1 flex gap-2'>
-                <Button
-                  onClick={() => setUploadType(UploadTypes.MANUALL)}
-                  variant={uploadType === UploadTypes.MANUALL ? 'secondary' : 'default'}
-                  size={'sm'}
-                  className='rounded-md'
-                >
-                  Enter Manually
-                </Button>
-                <Button
-                  onClick={() => setUploadType(UploadTypes.CSV)}
-                  variant={uploadType === UploadTypes.CSV ? 'secondary' : 'default'}
-                  size={'sm'}
-                  className='rounded-md'
-                >
-                  Upload CSV
-                </Button>
-              </div>
-
-              <div className='flex w-full flex-col gap-2'>
-                {uploadType === UploadTypes.MANUALL ? (
-                  <Textarea
-                    placeholder='Enter your addresses separated by commas'
-                    className='w-full border-none bg-ob-grey-light px-5 py-5 outline-none'
-                    rows={6}
+      <div className='flex flex-col gap-12'>
+        <form.Field name='data' mode='array'>
+          {(field: any) => (
+            <>
+              {field.state.value.map((_: any, index: number) => {
+                return (
+                  <Phase
+                    key={phaseConfig[index]?.uuid + index}
+                    form={form}
+                    isFinished={phaseConfig[index]?.isFinished}
+                    phaseNumber={index + 1}
+                    title={phaseConfig[index]?.title}
+                    hasWhiteList={phaseConfig[index]?.hasWhiteList}
+                    hasAddPhase={phaseConfig[index]?.hasAddPhase}
+                    handleAddNewPhaseConfig={handleAddNewPhaseConfig}
+                    handleDeletedPhaseConfig={handleDeletedPhaseConfig}
+                    handleToggleIsFinished={handleToggleIsFinished}
                   />
-                ) : (
-                  <div className='group flex min-h-40 cursor-pointer items-center justify-center rounded-md border-[1px] border-[#FFFFFF33]'>
-                    <Image
-                      alt='upload'
-                      src='/img/creators/upload.svg'
-                      className='opacity-70 transition duration-100 hover:opacity-100'
-                      width={70}
-                      height={70}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <Button size={'lg'} variant={'secondary'} className='font-bold'>
-              Done
-            </Button>
-          </div>
-
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
-            <Button size={'sm'} variant={'secondary'}>
-              Add Phase
-            </Button>
-          </div>
-        </div>
+                );
+              })}
+              {!field.state.value.length ? (
+                <div className='flex items-center justify-center'>
+                  <Button
+                    onClick={() => {
+                      handleAddNewPhaseConfig(0, {
+                        hasWhiteList: true,
+                        title: 'Whitelist',
+                        hasAddPhase: true,
+                        uuid: uuidv4(),
+                        isFinished: false
+                      });
+                    }}
+                    size={'lg'}
+                    variant={'secondary'}
+                    type='button'
+                  >
+                    Add Phase
+                  </Button>
+                </div>
+              ) : (
+                ''
+              )}
+            </>
+          )}
+        </form.Field>
       </div>
 
-      <div className='flex'>
-        <div className='border-3 flex w-28 items-center justify-center border-l border-ob-grey-light'>
-          <div className='flex flex-col items-center gap-2'>
-            <span className='font-bold'>Phase</span>
-            <span
-              className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#5E5D5D] text-sm font-bold text-white`}
-            >
-              2
-            </span>
-          </div>
-        </div>
-
-        <div className='flex w-full flex-col gap-6'>
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
-            <div className='flex w-full justify-between'>
-              <div className='flex items-center gap-2'>
-                <label className='font-bold'>Whitelist</label>
-                <div className='rounded-sm bg-white p-2'>
-                  <Image width={10} height={10} src={'/img/creators/pen.svg'} alt='pen' />
-                </div>
-              </div>
-              <div className='flex gap-6'>
-                <div className='flex items-center gap-2'>
-                  <div className='rounded-sm bg-white p-2'>
-                    <Image width={10} height={10} src={'/img/creators/check.svg'} alt='pen' />
-                  </div>
-                  <label className='font-bold text-ob-grey-lighter'>Allowlist</label>
-                </div>
-                <div className='rounded-sm bg-white p-2'>
-                  <Image width={10} height={10} src={'/img/creators/times.svg'} alt='pen' />
-                </div>
-              </div>
-            </div>
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Start Date</label>
-                <Input
-                  type='date'
-                  placeholder='01/12/24'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>End Date</label>
-                <Input
-                  type='date'
-                  placeholder='01/12/24'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Start Time</label>
-                <Input
-                  type='text'
-                  placeholder='00:00'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>End Time</label>
-                <Input
-                  type='text'
-                  placeholder='00:00'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Price (BTC)</label>
-                <Input
-                  type='text'
-                  placeholder='0.001'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Allocation Limit</label>
-                <Input type='text' placeholder='5' className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none' />
-              </div>
-            </div>
-
-            <div className='flex flex-col gap-3'>
-              <div>Upload / Enter Addresses</div>
-
-              <div className='mt-1 flex gap-2'>
-                <Button
-                  onClick={() => setUploadType(UploadTypes.MANUALL)}
-                  variant={uploadType === UploadTypes.MANUALL ? 'secondary' : 'default'}
-                  size={'sm'}
-                  className='rounded-md'
-                >
-                  Enter Manually
-                </Button>
-                <Button
-                  onClick={() => setUploadType(UploadTypes.CSV)}
-                  variant={uploadType === UploadTypes.CSV ? 'secondary' : 'default'}
-                  size={'sm'}
-                  className='rounded-md'
-                >
-                  Upload CSV
-                </Button>
-              </div>
-
-              <div className='flex w-full flex-col gap-2'>
-                {uploadType === UploadTypes.MANUALL ? (
-                  <Textarea
-                    placeholder='Enter your addresses separated by commas'
-                    className='w-full border-none bg-ob-grey-light px-5 py-5 outline-none'
-                    rows={6}
-                  />
-                ) : (
-                  <div className='group flex min-h-40 cursor-pointer items-center justify-center rounded-md border-[1px] border-[#FFFFFF33]'>
-                    <Image
-                      alt='upload'
-                      src='/img/creators/upload.svg'
-                      className='opacity-70 transition duration-100 hover:opacity-100'
-                      width={70}
-                      height={70}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <Button size={'lg'} variant={'secondary'} className='font-bold'>
-              Done
-            </Button>
-          </div>
-
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
-            <Button size={'sm'} variant={'secondary'}>
-              Add Phase
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <div className='flex'>
-        <div className='border-3 flex w-28 items-center justify-center border-l border-ob-grey-light'>
-          <div className='flex flex-col items-center gap-2'>
-            <span className='font-bold'>Phase</span>
-            <span
-              className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#5E5D5D] text-sm font-bold text-white`}
-            >
-              3
-            </span>
-          </div>
-        </div>
-
-        <div className='flex w-full flex-col gap-6'>
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
-            <div className='flex w-full justify-between'>
-              <div className='flex items-center gap-2'>
-                <label className='font-bold'>Public</label>
-                <div className='rounded-sm bg-white p-2'>
-                  <Image width={10} height={10} src={'/img/creators/pen.svg'} alt='pen' />
-                </div>
-              </div>
-              <div className='flex'>
-                <div className='rounded-sm bg-white p-2'>
-                  <Image width={10} height={10} src={'/img/creators/times.svg'} alt='pen' />
-                </div>
-              </div>
-            </div>
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Start Date</label>
-                <Input
-                  type='date'
-                  placeholder='01/12/24'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>End Date</label>
-                <Input
-                  type='date'
-                  placeholder='01/12/24'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>Start Time</label>
-                <Input
-                  type='text'
-                  placeholder='00:00'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-1'>
-                <label className='text-sm'>End Time</label>
-                <div className='flex bg-ob-grey-light'>
-                  <Input
-                    type='text'
-                    placeholder='00:00'
-                    className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                  />
-                  <div className='flex items-center gap-2 rounded-md'>
-                    <div className='flex h-6 w-6 items-center justify-center rounded-sm bg-white'>
-                      <Image width={10} height={10} src={'/img/creators/check.svg'} alt='check' className='w-[15px]' />
-                    </div>
-                    <label className='mr-5 text-ob-grey-lighter'>Indefinite</label>
-                  </div>
-                </div>
-              </div>
-              <div className='col-span-2 flex w-full flex-col gap-1'>
-                <label className='text-sm'>Price (BTC)</label>
-                <Input
-                  type='text'
-                  placeholder='0.001'
-                  className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
-                />
-              </div>
-            </div>
-
-            <Button size={'lg'} variant={'secondary'} className='font-bold'>
-              Done
-            </Button>
-          </div>
-
-          <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
-            <Button size={'sm'} variant={'secondary'}>
-              Add Phase
-            </Button>
-          </div>
-        </div>
+      <div className='mt-16 flex justify-center gap-2'>
+        <Button onClick={() => setStep(ESteps.DETERMINE - 1)} type='button' variant='secondary' size='lg'>
+          Previous
+        </Button>
+        <Button onClick={() => handleGoToNextStep()} type='button' variant='secondary' size='lg'>
+          Next
+        </Button>
       </div>
     </div>
   );
