@@ -39,7 +39,7 @@ export const FileUpload = <T,>({ schema, setData, size, acceptFileType, accept }
 
       reader.onload = () => {
         try {
-          let uploadedData = reader.result as string;
+          const uploadedData = reader.result as string;
 
           if (isJSON) {
             const parsedData = JSON.parse(uploadedData);

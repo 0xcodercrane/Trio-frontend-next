@@ -406,7 +406,7 @@ const EditForm = ({
                       return 'BTC address cannot be empty';
                     }
 
-                    let addresses = value
+                    const addresses = value
                       .trim()
                       .split('\n')
                       .flatMap((line) => line.split(',').map((part) => part.trim()))
