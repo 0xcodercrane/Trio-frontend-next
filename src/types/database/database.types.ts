@@ -1,6 +1,31 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       addresses: {
@@ -332,6 +357,7 @@ export type Database = {
           relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
+          timestamp: string | null;
           utxo_id: number;
         };
         Insert: {
@@ -355,6 +381,7 @@ export type Database = {
           relisted_price?: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
+          timestamp?: string | null;
           utxo_id: number;
         };
         Update: {
@@ -378,6 +405,7 @@ export type Database = {
           relisted_price?: number | null;
           side?: string;
           status?: Database['public']['Enums']['order_book_status'];
+          timestamp?: string | null;
           utxo_id?: number;
         };
         Relationships: [
@@ -688,6 +716,109 @@ export type Database = {
           collection_id: number;
         }[];
       };
+      get_orderbook_by_address: {
+        Args: {
+          _address: string;
+        };
+        Returns: {
+          delisted_at: string | null;
+          id: number;
+          index_in_maker_psbt: number;
+          maker_ordinal_address_id: number;
+          maker_output_value: number;
+          maker_payment_address_id: number;
+          marketplace_fee_btc_address_id: number;
+          marketplace_id: string;
+          marketplace_maker_fee: number;
+          marketplace_taker_fee: number;
+          merged_psbt: string | null;
+          platform_fee_btc_address_id: number;
+          platform_maker_fee: number;
+          platform_taker_fee: number;
+          price: number;
+          psbt: string | null;
+          relisted_at: string | null;
+          relisted_price: number | null;
+          side: string;
+          status: Database['public']['Enums']['order_book_status'];
+          timestamp: string | null;
+          utxo_id: number;
+        }[];
+      };
+      get_orderbook_by_collection_slug: {
+        Args: {
+          _collection_slug: string;
+        };
+        Returns: {
+          id: number;
+          utxo_id: number;
+          price: number;
+          psbt: string;
+          side: string;
+          maker_payment_address_id: number;
+          maker_ordinal_address_id: number;
+          merged_psbt: string;
+          status: string;
+          maker_output_value: number;
+          index_in_maker_psbt: number;
+          marketplace_id: string;
+          marketplace_maker_fee: number;
+          marketplace_taker_fee: number;
+          platform_maker_fee: number;
+          platform_taker_fee: number;
+          platform_fee_btc_address_id: number;
+          marketplace_fee_btc_address_id: number;
+          relisted_at: string;
+          delisted_at: string;
+          relisted_price: number;
+          _timestamp: string;
+          inscription_id: string;
+        }[];
+      };
+      get_orderbook_by_inscription_id: {
+        Args: {
+          _inscription_id: string;
+        };
+        Returns: {
+          delisted_at: string | null;
+          id: number;
+          index_in_maker_psbt: number;
+          maker_ordinal_address_id: number;
+          maker_output_value: number;
+          maker_payment_address_id: number;
+          marketplace_fee_btc_address_id: number;
+          marketplace_id: string;
+          marketplace_maker_fee: number;
+          marketplace_taker_fee: number;
+          merged_psbt: string | null;
+          platform_fee_btc_address_id: number;
+          platform_maker_fee: number;
+          platform_taker_fee: number;
+          price: number;
+          psbt: string | null;
+          relisted_at: string | null;
+          relisted_price: number | null;
+          side: string;
+          status: Database['public']['Enums']['order_book_status'];
+          timestamp: string | null;
+          utxo_id: number;
+        }[];
+      };
+      get_trade_history_by_order_id: {
+        Args: {
+          _order_id: number;
+        };
+        Returns: {
+          fee_rate: number | null;
+          id: number;
+          order_id: number;
+          status: Database['public']['Enums']['trade_history_status'];
+          taker_ordinal_address_id: number | null;
+          taker_payment_address_id: number | null;
+          timestamp: string;
+          transaction_id: string | null;
+        }[];
+      };
     };
     Enums: {
       order_book_status: 'active' | 'inactive' | 'pending_taker_confirmation' | 'pending_maker_confirmation' | 'broadcast';
@@ -768,4 +899,17 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
     ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes'] | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
+    ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never;

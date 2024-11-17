@@ -32,7 +32,7 @@ export default function MenuPanes() {
 
   return (
     <div className={`fixed inset-0 left-0 top-0 ${menuBG} z-50 text-black`}>
-      <div className='fixed left-0 top-0 z-50 flex h-[--header-height] w-full items-center justify-between bg-ob-black'>
+      <div className='fixed left-0 top-0 z-50 flex h-[--header-height] w-full items-center justify-between bg-ob-purple-darkest'>
         <Container padding>
           <div className='flex flex-row justify-between'>
             <div className='flex items-center'>

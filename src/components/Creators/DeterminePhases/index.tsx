@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import Phase from '../Phase';
 import { ESteps, TPhaseConfig } from '../Launchpad';
 import { v4 as uuidv4 } from 'uuid';
-import { FormApi } from '@tanstack/react-form';
 
 export const phaseSchema = v.object({
   price: v.pipe(v.number(), v.minValue(0.00000546, 'Price cannot be empty')),

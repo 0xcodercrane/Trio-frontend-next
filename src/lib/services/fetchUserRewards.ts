@@ -1,8 +1,7 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { firestore, auth } from '../firebase';
 import { useQuery } from '@tanstack/react-query';
-
-import { TReward } from '../../types/user.types';
+import { TReward } from '@/types/rewards';
 
 const rewardsRef = collection(firestore, 'rewards');
 

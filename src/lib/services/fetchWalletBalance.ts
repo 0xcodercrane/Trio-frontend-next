@@ -13,10 +13,10 @@ export const fetchTokenBalance = async (address: string, ticker: string = 'TRIO'
 
   return response.json();
 };
-export const useTokenBalanceQuery = (address: string, ticker: string = 'TRIO') => {
+export const useTokenBalanceQuery = (address?: string, ticker: string = 'TRIO') => {
   return useQuery({
     queryKey: ['wallet-token-balance', address, ticker],
-    queryFn: async () => fetchTokenBalance(address, ticker),
+    queryFn: async () => fetchTokenBalance(address!, ticker),
     enabled: !!address,
     select: ({ result }) => ({
       ...result[0],

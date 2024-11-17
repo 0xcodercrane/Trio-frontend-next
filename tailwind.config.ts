@@ -207,10 +207,18 @@ const config = {
         'ob-red-lightest': '#FF6677',
 
         // Yellows
-        'ob-yellow': '#ffbb33',
+        'ob-yellow': '#D6E814',
+        'ob-yellow-dark': '#ffbb33',
 
         // Turquoise
-        'ob-turquoise': '#30D5C8'
+        'ob-turquoise': '#30D5C8',
+
+        // Purples
+        'ob-purple-darkest': '#0D0216',
+        'ob-purple-dark': '#150028',
+        'ob-purple': '#2B0059',
+        'ob-purple-light': '#4D0398',
+        'ob-purple-lighter': '#7D01FF'
       },
       borderRadius: {
         lg: 'var(--radius)',

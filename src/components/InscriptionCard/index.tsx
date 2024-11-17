@@ -75,7 +75,7 @@ const InscriptionCard = ({
           <div>
             <Input
               placeholder='Price'
-              className={`grow border-none bg-ob-black pl-2 text-ob-grey-lightest`}
+              className={`grow border-none bg-ob-purple-darkest pl-2 text-ob-grey-lightest`}
               type='number'
               value={price}
               onChange={handlePriceChange} // Update price state
@@ -91,7 +91,7 @@ const InscriptionCard = ({
       <div className='absolute right-3 top-3 hover:cursor-pointer hover:opacity-80'>
         <Input
           placeholder='multiple-select'
-          className={`grow border-none bg-ob-black pl-2 text-ob-grey-lightest`}
+          className={`grow border-none bg-ob-purple-darkest pl-2 text-ob-grey-lightest`}
           type='checkbox'
           checked={isChecked}
           onChange={handleSelectChange}

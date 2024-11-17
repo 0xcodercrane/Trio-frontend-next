@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 export const SubmitProject = () => {
   return (
     <div className='flex w-full flex-col gap-12'>
-      <div className='flex w-full flex-col gap-6 rounded-md bg-ob-black-light p-8 text-white'>
+      <div className='flex w-full flex-col gap-6 rounded-md bg-ob-purple-dark p-8 text-white'>
         <div className='flex flex-col gap-1'>
           <div className='text-lg'>Sign</div>
           <div>
@@ -35,7 +35,7 @@ export const SubmitProject = () => {
           Sign Transactions
         </Button>
       </div>
-      <div className='w-full rounded-md bg-ob-black-light px-8 py-20 text-white'>
+      <div className='w-full rounded-md bg-ob-purple-dark px-8 py-20 text-white'>
         <div className='text-lg'>Terms & Conditions</div>
 
         <div className='mt-4 flex w-full flex-col gap-3'>

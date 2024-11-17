@@ -9,7 +9,7 @@ import CustomFeeInput from '../Inputs/CustomFeeInput';
 import { useOrderFlow } from '@/lib/hooks/useOrderFlow';
 
 export default function LeadingFee({ orderId }: { orderId: string }) {
-  const { setOrderFlowState, txVirtualSize } = useOrderFlow();
+  const { setOrderFlowState } = useOrderFlow();
 
   const { data } = useQuery({
     queryKey: ['transaction', orderId],
@@ -47,7 +47,7 @@ export default function LeadingFee({ orderId }: { orderId: string }) {
       )}
 
       <div className='flex h-full w-full flex-row items-center justify-between gap-4'>
-        <CustomFeeInput txVirtualSize={txVirtualSize} />
+        <CustomFeeInput txVirtualSize={21} />
         <Button variant='secondary' onClick={() => setOrderFlowState(EOrderFlowStates.Complete)}>
           Increase Fee
         </Button>

@@ -4,11 +4,14 @@ import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useContext } from 'react';
 import { toast } from 'sonner';
+import { usePaddingOutputs } from '../usePaddingOutputs';
 
 export function useListings() {
   const { wallet } = useContext(AuthContext);
   const { signPsbt } = useLaserEyes();
   const queryClient = useQueryClient();
+
+  const { withPaddingOutputs } = usePaddingOutputs();
 
   const listInscriptions = useCallback(
     async (inscriptions: InscriptionItem[]) => {
@@ -78,9 +81,18 @@ export function useListings() {
 
         toast.success('Inscription listed successfully');
 
-        // NOTE: Refetches all inscription and runes orders
-        // if runes listings are handled elsewhere, edit the key here
-        queryClient.invalidateQueries({ queryKey: ['orderbook'] });
+        // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
+        setTimeout(
+          () =>
+            // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
+            //        to refresh queries that fetch orders for multiple items, this needs to be extended.
+            queryClient.invalidateQueries({
+              predicate: (query) =>
+                query.queryKey[0] === 'orderbook-by-inscription-id' &&
+                inscriptions.some((i) => i.inscription_id === query.queryKey[1])
+            }),
+          1000
+        );
         return true;
       } catch (error: any) {
         toast.error(error.message);
@@ -91,59 +103,71 @@ export function useListings() {
     [wallet, signPsbt]
   );
 
-  const buyListing = useCallback(async (id: number) => {
-    try {
-      const {
-        paymentAddress: takerPaymentAddress,
-        paymentPublicKey: takerPaymentPublicKey,
-        ordinalsAddress: takerOrdinalAddress
-      } = wallet as IWallet;
+  const buyListing = useCallback(
+    (id: number, feeRate: number): Promise<string | undefined> =>
+      withPaddingOutputs(async () => {
+        try {
+          if (!wallet) {
+            console.error('useListings: No connected wallet found.');
+            return;
+          }
+          const {
+            paymentAddress: takerPaymentAddress,
+            paymentPublicKey: takerPaymentPublicKey,
+            ordinalsAddress: takerOrdinalAddress
+          } = wallet as IWallet;
 
-      const result = await fetch('/api/listings/createOffer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id,
-          takerPaymentAddress,
-          takerPaymentPublicKey,
-          takerOrdinalAddress
-        })
-      });
-      if (!result.ok) {
-        throw new Error('Failed to create offer');
-      }
+          const result = await fetch('/api/listings/createOffer', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id,
+              takerPaymentAddress,
+              takerPaymentPublicKey,
+              takerOrdinalAddress,
+              feeRate
+            })
+          });
+          if (!result.ok) {
+            console.error('Failed to buy listing', await result.text());
+            toast.error('Failed to buy listing.');
+            return;
+          }
 
-      const { psbt } = await result.json();
-      const signedPsbtResult = await signPsbt(psbt, false, false);
-      if (!signedPsbtResult || !signedPsbtResult.signedPsbtBase64) {
-        throw new Error('Signing psbt failed');
-      }
-      const confirmListingApiResult = await fetch(`/api/listings/submitOffer/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          signedPSBTBase64: signedPsbtResult.signedPsbtBase64
-        })
-      });
-      if (!confirmListingApiResult.ok) {
-        throw new Error('Failed to submit listing');
-      }
-      const { txId } = await confirmListingApiResult.json();
-      console.log({ txId });
-      // NOTE: Refetches all inscription and runes orders
-      // if runes listings are handled elsewhere, edit the key here
-      queryClient.invalidateQueries({ queryKey: ['orderbook'] });
-      toast.success(`Transaction successful: ${txId}`);
-      return txId;
-    } catch (error) {
-      console.error('Create Offer Error: ', error);
-      return false;
-    }
-  }, []);
+          const { psbt } = await result.json();
+          const signedPsbtResult = await signPsbt(psbt, false, false);
+          if (!signedPsbtResult || !signedPsbtResult.signedPsbtBase64) {
+            console.error('Failed to sign psbt', JSON.stringify(signedPsbtResult));
+            toast.error('Failed to buy listing.');
+            return;
+          }
+          const confirmListingApiResult = await fetch(`/api/listings/submitOffer/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              signedPSBTBase64: signedPsbtResult.signedPsbtBase64
+            })
+          });
+          if (!confirmListingApiResult.ok) {
+            throw new Error('Failed to submit listing');
+          }
+          const { txId } = await confirmListingApiResult.json();
+          // NOTE: Refetches all inscription and runes orders
+          // if runes listings are handled elsewhere, edit the key here
+          queryClient.invalidateQueries({ queryKey: ['orderbook'] });
+          toast.success(`Transaction broadcasted: ${txId}`);
+          return txId;
+        } catch (error) {
+          console.error('Create Offer Error: ', error);
+          return;
+        }
+      }, feeRate),
+    [wallet, withPaddingOutputs]
+  );
 
   return { listInscriptions, buyListing };
 }

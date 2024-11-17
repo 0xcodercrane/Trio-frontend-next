@@ -12,7 +12,7 @@ export function ArtistSpotLight({ slug }: { slug: string }) {
   const { data, isPending, error } = useArtistQuery(slug);
   const router = useRouter();
   return (
-    <Section className='bg-ob-black' padding={false} paddingLeft={false}>
+    <Section className='bg-ob-purple-darkest' padding={false} paddingLeft={false}>
       <SplashPageLayout
         media={{ type: 'inscription', id: data?.collections && data.collections[0].inscriptions[0].inscription_id }}
         orientation='rtl'

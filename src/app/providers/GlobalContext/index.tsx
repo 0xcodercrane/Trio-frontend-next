@@ -17,19 +17,17 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
     if (!menuDisclosure.isOpen) return 'transparent';
     switch (menuType) {
       case EMenuType.PROFILE:
-        return 'bg-ob-black';
+        return 'bg-ob-purple-darkest';
       case EMenuType.WALLET:
-        return 'bg-ob-black';
+        return 'bg-ob-purple-darkest';
       case EMenuType.ACTIVITY:
       default:
-        return 'bg-ob-black-lightest';
+        return 'bg-ob-purple-dark';
     }
   }, [menuType, menuDisclosure.isOpen]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      menuDisclosure.close();
-    }
+    menuDisclosure.close();
   }, [isAuthenticated]);
 
   return (

@@ -24,7 +24,7 @@ export interface InscriptionDetails {
 
 export const fetchInscriptionDetails = async (id: string): Promise<InscriptionDetails> => {
   const response = await fetch(`/api/inscriptions/details/${id}`, {
-    cache: 'force-cache',
+    cache: 'no-store',
     next: { revalidate: INSCRIPTIONS_DETAILS_CACHE_AGE.as('seconds') }
   });
 

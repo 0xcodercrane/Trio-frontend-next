@@ -30,7 +30,7 @@ const Panels = () => {
   };
 
   return (
-    <Section className='bg-ob-black-lighter'>
+    <Section className='bg-ob-purple-dark'>
       <div className='flex flex-col gap-8'>
         <FilterPanelHeader
           setCurrentTab={(tab: string) => setCurrentTab(tab as ETABS)}

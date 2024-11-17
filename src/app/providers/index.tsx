@@ -13,6 +13,7 @@ import AuthContextProvider from './AuthContext';
 import { NETWORK, ONE_MINUTE } from '@/lib/constants';
 import { FRACTAL_MAINNET, FRACTAL_TESTNET, LaserEyesProvider, MAINNET, SIGNET, TESTNET, TESTNET4 } from '@omnisat/lasereyes';
 import GlobalContextProvider from './GlobalContext';
+import { mapAppNetworkToLaserEyesNetwork } from '@/lib/utilities';
 
 interface ProvidersProps {
   children: NonNullable<ReactNode>;
@@ -47,7 +48,7 @@ const Providers: FC<ProvidersProps> = ({ children, session }) => {
 
   return (
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-      <LaserEyesProvider config={{ network: MAINNET }}>
+      <LaserEyesProvider config={{ network: mapAppNetworkToLaserEyesNetwork(NETWORK) }}>
         <SessionProvider session={session} refetchInterval={5 * ONE_MINUTE.as('seconds')} refetchOnWindowFocus={true}>
           <QueryClientProvider client={client}>
             <AuthContextProvider>

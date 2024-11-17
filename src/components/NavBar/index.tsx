@@ -22,7 +22,7 @@ const NAV_CONFIG: TNavItem[] = [
   },
   {
     name: 'Trio',
-    href: '/trio'
+    href: '/points'
   }
 ];
 

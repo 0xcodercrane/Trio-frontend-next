@@ -266,7 +266,7 @@ export default function Launchpad() {
   };
 
   return (
-    <Section className='bg-ob-black'>
+    <Section className='bg-ob-purple-darkest'>
       <Container>
         <h2 className='mt-14 font-sans'>{renderTitle()}</h2>
 

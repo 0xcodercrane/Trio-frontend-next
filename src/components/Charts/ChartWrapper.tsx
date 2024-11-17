@@ -8,7 +8,7 @@ export default function ChartWrapper({
   label: string;
 }) {
   return (
-    <div className={`flex flex-col rounded-lg bg-white/[0.025] p-4 ${className ? className : ''}`}>
+    <div className={`flex flex-col rounded-md bg-white/[0.025] p-4 ${className ? className : ''}`}>
       <div className='mb-4 flex h-[36px] flex-row items-center justify-between'>
         <span className='text-ob-grey-lighter'>{label}</span>
       </div>

@@ -5,7 +5,7 @@ import { HeroLayout } from '@/components/Layouts';
 
 export default function NotFound() {
   return (
-    <HeroLayout className='bg-ob-black'>
+    <HeroLayout className='bg-ob-purple-darkest'>
       <div className='flex flex-col items-center justify-center text-white'>
         <TriangleAlert size='64' color='red' />
         <div className='flex flex-col gap-4 text-center'>

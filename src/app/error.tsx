@@ -10,7 +10,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   }, [error]);
 
   return (
-    <HeroLayout className='bg-ob-black'>
+    <HeroLayout className='bg-ob-purple-dark'>
       <div className='flex h-screen items-center justify-center'>
         <div className='flex flex-col rounded p-8 shadow'>
           <h2 className='text-2xl font-bold'>Oops, Something went wrong!</h2>

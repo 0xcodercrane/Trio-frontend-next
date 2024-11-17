@@ -1,4 +1,4 @@
-import { ORDINALSBOT_API_KEY, PUBLIC_API_URL } from '@/lib/constants';
+import { ORDINALSBOT_PUBLIC_API_KEY, PUBLIC_API_URL } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   try {
     const response = await fetch(apiUrl, {
       headers: {
-        'x-api-key': ORDINALSBOT_API_KEY as string
+        'x-api-key': ORDINALSBOT_PUBLIC_API_KEY
       }
     });
 

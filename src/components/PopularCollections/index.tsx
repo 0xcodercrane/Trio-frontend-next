@@ -10,7 +10,6 @@ import { useListings } from '@/lib/hooks';
 
 export default function PopularCollections() {
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [transactionId, setTransactionId] = useState('');
   const satsToBitcoin = (sats: number) => sats / 100000000;
   const { wallet } = useContext(AuthContext);
   const { buyListing } = useListings();
@@ -41,12 +40,11 @@ export default function PopularCollections() {
   }, [currentPage]);
 
   const handleBuyListing = async (id: number) => {
-    const txId = await buyListing(id);
-    setTransactionId(txId);
+    const txId = await buyListing(id, 8);
   };
 
   return (
-    <Section className='bg-ob-black-lighter'>
+    <Section className='bg-ob-purple-darkest'>
       <div className='flex flex-row justify-between py-16'>
         <h3>Popular</h3>
         <span>View all (3)</span>
@@ -57,21 +55,20 @@ export default function PopularCollections() {
           <div className='flex h-full basis-1/6 flex-col items-center justify-center gap-4'>
             <h3>On Sale</h3>
             <div className='flex flex-row items-center justify-between gap-4'>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
-                <Button onClick={handleOnSalePrevClick} size='icon' variant='default'>
-                  <ChevronLeft color='white' size={30} />
-                </Button>
-              </div>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
-                <Button onClick={handleOnSaleNextClick} size='icon' variant='default'>
-                  <ChevronRight color='white' size={30} />
-                </Button>
-              </div>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
+                <ChevronLeft onClick={handleOnSalePrevClick} color='black' size={30} />
+              </Button>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
+                <ChevronRight onClick={handleOnSaleNextClick} color='black' size={30} />
+              </Button>
             </div>
           </div>
           <div className='flex h-full basis-5/6 flex-row gap-4'>
             {(listedInscriptions || []).map((list, index) => (
-              <div key={`on-sale-item-${index}`} className='relative h-full w-full max-w-[256px] rounded-xl bg-[#252525]'>
+              <div
+                key={`on-sale-item-${index}`}
+                className='relative h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'
+              >
                 <div className='flex h-[256px] flex-col items-center justify-end gap-4 pb-4'>
                   {list.utxos &&
                     list.utxos.utxo_contents &&
@@ -101,38 +98,38 @@ export default function PopularCollections() {
           <div className='flex h-full basis-1/6 flex-col items-center justify-center gap-4'>
             <h3>Trending</h3>
             <div className='flex flex-row items-center justify-between gap-4'>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
-                <ChevronLeft color='white' size={30} />
-              </div>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
-                <ChevronRight color='white' size={30} />
-              </div>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
+                <ChevronLeft color='black' size={30} />
+              </Button>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
+                <ChevronRight color='black' size={30} />
+              </Button>
             </div>
           </div>
           <div className='flex h-full basis-5/6 flex-row gap-4'>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
           </div>
         </div>
         <div className='flex h-[256px] min-h-[256px] flex-row'>
           <div className='flex h-full basis-1/6 flex-col items-center justify-center gap-4'>
             <h3>Movers</h3>
             <div className='flex flex-row items-center justify-between gap-4'>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
-                <ChevronLeft color='white' size={30} />
-              </div>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
-                <ChevronRight color='white' size={30} />
-              </div>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
+                <ChevronLeft color='black' size={30} />
+              </Button>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
+                <ChevronRight color='black' size={30} />
+              </Button>
             </div>
           </div>
           <div className='flex h-full basis-5/6 flex-row gap-4'>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
-            <div className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
+            <div className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-light'></div>
           </div>
         </div>
       </div>
