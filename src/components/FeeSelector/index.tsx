@@ -60,8 +60,8 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
   };
 
   return (
-    <div className='flex flex-col gap-4'>
-      <span className='font-bold text-ob-grey-lightest'>Bitcoin Network Fee</span>
+    <div className='flex flex-col gap-2'>
+      <span className='text-ob-grey-lightest'>Network Fee / Speed</span>
       <div className='flex w-full flex-row gap-2'>
         {feeOptionsToRender.map((feeOption) => {
           const currentFeeRate = feeOption !== EFeeOptions.CUSTOM && feeRatesData?.[feeOptionsConfig[feeOption].dbKey];
@@ -72,33 +72,35 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
                 <Skeleton className='h-full w-full' />
               ) : (
                 <div
-                  className={`h-full cursor-pointer rounded-md border bg-ob-grey p-4 ${selectedFeeOption === feeOption ? 'border-white' : 'border-ob-grey'}`}
+                  className={`h-full cursor-pointer rounded-md border border-ob-purple-lighter ${selectedFeeOption === feeOption ? 'bg-ob-purple' : 'bg-ob-purple-dark'}`}
                 >
                   <input
                     type='radio'
                     id={feeOption}
-                    className='hidden'
+                    className='hidden min-h-full min-w-full'
                     value={feeOption}
                     checked={selectedFeeOption === feeOption}
                     onChange={() => handleFeeRateSelection(feeOption)}
                   />
 
-                  <label htmlFor={feeOption} className='flex h-full cursor-pointer flex-col justify-between'>
-                    <div className='text-lg text-white'>{feeOptionsConfig[feeOption].label}</div>
-                    {feeOption === EFeeOptions.CUSTOM ? (
-                      <div>
-                        <CustomFeeInput
-                          txVirtualSize={txVirtualSize}
-                          type='number'
-                          value={customFee}
-                          onChange={handleCustomFeeRateChange}
-                        />
-                      </div>
-                    ) : (
-                      <div className='text-sm text-ob-grey-lightest'>
-                        {currentFeeRate} sats/vB ~{satsToUsd(txFee).formatted}
-                      </div>
-                    )}
+                  <label htmlFor={feeOption} className='cursor-pointer'>
+                    <div className='flex h-full flex-col justify-between p-4'>
+                      <div className='text-lg text-white'>{feeOptionsConfig[feeOption].label}</div>
+                      {feeOption === EFeeOptions.CUSTOM ? (
+                        <div>
+                          <CustomFeeInput
+                            txVirtualSize={txVirtualSize}
+                            type='number'
+                            value={customFee}
+                            onChange={handleCustomFeeRateChange}
+                          />
+                        </div>
+                      ) : (
+                        <div className='text-sm text-ob-grey-lightest'>
+                          {currentFeeRate} sats/vB ~{satsToUsd(txFee).formatted}
+                        </div>
+                      )}{' '}
+                    </div>
                   </label>
                 </div>
               )}

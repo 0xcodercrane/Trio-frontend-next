@@ -8,7 +8,7 @@ export default function CompletePane({ inscriptionId }: OrderFlowPaneBaseProps) 
 
   return (
     <div className='flex h-full w-full flex-col gap-8'>
-      <FeesPanel listPriceSats={latestOrder?.price} takerFeeSats={latestOrder?.platform_taker_fee} />
+      <FeesPanel listPriceSats={latestOrder?.price} feeSats={latestOrder?.platform_taker_fee} />
       <PurchaseComplete />
     </div>
   );

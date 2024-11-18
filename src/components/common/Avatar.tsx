@@ -8,9 +8,10 @@ import { Button } from '../ui/button';
 
 interface AvatarProps {
   onClick?: () => void;
+  size?: 'default' | 'xs';
 }
 
-export default function Avatar({ onClick }: AvatarProps) {
+export default function Avatar({ onClick, size = 'default' }: AvatarProps) {
   const { loading, user } = useContext(AuthContext);
 
   const src = useMemo(() => user?.profile?.avatar || null, [user]);
@@ -24,7 +25,7 @@ export default function Avatar({ onClick }: AvatarProps) {
 
   if (!src) {
     return (
-      <Button variant='secondary' onClick={onClick} size='icon'>
+      <Button variant='secondary' onClick={onClick} size={size === 'default' ? 'icon' : 'icon-xs'}>
         <User />
       </Button>
     );

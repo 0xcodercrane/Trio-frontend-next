@@ -1,41 +1,52 @@
 'use client';
 
 import { PanelsWrapper } from '@/components/Collection/FilterPanels';
-import { Divider } from '@/components/common';
+import { Avatar, Divider } from '@/components/common';
+import { useInscriptionDataQuery } from '@/components/common/MediaViewer/useInscriptionDataQuery';
 import { Container } from '@/components/Container';
 import { SplashPageLayout } from '@/components/Layouts';
 import OrderFlow from '@/components/OrderFlow';
 import Section from '@/components/Section';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useInscriptionWithCollectionData } from '@/lib/services';
+import { shortenAddress } from '@/lib/utilities';
 import Link from 'next/link';
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
-  const { data, isPending, error } = useInscriptionWithCollectionData(id);
+  const { data: collectionData, isPending: isPendingCollectionData } = useInscriptionWithCollectionData(id);
+  const { data: inscriptionData } = useInscriptionDataQuery(id);
 
   return (
-    <div className='flex h-auto w-full flex-col bg-ob-purple-dark'>
+    <div className='flex h-auto w-full flex-col bg-ob-purple-darkest'>
       <Section className='flex items-center justify-center'>
         <SplashPageLayout media={{ type: 'inscription', id }} childrenWrapperJustify='start'>
           <Container paddingLeft className='basis-1/2'>
             <div className='flex h-full flex-col justify-start'>
               <div className='w-full'>
-                {isPending && <Skeleton className='mb-2 h-12 w-2/3' />}
-                {!isPending && <h2 className='mb-2'>{data?.name}</h2>}
+                {isPendingCollectionData && <Skeleton className='mb-2 h-12 w-2/3' />}
+                {!isPendingCollectionData && <h2 className='mb-2'>{collectionData?.name}</h2>}
 
-                {isPending && (
+                {isPendingCollectionData && (
                   <div className='flex h-[24px] w-1/2 flex-row gap-4'>
                     {Array.from({ length: 2 }).map((_, index) => (
                       <Skeleton key={index} className='h-full w-1/2 bg-ob-grey' />
                     ))}
                   </div>
                 )}
-                {!isPending && (
+                {!isPendingCollectionData && (
                   <div className='flex w-1/2 flex-row justify-start gap-4'>
                     {/* @ts-ignore */}
-                    <Link href={`/artists/${data?.collection?.artist?.slug}`}>By {data?.collection?.artist?.name}</Link>
+                    <Link href={`/artists/${collectionData?.collection?.artist?.slug}`}>
+                      By {(collectionData as unknown as any)?.collection?.artist?.name}
+                    </Link>
+                  </div>
+                )}
+                {!!inscriptionData && (
+                  <div className='mt-2 flex flex-row justify-start gap-4 text-white'>
+                    Owned by <Avatar size='xs' />
+                    {shortenAddress(inscriptionData.details?.address)}
                   </div>
                 )}
               </div>
@@ -45,7 +56,7 @@ export default function Page({ params }: { params: { id: string } }) {
           </Container>
         </SplashPageLayout>
       </Section>
-      <PanelsWrapper slug={(data as unknown as any)?.collection?.slug || ''} />
+      <PanelsWrapper slug={(collectionData as unknown as any)?.collection?.slug || ''} />
     </div>
   );
 }

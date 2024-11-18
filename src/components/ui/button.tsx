@@ -33,7 +33,8 @@ const buttonVariants = cva(
           sm:max-w-[--button-height-md] 
           md:max-h-[--button-height-md] md: min-h-[--button-height-md] h-[--button-height-md]
           md:min-w-[--button-height-md] md:max-w-[--button-height-md] md:w-[--button-height-md]
-        `
+        `,
+        'icon-xs': 'h-[--button-height-xs] w-[--button-height-xs]'
       }
     },
     defaultVariants: {

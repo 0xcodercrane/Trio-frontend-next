@@ -37,8 +37,8 @@ export default function Tag({ variant = EComponentVariants.Default, label, class
         };
       case 'info':
         return {
-          inner: 'bg-ob-black text-white',
-          outer: `bg-gradient-to-${dir} from-ob-blue to-ob-blue-lightest`
+          inner: 'bg-ob-purple text-white',
+          outer: `bg-gradient-to-${dir} from-ob-purple-light to-ob-purple-lighter`
         };
       default:
         return {
@@ -56,13 +56,13 @@ export default function Tag({ variant = EComponentVariants.Default, label, class
 
   return (
     <div
-      className={`relative h-[--button-height-sm] max-h-[--button-height-md] min-w-[96px] rounded-sm p-[1px] shadow-lg ${className}`}
+      className={`relative h-[--button-height-sm] max-h-[--button-height-md] min-w-[96px] rounded-full p-[1px] shadow-lg ${className}`}
     >
-      <div className={`absolute inset-0 h-full w-full rounded-sm ${outer} duration-100 ease-in-out`}></div>
+      <div className={`absolute inset-0 h-full w-full rounded-full ${outer} duration-100 ease-in-out`}></div>
       <div
-        className={`relative flex h-full w-full flex-row items-center justify-between rounded-sm px-2 ${inner} min-h-[calc(var(--button-height-sm)-2px)] max-w-[calc(100%-2px)] gap-2`}
+        className={`relative ml-[1px] flex h-full w-full flex-row items-center justify-between rounded-full px-4 ${inner} min-h-[calc(var(--button-height-sm)-2px)] max-w-[calc(100%-2px)] gap-2`}
       >
-        <span className={`text-center text-sm font-semibold`}>{label}</span>
+        <span className={`text-nowrap text-center text-sm font-semibold`}>{label}</span>
         {info && <Info size={12} />}
       </div>
     </div>
