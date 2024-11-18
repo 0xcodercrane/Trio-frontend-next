@@ -27,7 +27,7 @@ export default function DefaultPane({ inscriptionId }: OrderFlowPaneBaseProps) {
       {isPending ? (
         <Skeleton className='h-full min-h-[240px] w-full' />
       ) : (
-        <div className='bg-ob-purple-dark flex flex-col gap-4 rounded-lg p-4 text-white'>
+        <div className='flex flex-col gap-4 rounded-lg bg-ob-purple-dark p-4 text-white'>
           {/* OWNER OF INSCRIPTION */}
           {isInscriptionOwner ? (
             hasActiveListing ? (
