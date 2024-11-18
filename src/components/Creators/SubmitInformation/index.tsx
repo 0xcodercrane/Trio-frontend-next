@@ -72,7 +72,7 @@ export const SubmitInformation = ({
     }
   };
 
-  const imageValidator = async(width: number, height: number, value: File, title: string, size: number) => {
+  const imageValidator = async (width: number, height: number, value: File, title: string, size: number) => {
     const maxFileSize = size * 1024 * 1024;
 
     if (!value.size) {
