@@ -1,28 +1,28 @@
 'use client';
-import { useEffect, useState } from 'react';
-import Section from '@/components/Section';
+import { StepItem } from '@/components/common/StepItem';
 import { Container } from '@/components/Container';
 import {
-  GetStarted,
-  SubmitInformation,
   ChooseInscriptions,
   DeterminePhases,
-  SubmitProject,
+  GetStarted,
   informationSchema,
-  TInformationSchema,
   inscriptionDataSchema,
-  TInscriptionDataSchema,
   phaseDataSchema,
+  SubmitInformation,
+  SubmitProject,
+  TInformationSchema,
+  TInscriptionDataSchema,
   TPhaseDataSchema
 } from '@/components/Creators';
-import { StepItem } from '@/components/common/StepItem';
-import { Submitting } from '@/components/Creators/Submitting';
-import { Submitted } from '@/components/Creators/Submitted';
 import { SubmitFailed } from '@/components/Creators/SubmitFailed';
-import * as v from 'valibot';
+import { Submitted } from '@/components/Creators/Submitted';
+import { Submitting } from '@/components/Creators/Submitting';
+import Section from '@/components/Section';
 import { useForm } from '@tanstack/react-form';
 import { valibotValidator } from '@tanstack/valibot-form-adapter';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import * as v from 'valibot';
 
 export const launchpadSchema = v.object({
   information: informationSchema,

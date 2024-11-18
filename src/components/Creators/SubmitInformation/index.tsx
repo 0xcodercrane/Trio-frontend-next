@@ -1,12 +1,12 @@
-import Image from 'next/image';
+import FieldInfo from '@/components/common/FieldInfo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useRef, useState } from 'react';
-import { ESteps } from '../Launchpad';
-import FieldInfo from '@/components/common/FieldInfo';
 import validate from 'bitcoin-address-validation';
+import Image from 'next/image';
+import { useRef, useState } from 'react';
 import * as v from 'valibot';
+import { ESteps } from '../Launchpad';
 
 export const informationSchema = v.object({
   name: v.pipe(v.string(), v.trim(), v.minLength(3, 'Collection name must be at least 3 characters.')),
@@ -72,7 +72,7 @@ export const SubmitInformation = ({
     }
   };
 
-  const imageValidator = async (witdth: number, height: number, value: File, title: string, size: number) => {
+  const imageValidator = async(width: number, height: number, value: File, title: string, size: number) => {
     const maxFileSize = size * 1024 * 1024;
 
     if (!value.size) {
@@ -89,7 +89,7 @@ export const SubmitInformation = ({
         const imageWidth = img.width;
         const imageHeight = img.height;
 
-        const isCloseEnough = Math.abs(imageWidth - witdth) <= 200 && Math.abs(imageHeight - height) <= 200;
+        const isCloseEnough = Math.abs(imageWidth - width) <= 200 && Math.abs(imageHeight - height) <= 200;
         resolve(isCloseEnough);
       };
       img.onerror = () => resolve(false);
@@ -97,7 +97,7 @@ export const SubmitInformation = ({
     });
 
     if (!isValidRatio) {
-      return `Invalid image ratio. Please upload an image with a ${witdth}x${height} resolution or close to it.`;
+      return `Invalid image ratio. Please upload an image with a ${width}x${height} resolution or close to it.`;
     }
 
     return undefined;
