@@ -1,7 +1,5 @@
 import { useOrderFlow } from '@/lib/hooks/useOrderFlow';
-import { Tag } from '../../../common';
 import { Button } from '../../../ui/button';
-import { EComponentVariants } from '@/types/styles';
 import { EOrderFlowStates } from '@/types';
 import { useFeeRates, useListings } from '@/lib/hooks';
 

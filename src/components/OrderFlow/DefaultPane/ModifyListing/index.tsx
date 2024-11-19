@@ -2,6 +2,8 @@ import FeesPanel from '@/components/FeesPanel';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useListings } from '@/lib/hooks';
+import { bitcoinToSats } from '@/lib/utilities';
 import { OrderbookItem } from '@/types';
 import { useState, ChangeEvent } from 'react';
 
@@ -10,22 +12,29 @@ enum EModifyListingState {
   PRICE_CHANGE,
   DELISTING
 }
-const ModifyListing = ({ listing }: { listing: OrderbookItem }) => {
+const ModifyListing = ({ listing, inscriptionId }: { listing: OrderbookItem; inscriptionId: string }) => {
   const [modificationState, setModificationState] = useState<EModifyListingState>(EModifyListingState.DEFAULT);
   const [newPrice, setNewPrice] = useState<string>('0');
+
+  const { updateListingPrice, cancelListing } = useListings();
 
   const handleNewPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewPrice(e.target.value || '');
   };
 
   const handleChangePrice = () => {
-    // TODO: Add logic here.
-    // After completed, order should be refetched.
+    const newPriceSats = bitcoinToSats(parseFloat(newPrice));
+
+    if (!newPriceSats) {
+      return;
+    }
+    updateListingPrice(inscriptionId, listing.id, newPriceSats);
+    setModificationState(EModifyListingState.DEFAULT);
   };
 
   const handleCancelListing = () => {
-    // TODO: Add logic here.
-    // After completed, List Item component should be rendered.
+    cancelListing(inscriptionId, listing.id);
+    setModificationState(EModifyListingState.DEFAULT);
   };
 
   const currentPriceInSats = listing.price;
@@ -63,7 +72,7 @@ const ModifyListing = ({ listing }: { listing: OrderbookItem }) => {
               );
             case EModifyListingState.DELISTING:
               return (
-                <div className='flex flex-col gap-2 rounded-lg bg-ob-purple p-4'>
+                <div className='bg-ob-purple flex flex-col gap-2 rounded-lg p-4'>
                   <div className='text-lg font-bold text-white'>Are you sure you want to cancel this listing?</div>
                   <TermsAndConditions actionName='Yes' />
                   <div className='flex basis-1/2 justify-between gap-2'>
@@ -80,7 +89,7 @@ const ModifyListing = ({ listing }: { listing: OrderbookItem }) => {
                     <div className='w-full'>
                       <Button
                         className='text-md min-w-full basis-1/2 rounded-md'
-                        onClick={() => setModificationState(EModifyListingState.PRICE_CHANGE)}
+                        onClick={handleCancelListing}
                         type='button'
                         variant='destructive'
                       >
@@ -92,7 +101,7 @@ const ModifyListing = ({ listing }: { listing: OrderbookItem }) => {
               );
             case EModifyListingState.PRICE_CHANGE:
               return (
-                <form className='flex flex-col gap-2 rounded-lg bg-ob-purple p-4'>
+                <form className='bg-ob-purple flex flex-col gap-2 rounded-lg p-4'>
                   <div className='text-lg font-bold text-white'>What do you want to change the price to?</div>
                   <div className='flex w-full flex-row items-center justify-between rounded-sm bg-white pr-2 ring-1 ring-ob-white-20'>
                     <Input

@@ -86,9 +86,9 @@ export const getOrderbookByAddress = async (address: string) =>
 export const getOrderbookByInscriptionId = async (inscriptionId: string) =>
   supabase.rpc('get_orderbook_by_inscription_id', { _inscription_id: inscriptionId });
 
-// Returns all orderbook items tied to inscription id -> full listing history
-export const getOrderbookByCollectionSlug = async (collectionSlug: string) =>
-  supabase.rpc('get_orderbook_by_collection_slug', { _collection_slug: collectionSlug }).eq('status', 'active');
+// Returns all inscriptions with prices based on their listings in orderbook.
+export const getInscriptionsWithPriceByCollectionSlug = async (collectionSlug: string) =>
+  supabase.rpc('get_inscriptions_with_price_by_collection_slug', { _collection_slug: collectionSlug });
 
 export const getOrderbookById = async (id: number) =>
   supabase.from('orderbook').select(ORDERBOOK_BY_ID).eq('id', id).single();

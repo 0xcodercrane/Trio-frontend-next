@@ -7,7 +7,7 @@ import { InscriptionsGrid } from '@/components/Grids';
 import { SingleCollectionInscriptionsTable } from '@/components/Tables';
 import { useFilter } from '@/lib/hooks/useFilter';
 import { useInscriptionsByCollectionSlug } from '@/lib/services/fetchInscriptionsByCollectionSlug';
-import { useActiveOrderbookByCollectionSlug } from '@/lib/services';
+import { useInscriptionsWithPricesByCollection } from '@/lib/services';
 
 export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
   const [currentFilter, setCurrentFilter] = useState(EFILTERS.MOST_LIKED);
@@ -23,7 +23,7 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
     limit
   });
 
-  const { data: orders } = useActiveOrderbookByCollectionSlug(slug);
+  const { data: orders } = useInscriptionsWithPricesByCollection(slug);
 
   // Return listed and then other inscriptions.
   const inscriptions = useMemo(() => {

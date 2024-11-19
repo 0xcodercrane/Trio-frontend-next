@@ -36,13 +36,13 @@ export const usePrices = () => {
    */
   const bitcoinToUsd = useCallback(
     (bitcoinAmount: number | undefined) => {
-      const value = !!queryResult.data?.bitcoin.usd && bitcoinAmount ? bitcoinAmount * queryResult.data?.bitcoin.usd : null;
+      const value = !!queryResult.data?.bitcoin?.usd && bitcoinAmount ? bitcoinAmount * queryResult.data?.bitcoin.usd : null;
       return {
         value,
         formatted: formatUsdValue(0)
       };
     },
-    [queryResult.data?.bitcoin.usd]
+    [queryResult.data?.bitcoin?.usd]
   );
 
   /**

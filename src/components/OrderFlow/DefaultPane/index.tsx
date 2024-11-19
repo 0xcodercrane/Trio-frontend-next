@@ -27,17 +27,17 @@ export default function DefaultPane({ inscriptionId }: OrderFlowPaneBaseProps) {
       {isPending ? (
         <Skeleton className='h-full min-h-[240px] w-full' />
       ) : (
-        <div className='flex flex-col gap-4 rounded-lg bg-ob-purple-dark p-4 text-white'>
+        <div className='bg-ob-purple-dark flex flex-col gap-4 rounded-lg p-4 text-white'>
           {/* OWNER OF INSCRIPTION */}
           {isInscriptionOwner ? (
             hasActiveListing ? (
-              <ModifyListing listing={latestOrder} />
+              <ModifyListing listing={latestOrder} inscriptionId={inscriptionId} />
             ) : (
               <ListItem inscriptionId={inscriptionId} />
             )
           ) : (
             <>
-              {/* NOT OWNER: Render buy form or that the item is not listed. */}
+              {/* NOT OWNER: Render buy form or inform the item is not listed. */}
               {hasActiveListing ? (
                 <>
                   <FeesPanel listPriceSats={latestOrder.price} feeSats={latestOrder.platform_taker_fee} />
