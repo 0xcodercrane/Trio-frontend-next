@@ -14,8 +14,8 @@ export const GetStarted = ({ setStep }: { setStep: (step: number) => void }) => 
   const [startType, setStartType] = useState<StartTypes>(StartTypes.PREINSCRIBE);
 
   return (
-    <div className='bg-ob-purple-darkest-light w-full rounded-md p-8 text-white'>
-      <div className='flex min-h-[42rem] flex-col items-center justify-center gap-[3rem] p-20 lg:p-12'>
+    <div className='w-full rounded-md bg-ob-black-light p-8 text-white'>
+      <div className='flex min-h-[42rem] flex-col items-center justify-center gap-[3rem] lg:p-12'>
         <div className='grid w-full grid-cols-1 gap-4 xl:grid-cols-4'>
           <button
             onClick={() => setStartType(StartTypes.PREINSCRIBE)}
