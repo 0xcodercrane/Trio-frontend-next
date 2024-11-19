@@ -23,15 +23,7 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
     limit
   });
 
-  const { data: orders } = useInscriptionsWithPricesByCollection(slug);
-
-  // Return listed and then other inscriptions.
-  const inscriptions = useMemo(() => {
-    const unlisted = defaultInscriptions
-      ? defaultInscriptions.filter((inscription) => orders?.some((o) => o.inscription_id === inscription.inscription_id))
-      : [];
-    return [...(orders || []), unlisted];
-  }, [orders]);
+  const { data: inscriptionsWithPrices } = useInscriptionsWithPricesByCollection(slug);
 
   if (!defaultInscriptions) return <>No data</>;
 
@@ -43,7 +35,7 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
       <div className='basis-5/6'>
         {viewType === EVIEW_TYPES.GRID ? (
           // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
-          <InscriptionsGrid inscriptions={inscriptions} loading={isPending} />
+          <InscriptionsGrid inscriptions={inscriptionsWithPrices} loading={isPending} />
         ) : (
           // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
           <SingleCollectionInscriptionsTable inscriptions={defaultInscriptions} nextPageLoading={isPlaceholderData} />

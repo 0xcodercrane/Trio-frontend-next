@@ -34,7 +34,7 @@ export default function InscriptionsGrid({
                 square
               />
               {/* TODO: Add price */}
-              <InscriptionOverlay id={inscription.inscription_id} name={inscription.name || ''} />
+              <InscriptionOverlay id={inscription.inscription_id} name={inscription.name || ''} price={inscription.price} />
             </div>
           )}
         </div>

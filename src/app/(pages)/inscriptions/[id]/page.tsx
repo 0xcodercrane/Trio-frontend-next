@@ -4,6 +4,7 @@ import { PanelsWrapper } from '@/components/Collection/FilterPanels';
 import { Avatar, Divider } from '@/components/common';
 import { useInscriptionDataQuery } from '@/components/common/MediaViewer/useInscriptionDataQuery';
 import { Container } from '@/components/Container';
+import InscriptionInfo from '@/components/InscriptionInfo';
 import { SplashPageLayout } from '@/components/Layouts';
 import OrderFlow from '@/components/OrderFlow';
 import Section from '@/components/Section';
@@ -19,11 +20,11 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: inscriptionData } = useInscriptionDataQuery(id);
 
   return (
-    <div className='flex h-auto w-full flex-col bg-ob-purple-darkest'>
+    <div className='bg-ob-purple-darkest flex h-auto w-full flex-col'>
       <Section className='flex items-center justify-center'>
         <SplashPageLayout media={{ type: 'inscription', id }} childrenWrapperJustify='start'>
           <Container paddingLeft className='basis-1/2'>
-            <div className='flex h-full flex-col justify-start'>
+            <div className='flex h-full flex-col justify-start gap-4'>
               <div className='w-full'>
                 {isPendingCollectionData && <Skeleton className='mb-2 h-12 w-2/3' />}
                 {!isPendingCollectionData && <h2 className='mb-2'>{collectionData?.name}</h2>}
@@ -52,6 +53,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
               <Divider className='my-4' />
               <OrderFlow inscriptionId={id} />
+              <InscriptionInfo details={inscriptionData?.details} />
             </div>
           </Container>
         </SplashPageLayout>
