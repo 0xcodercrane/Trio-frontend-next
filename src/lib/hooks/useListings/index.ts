@@ -213,7 +213,8 @@ export function useListings() {
           },
           body: JSON.stringify({
             listingId,
-            signedPSBT: signedPsbtResult.signedPsbtBase64
+            signedPSBT: signedPsbtResult.signedPsbtBase64,
+            makerPaymentAddress
           })
         });
         if (!confirmDelistingResult.ok) {

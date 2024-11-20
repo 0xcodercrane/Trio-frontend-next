@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 
 export async function PUT(req: Request) {
   try {
-    const { signedPSBT, listingId } = await req.json();
+    const { signedPSBT, listingId, makerPaymentAddress } = await req.json();
 
-    if (!signedPSBT || !listingId) {
+    if (!signedPSBT || !listingId || !makerPaymentAddress) {
       return NextResponse.json({ error: 'Invalid request params' }, { status: 400 });
     }
     const response = await fetch(`${ORDINALSBOT_MARKETPLACE_API_URL}/listings/${listingId}/confirm-delist`, {
@@ -15,7 +15,8 @@ export async function PUT(req: Request) {
         'x-api-key': `${ORDINALSBOT_MARKETPLACE_API_KEY}`
       },
       body: JSON.stringify({
-        signedPSBT
+        signedPSBT,
+        makerPaymentAddress
       })
     });
 
