@@ -20,7 +20,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: inscriptionData } = useInscriptionDataQuery(id);
 
   return (
-    <div className='bg-ob-purple-darkest flex h-auto w-full flex-col'>
+    <div className='flex h-auto w-full flex-col bg-ob-purple-darkest'>
       <Section className='flex items-center justify-center'>
         <SplashPageLayout media={{ type: 'inscription', id }} childrenWrapperJustify='start'>
           <Container paddingLeft className='basis-1/2'>

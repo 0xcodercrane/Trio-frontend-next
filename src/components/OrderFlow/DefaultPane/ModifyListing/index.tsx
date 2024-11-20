@@ -72,7 +72,7 @@ const ModifyListing = ({ listing, inscriptionId }: { listing: OrderbookItem; ins
               );
             case EModifyListingState.DELISTING:
               return (
-                <div className='bg-ob-purple flex flex-col gap-2 rounded-lg p-4'>
+                <div className='flex flex-col gap-2 rounded-lg bg-ob-purple p-4'>
                   <div className='text-lg font-bold text-white'>Are you sure you want to cancel this listing?</div>
                   <TermsAndConditions actionName='Yes' />
                   <div className='flex basis-1/2 justify-between gap-2'>
@@ -101,7 +101,7 @@ const ModifyListing = ({ listing, inscriptionId }: { listing: OrderbookItem; ins
               );
             case EModifyListingState.PRICE_CHANGE:
               return (
-                <form className='bg-ob-purple flex flex-col gap-2 rounded-lg p-4'>
+                <form className='flex flex-col gap-2 rounded-lg bg-ob-purple p-4'>
                   <div className='text-lg font-bold text-white'>What do you want to change the price to?</div>
                   <div className='flex w-full flex-row items-center justify-between rounded-sm bg-white pr-2 ring-1 ring-ob-white-20'>
                     <Input

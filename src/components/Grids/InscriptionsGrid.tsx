@@ -1,7 +1,5 @@
 'use client';
 
-import { useMemo } from 'react';
-import { Inscription } from '@/types/database';
 import { MediaWrapper } from '../common';
 import { InscriptionOverlay } from '../InscriptionOverlay';
 import { Skeleton } from '../ui/skeleton';
@@ -14,7 +12,12 @@ export default function InscriptionsGrid({
   inscriptions,
   loading
 }: {
-  inscriptions: Array<{ inscription_id: string; name: string; price?: number }>;
+  inscriptions: Array<{
+    inscription_id: string;
+    name: string;
+    order_status?: 'active' | 'inactive' | 'pending_taker_confirmation' | 'pending_maker_confirmation' | 'broadcast';
+    price?: number;
+  }>;
   loading: boolean;
 }) {
   const router = useRouter();
@@ -34,7 +37,11 @@ export default function InscriptionsGrid({
                 square
               />
               {/* TODO: Add price */}
-              <InscriptionOverlay id={inscription.inscription_id} name={inscription.name || ''} price={inscription.price} />
+              <InscriptionOverlay
+                id={inscription.inscription_id}
+                name={inscription.name || ''}
+                price={inscription.order_status === 'active' ? inscription.price : undefined}
+              />
             </div>
           )}
         </div>

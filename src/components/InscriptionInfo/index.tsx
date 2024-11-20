@@ -16,8 +16,8 @@ enum EInfoState {
 export default function InscriptionInfo({ details }: InscriptionInfoProps) {
   const [selectedTab, setSelectedTab] = useState<EInfoState>(EInfoState.DETAILS);
   return (
-    <div className='bg-ob-purple-dark rounded-lg text-white'>
-      <div className='bg-ob-purple flex basis-1/2 flex-row rounded-lg'>
+    <div className='rounded-lg bg-ob-purple-dark text-white'>
+      <div className='flex basis-1/2 flex-row rounded-lg bg-ob-purple'>
         <button
           className={`w-full rounded-lg p-4 text-center ${selectedTab === EInfoState.DETAILS ? 'bg-ob-purple-lighter' : 'bg-ob-purple'}`}
           onClick={() => setSelectedTab(EInfoState.DETAILS)}
