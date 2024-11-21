@@ -9,7 +9,7 @@ export default function Pagination() {
       <PrevPage />
       <div className='rounded-sm bg-white/[0.20] text-ob-black'>
         <span className='p-2 text-white'>
-          {offset + 1} - {offset + 1 + limit}
+          {offset + 1} - {offset + limit}
         </span>
       </div>
       <NextPage />

@@ -16,7 +16,12 @@ export function FilterPanelHeader({ setCurrentTab, currentTab, tabValues, toolba
     <div className='flex w-full flex-row justify-between'>
       <div className='flex-start flex flex-row items-center gap-4'>
         {tabValues.map((tab, index) => (
-          <Button onClick={() => setCurrentTab(tab)} key={index} className={`${tab === currentTab ? 'active' : ''}`}>
+          <Button
+            variant='tab'
+            onClick={() => setCurrentTab(tab)}
+            key={index}
+            className={`${tab === currentTab ? 'bg-ob-purple-light' : ''}`}
+          >
             {tab}
           </Button>
         ))}
@@ -24,13 +29,13 @@ export function FilterPanelHeader({ setCurrentTab, currentTab, tabValues, toolba
       {toolbar && (
         <div className='flex flex-row items-center gap-4'>
           <Pagination />
-          <Button>
+          {/* <Button>
             Search
             <Search size={16} />
-          </Button>
+          </Button> */}
           <SortBy />
-          <ViewTypeSelector />
-          <SizeSelector />
+          {/* <ViewTypeSelector />
+          <SizeSelector /> */}
         </div>
       )}
     </div>

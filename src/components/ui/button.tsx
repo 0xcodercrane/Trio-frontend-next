@@ -19,7 +19,7 @@ const buttonVariants = cva(
         ghost:
           'hover:text-accent-foreground text-ob-white-40 hover:text-ob-white-80 *:grayscale *:hover:grayscale-0 border border-zinc-400',
         link: 'text-primary underline-offset-4 hover:underline',
-        tab: 'bg-ob-purple text-white hover:bg-purple/80 active:text-black active:bg-white',
+        tab: 'bg-ob-purple-light text-white hover:bg-ob-purple active:text-black active:bg-white',
         icon: 'bg-white text-black hover:bg-ob-white/80'
       },
       size: {

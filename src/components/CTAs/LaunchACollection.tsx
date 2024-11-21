@@ -5,6 +5,7 @@ import { useRandomInscriptionsQuery } from '@/lib/services';
 import { MediaWrapper } from '../common';
 import { Skeleton } from '../ui/skeleton';
 import { Container } from '../Container';
+import Link from 'next/link';
 
 const IMG_HEIGHT = 360;
 
@@ -21,10 +22,12 @@ export default function LaunchACollection() {
             magna aliqua. Ut enim ad minim veniam.
           </span>
           <div className='flex flex-row gap-4'>
-            <Button className='min-w-[90px]'>Launch</Button>
-            <Button className='min-w-[90px]' variant='outline'>
-              View Collections
-            </Button>
+            <Link
+              href='/launchpad'
+              className='min-w-[90px] rounded-full bg-ob-yellow p-2 px-4 text-lg font-semibold capitalize text-black'
+            >
+              Launch
+            </Link>
           </div>
         </div>
 

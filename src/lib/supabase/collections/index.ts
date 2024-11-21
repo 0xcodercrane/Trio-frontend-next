@@ -47,23 +47,11 @@ const INSCRIPTIONS_BY_COLLECTION_ID_QUERY = `
     )
   `;
 
-const COLLECTIONS_WITH_ORDERBOOK_QUERY = `
-  *,
-  inscriptions!collection_id!inner (
-    *,
-    utxo_contents!inner (
-      utxos!inner (
-        *,
-        orderbook!inner (*)
-      )
-    )
-  )
-`;
-
 export const getEntireCollectionBySlug = async (slug: string) =>
   supabase.from('collections').select(COLLECTION_QUERY).eq('slug', slug);
 export const getEntireCollectionById = async (id: number) =>
   supabase.from('collections').select(COLLECTION_QUERY).eq('id', id);
+
 export const getInscriptionsByCollectionId = async (collectionId: number, pagination: TPagination) =>
   supabase
     .from('inscriptions')
@@ -83,8 +71,4 @@ export const getInscriptionWithCollectionData = async (id: string) =>
 
 export const getCollectionIdFromSlug = async (slug: string) => supabase.from('collections').select('id').eq('slug', slug);
 
-export const getCollectionsWithOrderbooks = async ({ offset, limit }: TPagination) =>
-  supabase
-    .from('collections')
-    .select(COLLECTIONS_WITH_ORDERBOOK_QUERY)
-    .range(offset, offset + limit - 1);
+export const getCollections = async () => supabase.rpc('get_collections'); //.range(pagination.offset, pagination.offset + pagination.limit - 1);
