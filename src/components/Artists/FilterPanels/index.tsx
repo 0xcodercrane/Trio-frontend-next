@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { FilterPanelHeader } from '@/components/FilterPanel';
 import Section from '@/components/Section';
 import { MultiCollectionFilterPanel } from '@/components/Collections/FilterPanels/MultiCollectionFilterPanel';
+import { EVIEW_TYPES } from '@/lib/constants';
 
 export enum ETABS {
   ALL_ARTISTS = 'all artists',
@@ -37,6 +38,7 @@ const Panels = () => {
           currentTab={currentTab}
           tabValues={TabValues}
           toolbar={currentTab === ETABS.ALL_ARTISTS}
+          viewType={EVIEW_TYPES.LIST}
         />
         <div className='flex flex-row'>{renderTab()}</div>
       </div>

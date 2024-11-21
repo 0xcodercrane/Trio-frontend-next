@@ -23,20 +23,20 @@ export default function InscriptionsGrid({
   const router = useRouter();
   const { size } = useFilter();
   return (
-    <div className={`flex flex-row flex-wrap gap-2`}>
+    <div className={`flex flex-row flex-wrap gap-4`}>
       {inscriptions.map((inscription, index) => (
-        <div key={index} className={`relative ${mapSizeToBasis(size)}`}>
+        <div key={inscription.inscription_id} className={`relative ${mapSizeToBasis(size)} group cursor-pointer`}>
           {loading ? (
             <Skeleton className='h-full max-h-[--inscription-largest] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest] xs:min-h-[--inscription-tiniest] md:min-h-[--inscription-large]' />
           ) : (
             <div onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`)} className='cursor-pointer'>
               <MediaWrapper
                 id={inscription.inscription_id}
-                className='relative max-w-full overflow-hidden rounded-xl'
+                className='relative max-w-full overflow-hidden rounded-xl group-hover:opacity-80'
                 size={mapSizeToGlobalVar(size)}
                 square
               />
-              {/* TODO: Add price */}
+
               <InscriptionOverlay
                 id={inscription.inscription_id}
                 name={inscription.name || ''}

@@ -14,7 +14,7 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
 
   const { offset, limit, viewType } = useFilter();
   const {
-    data: defaultInscriptions,
+    data: inscriptions,
     isPending,
     error,
     isPlaceholderData
@@ -25,21 +25,19 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
 
   const { data: inscriptionsWithPrices } = useInscriptionsWithPricesByCollection(slug);
 
-  if (!defaultInscriptions) return <>No data</>;
+  if (!inscriptions) return <>No data</>;
 
   return (
     <>
-      <div className='basis-1/6'>
+      {/* <div className='basis-1/6'>
         <Filters currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />
-      </div>
+      </div> */}
       <div className='basis-5/6'>
-        {viewType === EVIEW_TYPES.GRID ? (
-          // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
-          <InscriptionsGrid inscriptions={inscriptionsWithPrices} loading={isPending} />
-        ) : (
-          // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
-          <SingleCollectionInscriptionsTable inscriptions={defaultInscriptions} nextPageLoading={isPlaceholderData} />
-        )}
+        {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out. */}
+        <InscriptionsGrid inscriptions={inscriptionsWithPrices as any} loading={isPending} />
+
+        {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
+          // <SingleCollectionInscriptionsTable inscriptions={inscriptions} nextPageLoading={isPlaceholderData} /> */}
       </div>
     </>
   );

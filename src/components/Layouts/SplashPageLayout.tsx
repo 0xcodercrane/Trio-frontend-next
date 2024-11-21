@@ -25,7 +25,7 @@ export default function SplashPageLayout({
     <div className={`flex flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}>
       <div className='flex basis-1/2 items-start justify-start'>
         {type === 'inscription' ? (
-          <div>
+          <div className='w-full'>
             <MediaWrapper id={id} size='full' className='relative overflow-hidden rounded-xl' />
           </div>
         ) : (

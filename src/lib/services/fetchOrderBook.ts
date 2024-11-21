@@ -30,6 +30,7 @@ export const useOrderbookByAddress = (address: string | undefined) => {
   return;
 };
 
+// TODO: turn this into infinite query + add filters
 export const useInscriptionsWithPricesByCollection = (collectionSlug: string | undefined) =>
   useQuery({
     queryKey: ['inscriptions-with-prices-by-collection-slug', collectionSlug],

@@ -1,13 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import NotFound from '@/app/not-found';
-import { Loading } from '@/components/common';
 import { useCollectionBySlugQuery } from '@/lib/services';
 import { Container } from '@/components/Container';
-import { PanelsWrapper } from '@/components/Collection/FilterPanels';
+import { Panels } from '@/components/Collection/FilterPanels';
+import { Skeleton } from '../ui/skeleton';
 
 interface CollectionProps {
   slug: string;
@@ -16,30 +13,24 @@ interface CollectionProps {
 export default function Collection({ slug }: CollectionProps) {
   const { data, isPending, error } = useCollectionBySlugQuery(slug);
 
-  if (isPending) return <Loading />;
-  if (!data)
-    return (
-      <div className='flex w-full justify-center'>
-        <NotFound />
-      </div>
-    );
-
-  const { name, description, twitter_link, discord_link, website_link, artist } = data!;
+  const { name, description, twitter_link, discord_link, website_link, artist, banner_image, icon } = data || {};
 
   return (
     <div className='relative'>
-      <div className='absolute z-0 h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))] w-full'>
-        <div className='absolute z-20 h-full w-full bg-gradient-to-t from-ob-black via-ob-black/[0.80] to-transparent'></div>
-        <Image
-          src='/img/placeholder-hero.jpg'
-          alt={`some hero image`}
-          className='h-full w-full'
-          width={1000}
-          height={1000}
-          style={{
-            objectFit: 'cover'
-          }}
-        />
+      <div className='absolute z-0 h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))] w-full bg-ob-purple-dark'>
+        <div className='absolute z-20 h-full w-full bg-gradient-to-t from-ob-black via-ob-black/[0.80] to-ob-black/[0.1]'></div>
+        {banner_image && (
+          <img
+            src={banner_image}
+            alt={`banner image`}
+            className='h-full w-full'
+            width={1000}
+            height={1000}
+            style={{
+              objectFit: 'cover'
+            }}
+          />
+        )}
       </div>
 
       <Container padding>
@@ -69,52 +60,59 @@ export default function Collection({ slug }: CollectionProps) {
                     if (row.url === null) return null;
                     return (
                       <div key={index} className=''>
-                        <Link href={row.url} className='transition-opacity hover:opacity-75'>
-                          <img src={`/img/socials/${row.label}.svg`} alt={`${row} icon`} width={24} height={24} />
-                        </Link>
+                        {row.url ? (
+                          <Link href={row.url} className='transition-opacity hover:opacity-75'>
+                            <img src={`/img/socials/${row.label}.svg`} alt={`${row} icon`} width={24} height={24} />
+                          </Link>
+                        ) : (
+                          <Skeleton className='h-6 w-6' />
+                        )}
                       </div>
                     );
                   })}
                 </div>
-                <div>
-                  <h2 className='text-6xl text-white'>{name}</h2>
-                </div>
+                <div>{name ? <h2 className='text-6xl text-white'>{name}</h2> : <Skeleton className='h-12 w-full' />}</div>
 
                 <div className='flex flex-row gap-8'>
                   {[
                     {
                       label: 'assets',
-                      value: data.inscriptions.length
+                      value: data ? data.inscriptions.length : undefined
                     },
-                    {
-                      label: 'royalties',
-                      value: '0.00%'
-                    },
-                    {
-                      label: 'created',
-                      value: new Date().toLocaleDateString()
-                    },
+                    // {
+                    //   label: 'royalties',
+                    //   value: '0.00%'
+                    // },
+                    // {
+                    //   label: 'created',
+                    //   value: new Date().toLocaleDateString()
+                    // },
                     {
                       label: 'chain',
                       value: 'bitcoin'
-                    },
-                    {
-                      label: 'mint price',
-                      value: `${0.0000325} BTC`
                     }
+                    // {
+                    //   label: 'mint price',
+                    //   value: `${0.0000325} BTC`
+                    // }
                   ].map((row, index) => {
                     return (
                       <div key={index} className='flex flex-col justify-between capitalize text-white'>
                         <span className='bold text-sm'>{row.label}</span>
-                        <span className='bold'>{row.value}</span>
+                        <span className='bold'>{row.value ? row.value : <Skeleton className='min-h-6 w-full' />}</span>
                       </div>
                     );
                   })}
                 </div>
               </div>
 
-              <div className='flex basis-1/2 flex-col justify-end'>
-                <div className='flex min-h-[320px] w-full flex-row justify-end'>
+              <div className='flex basis-1/2 flex-row justify-end'>
+                {icon ? (
+                  <img className='w-[210px] rounded-xl' src={icon} />
+                ) : (
+                  <Skeleton className='h-[210px] w-[210px] rounded-xl' />
+                )}
+                {/* <div className='flex min-h-[320px] w-full flex-row justify-end'>
                   <div className='flex min-w-[210px] max-w-[210px] rounded-xl bg-white/[0.14] p-6'>
                     <div className='flex w-full flex-col items-center justify-between'>
                       <Image
@@ -132,14 +130,14 @@ export default function Collection({ slug }: CollectionProps) {
                       </Link>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
         </div>
       </Container>
 
-      <PanelsWrapper slug={slug} />
+      <Panels slug={slug} />
     </div>
   );
 }
