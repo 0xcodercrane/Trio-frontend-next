@@ -10,6 +10,7 @@
     "lint:fix": "eslint --fix .",
     "test:playwright": "npx playwright test",
     "gen:types": "npx supabase gen types --lang=typescript --project-id 'itprplfqroppstwlvhtd' --schema public > src/types/database/database.types.ts",
+    "gen:types:signet": "npx supabase gen types --lang=typescript --project-id 'uejzfcavwugefgaslgqk' --schema public > src/types/database/database.types.ts",
     "prepare": "husky"
   },
   "dependencies": {

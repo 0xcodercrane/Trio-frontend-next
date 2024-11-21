@@ -7,9 +7,23 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { satsToBitcoin } from '@/lib/utilities';
 import { useMemo } from 'react';
 
-//TODO - Figure out the type for objects receives as a result of a join from supabase
-type CollectionExt = Collection & { floor_price: number; total_listings: number; total_supply: number };
-export function CollectionsTable({ collections, isLoading }: { collections: CollectionExt[]; isLoading: boolean }) {
+//TODO - Use supabase types - do not redeclare
+export function CollectionsTable({
+  collections,
+  isLoading
+}: {
+  collections: {
+    id: number;
+    slug: string;
+    name: string;
+    icon: string;
+    is_under_review: boolean;
+    floor_price: number;
+    total_supply: number;
+    total_listings: number;
+  }[];
+  isLoading: boolean;
+}) {
   const router = useRouter();
 
   return (

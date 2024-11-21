@@ -1,31 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-          extensions?: Json;
-        };
-        Returns: Json;
-      };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
   public: {
     Tables: {
       addresses: {
@@ -201,6 +176,7 @@ export type Database = {
       collections: {
         Row: {
           artist_id: number | null;
+          banner_image: string | null;
           description: string | null;
           discord_link: string | null;
           icon: string | null;
@@ -214,6 +190,7 @@ export type Database = {
         };
         Insert: {
           artist_id?: number | null;
+          banner_image?: string | null;
           description?: string | null;
           discord_link?: string | null;
           icon?: string | null;
@@ -227,6 +204,7 @@ export type Database = {
         };
         Update: {
           artist_id?: number | null;
+          banner_image?: string | null;
           description?: string | null;
           discord_link?: string | null;
           icon?: string | null;
@@ -500,6 +478,7 @@ export type Database = {
           price: number;
           psbt_id: number;
           relisted_at: string | null;
+          relisted_maker_output_value: number | null;
           relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
@@ -527,6 +506,7 @@ export type Database = {
           price: number;
           psbt_id: number;
           relisted_at?: string | null;
+          relisted_maker_output_value?: number | null;
           relisted_price?: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
@@ -554,6 +534,7 @@ export type Database = {
           price?: number;
           psbt_id?: number;
           relisted_at?: string | null;
+          relisted_maker_output_value?: number | null;
           relisted_price?: number | null;
           side?: string;
           status?: Database['public']['Enums']['order_book_status'];
@@ -944,6 +925,19 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      get_collections: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          id: number;
+          slug: string;
+          name: string;
+          icon: string;
+          is_under_review: boolean;
+          floor_price: number;
+          total_supply: number;
+          total_listings: number;
+        }[];
+      };
       get_inscriptions_with_price_by_collection_slug: {
         Args: {
           _collection_slug: string;
@@ -990,6 +984,7 @@ export type Database = {
           price: number;
           psbt_id: number;
           relisted_at: string | null;
+          relisted_maker_output_value: number | null;
           relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
@@ -1022,6 +1017,7 @@ export type Database = {
           price: number;
           psbt_id: number;
           relisted_at: string | null;
+          relisted_maker_output_value: number | null;
           relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
@@ -1047,7 +1043,13 @@ export type Database = {
     };
     Enums: {
       launchpad_status: 'active' | 'pending';
-      order_book_status: 'active' | 'inactive' | 'pending_taker_confirmation' | 'pending_maker_confirmation' | 'broadcast';
+      order_book_status:
+        | 'active'
+        | 'inactive'
+        | 'pending_taker_confirmation'
+        | 'pending_maker_confirmation'
+        | 'broadcast'
+        | 'canceled';
       phase_batch_status: 'processing' | 'unsigned' | 'signed';
       trade_history_status: 'mempool' | 'confirmed' | 'sniped' | 'initiated';
     };
