@@ -15,12 +15,12 @@ export function useListings() {
   const { withPaddingOutputs } = usePaddingOutputs();
 
   const listInscriptions = useCallback(
-    async (inscriptions: InscriptionItem[]) => {
+    async (inscriptions: InscriptionItem[], mutateOnSuccess = true) => {
       try {
         const utxos = [];
         for (const inscription of inscriptions) {
           try {
-            const response = await fetch(`/api/inscriptions/details/${inscription.inscription_id}`);
+            const response = await fetch(`/api/inscriptions/details/${inscription.inscription_id}`, { cache: 'no-store' });
             if (!response.ok) {
               throw new Error('Failed to fetch custom token');
             }
@@ -80,20 +80,22 @@ export function useListings() {
           throw new Error('Failed to confirm listing');
         }
 
-        toast.success('Inscription listed successfully');
+        if (mutateOnSuccess) {
+          // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
+          setTimeout(
+            () =>
+              // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
+              //        to refresh queries that fetch orders for multiple items, this needs to be extended.
+              queryClient.invalidateQueries({
+                predicate: (query) =>
+                  query.queryKey[0] === 'orderbook-by-inscription-id' &&
+                  inscriptions.some((i) => i.inscription_id === query.queryKey[1])
+              }),
+            1000
+          );
+          toast.success('Inscription listed successfully');
+        }
 
-        // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
-        setTimeout(
-          () =>
-            // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
-            //        to refresh queries that fetch orders for multiple items, this needs to be extended.
-            queryClient.invalidateQueries({
-              predicate: (query) =>
-                query.queryKey[0] === 'orderbook-by-inscription-id' &&
-                inscriptions.some((i) => i.inscription_id === query.queryKey[1])
-            }),
-          1000
-        );
         return true;
       } catch (error: any) {
         toast.error(error.message);
@@ -105,71 +107,30 @@ export function useListings() {
   );
 
   const updateListingPrice = useCallback(
-    async (inscriptionId: string, listingId: number, newPriceSats: number) => {
+    async (inscriptionId: string, listingId: number, newPriceSats: number, mutateOnSuccess = true) => {
       try {
-        if (!wallet) {
-          throw new Error('Please connect your wallet.');
-        }
-        const {
-          paymentAddress: makerPaymentAddress,
-          paymentPublicKey: makerPaymentPublicKey,
-          ordinalsPublicKey: makerOrdinalPublicKey
-        } = wallet;
+        await cancelListing(inscriptionId, listingId, false);
+        await listInscriptions([{ inscription_id: inscriptionId, price: newPriceSats }], false);
 
-        const result = await fetch('/api/listings/relist/prepare', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            makerPaymentAddress,
-            makerPaymentPublicKey,
-            makerOrdinalPublicKey,
-            price: newPriceSats,
-            listingId
-          })
-        });
-        if (!result.ok) {
-          throw new Error('Failed to get psbt to update listing.');
-        }
-        const { psbt } = await result.json();
-
-        const signedPsbtResult = await signPsbt(psbt, false, false);
-
-        if (!signedPsbtResult || !signedPsbtResult.signedPsbtBase64) {
-          throw new Error('Signing psbt failed.');
-        }
-        const confirmRelistingResult = await fetch('/api/listings/relist/confirm', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            listingId,
-            signedPSBT: signedPsbtResult.signedPsbtBase64
-          })
-        });
-        if (!confirmRelistingResult.ok) {
-          throw new Error('Failed to update listing price.');
+        if (mutateOnSuccess) {
+          toast.success('Inscription price changed successfully.');
+          // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
+          setTimeout(
+            () =>
+              // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
+              //        to refresh queries that fetch orders for multiple items, this needs to be extended.
+              queryClient.invalidateQueries({
+                predicate: (query) =>
+                  query.queryKey[0] === 'orderbook-by-inscription-id' && inscriptionId === query.queryKey[1]
+              }),
+            1000
+          );
         }
 
-        toast.success('Inscription price updated successfully.');
-
-        // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
-        setTimeout(
-          () =>
-            // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
-            //        to refresh queries that fetch orders for multiple items, this needs to be extended.
-            queryClient.invalidateQueries({
-              predicate: (query) =>
-                query.queryKey[0] === 'orderbook-by-inscription-id' && inscriptionId === query.queryKey[1]
-            }),
-          1000
-        );
         return true;
       } catch (error: any) {
         toast.error(error.message);
-        console.error('Listing update failed: ', error);
+        console.error('Listing price update failed.');
         return false;
       }
     },
@@ -177,7 +138,7 @@ export function useListings() {
   );
 
   const cancelListing = useCallback(
-    async (inscriptionId: string, listingId: number) => {
+    async (inscriptionId: string, listingId: number, mutateOnSuccess = true) => {
       try {
         if (!wallet) {
           throw new Error('Please connect your wallet.');
@@ -199,8 +160,7 @@ export function useListings() {
           throw new Error('Failed to get psbt to cancel the listing.');
         }
         const psbt = await result.json();
-        // TODO: Test this once BE is fixed.
-        console.log('Delisting result >> ', psbt);
+
         const signedPsbtResult = await signPsbt(psbt, false, false);
 
         if (!signedPsbtResult || !signedPsbtResult.signedPsbtBase64) {
@@ -221,19 +181,21 @@ export function useListings() {
           throw new Error('Failed to delist the item..');
         }
 
-        toast.success('Inscription delisted successfully.');
+        if (mutateOnSuccess) {
+          toast.success('Inscription delisted successfully.');
+          // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
+          setTimeout(
+            () =>
+              // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
+              //        to refresh queries that fetch orders for multiple items, this needs to be extended.
+              queryClient.invalidateQueries({
+                predicate: (query) =>
+                  query.queryKey[0] === 'orderbook-by-inscription-id' && inscriptionId === query.queryKey[1]
+              }),
+            1000
+          );
+        }
 
-        // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
-        setTimeout(
-          () =>
-            // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
-            //        to refresh queries that fetch orders for multiple items, this needs to be extended.
-            queryClient.invalidateQueries({
-              predicate: (query) =>
-                query.queryKey[0] === 'orderbook-by-inscription-id' && inscriptionId === query.queryKey[1]
-            }),
-          1000
-        );
         return true;
       } catch (error: any) {
         toast.error(error.message);
