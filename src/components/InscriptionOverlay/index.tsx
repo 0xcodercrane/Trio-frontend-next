@@ -22,7 +22,11 @@ export const InscriptionOverlay = ({
       <div className='flex w-full flex-row items-center justify-between rounded-b-xl bg-[#000]/[0.50] px-4 py-2 text-center backdrop-blur-2xl'>
         <span className='text-left font-extrabold capitalize'>{name}</span>
         {rank ? <span className='text-xs font-extrabold'>#{rank}</span> : null}
-        {price ? <span className='text-xs font-extrabold'>{satsToBitcoin(price)} BTC</span> : null}
+        {price ? (
+          <span className='text-xs font-extrabold'>{satsToBitcoin(price)} BTC</span>
+        ) : (
+          <span className='text-xs font-thin italic'>Unlisted</span>
+        )}
       </div>
     </div>
   );
