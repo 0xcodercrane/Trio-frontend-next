@@ -51,13 +51,13 @@ export const MyAssetsTab = () => {
 
   return (
     <div>
-      {selectedInscriptions && selectedInscriptions.length > 0 && (
+      {/* {selectedInscriptions && selectedInscriptions.length > 0 && (
         <div className='mb-4 mt-4 text-end'>
           <Button variant='secondary' onClick={() => handleSellSelected()}>
             Sell Selected
           </Button>
         </div>
-      )}
+      )} */}
       <div className='flex h-full basis-5/6 flex-wrap gap-4'>
         {walletInscriptions?.map(
           (inscription: any, index: any) =>
@@ -67,8 +67,8 @@ export const MyAssetsTab = () => {
               <InscriptionCard
                 key={`ordinal-${index}`}
                 inscription={inscription}
-                handleMultiSelect={handleMultiSelect}
-                handleSellInscription={listInscriptions}
+                // handleMultiSelect={handleMultiSelect}
+                // handleSellInscription={listInscriptions}
               />
             )
         )}

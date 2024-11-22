@@ -108,7 +108,7 @@ export default function Collection({ slug }: CollectionProps) {
 
               <div className='flex basis-1/2 flex-row justify-end'>
                 {icon ? (
-                  <img className='w-[210px] rounded-xl' src={icon} />
+                  <img className='h-[210px] w-[210px] rounded-xl' src={icon} />
                 ) : (
                   <Skeleton className='h-[210px] w-[210px] rounded-xl' />
                 )}

@@ -11,27 +11,27 @@ import { PointsPane } from '../PointsPane/PointsPane';
 import OrdersPane from '../OrdersPane';
 
 enum EProfilePanes {
-  ACCOUNT = 'account',
-  BUY_TRIO = 'buy trio',
-  ORDERS = 'orders',
+  // ACCOUNT = 'account',
   MY_ASSETS = 'My Assets',
-  POINTS = 'trio points'
+  BUY_TRIO = 'Buy TRIO',
+  // ORDERS = 'orders',
+  POINTS = 'Points'
 }
 
 const ProfilePaneValues = Object.values(EProfilePanes);
 
 const ProfilePaneConfig = {
-  [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
-  [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
-  [EProfilePanes.ORDERS]: () => <OrdersPane />,
+  // [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
   [EProfilePanes.MY_ASSETS]: () => <MyAssetsTab />,
+  [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
+  // [EProfilePanes.ORDERS]: () => <OrdersPane />,
   [EProfilePanes.POINTS]: () => <PointsPane />
 };
 
 export default function ProfilePane() {
   const { wallet, logout } = useContext(AuthContext);
   const { disconnect } = useLaserEyes();
-  const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.ACCOUNT);
+  const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.MY_ASSETS);
 
   return (
     <div className='flex flex-col justify-start'>
