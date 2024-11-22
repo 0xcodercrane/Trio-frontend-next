@@ -76,8 +76,14 @@ const usePaddingOutputs = () => {
       if (response.success) {
         const result = await signPsbt(response.payload.psbt, true, true);
         toast.success(`Padding outputs setup broadcasted in ${result?.txId}`);
-        queryClient.setQueryData(['padding-outputs-check', wallet?.paymentAddress], true);
-        return callback();
+
+        return new Promise((resolve) => {
+          setTimeout(async () => {
+            await queryClient.invalidateQueries({ queryKey: ['padding-outputs-check', wallet?.paymentAddress] });
+            const cbResult = await callback();
+            resolve(cbResult);
+          }, 10000); // Wait for 10s to let backend catch up with the padding setup tx in the mempool.
+        });
       } else {
         toast.error(response.error);
         return;

@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { makerPaymentAddress, makerPaymentPublicKey, makerOrdinalPublicKey, utxos } = await req.json();
+    const { makerPaymentAddress, makerPaymentPublicKey, makerOrdinalPublicKey, makerOrdinalAddress, utxos } =
+      await req.json();
 
-    if (!makerPaymentAddress || !makerPaymentPublicKey || !makerOrdinalPublicKey || !utxos) {
+    if (!makerPaymentAddress || !makerPaymentPublicKey || !makerOrdinalPublicKey || !makerOrdinalAddress || !utxos) {
       return NextResponse.json({ error: 'Invalid request params' }, { status: 400 });
     }
 
@@ -19,6 +20,7 @@ export async function POST(req: Request) {
         makerPaymentAddress,
         makerPaymentPublicKey,
         makerOrdinalPublicKey,
+        makerOrdinalAddress,
         utxos
       })
     });

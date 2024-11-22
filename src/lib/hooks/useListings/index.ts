@@ -41,7 +41,8 @@ export function useListings() {
         const {
           paymentAddress: makerPaymentAddress,
           paymentPublicKey: makerPaymentPublicKey,
-          ordinalsPublicKey: makerOrdinalPublicKey
+          ordinalsPublicKey: makerOrdinalPublicKey,
+          ordinalsAddress: makerOrdinalAddress
         } = wallet;
 
         const result = await fetch('/api/listings/create', {
@@ -53,6 +54,7 @@ export function useListings() {
             makerPaymentAddress,
             makerPaymentPublicKey,
             makerOrdinalPublicKey,
+            makerOrdinalAddress,
             utxos
           })
         });
@@ -109,8 +111,17 @@ export function useListings() {
   const updateListingPrice = useCallback(
     async (inscriptionId: string, listingId: number, newPriceSats: number, mutateOnSuccess = true) => {
       try {
-        await cancelListing(inscriptionId, listingId, false);
-        await listInscriptions([{ inscription_id: inscriptionId, price: newPriceSats }], false);
+        const isDelistingSuccessful = await cancelListing(inscriptionId, listingId, false);
+        if (!isDelistingSuccessful) {
+          toast.error('Listing price update failed during delisting.');
+          return false;
+        }
+
+        const isListingSuccessful = await listInscriptions([{ inscription_id: inscriptionId, price: newPriceSats }], false);
+        if (!isListingSuccessful) {
+          toast.error('Listing price update failed during relisting.');
+          return false;
+        }
 
         if (mutateOnSuccess) {
           toast.success('Inscription price changed successfully.');
@@ -129,8 +140,8 @@ export function useListings() {
 
         return true;
       } catch (error: any) {
-        toast.error(error.message);
-        console.error('Listing price update failed.');
+        console.error(error.message);
+        toast.error('Listing price update failed.');
         return false;
       }
     },
