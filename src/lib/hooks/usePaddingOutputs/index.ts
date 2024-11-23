@@ -85,7 +85,8 @@ const usePaddingOutputs = () => {
           }, 10000); // Wait for 10s to let backend catch up with the padding setup tx in the mempool.
         });
       } else {
-        toast.error(response.error);
+        console.error('Setting up padding outputs failed:', response.error);
+        toast.error('Setting up padding outputs failed.');
         return;
       }
     },

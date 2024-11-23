@@ -100,8 +100,8 @@ export function useListings() {
 
         return true;
       } catch (error: any) {
-        toast.error(error.message);
-        console.error('Create Error: ', error);
+        console.error('Listing inscription failed:', error.message);
+        toast.error('Listing inscription failed.');
         return false;
       }
     },
@@ -209,8 +209,8 @@ export function useListings() {
 
         return true;
       } catch (error: any) {
-        toast.error(error.message);
-        console.error('Delisting failed: ', error);
+        console.error(error.message);
+        toast.error('Delisting failed.');
         return false;
       }
     },
@@ -222,7 +222,7 @@ export function useListings() {
       withPaddingOutputs(async () => {
         try {
           if (!wallet) {
-            console.error('useListings: No connected wallet found.');
+            toast.error('useListings: No connected wallet found.');
             return;
           }
           const {

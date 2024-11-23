@@ -23,7 +23,7 @@ export const useCollections = (pagination: TPagination) => {
       setMax(data.length);
     }
   }, [data]);
-  console.log(data);
+
   const paginatedResult = useMemo(
     () => (data ? data.slice(pagination.offset, pagination.offset + pagination.limit) : []),
     [data, pagination]
