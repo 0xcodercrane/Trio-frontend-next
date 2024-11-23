@@ -1,7 +1,7 @@
 import { AuthContext } from '@/app/providers/AuthContext';
 import { Loading } from '@/components/common';
 import { Button } from '@/components/ui/button';
-import { Star } from 'lucide-react';
+import numeral from 'numeral';
 import { useContext } from 'react';
 
 export default function HeaderPointsButton() {
@@ -9,8 +9,7 @@ export default function HeaderPointsButton() {
   return (
     <Button className='flex flex-row justify-between gap-2 font-extrabold' variant='secondary'>
       {loading && <Loading />}
-      {(!loading && Math.round(user?.points)) || 0}
-      <Star />
+      {(!loading && numeral(user?.points).format('0.0a')) || 0} XP
     </Button>
   );
 }

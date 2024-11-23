@@ -25,9 +25,9 @@ export default function ConnectedWallet() {
         <MenuCloseButton />
       ) : (
         <div className='flex h-full gap-2'>
-          <PendingOrderButton />
+          {/* <PendingOrderButton /> */}
           <HeaderPointsButton />
-          <Notification />
+          {/* <Notification /> */}
           <Avatar onClick={() => openMenu(EMenuType.PROFILE)} />
         </div>
       )}

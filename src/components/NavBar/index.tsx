@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react';
+import { Search } from '@/components/Search';
 import Link from 'next/link';
 
 type TNavItem = {
@@ -8,17 +8,21 @@ type TNavItem = {
 };
 
 const NAV_CONFIG: TNavItem[] = [
-  {
-    name: 'Marketplace',
-    href: '/'
-  },
+  // {
+  //   name: 'Marketplace',
+  //   href: '/'
+  // },
   {
     name: 'Collections',
     href: '/collections'
   },
+  // {
+  //   name: 'Artists',
+  //   href: '/artists'
+  // },
   {
-    name: 'Artists',
-    href: '/artists'
+    name: 'Launchpad',
+    href: '/launchpad'
   },
   {
     name: 'Trio',
@@ -43,9 +47,7 @@ export default function NavBar() {
           </div>
         ))}
         <div className='h-full border border-white/[0.15]'></div>
-        <div className='flex h-full min-w-[52px] items-center rounded-full bg-white/[0.15] p-[0.5rem]'>
-          <Search className='w-full' size='16' />
-        </div>
+        <Search />
       </div>
     </div>
   );
