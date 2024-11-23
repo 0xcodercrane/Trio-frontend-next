@@ -10,7 +10,8 @@ import { useMemo } from 'react';
 //TODO - Use supabase types - do not redeclare
 export function CollectionsTable({
   collections,
-  isLoading
+  isLoading,
+  searchMode = false
 }: {
   collections: {
     id: number;
@@ -23,23 +24,29 @@ export function CollectionsTable({
     total_listings: number;
   }[];
   isLoading: boolean;
+  searchMode?: boolean;
 }) {
   const router = useRouter();
 
   return (
-    <div className='w-full'>
-      <Table className='w-full'>
-        <TableHeader>
+    <div className='h-full w-full'>
+      <Table className='h-full w-full'>
+        <TableHeader className={`sticky ${searchMode ? 'top-[-1rem]' : 'top-0'}`}>
           <TableRow>
             <TableHead align='left'>Collection</TableHead>
             <TableHead align='right'>Floor price</TableHead>
-            <TableHead align='right'>Listed</TableHead>
-            <TableHead align='right'>Total Supply</TableHead>
-            <TableHead align='right'>24h % Change</TableHead>
-            <TableHead align='right'>24h Volume</TableHead>
+            {!searchMode && (
+              <>
+                <TableHead align='right'>Listed</TableHead>
+                <TableHead align='right'>Total Supply</TableHead>
+              </>
+            )}
+
+            {/* <TableHead align='right'>24h % Change</TableHead>
+            <TableHead align='right'>24h Volume</TableHead> */}
           </TableRow>
         </TableHeader>
-        <TableBody style={{ gap: 4 }}>
+        <TableBody style={{ gap: 4 }} className='overflow-auto'>
           {isLoading
             ? Array.from({ length: 10 }).map((_, indexRow) => (
                 <TableRow key={`row-${indexRow}`}>
@@ -53,7 +60,7 @@ export function CollectionsTable({
                   </TableCell>
                 </TableRow>
               ))
-            : collections.map((collection, index) => {
+            : collections.map((collection) => {
                 return (
                   <TableRow
                     key={collection.id}
@@ -70,16 +77,23 @@ export function CollectionsTable({
                     <TableCell align='right'>
                       {collection.floor_price ? satsToBitcoin(collection.floor_price) + ' BTC' : '—'}
                     </TableCell>
-                    <TableCell align='right'>
-                      {collection.total_listings} ({Math.round((collection.total_listings / collection.total_supply) * 100)}
-                      %)
-                    </TableCell>
-                    <TableCell align='right'>{collection.total_supply}</TableCell>
-                    <TableCell align='right'>—</TableCell>
-                    <TableCell align='right'>—</TableCell>
+                    {!searchMode && (
+                      <>
+                        <TableCell align='right'>
+                          {collection.total_listings} (
+                          {Math.round((collection.total_listings / collection.total_supply) * 100)}
+                          %)
+                        </TableCell>
+                        <TableCell align='right'>{collection.total_supply}</TableCell>
+                      </>
+                    )}
+
+                    {/* <TableCell align='right'>—</TableCell>
+                    <TableCell align='right'>—</TableCell> */}
                   </TableRow>
                 );
               })}
+          {searchMode && collections.length === 0 && 'No collections found.'}
         </TableBody>
       </Table>
     </div>

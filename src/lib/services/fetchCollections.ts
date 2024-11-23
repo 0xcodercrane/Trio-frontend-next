@@ -4,7 +4,7 @@ import { getCollections } from '../supabase';
 import { useEffect, useMemo } from 'react';
 import { useFilter } from '../hooks';
 
-export const useCollections = (pagination: TPagination) => {
+export const useCollections = (pagination: TPagination, searchKeyword = '') => {
   // MEMO: dummy handling of pagination just for launch, to be improved later
   //       filter should be moved out of global state
   const { setMax } = useFilter();
@@ -24,9 +24,14 @@ export const useCollections = (pagination: TPagination) => {
     }
   }, [data]);
 
-  const paginatedResult = useMemo(
-    () => (data ? data.slice(pagination.offset, pagination.offset + pagination.limit) : []),
-    [data, pagination]
-  );
-  return { data: paginatedResult, isPending };
+  const result = useMemo(() => {
+    if (data) {
+      const filteredData = searchKeyword
+        ? data.filter((collection) => collection.name.includes(searchKeyword) || collection.slug.includes(searchKeyword))
+        : data;
+      return filteredData.slice(pagination.offset, pagination.offset + pagination.limit);
+    }
+    return [];
+  }, [data, pagination, searchKeyword]);
+  return { data: result, isPending };
 };

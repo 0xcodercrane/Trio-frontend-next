@@ -10,6 +10,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import { Container } from '@/components/Container';
+import SearchPane from './SearchPane';
 
 export default function MenuPanes() {
   const { menuDisclosure, menuType, menuBG } = useContext(GlobalContext);
@@ -25,6 +26,8 @@ export default function MenuPanes() {
         return <ActivityPane />;
       case EMenuType.WALLET:
         return <WalletConnectionPane />;
+      case EMenuType.SEARCH:
+        return <SearchPane />;
       default:
         return null;
     }
@@ -51,7 +54,7 @@ export default function MenuPanes() {
         </Container>
       </div>
 
-      <div className='absolute inset-0 top-[--header-height] z-40 overflow-y-auto'>
+      <div className='absolute inset-0 top-[--header-height] z-40 overflow-y-auto bg-ob-purple-darkest'>
         <Container justify={menuType === EMenuType.WALLET ? 'center' : 'start'} direction='col' padding>
           <div className='flex h-full w-full flex-col justify-start'>{renderPane()}</div>
         </Container>
