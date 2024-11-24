@@ -20,12 +20,17 @@ export function useListings() {
         const utxos = [];
         for (const inscription of inscriptions) {
           try {
-            const response = await fetch(`/api/inscriptions/details/${inscription.inscription_id}`, { cache: 'no-store' });
-            if (!response.ok) {
-              throw new Error('Failed to fetch custom token');
-            }
-            const data = await response.json();
-            const utxo = data.satpoint.split(':').slice(0, -1).join(':');
+            const fetchOutpoint = async () => {
+              const response = await fetch(`/api/inscriptions/details/${inscription.inscription_id}`, { cache: 'no-store' });
+              if (!response.ok) {
+                throw new Error('Failed to fetch inscription outpoint.');
+              }
+              const data = await response.json();
+              const outpoint = data.satpoint.split(':').slice(0, -1).join(':');
+              return outpoint;
+            };
+
+            const utxo = inscription.outpoint || (await fetchOutpoint());
             utxos.push({
               utxo,
               price: inscription.price
@@ -111,13 +116,23 @@ export function useListings() {
   const updateListingPrice = useCallback(
     async (inscriptionId: string, listingId: number, newPriceSats: number, mutateOnSuccess = true) => {
       try {
-        const isDelistingSuccessful = await cancelListing(inscriptionId, listingId, false);
-        if (!isDelistingSuccessful) {
+        const delistingTxId = await cancelListing(inscriptionId, listingId, false);
+        if (!delistingTxId) {
           toast.error('Listing price update failed during delisting.');
           return false;
         }
 
-        const isListingSuccessful = await listInscriptions([{ inscription_id: inscriptionId, price: newPriceSats }], false);
+        const isListingSuccessful = await listInscriptions(
+          [
+            {
+              inscription_id: inscriptionId,
+              price: newPriceSats,
+              // MEMO: Always uses 0 output index -> based on delisting tx crafted on BE.
+              outpoint: `${delistingTxId}:0`
+            }
+          ],
+          false
+        );
         if (!isListingSuccessful) {
           toast.error('Listing price update failed during relisting.');
           return false;
@@ -189,7 +204,7 @@ export function useListings() {
           })
         });
         if (!confirmDelistingResult.ok) {
-          throw new Error('Failed to delist the item..');
+          throw new Error('Failed to delist the item.');
         }
 
         if (mutateOnSuccess) {
@@ -207,7 +222,8 @@ export function useListings() {
           );
         }
 
-        return true;
+        const { txId } = await confirmDelistingResult.json();
+        return txId;
       } catch (error: any) {
         console.error(error.message);
         toast.error('Delisting failed.');
