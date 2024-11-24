@@ -40,7 +40,7 @@ export default function PopularCollections() {
   }, [currentPage]);
 
   const handleBuyListing = async (id: number) => {
-    const txId = await buyListing(id, 8);
+    // const txId = await buyListing(id, 8);
   };
 
   return (
