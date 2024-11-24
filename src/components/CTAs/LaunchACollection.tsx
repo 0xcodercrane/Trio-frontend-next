@@ -1,11 +1,12 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { useRandomInscriptionsQuery } from '@/lib/services';
 import { MediaWrapper } from '../common';
 import { Skeleton } from '../ui/skeleton';
 import { Container } from '../Container';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 const IMG_HEIGHT = 360;
 
@@ -22,10 +23,7 @@ export default function LaunchACollection() {
             magna aliqua. Ut enim ad minim veniam.
           </span>
           <div className='flex flex-row gap-4'>
-            <Link
-              href='/launchpad'
-              className='min-w-[90px] rounded-full bg-ob-yellow p-2 px-4 text-lg font-semibold capitalize text-black'
-            >
+            <Link href='/launchpad' className={cn(buttonVariants({ variant: 'cta' }))}>
               Launch
             </Link>
           </div>

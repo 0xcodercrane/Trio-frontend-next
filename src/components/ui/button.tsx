@@ -19,8 +19,9 @@ const buttonVariants = cva(
         ghost:
           'hover:text-accent-foreground text-ob-white-40 hover:text-ob-white-80 *:grayscale *:hover:grayscale-0 border border-zinc-400',
         link: 'text-primary underline-offset-4 hover:underline',
-        tab: 'bg-ob-purple-light text-white hover:bg-ob-purple active:text-black active:bg-white',
-        icon: 'bg-white text-black hover:bg-ob-white/80'
+        tab: 'bg-ob-purple-dark text-white hover:bg-ob-purple-darkest [&.active]:text-white [&.active]:bg-ob-purple-light',
+        icon: 'bg-white text-black hover:bg-ob-white/80',
+        cta: 'bg-ob-yellow text-black hover:bg-ob-yellow/80 rounded-lg'
       },
       size: {
         default: 'h-[--button-height-md] px-8 min-w-[80px] w-auto max-w-[160px]',

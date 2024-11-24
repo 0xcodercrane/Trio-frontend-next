@@ -1,9 +1,10 @@
 'use client';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { useCollectionBySlugQuery } from '@/lib/services';
 import { MediaWrapper } from '../common';
 import InscriptionSkeleton from '../Skeletons/InscriptionSkeleton';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export function CollectionSpotLight({ slug }: { slug: string }) {
   const { data, isPending, error } = useCollectionBySlugQuery(slug);
@@ -12,10 +13,7 @@ export function CollectionSpotLight({ slug }: { slug: string }) {
       <div className='flex h-full w-1/2 flex-col justify-center gap-8 py-24 text-white'>
         <h2 className='max-w-md font-bold capitalize'>{data?.name}</h2>
         <span className='max-w-md text-ob-grey-lightest'>{data?.description}</span>
-        <Link
-          href={`/collections/${slug}`}
-          className='max-w-fit rounded-full bg-ob-yellow p-2 px-4 text-lg font-semibold capitalize text-black'
-        >
+        <Link href={`/collections/${slug}`} className={cn(buttonVariants({ variant: 'cta' }))}>
           View Collection
         </Link>
       </div>

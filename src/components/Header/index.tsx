@@ -23,7 +23,13 @@ export default function Header() {
         <div className='grid w-full grid-cols-[1fr_1.5fr_1fr] items-center'>
           <div className='flex h-full items-center'>
             <Link href='/'>
-              <Image className='h-10 w-auto' src='/img/trio-logo.svg' alt={`${APP_NAME} logo`} width={100} height={40} />
+              <Image
+                className='w-aut h-[--header-content-height]'
+                src='/img/trio-logo.svg'
+                alt={`${APP_NAME} logo`}
+                width={95}
+                height={30}
+              />
             </Link>
           </div>
 

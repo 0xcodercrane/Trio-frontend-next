@@ -18,7 +18,7 @@ export default function Collection({ slug }: CollectionProps) {
   return (
     <div className='relative'>
       <div className='absolute z-0 h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))] w-full bg-ob-purple-dark'>
-        <div className='absolute z-20 h-full w-full bg-gradient-to-t from-ob-black via-ob-black/[0.80] to-ob-black/[0.1]'></div>
+        <div className='absolute z-20 h-full w-full bg-gradient-to-t from-ob-purple-darkest via-ob-purple-dark/[0.1] to-ob-purple-darkest'></div>
         {banner_image && (
           <img
             src={banner_image}

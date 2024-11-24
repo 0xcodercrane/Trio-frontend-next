@@ -38,7 +38,7 @@ export const Panels = ({ slug }: { slug: string }) => {
   };
 
   return (
-    <div className='bg-ob-purple-dark'>
+    <div className='bg-ob-purple-darkest'>
       <Section>
         <div className='flex flex-col gap-8'>
           <FilterPanelHeader
