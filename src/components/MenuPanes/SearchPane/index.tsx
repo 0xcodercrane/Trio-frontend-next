@@ -6,7 +6,7 @@ import { useCollections } from '@/lib/services';
 import { useNotificationsQuery } from '@/lib/services/fetchNotifications';
 import { EComponentVariants } from '@/types';
 import { SearchIcon } from 'lucide-react';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function SearchPane() {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -15,11 +15,21 @@ export default function SearchPane() {
   const handleSearchKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value ?? '');
   };
+
+  // Focus on input on pane open.
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <Container direction='col' justify='start'>
       <div className='flex h-[80vh] w-full flex-col items-center text-white'>
         <div className='flex min-w-[320px] items-center justify-between gap-4 rounded-full bg-white/[0.15]'>
           <Input
+            ref={inputRef}
             id='keyword'
             value={searchKeyword}
             onChange={handleSearchKeywordChange}

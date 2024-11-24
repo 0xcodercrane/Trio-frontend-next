@@ -27,7 +27,11 @@ export const useCollections = (pagination: TPagination, searchKeyword = '') => {
   const result = useMemo(() => {
     if (data) {
       const filteredData = searchKeyword
-        ? data.filter((collection) => collection.name.includes(searchKeyword) || collection.slug.includes(searchKeyword))
+        ? data.filter(
+            (collection) =>
+              collection.name.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+              collection.slug.toLowerCase().includes(searchKeyword.toLowerCase())
+          )
         : data;
       return filteredData.slice(pagination.offset, pagination.offset + pagination.limit);
     }

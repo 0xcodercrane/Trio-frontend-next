@@ -55,6 +55,7 @@ export const useInscriptionOrder = (inscriptionId: string) => {
       }
     };
   }, [supabase, latestOrder]);
+  console.log('lo', latestOrder, 'lt', latestTrade, 't', tradeHistory, 'o', orders);
 
   return { latestOrder, latestTrade, isPending: isPendingTradeHistory || isPendingOrderbook };
 };

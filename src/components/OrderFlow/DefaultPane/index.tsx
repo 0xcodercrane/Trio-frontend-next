@@ -43,7 +43,7 @@ export default function DefaultPane({ inscriptionId }: OrderFlowPaneBaseProps) {
                   <FeesPanel listPriceSats={latestOrder.price} feeSats={latestOrder.platform_taker_fee} />
                   <FeeSelector txVirtualSize={txVirtualSize} />
                   <TermsAndConditions actionName='Buy Now' />
-                  <BuyNow orderId={latestOrder?.id} />
+                  <BuyNow orderId={latestOrder?.id} inscriptionId={inscriptionId} />
                 </>
               ) : (
                 'This item is not listed for sale.'

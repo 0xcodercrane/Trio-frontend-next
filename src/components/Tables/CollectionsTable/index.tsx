@@ -5,7 +5,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { satsToBitcoin } from '@/lib/utilities';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
+import { GlobalContext } from '@/app/providers/GlobalContext';
 
 //TODO - Use supabase types - do not redeclare
 export function CollectionsTable({
@@ -27,6 +28,14 @@ export function CollectionsTable({
   searchMode?: boolean;
 }) {
   const router = useRouter();
+  const {
+    menuDisclosure: { close }
+  } = useContext(GlobalContext);
+
+  const handleRowClick = (collectionSlug: string) => {
+    router.push(`/collections/${collectionSlug}`);
+    close();
+  };
 
   return (
     <div className='h-full w-full'>
@@ -62,11 +71,7 @@ export function CollectionsTable({
               ))
             : collections.map((collection) => {
                 return (
-                  <TableRow
-                    key={collection.id}
-                    onClick={() => router.push(`/collections/${collection.slug}`)}
-                    className='cursor-pointer'
-                  >
+                  <TableRow key={collection.id} onClick={() => handleRowClick(collection.slug)} className='cursor-pointer'>
                     <TableCell>
                       <div className='flex h-12 min-h-12 flex-row items-center gap-2'>
                         <img src={collection.icon || ''} className='h-12 w-12' />

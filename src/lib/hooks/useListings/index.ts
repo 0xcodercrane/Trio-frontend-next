@@ -218,7 +218,7 @@ export function useListings() {
   );
 
   const buyListing = useCallback(
-    (id: number, feeRate: number): Promise<string | undefined> =>
+    (id: number, feeRate: number, inscriptionId: string): Promise<string | undefined> =>
       withPaddingOutputs(async () => {
         try {
           if (!wallet) {
@@ -273,6 +273,7 @@ export function useListings() {
           // NOTE: Refetches all inscription and runes orders
           // if runes listings are handled elsewhere, edit the key here
           queryClient.invalidateQueries({ queryKey: ['orderbook'] });
+          queryClient.invalidateQueries({ queryKey: ['orderbook-by-inscription-id', inscriptionId] });
           toast.success(`Transaction broadcasted: ${txId}`);
           return txId;
         } catch (error) {

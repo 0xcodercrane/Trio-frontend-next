@@ -21,11 +21,15 @@ export default function OrderFlow({ inscriptionId }: OrderFlowPaneBaseProps) {
 
   const OrderFlowState = OrderFlowConfig[state];
 
-  const { latestTrade } = useInscriptionOrder(inscriptionId);
+  const { latestTrade, latestOrder } = useInscriptionOrder(inscriptionId);
 
   useEffect(() => {
-    if (latestTrade) {
-      if (latestTrade.status === 'mempool') {
+    setOrderFlowState(EOrderFlowStates.Default);
+  }, []);
+
+  useEffect(() => {
+    if (latestTrade && latestOrder) {
+      if (latestTrade.status === 'mempool' && (latestOrder.status === 'broadcast' || latestOrder.status === 'active')) {
         setOrderFlowState(EOrderFlowStates.Pending);
         if (latestTrade.transaction_id) {
           setTxId(latestTrade.transaction_id);
@@ -35,7 +39,7 @@ export default function OrderFlow({ inscriptionId }: OrderFlowPaneBaseProps) {
         setOrderFlowState(EOrderFlowStates.Default);
       }
     }
-  }, [latestTrade]);
+  }, [latestTrade, latestOrder]);
 
   return (
     <div className='flex h-full w-full'>

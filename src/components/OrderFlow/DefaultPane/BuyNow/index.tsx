@@ -7,9 +7,10 @@ import { Loading } from '@/components/common';
 
 interface BuyNowProps {
   orderId: number | undefined;
+  inscriptionId: string;
 }
 
-export default function BuyNow({ orderId }: BuyNowProps) {
+export default function BuyNow({ orderId, inscriptionId }: BuyNowProps) {
   const [isPendingPurchase, setIsPendingPurchase] = useState(false);
   const { buyListing } = useListings();
   const { setOrderFlowState, setTxId } = useOrderFlow();
@@ -21,7 +22,7 @@ export default function BuyNow({ orderId }: BuyNowProps) {
     }
 
     setIsPendingPurchase(true);
-    const txId = await buyListing(orderId, feeRate);
+    const txId = await buyListing(orderId, feeRate, inscriptionId);
     setIsPendingPurchase(false);
     if (txId) {
       setTxId(txId);
