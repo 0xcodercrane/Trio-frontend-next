@@ -7,7 +7,7 @@ export default function Pagination() {
   return (
     <div className='flex flex-row items-center justify-between gap-4'>
       <PrevPage />
-      <div className='rounded-sm bg-white/[0.20] text-ob-black'>
+      <div className='rounded-full bg-ob-purple-dark'>
         <span className='p-2 text-white'>
           {offset + 1} - {offset + limit}
         </span>

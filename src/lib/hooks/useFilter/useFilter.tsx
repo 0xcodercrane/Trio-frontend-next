@@ -11,6 +11,8 @@ export const useFilter = create<FilterState>()((set, get) => ({
   size: ESIZES.MD,
   setSize: (size: ESIZES) => set({ size }),
   offset: 0,
+  searchKeyword: '',
+  setSearchKeyword: (searchKeyword) => set({ searchKeyword }),
   limit: 10,
   max: DEFAULT_MAX,
   hasNext: () => get().offset + get().limit < get().max,

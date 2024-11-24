@@ -1,18 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { EFILTERS, EVIEW_TYPES } from '@/lib/constants';
-import { InscriptionsGrid } from '@/components/Grids';
 import { useFilter } from '@/lib/hooks/useFilter';
-import { useCollections, useRandomInscriptionsQuery } from '@/lib/services';
-import { Filters } from '@/components/FilterPanel';
-import { CollectionsTable, MultiCollectionInscriptionsTable } from '@/components/Tables';
+import { useCollections } from '@/lib/services';
+import { CollectionsTable } from '@/components/Tables';
 
 export const MultiCollectionFilterPanel = () => {
-  const [currentFilter, setCurrentFilter] = useState(EFILTERS.MOST_LIKED);
-  const { offset, limit, setMax } = useFilter();
+  const { offset, limit, searchKeyword } = useFilter();
 
-  const { data, isPending } = useCollections({ offset, limit });
+  const { data, isPending } = useCollections({ offset, limit }, searchKeyword);
 
   return (
     <div className='flex w-full flex-row gap-8'>
