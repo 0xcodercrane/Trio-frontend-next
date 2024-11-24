@@ -20,7 +20,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const { data: inscriptionData, isLoading: isLoadingInscriptionData } = useInscriptionDataQuery(id);
 
   return (
-    <div className='flex h-auto w-full flex-col bg-ob-purple-darkest'>
+    <div className='mt-12 flex h-auto w-full flex-col bg-ob-purple-darkest'>
       <Section className='flex items-center justify-center'>
         <SplashPageLayout media={{ type: 'inscription', id }} childrenWrapperJustify='start'>
           <Container paddingLeft className='basis-1/2'>
@@ -29,7 +29,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 {isPendingCollectionData || isLoadingInscriptionData ? (
                   <Skeleton className='h-12 w-2/3' />
                 ) : (
-                  <h2>{collectionData?.name ?? `#${inscriptionData?.details.number}`}</h2>
+                  <h3>{collectionData?.name ?? `Inscription #${inscriptionData?.details.number}`}</h3>
                 )}
 
                 {isPendingCollectionData ? (

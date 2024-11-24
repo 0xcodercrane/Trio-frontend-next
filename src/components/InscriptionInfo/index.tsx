@@ -2,6 +2,7 @@ import { InscriptionDetails } from '@/lib/services';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Attribute } from '@/types';
+import { shortenInscriptionId } from '@/lib/utilities';
 
 type InscriptionInfoProps = {
   details: InscriptionDetails | undefined;
@@ -36,7 +37,8 @@ export default function InscriptionInfo({ details }: InscriptionInfoProps) {
           <div>
             <div className='text-xl'>Inscription Information</div>
             <dl className='mt-4 grid grid-cols-4 gap-2'>
-              <dt className='col-span-1'>Inscription ID</dt> <dd className='col-span-3 break-words'>{details?.id}</dd>
+              <dt className='col-span-1'>Inscription ID</dt>{' '}
+              <dd className='col-span-3 break-words'>{shortenInscriptionId(details?.id ?? '')}</dd>
               <dt className='col-span-1'>Inscription Number</dt>{' '}
               <dd className='col-span-3 break-words'>{details?.number}</dd>
               <dt className='col-span-1'>Sat Number</dt> <dd className='col-span-3 break-words'>{details?.sat}</dd>
