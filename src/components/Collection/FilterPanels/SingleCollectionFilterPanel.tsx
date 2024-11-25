@@ -1,16 +1,19 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Filters } from '../../FilterPanel/Filters';
-import { EFILTERS, EVIEW_TYPES } from '@/lib/constants';
-import { InscriptionsGrid } from '@/components/Grids';
-import { SingleCollectionInscriptionsTable } from '@/components/Tables';
-import { useFilter } from '@/lib/hooks/useFilter';
-import { useInscriptionsByCollectionSlug } from '@/lib/services/fetchInscriptionsByCollectionSlug';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useInscriptionsWithPricesByCollection } from '@/lib/services';
+import { InscriptionsGrid } from '@/components/Grids';
 
 export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
-  const { data: inscriptionsWithPrices, isPending } = useInscriptionsWithPricesByCollection(slug);
+  const { data: inscriptionsWithPrices, isPending, fetchNextPage } = useInscriptionsWithPricesByCollection(slug);
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage]);
 
   return (
     <>
@@ -20,7 +23,7 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
       <div className='basis-5/6'>
         {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out. */}
         <InscriptionsGrid inscriptions={(inscriptionsWithPrices as any) ?? []} loading={isPending} />
-
+        <div ref={ref} />
         {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
           // <SingleCollectionInscriptionsTable inscriptions={inscriptions} nextPageLoading={isPlaceholderData} /> */}
       </div>
