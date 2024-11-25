@@ -7,6 +7,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { satsToBitcoin } from '@/lib/utilities';
 import { useContext, useMemo } from 'react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
+import { Img } from '@/components/Img';
+import { Info } from 'lucide-react';
 
 //TODO - Use supabase types - do not redeclare
 export function CollectionsTable({
@@ -74,8 +76,7 @@ export function CollectionsTable({
                   <TableRow key={collection.id} onClick={() => handleRowClick(collection.slug)} className='cursor-pointer'>
                     <TableCell>
                       <div className='flex h-12 min-h-12 flex-row items-center gap-2'>
-                        <img src={collection.icon || ''} className='h-12 w-12' />
-
+                        <Img src={collection.icon || ''} className='h-12 w-12' />
                         <span className='text-lg font-bold'>{collection.name}</span>
                       </div>
                     </TableCell>
@@ -98,9 +99,13 @@ export function CollectionsTable({
                   </TableRow>
                 );
               })}
-          {searchMode && collections.length === 0 && 'No collections found.'}
         </TableBody>
       </Table>
+      {!isLoading && collections.length === 0 && (
+        <div className='flex w-full items-center gap-2 p-4 text-lg text-white'>
+          <Info size={32} /> No collections found.
+        </div>
+      )}
     </div>
   );
 }

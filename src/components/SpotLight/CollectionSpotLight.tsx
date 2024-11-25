@@ -21,7 +21,7 @@ export function CollectionSpotLight({ slug }: { slug: string }) {
         {isPending ? (
           <Skeleton className='h-12 w-36' />
         ) : (
-          <Link href={`/collections/${slug}`} className={cn(buttonVariants({ variant: 'cta' }))}>
+          <Link href={`/collections/${slug}`} className={cn(buttonVariants({ variant: 'cta' }), 'p-4')}>
             View Collection
           </Link>
         )}

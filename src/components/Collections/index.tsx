@@ -18,7 +18,7 @@ export default function Collections() {
         />
       </Container> */}
 
-      <Container bgColor='bg-ob-purple-darkest' padding>
+      <Container bgColor='bg-ob-purple-darkest mt-8' padding>
         <SpotLight type='collection' slug={SPOTLIGHT_COLLECTION_SLUG[NETWORK]} />
       </Container>
 

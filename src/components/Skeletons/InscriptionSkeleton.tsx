@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { getHeight, getWidth } from '@/lib/utilities';
 
 interface InscriptionSkeletonProps {
-  size?: Dimensions | string;
+  size?: number | Dimensions | string;
 }
 
 export default function InscriptionSkeleton({ size = '--inscription-larger' }: InscriptionSkeletonProps) {

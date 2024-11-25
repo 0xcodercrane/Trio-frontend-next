@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useCollections } from '@/lib/services';
 import { useNotificationsQuery } from '@/lib/services/fetchNotifications';
 import { EComponentVariants } from '@/types';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon, XIcon } from 'lucide-react';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function SearchPane() {
@@ -15,6 +15,8 @@ export default function SearchPane() {
   const handleSearchKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(event.target.value ?? '');
   };
+
+  const clearSearch = () => setSearchKeyword('');
 
   // Focus on input on pane open.
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,8 +38,17 @@ export default function SearchPane() {
             placeholder='Search for collection'
             className='col-span-3 rounded-full border-0 bg-transparent'
           />
-          <div className='mx-1 flex w-fit min-w-[52px] items-center rounded-full bg-white/[0.15] p-[0.5rem]'>
-            <SearchIcon className='w-full' size='16' />
+          <div className='flex items-center gap-2'>
+            <div className='w-4'>
+              {searchKeyword && (
+                <button onClick={clearSearch} className='flex items-center'>
+                  <XIcon size='16' />
+                </button>
+              )}
+            </div>
+            <div className='mr-1 flex w-fit min-w-[52px] items-center rounded-full bg-white/[0.15] p-[0.5rem]'>
+              <SearchIcon className='w-full' size='16' />
+            </div>
           </div>
         </div>
         <div className='my-4 h-full w-[600px] overflow-auto rounded-lg bg-ob-purple-dark p-4'>
