@@ -1,9 +1,9 @@
 import { PanelsWrapper } from '@/components/Collections/FilterPanels';
 import { Container } from '@/components/Container';
 import { LaunchACollection } from '@/components/CTAs';
-import PopularCollections from '@/components/PopularCollections';
 import SpotLight from '@/components/SpotLight';
-import HomeCarouselLayout from '../Layouts/HeroCarouselLayout';
+import { NETWORK, SPOTLIGHT_COLLECTION_SLUG } from '@/lib/constants';
+
 export default function Collections() {
   return (
     <div className='h-full w-screen bg-ob-purple-dark'>
@@ -19,7 +19,7 @@ export default function Collections() {
       </Container> */}
 
       <Container bgColor='bg-ob-purple-darkest' padding>
-        <SpotLight type='collection' slug='underground-fragments' />
+        <SpotLight type='collection' slug={SPOTLIGHT_COLLECTION_SLUG[NETWORK]} />
       </Container>
 
       <PanelsWrapper />

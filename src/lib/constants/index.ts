@@ -87,3 +87,9 @@ export const DEFAULT_FEE_RATE = 3;
 export const ESTIMATED_TX_FEE = {
   SINGLE_INSCRIPTION_BUY: 522.5
 };
+
+export const SPOTLIGHT_COLLECTION_SLUG = {
+  [ENETWORK.MAINNET]: 'satoshibles-the-ordinals',
+  [ENETWORK.SIGNET]: 'underground-fragments',
+  [ENETWORK.TESTNET]: 'test'
+};
