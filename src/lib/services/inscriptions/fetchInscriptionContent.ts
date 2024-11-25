@@ -2,7 +2,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 export const fetchInscriptionContent = async (id: string, contentType: string): Promise<string | Blob> => {
   const response = await fetch(`/api/inscriptions/content/${id}`, {
-    cache: 'force-cache'
+    cache: 'no-store'
   });
 
   if (!response.ok) {

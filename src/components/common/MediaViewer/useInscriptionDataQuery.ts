@@ -17,10 +17,12 @@ export function useInscriptionDataQuery(id: string) {
     enabled: !!id
   });
 
+  const contentType = detailsQuery.data?.content_type || detailsQuery.data?.effective_content_type;
+
   const contentQuery = useQuery({
     queryKey: ['inscription-content', id],
-    queryFn: () => fetchInscriptionContent(id, detailsQuery.data?.content_type || ''),
-    enabled: detailsQuery.isSuccess && !!detailsQuery.data?.content_type
+    queryFn: () => fetchInscriptionContent(id, contentType || ''),
+    enabled: detailsQuery.isSuccess && !!contentType
   });
 
   const isLoading = detailsQuery.isLoading || contentQuery.isLoading;
@@ -29,7 +31,7 @@ export function useInscriptionDataQuery(id: string) {
 
   const data: InscriptionData | undefined = isSuccess
     ? {
-        details: detailsQuery.data,
+        details: { ...detailsQuery.data, content_type: contentType || '' },
         content: contentQuery.data
       }
     : undefined;
