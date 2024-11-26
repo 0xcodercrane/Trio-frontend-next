@@ -6,16 +6,18 @@ import { ProportionateAddForm } from '../ProportionateAddForm';
 export const ProportionateAdd = ({
   pool,
   toggleView,
-  totalUserPoints
+  totalUserPoints,
+  totalPayout
 }: {
   pool: TProportionatePool;
   toggleView: () => void;
   totalUserPoints: number;
+  totalPayout: number;
 }) => {
   return (
     <div className='relative flex h-full min-h-[180px] grow flex-col justify-between gap-4 p-4'>
       <div className='w-full rounded-md border bg-ob-purple px-4 py-2'>
-        <ProportionateInfo pool={pool} totalUserPoints={totalUserPoints} />
+        <ProportionateInfo pool={pool} totalUserPoints={totalUserPoints} totalPayout={totalPayout} />
       </div>
       <div className='relative flex w-full grow flex-row items-center justify-center rounded-md border bg-ob-purple p-2'>
         <div

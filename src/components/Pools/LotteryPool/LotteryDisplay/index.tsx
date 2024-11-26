@@ -29,7 +29,7 @@ export const LotteryDisplay = ({
   const poolState = useMemo(() => mapPoolToState(pool, tip), [pool, tip]);
 
   return (
-    <div className='relative flex flex-col gap-4 p-4'>
+    <div className='relative flex h-full flex-col justify-between gap-4 p-4'>
       <div className='flex w-full flex-row items-center justify-between gap-4'>
         <BlockCountdown startBlock={pool.startBlock} endBlock={pool.endBlock} format='time' />
 

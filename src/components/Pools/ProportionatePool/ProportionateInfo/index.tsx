@@ -1,21 +1,22 @@
+import { DataItem } from '@/components/common';
 import { TProportionatePool } from '@/types';
 import numeral from 'numeral';
 
-export const ProportionateInfo = ({ pool, totalUserPoints }: { pool: TProportionatePool; totalUserPoints: number }) => {
+export const ProportionateInfo = ({
+  pool,
+  totalUserPoints,
+  totalPayout
+}: {
+  pool: TProportionatePool;
+  totalUserPoints: number;
+  totalPayout: number;
+}) => {
   const { totalPointsAllocated } = pool;
   return (
     <div className='grid grid-cols-3'>
-      <div className='flex flex-col'>
-        <span className='text-center text-base text-ob-yellow'>Win %</span>
-        <span className='text-base-xl text-center'>
-          {((totalUserPoints / (totalPointsAllocated === 0 ? 1 : totalPointsAllocated)) * 100).toFixed(2)}
-        </span>
-      </div>
-
-      <div className='flex flex-col'>
-        <span className='text-center text-base text-ob-yellow'>Your # Of Tickets</span>
-        <span className='text-base-xl text-center'>{totalUserPoints}</span>
-      </div>
+      <DataItem label='your payout' value={`${numeral(totalPayout).format('0.00')} ${pool.rewards[0].asset}`} />
+      <DataItem label='your pool balance' value={totalUserPoints.toString()} />
+      <DataItem label='total pool balance' value={totalPointsAllocated.toString()} />
     </div>
   );
 };

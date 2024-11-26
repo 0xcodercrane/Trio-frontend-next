@@ -2,6 +2,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
+import { getFunctions } from 'firebase/functions';
 import 'firebase/remote-config';
 import 'firebase/analytics';
 
@@ -20,5 +21,6 @@ const app = !getApps().length ? initializeApp(firebaseClientConfig) : getApp();
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const storage = getStorage(app);
+const functions = getFunctions(app);
 
-export { app, auth, firestore, storage };
+export { app, auth, firestore, storage, functions };

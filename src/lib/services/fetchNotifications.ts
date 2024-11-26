@@ -1,7 +1,7 @@
 import { auth, firestore } from '@/lib/firebase';
 import { TNotification } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 
 export const fetchNotifications = async (userId: string) => {
   if (!userId) throw new Error('User is not authenticated');
@@ -9,7 +9,8 @@ export const fetchNotifications = async (userId: string) => {
   const notificationsQuery = query(
     notificationsRef,
     where('read', '==', false),
-    where('app', 'array-contains-any', ['global', 'trio.xyz'])
+    where('app', 'array-contains-any', ['global', 'trio.xyz']),
+    orderBy('timestamp', 'desc')
   );
   const notificationsData = await getDocs(notificationsQuery);
 
@@ -25,8 +26,6 @@ export const fetchNotifications = async (userId: string) => {
 
 export const useNotificationsQuery = () => {
   const userId = auth.currentUser?.uid;
-
-  console.log('useNotificationsQuery:1');
 
   return useQuery<TNotification[], Error>({
     queryKey: ['notifications', userId],

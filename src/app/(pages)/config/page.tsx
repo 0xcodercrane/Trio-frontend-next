@@ -1,7 +1,6 @@
 import Section from '@/components/Section';
 import {
   MEMPOOL_URL,
-  MEMPOOL_API_URL,
   ORDINALSBOT_MARKETPLACE_API_URL,
   PUBLIC_API_URL,
   SUPABASE_URL,
@@ -14,10 +13,6 @@ export default function Page() {
         <div className='flex flex-col'>
           <span className='text-sm uppercase text-ob-yellow'>MEMPOOL URL</span>
           <span>{MEMPOOL_URL}</span>
-        </div>
-        <div className='flex flex-col'>
-          <span className='text-sm uppercase text-ob-yellow'>MEMPOOL API URL</span>
-          <span>{MEMPOOL_API_URL}</span>
         </div>
         <div className='flex flex-col'>
           <span className='text-sm uppercase text-ob-yellow'>PUBLIC API URL</span>

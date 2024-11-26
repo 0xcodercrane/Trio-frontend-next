@@ -25,7 +25,7 @@ const NAV_CONFIG: TNavItem[] = [
     href: '/launchpad'
   },
   {
-    name: 'Trio',
+    name: 'Rewards',
     href: '/points'
   }
 ];

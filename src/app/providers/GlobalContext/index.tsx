@@ -4,6 +4,9 @@ import { createContext, ReactNode, useContext, useEffect, useMemo, useState } fr
 import { EMenuType, IGlobalContext } from '@/types/global-context.types';
 import { useDisclosure } from '@/lib/hooks';
 import { AuthContext } from '../AuthContext';
+import { TPointsConfigInstance, TPointsMapping } from '@/types/pointsConfig';
+import { pointsConfigRef } from '@/lib/firebase/references';
+import { onSnapshot } from 'firebase/firestore';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GlobalContext = createContext<IGlobalContext>({} as any);
@@ -12,6 +15,7 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
   const { isAuthenticated } = useContext(AuthContext);
   const menuDisclosure = useDisclosure(false);
   const [menuType, setMenuType] = useState<EMenuType>(EMenuType.PROFILE);
+  const [pointsConfig, setPointsConfig] = useState<TPointsMapping | null>(null);
 
   const menuBG = useMemo(() => {
     if (!menuDisclosure.isOpen) return 'transparent';
@@ -27,6 +31,14 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
   }, [menuType, menuDisclosure.isOpen]);
 
   useEffect(() => {
+    const unsubscribe = onSnapshot(pointsConfigRef, (snapshot) => {
+      const configInstance = snapshot.docs[0].data() as TPointsConfigInstance;
+      setPointsConfig(configInstance.config as TPointsMapping);
+    });
+    return () => unsubscribe();
+  });
+
+  useEffect(() => {
     menuDisclosure.close();
   }, [isAuthenticated]);
 
@@ -36,7 +48,8 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
         menuDisclosure,
         menuBG,
         menuType,
-        setMenuType
+        setMenuType,
+        pointsConfig
       }}
     >
       {children}

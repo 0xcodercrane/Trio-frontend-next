@@ -1,36 +1,45 @@
-import { TLotteryPool, TProportionatePool } from '@/types';
+'use client';
+
+import { EPoolState, TLotteryPool, TProportionatePool } from '@/types';
 import numeral from 'numeral';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { BlockCountdown } from '@/components/common/BlockCountdown';
-import { mapPoolTypeToLabel } from '../../helpers';
+import { mapPoolToState, mapPoolTypeToLabel } from '../../helpers';
 import { DataItem } from '@/components/common';
+import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
+import { useMemo } from 'react';
 
 export const ProporationateDisplay = ({
   pool,
   toggleView,
-  totalUserPoints
+  totalUserPoints,
+  totalPayout
 }: {
   pool: TLotteryPool | TProportionatePool;
   toggleView: () => void;
   totalUserPoints: number;
+  totalPayout: number;
 }) => {
+  const { data: tip } = useBlockHeight();
+
   const { title, type } = pool;
 
   const { typeText, additionalInfo } = mapPoolTypeToLabel(type);
 
   const { totalPointsAllocated, minPointsAllocation } = pool as TProportionatePool;
 
+  const poolState = useMemo(() => mapPoolToState(pool, tip), [pool, tip]);
+
   return (
-    <div className='relative flex flex-col gap-4 p-4'>
+    <div className='relative flex h-full flex-col justify-between gap-4 p-4'>
       <div className='flex w-full flex-row items-center justify-between gap-4'>
         <BlockCountdown startBlock={pool.startBlock} endBlock={pool.endBlock} format='time' />
 
         <div className='flex-end flex w-1/2 gap-2'>
           <DataItem label='Your Pool Balance' value={`${numeral(totalUserPoints).format('0a')} XP`} />
-          <DataItem label='Total Points Allocated' value={`${numeral(totalPointsAllocated).format('0a')} XP`} />
-
-          <DataItem label='Current Payout' value={`${numeral(0).format('0')} TRIO`} />
+          {/* <DataItem label='Total Points Allocated' value={`${numeral(totalPointsAllocated).format('0a')} XP`} /> */}
+          <DataItem label='Current Payout' value={`${numeral(totalPayout).format('0.00')}`} />
         </div>
       </div>
 
@@ -62,15 +71,17 @@ export const ProporationateDisplay = ({
 
       <div className='flex w-full flex-row items-end justify-between'>
         {minPointsAllocation && (
-          <div className='w-auto'>
-            <div className='rounded-md bg-ob-purple-lighter px-3 py-1 text-sm font-semibold'>
-              min. {minPointsAllocation} Req
-            </div>
+          <div className='w-full'>
+            {minPointsAllocation !== -1 && (
+              <div className='rounded-md bg-ob-purple-lighter px-3 py-1 text-sm font-semibold text-white'>
+                min. {minPointsAllocation} XP Req
+              </div>
+            )}
           </div>
         )}
 
         <div className='flex w-full flex-row justify-end gap-4'>
-          <Button className='rounded-md bg-ob-yellow' onClick={toggleView}>
+          <Button className='rounded-md' onClick={toggleView} disabled={poolState !== EPoolState.LIVE}>
             Spend Points
           </Button>
         </div>

@@ -1,28 +1,36 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { firestore } from '@/lib/firebase';
-import { collection, doc, getAggregateFromServer, getDoc, query, sum, where } from 'firebase/firestore';
+import { collection, getAggregateFromServer, onSnapshot, query, sum, where } from 'firebase/firestore';
 import { DataItem } from '@/components/common';
-import { ERewardType } from '@/types';
+import { EOrderSubType, ERewardType } from '@/types';
+import { adminMetricsRef } from '@/lib/firebase/references';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { GlobalContext } from '@/app/providers/GlobalContext';
 
 export function PointsAdmin() {
+  const { pointsConfig } = useContext(GlobalContext);
   const [totalPoints, setTotalPoints] = useState<number>(0);
+  const [totalPointsSpent, setTotalPointsSpent] = useState<number>(0);
   const [pointsFromStaking, setPointsFromStaking] = useState<number>(0);
 
   useEffect(() => {
     const initTotalPointsData = async () => {
       try {
-        const adminStats = await getDoc(doc(firestore, 'adminMetrics/live'));
+        onSnapshot(adminMetricsRef, (adminMetrics) => {
+          if (adminMetrics.exists()) {
+            const { totalPoints, totalPointsSpent } = adminMetrics.data();
+            setTotalPoints(totalPoints);
+            setTotalPointsSpent(totalPointsSpent);
+          }
+        });
+
         const stakingPoints = await getAggregateFromServer(
           query(collection(firestore, 'rewards'), where('type', '==', ERewardType.Stake)),
           {
             amount: sum('amount')
           }
         );
-
-        if (adminStats.exists()) {
-          setTotalPoints(adminStats.data().totalPoints);
-        }
 
         if (stakingPoints.data()) {
           setPointsFromStaking(stakingPoints.data().amount);
@@ -40,8 +48,28 @@ export function PointsAdmin() {
       <span className='text-2xl text-ob-yellow'>Points</span>
       <div className='flex flex-row justify-start gap-4'>
         <DataItem label='total points' value={totalPoints.toString()} />
+        <DataItem label='total points spent' value={totalPointsSpent.toString()} />
         <DataItem label='points from XP Mining' value={pointsFromStaking.toString()} />
       </div>
+
+      {/* <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Action</TableHead>
+            <TableHead>Point Value</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {pointsConfig &&
+            Object.keys(pointsConfig.orders).map((key, index) => (
+              <TableRow key={index}>
+                <TableCell>{key}</TableCell>
+                <TableCell>{pointsConfig.orders[key as EOrderSubType]}</TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table> */}
     </div>
   );
 }

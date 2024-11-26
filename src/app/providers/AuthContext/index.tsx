@@ -1,17 +1,26 @@
 'use client';
 import { signIn, signOut } from 'next-auth/react';
-import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { IAuthContext, IWallet } from '../../../types/auth.types';
 import { onAuthStateChanged, signInWithCustomToken, User } from 'firebase/auth';
 import { auth, firestore } from '@/lib/firebase';
 import { ESUPPORTED_WALLETS, WALLET_COOKIE, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
-import { doc, DocumentData, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  DocumentData,
+  getAggregateFromServer,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  sum,
+  where
+} from 'firebase/firestore';
 import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { toast } from 'sonner';
-import { GlobalContext } from '../GlobalContext';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AuthContext = createContext<IAuthContext>({} as any);
 
 const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> }) => {
@@ -26,6 +35,8 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     isInitializing,
     disconnect
   } = useLaserEyes();
+
+  const listeners = useRef<(() => void)[]>([]); // Store unsubscribe functions
 
   const [loading, setLoading] = useState<boolean>(true);
   const [wallet, setWallet] = useState<IWallet | null>(null);
@@ -42,6 +53,9 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     auth
       .signOut()
       .then(() => {
+        // Unsubscribe from all listeners
+        listeners.current.forEach((unsubscribe) => unsubscribe());
+        listeners.current = []; // Reset the listeners list
         localStorage.removeItem(WALLET_COOKIE);
 
         // local purge
@@ -62,6 +76,10 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
   };
 
   const authStateChanged = async (firebaseUser: User | null) => {
+    // Clear existing listeners before setting up new ones
+    listeners.current.forEach((unsubscribe) => unsubscribe());
+    listeners.current = []; // Reset the list
+
     if (firebaseUser) {
       // Initialize wallet from local storage
       const localWallet = JSON.parse(localStorage.getItem(WALLET_COOKIE) || 'null');
@@ -73,37 +91,68 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       const userRef = doc(firestore, 'users', firebaseUser.uid);
       const profileRef = doc(firestore, 'profiles', firebaseUser.uid);
       const pointsRef = doc(firestore, 'pointsBalances', firebaseUser.uid);
+      const syntheticBalanceRef = collection(firestore, `users/${firebaseUser.uid}/stakedBalance`);
 
-      onSnapshot(
-        userRef,
-        async (userData: DocumentData) => {
-          const { claims } = await firebaseUser.getIdTokenResult();
-          setUser((prevUser) => ({
-            ...prevUser,
-            ...userData.data(),
-            roles: RoleValues.filter((role: EUserRole) => claims[role])
-          }));
-        },
-        (error) => {
-          console.log('----- catching firestore error');
-          console.log(error);
-        }
+      listeners.current.push(
+        onSnapshot(
+          userRef,
+          async (userData: DocumentData) => {
+            const { claims } = await firebaseUser.getIdTokenResult();
+            setUser((prevUser) => ({
+              ...prevUser,
+              ...userData.data(),
+              roles: RoleValues.filter((role: EUserRole) => claims[role])
+            }));
+          },
+          (error) => {
+            console.log('----- catching firestore error');
+            console.log(error);
+          }
+        )
       );
 
       // If the users profile changes, pull those changes into the client
-      onSnapshot(profileRef, (profile: DocumentData) => {
+      listeners.current.push(
+        onSnapshot(profileRef, (profile: DocumentData) => {
+          setUser((prevUser) => ({
+            ...prevUser,
+            profile: profile.data() as TUserProfile
+          }));
+        })
+      );
+
+      listeners.current.push(
+        onSnapshot(pointsRef, (points: DocumentData) => {
+          setUser((prevUser) => ({
+            ...prevUser,
+            points: points.data()?.currentBalance
+          }));
+        })
+      );
+
+      listeners.current.push(
+        onSnapshot(query(syntheticBalanceRef, limit(1), orderBy('block', 'desc')), (snap) => {
+          if (snap.docs.length > 0) {
+            setUser((prevUser) => ({
+              ...prevUser,
+              syntheticBalance: snap.docs[0].data().balance
+            }));
+          }
+        })
+      );
+
+      getAggregateFromServer(
+        query(collection(firestore, 'rewards'), where('userId', '==', auth?.currentUser?.uid), where('type', '==', 'stake')),
+        {
+          totalPoints: sum('amount')
+        }
+      ).then((totalPoints) => {
         setUser((prevUser) => ({
           ...prevUser,
-          profile: profile.data() as TUserProfile
+          totalPointsFromStaking: totalPoints.data().totalPoints || 0
         }));
       });
 
-      onSnapshot(pointsRef, (points: DocumentData) => {
-        setUser((prevUser) => ({
-          ...prevUser,
-          points: points.data()?.currentBalance
-        }));
-      });
       setLoading(false);
     } else {
       logout();

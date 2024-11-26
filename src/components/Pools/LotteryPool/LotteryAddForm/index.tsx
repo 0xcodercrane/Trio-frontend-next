@@ -2,26 +2,32 @@
 
 import { auth } from '@/lib/firebase';
 import { TLotteryPool } from '@/types';
-import { firestore } from '@/lib/firebase';
-import { addDoc, collection } from 'firebase/firestore';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import numeral from 'numeral';
 import { Button } from '@/components/ui/button';
+import { AuthContext } from '@/app/providers/AuthContext';
+import createPointAllocation from '@/lib/firebase/functions/createPointAllocation';
 
 export const LotteryAddForm = ({ pool, finish }: { pool: TLotteryPool; finish: () => void }) => {
+  const { user } = useContext(AuthContext);
+  const { points } = user;
+  const { ticketPrice, maxTicketsPerUser } = pool;
+
   const [numTickets, setNumTickets] = useState(1);
   const [showConfirm, setShowConfirm] = useState(false);
   const [buyTicketsLoading, setBuyTicketsLoading] = useState(false);
-  const pointsBalance = 0;
 
-  const totalPrice = useMemo(() => numTickets * (pool?.ticketPrice || 0), [numTickets, pool.ticketPrice]);
-  const canBuyTickets = useMemo(() => pointsBalance >= totalPrice && !buyTicketsLoading, [pointsBalance, totalPrice]);
-  const notEnoughPoints = useMemo(() => pointsBalance < totalPrice, [pointsBalance, totalPrice]);
+  const totalPrice = useMemo(() => numTickets * (ticketPrice || 0), [numTickets, ticketPrice]);
+  const canBuyTickets = useMemo(
+    () => !buyTicketsLoading || (points >= totalPrice && !buyTicketsLoading),
+    [points, totalPrice, buyTicketsLoading]
+  );
+  const notEnoughPoints = useMemo(() => points < totalPrice, [points, totalPrice]);
 
   const increment = () => {
-    if (pool.maxTicketsPerUser === -1) return setNumTickets(numTickets + 1); // Unlimited Tickets
-    if (pool.maxTicketsPerUser && numTickets >= pool.maxTicketsPerUser) return;
+    if (maxTicketsPerUser === -1) return setNumTickets(numTickets + 1); // Unlimited Tickets
+    if (maxTicketsPerUser && numTickets >= maxTicketsPerUser) return;
     setNumTickets(numTickets + 1);
   };
 
@@ -32,25 +38,23 @@ export const LotteryAddForm = ({ pool, finish }: { pool: TLotteryPool; finish: (
   };
 
   const buyTickets = async () => {
+    if (!auth.currentUser) return;
     setBuyTicketsLoading(true);
     try {
-      await addDoc(collection(firestore, 'pointAllocations'), {
-        userId: auth.currentUser?.uid,
+      await createPointAllocation({
+        userId: auth.currentUser.uid,
         poolId: pool.id,
         amount: totalPrice
       });
-      toast.success(`Bought ${numTickets} tickets for ${totalPrice} XP`);
+
+      toast.success(`Bought ${numTickets} ticket${numTickets > 1 ? 's' : ''} for ${numeral(totalPrice).format('0,0')} XP`);
+      setBuyTicketsLoading(false);
       setShowConfirm(false);
       finish();
     } catch (error: any) {
-      toast.error('Error buying tickets');
+      setBuyTicketsLoading(false);
+      toast.error(error.message);
     }
-
-    //
-    // We set the loading state to false after 2 second to give our backend enough time to trigger all the side effects of buying a ticket
-    // This is a hacky and non-ideal way of handling the issue where the user can double click the button and confuse our system
-    //
-    setTimeout(() => setBuyTicketsLoading(false), 2 * 1000);
   };
 
   return (
@@ -83,13 +87,13 @@ export const LotteryAddForm = ({ pool, finish }: { pool: TLotteryPool; finish: (
         </div>
         <div className='flex w-full flex-row justify-end'>
           {!showConfirm ? (
-            <Button variant='success' onClick={() => setShowConfirm(true)} disabled={!canBuyTickets}>
+            <Button onClick={() => setShowConfirm(true)} disabled={!canBuyTickets}>
               Buy Tickets
             </Button>
           ) : (
             <div className='flex flex-row gap-2'>
-              <Button variant='success' onClick={buyTickets}>
-                Confirm
+              <Button onClick={buyTickets} disabled={!canBuyTickets}>
+                {buyTicketsLoading ? 'Loading' : 'Confirm'}
               </Button>
               <Button variant='destructive' onClick={() => setShowConfirm(false)}>
                 Cancel

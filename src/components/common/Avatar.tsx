@@ -25,7 +25,7 @@ export default function Avatar({ onClick, size = 'default' }: AvatarProps) {
 
   if (!src) {
     return (
-      <Button variant='secondary' onClick={onClick} size={size === 'default' ? 'icon' : 'icon-xs'}>
+      <Button variant='icon' onClick={onClick} size={size === 'default' ? 'icon' : 'icon-xs'}>
         <User />
       </Button>
     );

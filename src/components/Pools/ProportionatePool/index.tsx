@@ -2,8 +2,8 @@
 
 import { auth, firestore } from '@/lib/firebase';
 import { TProportionatePool } from '@/types';
-import { collection, getAggregateFromServer, onSnapshot, query, sum, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { useEffect, useMemo, useState } from 'react';
 import { ProporationateDisplay } from './ProportionateDisplay';
 import { ProportionateAdd } from './ProportionateAdd';
 
@@ -12,33 +12,63 @@ export function ProportionatePool({ pool }: { pool: TProportionatePool }) {
 
   const [totalUserPoints, setTotaluserPoints] = useState(0);
 
+  const totalPayout = useMemo(() => {
+    if (!pool.totalPointsAllocated) return 0;
+    const share = totalUserPoints / pool.totalPointsAllocated;
+    const reward = pool.rewards[0].amount;
+    return reward * share;
+  }, [totalUserPoints, pool]);
+
   useEffect(() => {
     if (!auth.currentUser) return;
     const initUserPoints = async () => {
-      try {
-        const q = await getAggregateFromServer(
-          query(
-            collection(firestore, 'pointAllocations'),
-            where('poolId', '==', pool.id),
-            where('userId', '==', auth.currentUser?.uid)
-          ),
-          { totalUserPoints: sum('amount') }
-        );
+      if (!auth.currentUser) return;
 
-        setTotaluserPoints(q.data().totalUserPoints || 0);
-      } catch (error) {
-        setTotaluserPoints(0);
-      }
+      const pointsRef = collection(firestore, 'pointAllocations');
+      const q = query(pointsRef, where('poolId', '==', pool.id), where('userId', '==', auth.currentUser?.uid));
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        try {
+          let totalPoints = 0;
+
+          // Sum the 'amount' field of all matching documents
+          snapshot.forEach((doc) => {
+            totalPoints += doc.data().amount || 0;
+          });
+
+          setTotaluserPoints(totalPoints);
+        } catch (error) {
+          console.log('Error processing snapshot:', error);
+          setTotaluserPoints(0);
+        }
+      });
+
+      // Cleanup subscription when component unmounts
+      return () => unsubscribe();
     };
 
     initUserPoints();
   }, []);
 
   if (poolView === 'view') {
-    return <ProporationateDisplay pool={pool} toggleView={() => setPoolView('add')} totalUserPoints={totalUserPoints} />;
+    return (
+      <ProporationateDisplay
+        pool={pool}
+        toggleView={() => setPoolView('add')}
+        totalUserPoints={totalUserPoints}
+        totalPayout={totalPayout}
+      />
+    );
   }
 
   if (poolView === 'add') {
-    return <ProportionateAdd pool={pool} toggleView={() => setPoolView('view')} totalUserPoints={totalUserPoints} />;
+    return (
+      <ProportionateAdd
+        pool={pool}
+        toggleView={() => setPoolView('view')}
+        totalUserPoints={totalUserPoints}
+        totalPayout={totalPayout}
+      />
+    );
   }
 }

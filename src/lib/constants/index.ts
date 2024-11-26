@@ -24,10 +24,14 @@ export const USE_LOW_POSTAGE = true;
 export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
+// 144 Blocks is the cycle length for synthetic staking
+// TODO: This should ultimately be dynamic and configurable
+export const XP_MINING_CYCLE_LENGTH = 144;
+export const AVERAGE_BLOCK_TIME = 10;
+
 export const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
 export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ordinalsbot.com';
-export const MEMPOOL_URL = process.env.NEXT_PUBLIC_MEMPOOL_URL || 'https://mempool.space';
-export const MEMPOOL_API_URL = process.env.NEXT_PUBLIC_MEMPOOL_API_URL || `${PUBLIC_API_URL}/mempool`;
+export const MEMPOOL_URL = process.env.NEXT_PUBLIC_MEMPOOL_API_URL || `${PUBLIC_API_URL}/mempool`;
 export const ORDINALSBOT_MARKETPLACE_API_URL = process.env.ORDINALSBOT_MARKETPLACE_API_URL as string;
 export const ORDINALSBOT_PUBLIC_API_KEY = process.env.ORDINALSBOT_PUBLIC_API_KEY as string;
 
@@ -93,3 +97,46 @@ export const SPOTLIGHT_COLLECTION_SLUG = {
   [ENETWORK.SIGNET]: 'underground-fragments',
   [ENETWORK.TESTNET]: 'test'
 };
+
+export const TRIO_EXCHANGES: { label: string; link: string; img: string }[] = [
+  {
+    label: 'Gate.io',
+    link: 'https://www.gate.io/trade/TRIO_USDT',
+    img: '/img/exchanges/gateio.svg'
+  },
+  {
+    label: 'MEXC Global',
+    link: 'https://www.mexc.com/exchange/TRIO_USDT',
+    img: '/img/exchanges/mexc.svg'
+  },
+  {
+    label: 'BingX',
+    link: 'https://bingx.com/en/spot/TRIOUSDT/',
+    img: '/img/exchanges/bingx.svg'
+  },
+  {
+    label: 'UniSat',
+    link: 'https://unisat.io/market/brc20?tick=TRIO',
+    img: '/img/exchanges/logo_unisat.svg'
+  },
+  {
+    label: 'BitPanda',
+    link: 'https://www.bitpanda.com/en/prices/trio-ordinalsbot-trio',
+    img: ''
+  },
+  {
+    label: 'CoinW',
+    link: 'https://www.coinw.com/spot/trio(ordinals)usdt',
+    img: ''
+  },
+  {
+    label: 'DotSwap',
+    link: 'https://www.dotswap.app/swap#B_%E2%80%A2BTC_%E2%80%A2TRIO',
+    img: ''
+  },
+  {
+    label: 'BefiLabs',
+    link: 'https://befilabs.com/app/',
+    img: ''
+  }
+];

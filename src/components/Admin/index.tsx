@@ -15,7 +15,8 @@ export function Admin() {
 
   if (loading) return <LoadingScreen />;
   if (isAuthenticated && !user) return <LoadingScreen />;
-  if (!isAuthenticated || (user && !user.roles.includes(EUserRole.ADMIN))) return <NotFound />;
+  if (!isAuthenticated) return <NotFound />;
+  if (user?.roles?.includes(EUserRole.ADMIN) === false) return <NotFound />;
 
   return (
     <Section className='bg-ob-purple-darkest'>

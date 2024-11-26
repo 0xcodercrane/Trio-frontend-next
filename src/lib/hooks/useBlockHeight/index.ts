@@ -13,6 +13,7 @@ export const useBlockHeight = () => {
   const queryResult = useQuery({
     queryKey: ['blockHeight', 'tip'],
     queryFn: fetchBlockHeight,
+    initialData: 0,
     select: (data) => (data ? data : 0),
     placeholderData: keepPreviousData,
     refetchInterval: 20 * ONE_SECOND.as('milliseconds') // 20 seconds

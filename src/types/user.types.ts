@@ -13,6 +13,8 @@ export type TUser = {
   defaultAddress?: string;
   profile?: TUserProfile;
   points?: number;
+  syntheticBalance?: number;
+  totalPointsFromStaking?: number;
 };
 
 export type TUserProfile = {

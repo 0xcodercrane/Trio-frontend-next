@@ -2,47 +2,44 @@
 
 import { auth } from '@/lib/firebase';
 import { TProportionatePool } from '@/types';
-import { firestore } from '@/lib/firebase';
-import { addDoc, collection } from 'firebase/firestore';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import numeral from 'numeral';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { AuthContext } from '@/app/providers/AuthContext';
+import createPointAllocation from '@/lib/firebase/functions/createPointAllocation';
 
 export const ProportionateAddForm = ({ pool, finish }: { pool: TProportionatePool; finish: () => void }) => {
   const [showConfirm, setShowConfirm] = useState(false);
-  const [buyTicketsLoading, setBuyTicketsLoading] = useState(false);
-  const [pointsToAllocate, setPointsToAllocate] = useState(0);
-  const pointsBalance = 0;
+  const [spendPointsLoading, setSpendPointsLoading] = useState(false);
+  const [pointsToAllocate, setPointsToAllocate] = useState(pool.minPointsAllocation === -1 ? 0 : pool.minPointsAllocation);
 
-  const totalPrice = useMemo(() => 0, [pointsToAllocate]);
-  const canAllocate = useMemo(() => pointsBalance >= totalPrice && !buyTicketsLoading, [pointsBalance, totalPrice]);
-  const notEnoughPoints = useMemo(() => pointsBalance < totalPrice, [pointsBalance, totalPrice]);
+  const { user } = useContext(AuthContext);
+  const { points } = user;
 
-  const increment = () => {};
-
-  const decrement = () => {};
+  const canAllocate = useMemo(
+    () => !spendPointsLoading && points >= pointsToAllocate && !spendPointsLoading,
+    [points, pointsToAllocate]
+  );
+  const notEnoughPoints = useMemo(() => points < pointsToAllocate, [points, pointsToAllocate]);
 
   const buyTickets = async () => {
-    setBuyTicketsLoading(true);
+    if (!auth.currentUser) return;
+    setSpendPointsLoading(true);
     try {
-      await addDoc(collection(firestore, 'pointAllocations'), {
-        userId: auth.currentUser?.uid,
+      await createPointAllocation({
+        userId: auth.currentUser.uid,
         poolId: pool.id,
-        amount: totalPrice
+        amount: pointsToAllocate
       });
       toast.success(`Allocated ${pointsToAllocate} XP`);
+      setSpendPointsLoading(false);
       setShowConfirm(false);
       finish();
-    } catch (error: any) {
-      toast.error('Error buying tickets');
+    } catch (err: any) {
+      setSpendPointsLoading(false);
+      toast.error(err.message);
     }
-
-    //
-    // We set the loading state to false after 2 second to give our backend enough time to trigger all the side effects of buying a ticket
-    // This is a hacky and non-ideal way of handling the issue where the user can double click the button and confuse our system
-    //
-    setTimeout(() => setBuyTicketsLoading(false), 2 * 1000);
   };
 
   return (
@@ -50,34 +47,26 @@ export const ProportionateAddForm = ({ pool, finish }: { pool: TProportionatePoo
       <span className='text-2xl text-white'>Buy Tickets</span>
       <div className='flex w-full flex-col items-center justify-between gap-2 rounded-sm border border-ob-white-20 p-4'>
         <div className='space-between flex w-full flex-row items-center gap-2'>
-          <div
-            onClick={decrement}
-            className='flex h-[24px] w-[24px] items-center justify-center rounded-sm bg-ob-grey-lighter hover:cursor-pointer hover:opacity-80'
-          >
-            -
-          </div>
-          <div className='grow rounded-sm bg-ob-blue-lighter/[0.20] px-2 py-1 text-center text-white'>
-            {pointsToAllocate} Ticket{pointsToAllocate > 1 ? 's' : ''} - {numeral(totalPrice).format('0,0')} XP
-          </div>
-          <div
-            onClick={increment}
-            className='flex h-[24px] w-[24px] items-center justify-center rounded-sm bg-ob-grey-lighter hover:cursor-pointer hover:opacity-80'
-          >
-            +
-          </div>
+          <Input
+            min={pool.minPointsAllocation === -1 ? undefined : pool.minPointsAllocation}
+            className='grow rounded-sm bg-ob-blue-lighter/[0.20] px-2 py-1 text-white'
+            type='number'
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPointsToAllocate(Number(e.target.value))}
+            value={pointsToAllocate}
+          />
         </div>
         <div>
           {notEnoughPoints && <span className='text-sm text-ob-red-lighter'>You do not have {pointsToAllocate} XP</span>}
         </div>
         <div className='flex w-full flex-row justify-end'>
           {!showConfirm ? (
-            <Button variant='success' onClick={() => setShowConfirm(true)} disabled={!canAllocate}>
-              Spend XP
+            <Button onClick={() => setShowConfirm(true)} disabled={!canAllocate}>
+              Spend Points
             </Button>
           ) : (
             <div className='flex flex-row gap-2'>
-              <Button variant='success' onClick={buyTickets}>
-                Confirm
+              <Button onClick={buyTickets} disabled={!canAllocate}>
+                {spendPointsLoading ? 'Loading' : 'Confirm'}
               </Button>
               <Button variant='destructive' onClick={() => setShowConfirm(false)}>
                 Cancel
