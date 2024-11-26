@@ -3,7 +3,7 @@ import { Search as SearchIcon } from 'lucide-react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { EMenuType } from '@/types';
 
-const Search = () => {
+const SearchButton = () => {
   const { setMenuType, menuDisclosure } = useContext(GlobalContext);
 
   const handleOpenWalletMenu = () => {
@@ -21,4 +21,4 @@ const Search = () => {
   );
 };
 
-export { Search };
+export { SearchButton };

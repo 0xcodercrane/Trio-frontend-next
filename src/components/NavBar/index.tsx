@@ -1,4 +1,4 @@
-import { Search } from '@/components/Search';
+import { SearchButton } from '@/components/SearchButton';
 import Link from 'next/link';
 
 type TNavItem = {
@@ -47,7 +47,7 @@ export default function NavBar() {
           </div>
         ))}
         <div className='h-full border border-white/[0.15]'></div>
-        <Search />
+        <SearchButton />
       </div>
     </div>
   );

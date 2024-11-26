@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button';
 import Pagination from '@/components/Pagination';
-import { SortBy } from './SortBy';
 import { SizeSelector } from './SizeSelector';
 import { EVIEW_TYPES } from '@/lib/constants';
-import { Searchbar } from './Searchbar';
+import { FilterPanelSearchbar } from './Searchbar';
 
 interface FilterPanelHeaderProps {
   setCurrentTab: (tab: string) => void;
@@ -37,7 +36,7 @@ export function FilterPanelHeader({
         <div className='flex flex-row items-center gap-4'>
           {viewType === EVIEW_TYPES.LIST && (
             <>
-              <Searchbar /> <Pagination />
+              <FilterPanelSearchbar /> <Pagination />
             </>
           )}
 

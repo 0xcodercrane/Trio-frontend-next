@@ -1,6 +1,31 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       addresses: {
@@ -298,7 +323,7 @@ export type Database = {
       launchpad_phases: {
         Row: {
           created_at: string | null;
-          end_date: number;
+          end_date: number | null;
           id: number;
           is_public: boolean | null;
           launchpad_id: number;
@@ -313,7 +338,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string | null;
-          end_date: number;
+          end_date?: number | null;
           id?: number;
           is_public?: boolean | null;
           launchpad_id: number;
@@ -328,7 +353,7 @@ export type Database = {
         };
         Update: {
           created_at?: string | null;
-          end_date?: number;
+          end_date?: number | null;
           id?: number;
           is_public?: boolean | null;
           launchpad_id?: number;
@@ -392,6 +417,13 @@ export type Database = {
             columns: ['marketplace_id'];
             isOneToOne: false;
             referencedRelation: 'marketplaces';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_marketplace_id';
+            columns: ['marketplace_id'];
+            isOneToOne: false;
+            referencedRelation: 'marketplaces_anon';
             referencedColumns: ['id'];
           }
         ];
@@ -575,6 +607,13 @@ export type Database = {
             columns: ['marketplace_id'];
             isOneToOne: false;
             referencedRelation: 'marketplaces';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_marketplace_id';
+            columns: ['marketplace_id'];
+            isOneToOne: false;
+            referencedRelation: 'marketplaces_anon';
             referencedColumns: ['id'];
           },
           {
@@ -922,11 +961,69 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      marketplaces_anon: {
+        Row: {
+          description: string | null;
+          id: string | null;
+          launchpad_fee_btc_address_id: number | null;
+          launchpad_maker_fee: number | null;
+          launchpad_taker_fee: number | null;
+          marketplace_fee_btc_address_id: number | null;
+          marketplace_maker_fee: number | null;
+          marketplace_taker_fee: number | null;
+          name: string | null;
+          rate_limit_level: number | null;
+          url: string | null;
+        };
+        Insert: {
+          description?: string | null;
+          id?: string | null;
+          launchpad_fee_btc_address_id?: number | null;
+          launchpad_maker_fee?: number | null;
+          launchpad_taker_fee?: number | null;
+          marketplace_fee_btc_address_id?: number | null;
+          marketplace_maker_fee?: number | null;
+          marketplace_taker_fee?: number | null;
+          name?: string | null;
+          rate_limit_level?: number | null;
+          url?: string | null;
+        };
+        Update: {
+          description?: string | null;
+          id?: string | null;
+          launchpad_fee_btc_address_id?: number | null;
+          launchpad_maker_fee?: number | null;
+          launchpad_taker_fee?: number | null;
+          marketplace_fee_btc_address_id?: number | null;
+          marketplace_maker_fee?: number | null;
+          marketplace_taker_fee?: number | null;
+          name?: string | null;
+          rate_limit_level?: number | null;
+          url?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_launchpad_fee_btc_address_id';
+            columns: ['launchpad_fee_btc_address_id'];
+            isOneToOne: false;
+            referencedRelation: 'addresses';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_marketplace_fee_btc_address_id';
+            columns: ['marketplace_fee_btc_address_id'];
+            isOneToOne: false;
+            referencedRelation: 'addresses';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
     };
     Functions: {
       get_collections: {
-        Args: Record<PropertyKey, never>;
+        Args: {
+          search_keyword: string;
+        };
         Returns: {
           id: number;
           slug: string;
@@ -937,6 +1034,12 @@ export type Database = {
           total_supply: number;
           total_listings: number;
         }[];
+      };
+      get_collections_count: {
+        Args: {
+          search_keyword: string;
+        };
+        Returns: number;
       };
       get_inscriptions_with_price_by_collection_slug: {
         Args: {
@@ -1039,6 +1142,52 @@ export type Database = {
           timestamp: string;
           transaction_id: string | null;
         }[];
+      };
+      gtrgm_compress: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      gtrgm_decompress: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      gtrgm_in: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      gtrgm_options: {
+        Args: {
+          '': unknown;
+        };
+        Returns: undefined;
+      };
+      gtrgm_out: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      set_limit: {
+        Args: {
+          '': number;
+        };
+        Returns: number;
+      };
+      show_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      show_trgm: {
+        Args: {
+          '': string;
+        };
+        Returns: string[];
       };
     };
     Enums: {
