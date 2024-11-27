@@ -157,13 +157,14 @@ export function useListings() {
             makerPaymentPublicKey,
             makerOrdinalPublicKey,
             price: newPriceSats,
-            listingId
+            listingId,
+            signedPsbt: signedDelistingPsbtResult.signedPsbtBase64
           })
         });
         if (!relistingResult.ok) {
           throw new Error('Failed to get psbt to update listing.');
         }
-        const relistingPsbt = await relistingResult.json();
+        const { psbt: relistingPsbt, listingId: newListingId } = await relistingResult.json();
 
         const signedPsbtRelistingResult = await signPsbt(relistingPsbt, false, false);
 
@@ -177,7 +178,7 @@ export function useListings() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            listingIds: [listingId],
+            listingIds: [newListingId],
             signedPSBT: signedPsbtRelistingResult.signedPsbtBase64
           })
         });

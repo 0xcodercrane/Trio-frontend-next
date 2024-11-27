@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { makerPaymentAddress, makerPaymentPublicKey, makerOrdinalPublicKey, price, listingId } = await req.json();
+    const { makerPaymentAddress, makerPaymentPublicKey, makerOrdinalPublicKey, price, signedPsbt, listingId } =
+      await req.json();
 
-    if (!makerPaymentAddress || !makerPaymentPublicKey || !makerOrdinalPublicKey || !price || !listingId) {
+    if (!makerPaymentAddress || !makerPaymentPublicKey || !makerOrdinalPublicKey || !price || !listingId || !signedPsbt) {
       return NextResponse.json({ error: 'Invalid request params' }, { status: 400 });
     }
 
@@ -19,6 +20,7 @@ export async function POST(req: Request) {
         makerPaymentAddress,
         makerPaymentPublicKey,
         makerOrdinalPublicKey,
+        signedPSBT: signedPsbt,
         price
       })
     });
@@ -27,8 +29,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: await response.text() }, { status: response.status });
     }
 
-    const { psbt } = await response.json();
-    return NextResponse.json(psbt);
+    const result = await response.json();
+    return NextResponse.json(result);
   } catch (error) {
     console.error(error);
     return Response.json({ success: false, error: 'Internal server error' });
