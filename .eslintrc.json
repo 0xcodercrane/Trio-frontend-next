@@ -22,8 +22,7 @@
     "prefer-const": "warn",
     "no-console": "warn",
     "no-debugger": "warn",
-    "react/no-children-prop": "off",
-    "react-hooks/exhaustive-deps": "off",
+    "react/no-children-prop": "warn",
     "react/no-unknown-property": "error"
   }
 }

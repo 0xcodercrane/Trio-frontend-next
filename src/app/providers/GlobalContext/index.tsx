@@ -36,7 +36,7 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
       setPointsConfig(configInstance.config as TPointsMapping);
     });
     return () => unsubscribe();
-  });
+  }, []);
 
   useEffect(() => {
     menuDisclosure.close();
