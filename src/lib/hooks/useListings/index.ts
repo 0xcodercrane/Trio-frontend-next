@@ -116,26 +116,73 @@ export function useListings() {
   const updateListingPrice = useCallback(
     async (inscriptionId: string, listingId: number, newPriceSats: number, mutateOnSuccess = true) => {
       try {
-        const delistingTxId = await cancelListing(inscriptionId, listingId, false);
-        if (!delistingTxId) {
-          toast.error('Listing price update failed during delisting.');
-          return false;
+        if (!wallet) {
+          throw new Error('Please connect your wallet.');
+        }
+        const {
+          paymentAddress: makerPaymentAddress,
+          paymentPublicKey: makerPaymentPublicKey,
+          ordinalsPublicKey: makerOrdinalPublicKey
+        } = wallet;
+
+        const delistingResult = await fetch('/api/listings/delist/prepare', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            makerPaymentAddress,
+            makerPaymentPublicKey,
+            listingId
+          })
+        });
+        if (!delistingResult.ok) {
+          throw new Error('Failed to get psbt to cancel the current listing.');
+        }
+        const delistingPsbt = await delistingResult.json();
+
+        const signedDelistingPsbtResult = await signPsbt(delistingPsbt, false, false);
+
+        if (!signedDelistingPsbtResult || !signedDelistingPsbtResult.signedPsbtBase64) {
+          throw new Error('Signing psbt failed.');
         }
 
-        const isListingSuccessful = await listInscriptions(
-          [
-            {
-              inscription_id: inscriptionId,
-              price: newPriceSats,
-              // MEMO: Always uses 0 output index -> based on delisting tx crafted on BE.
-              outpoint: `${delistingTxId}:0`
-            }
-          ],
-          false
-        );
-        if (!isListingSuccessful) {
-          toast.error('Listing price update failed during relisting.');
-          return false;
+        const relistingResult = await fetch('/api/listings/relist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            makerPaymentAddress,
+            makerPaymentPublicKey,
+            makerOrdinalPublicKey,
+            price: newPriceSats,
+            listingId
+          })
+        });
+        if (!relistingResult.ok) {
+          throw new Error('Failed to get psbt to update listing.');
+        }
+        const relistingPsbt = await relistingResult.json();
+
+        const signedPsbtRelistingResult = await signPsbt(relistingPsbt, false, false);
+
+        if (!signedPsbtRelistingResult || !signedPsbtRelistingResult.signedPsbtBase64) {
+          throw new Error('Signing psbt failed.');
+        }
+
+        const confirmListingResult = await fetch('/api/listings/confirm', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            listingIds: [listingId],
+            signedPSBT: signedPsbtRelistingResult.signedPsbtBase64
+          })
+        });
+        if (!confirmListingResult.ok) {
+          throw new Error('Failed to confirm listing');
         }
 
         if (mutateOnSuccess) {
