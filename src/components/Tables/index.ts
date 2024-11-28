@@ -11,3 +11,5 @@ export {
   UserOrdersTable,
   NotificationTable
 };
+
+export * from './CollectionsTable';

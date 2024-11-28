@@ -1,6 +1,7 @@
 import { FxRateResponse, Prices } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
+import { formatUsdValue } from '../utilities';
 
 const PRICES_FRESHNESS_PERIOD = 600 * 1000; // 10 minutes
 
@@ -34,19 +35,27 @@ export const usePrices = () => {
    * Helper function that converts bitcoin amount to USD based on current price.
    */
   const bitcoinToUsd = useCallback(
-    (bitcoinAmount: number) => {
-      if (!!queryResult.data?.bitcoin.usd) {
-        return bitcoinAmount * queryResult.data?.bitcoin.usd;
-      }
-      return undefined;
+    (bitcoinAmount: number | undefined) => {
+      const value = !!queryResult.data?.bitcoin?.usd && bitcoinAmount ? bitcoinAmount * queryResult.data?.bitcoin.usd : null;
+      return {
+        value,
+        formatted: formatUsdValue(0)
+      };
     },
-    [queryResult.data?.bitcoin.usd]
+    [queryResult.data?.bitcoin?.usd]
   );
 
   /**
    * Helper function that converts sats amount to USD based on current price.
    */
-  const satsToUsd = useCallback((satsAmount: number) => bitcoinToUsd(satsAmount / 100000000), [bitcoinToUsd]);
+  const satsToUsd = useCallback(
+    (satsAmount: number | undefined) => {
+      const { value } = bitcoinToUsd(satsAmount && satsAmount / 100000000);
+      const formatted = formatUsdValue(value || 0);
+      return { value, formatted };
+    },
+    [bitcoinToUsd]
+  );
 
   return { ...queryResult, bitcoinToUsd, satsToUsd };
 };

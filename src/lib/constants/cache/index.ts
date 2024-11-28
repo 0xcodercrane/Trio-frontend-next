@@ -1,0 +1,4 @@
+import { ONE_BLOCK, ONE_WEEK } from '../time';
+
+export const INSCRIPTIONS_DETAILS_CACHE_AGE = ONE_BLOCK;
+export const INSCRIPTIONS_CONTENT_CACHE_AGE = ONE_WEEK;

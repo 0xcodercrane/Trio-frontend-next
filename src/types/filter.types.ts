@@ -7,6 +7,8 @@ export interface FilterState {
   setSize: (size: ESIZES) => void;
   offset: number;
   setOffset: (offset: number) => void;
+  searchKeyword: string;
+  setSearchKeyword: (searchKeyword: string) => void;
   limit: number;
   setLimit: (limit: number) => void;
   max: number;

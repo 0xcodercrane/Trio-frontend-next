@@ -3,7 +3,7 @@ import { Container } from '@/components/Container';
 
 export default function TopSellers() {
   return (
-    <div className='w-full bg-ob-black-light py-[--section-vertical-padding]'>
+    <div className='w-full bg-ob-purple-dark py-[--section-vertical-padding]'>
       <Container padding>
         <div className='flex w-full flex-col gap-8'>
           <div className='flex w-full flex-row items-center justify-between'>
@@ -11,7 +11,7 @@ export default function TopSellers() {
             <span>View All (100)</span>
           </div>
           <div className='flex w-full flex-row gap-4'>
-            <div className='flex basis-1/5 flex-col gap-4 rounded-xl bg-white/[0.05] p-8'>
+            <div className='flex basis-1/5 flex-col gap-4 rounded-xl bg-ob-purple-lighter p-8'>
               {Array.from({ length: 3 }).map((_, index) => {
                 return (
                   <div className='flex flex-row items-center gap-4' key={index}>
@@ -25,7 +25,7 @@ export default function TopSellers() {
                 );
               })}
             </div>
-            <div className='flex basis-4/5 flex-row gap-4 rounded-xl bg-white/[0.05] p-8'>
+            <div className='flex basis-4/5 flex-row gap-4 rounded-xl bg-ob-purple-light p-8'>
               <div className='flex basis-1/4 flex-col flex-wrap gap-4'>
                 {Array.from({ length: 3 }).map((_, index) => {
                   return (

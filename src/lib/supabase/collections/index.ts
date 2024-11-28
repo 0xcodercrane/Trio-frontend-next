@@ -46,10 +46,12 @@ const INSCRIPTIONS_BY_COLLECTION_ID_QUERY = `
       category: attribute_categories (name)
     )
   `;
+
 export const getEntireCollectionBySlug = async (slug: string) =>
   supabase.from('collections').select(COLLECTION_QUERY).eq('slug', slug);
 export const getEntireCollectionById = async (id: number) =>
   supabase.from('collections').select(COLLECTION_QUERY).eq('id', id);
+
 export const getInscriptionsByCollectionId = async (collectionId: number, pagination: TPagination) =>
   supabase
     .from('inscriptions')
@@ -64,7 +66,14 @@ export const getInscriptionsByCollectionSlug = async (slug: string, pagination: 
     .eq('slug', slug)
     .range(pagination.offset, pagination.offset + pagination.limit - 1);
 
-export const getCollectionItem = async (id: string) =>
+export const getInscriptionWithCollectionData = async (id: string) =>
   supabase.from('inscriptions').select(COLLECTION_ITEM_QUERY).eq('inscription_id', id);
 
 export const getCollectionIdFromSlug = async (slug: string) => supabase.from('collections').select('id').eq('slug', slug);
+
+export const getCollections = async (pagination: TPagination, searchKeyword: string) => ({
+  collections: await supabase
+    .rpc('get_collections', { search_keyword: `%${searchKeyword}%` })
+    .range(pagination.offset, pagination.offset + pagination.limit - 1),
+  count: await supabase.rpc('get_collections_count', { search_keyword: `%${searchKeyword}%` })
+});

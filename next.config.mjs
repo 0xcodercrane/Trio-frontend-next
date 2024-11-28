@@ -11,18 +11,27 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
+        hostname: 'lh3.googleusercontent.com'
       },
       {
         protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
+        hostname: 'avatars.githubusercontent.com'
       },
       {
         protocol: 'https',
         hostname: 'firebasestorage.googleapis.com'
-      },
-    ],
+      }
+    ]
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/collections',
+        permanent: true
+      }
+    ];
+  }
 };
 
 export default withPWA(nextConfig);

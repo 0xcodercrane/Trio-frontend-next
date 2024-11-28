@@ -170,15 +170,21 @@ const config = {
         'ob-white-60': 'rgba(255, 255, 255, 0.6)',
         'ob-white-70': 'rgba(255, 255, 255, 0.7)',
         'ob-white-80': 'rgba(255, 255, 255, 0.8)',
+
         'ob-black': '#0D0D0D',
         'ob-black-light': '#1b1b1b',
         'ob-black-lighter': '#131313',
         'ob-black-lightest': '#161616',
+
         'ob-grey': '#242424',
         'ob-grey-light': '#252525',
         'ob-grey-lighter': '#727272',
         'ob-grey-lightest': '#B5B5B5',
         'ob-text-grey': '#868686',
+        // Added for creators launchpad
+        'ob-dark-grey': '#343434',
+        'ob-darker-grey': '#353535',
+        'ob-light-grey': '#5E5D5D',
 
         // Blues
         'ob-blue-darkest': '#0007A8',
@@ -201,10 +207,18 @@ const config = {
         'ob-red-lightest': '#FF6677',
 
         // Yellows
-        'ob-yellow': '#ffbb33',
+        'ob-yellow': '#D6E814',
+        'ob-yellow-dark': '#ffbb33',
 
         // Turquoise
-        'ob-turquoise': '#30D5C8'
+        'ob-turquoise': '#30D5C8',
+
+        // Purples
+        'ob-purple-darkest': '#0D0216',
+        'ob-purple-dark': '#150028',
+        'ob-purple': '#2B0059',
+        'ob-purple-light': '#4D0398',
+        'ob-purple-lighter': '#7D01FF'
       },
       borderRadius: {
         lg: 'var(--radius)',

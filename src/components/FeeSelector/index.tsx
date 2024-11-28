@@ -11,21 +11,31 @@ import { useOrderFlow, useFeeRates } from '@/lib/hooks';
 
 interface FeeSelectorProps {
   feeOptions?: Partial<{ [key in EFeeOptions]: boolean }>;
+  txVirtualSize?: number;
 }
 
-export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS }: FeeSelectorProps) {
+export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtualSize }: FeeSelectorProps) {
   // Local state
   const [selectedFeeOption, setSelectedFeeOption] = useState<EFeeOptions>(DEFAULT_FEE);
   const [customFee, setCustomFee] = useState<number>();
   const { data: feeRatesData, isPending: isFeeRatesPending, setFeeRate } = useFeeRates();
   const { satsToUsd } = usePrices();
-  const { txVirtualSize } = useOrderFlow();
 
   useEffect(() => {
     if (feeRatesData && !customFee) {
       setCustomFee(feeRatesData.fastest_fee);
     }
   }, [feeRatesData, customFee]);
+
+  useEffect(() => {
+    if (selectedFeeOption === EFeeOptions.CUSTOM) {
+      if (!!customFee) {
+        setFeeRate(customFee);
+      }
+    } else if (feeRatesData) {
+      setFeeRate(feeRatesData[feeOptionsConfig[selectedFeeOption].dbKey]);
+    }
+  }, [selectedFeeOption, customFee]);
 
   const feeOptionsToRender = useMemo(
     () => [...Object.values(EFeeOptions).filter((feeType) => !!feeOptions[feeType]), EFeeOptions.CUSTOM],
@@ -50,8 +60,8 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS }: FeeSel
   };
 
   return (
-    <div className='flex flex-col gap-4'>
-      <span className='font-bold text-ob-grey-lightest'>Bitcoin Network Fee</span>
+    <div className='flex flex-col gap-2'>
+      <span className='text-ob-grey-lightest'>Network Fee / Speed</span>
       <div className='flex w-full flex-row gap-2'>
         {feeOptionsToRender.map((feeOption) => {
           const currentFeeRate = feeOption !== EFeeOptions.CUSTOM && feeRatesData?.[feeOptionsConfig[feeOption].dbKey];
@@ -62,33 +72,35 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS }: FeeSel
                 <Skeleton className='h-full w-full' />
               ) : (
                 <div
-                  className={`h-full cursor-pointer rounded-md border bg-ob-grey p-4 ${selectedFeeOption === feeOption ? 'border-white' : 'border-ob-grey'}`}
+                  className={`h-full cursor-pointer rounded-md border border-ob-purple-lighter ${selectedFeeOption === feeOption ? 'bg-ob-purple' : 'bg-ob-purple-dark'}`}
                 >
                   <input
                     type='radio'
                     id={feeOption}
-                    className='hidden'
+                    className='hidden min-h-full min-w-full'
                     value={feeOption}
                     checked={selectedFeeOption === feeOption}
                     onChange={() => handleFeeRateSelection(feeOption)}
                   />
 
-                  <label htmlFor={feeOption} className='flex h-full cursor-pointer flex-col justify-between'>
-                    <div className='text-lg text-white'>{feeOptionsConfig[feeOption].label}</div>
-                    {feeOption === EFeeOptions.CUSTOM ? (
-                      <div>
-                        <CustomFeeInput
-                          txVirtualSize={txVirtualSize}
-                          type='number'
-                          value={customFee}
-                          onChange={handleCustomFeeRateChange}
-                        />
-                      </div>
-                    ) : (
-                      <div className='text-sm text-ob-grey-lightest'>
-                        {currentFeeRate} sats/vB ~{formatUsdValue(satsToUsd(txFee) || 0)}
-                      </div>
-                    )}
+                  <label htmlFor={feeOption} className='cursor-pointer'>
+                    <div className='flex h-full flex-col justify-between p-4'>
+                      <div className='text-lg text-white'>{feeOptionsConfig[feeOption].label}</div>
+                      {feeOption === EFeeOptions.CUSTOM ? (
+                        <div>
+                          <CustomFeeInput
+                            txVirtualSize={txVirtualSize}
+                            type='number'
+                            value={customFee}
+                            onChange={handleCustomFeeRateChange}
+                          />
+                        </div>
+                      ) : (
+                        <div className='text-sm text-ob-grey-lightest'>
+                          {currentFeeRate} sats/vB ~{satsToUsd(txFee).formatted}
+                        </div>
+                      )}{' '}
+                    </div>
                   </label>
                 </div>
               )}

@@ -6,7 +6,6 @@ import { useTokenBalanceQuery, useTrioInfoQuery } from '@/lib/services';
 import { useContext } from 'react';
 
 export const PointsPane = () => {
-  // TODO handle loading
   const { user, wallet } = useContext(AuthContext);
 
   const { data: trioInfo } = useTrioInfoQuery();
@@ -14,7 +13,7 @@ export const PointsPane = () => {
 
   return (
     <div className='space-y-8'>
-      <div className='grid grid-cols-1 gap-8 rounded-md bg-ob-black-light p-8 text-white lg:grid-cols-2'>
+      <div className='grid grid-cols-1 gap-8 rounded-md bg-ob-purple-dark p-8 text-white lg:grid-cols-2'>
         <div className='flex flex-col gap-8'>
           <div className='border-none bg-transparent text-white'>
             <div className='text-2xl font-bold'>My Points History</div>

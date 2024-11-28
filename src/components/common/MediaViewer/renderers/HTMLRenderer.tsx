@@ -1,13 +1,12 @@
 import { memo, useState } from 'react';
 import { HtmlProps } from './types';
+import { EXPLORER_URL } from '@/lib/constants';
 
 // NOTE what was className doing?
 export const HTMLRenderer = memo(({ content, id, type }: HtmlProps) => {
   const [showSource, setShowSource] = useState(false);
 
-  const iframeSrc = id
-    ? `${process.env.NEXT_PUBLIC_ORDINALSBOT_EXPLORER_URL}/content/${id}`
-    : `data:${type},${encodeURIComponent(content)}`;
+  const iframeSrc = id ? `${EXPLORER_URL}/content/${id}` : `data:${type},${encodeURIComponent(content)}`;
 
   return (
     <div className='html-viewer'>

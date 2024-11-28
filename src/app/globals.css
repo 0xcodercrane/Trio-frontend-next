@@ -28,6 +28,9 @@
     --header-height: 96px;
     --top-section-height: calc(100vh - var(--header-height));
     --header-content-height: 48px;
+    --section-vertical-padding: 96px;
+
+    /* Button Sizes */
     --button-height-xs: 24px;
     --button-height-sm: 36px;
     --button-height-md: 48px;
@@ -36,7 +39,6 @@
     --button-width-md: 72px;
     --button-width-lg: 96px;
     --button-width-xl: 120px;
-    --section-vertical-padding: 96px;
 
     /* Components */
     --inscription-tiniest: 48px;

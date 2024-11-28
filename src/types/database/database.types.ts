@@ -1,6 +1,31 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       addresses: {
@@ -20,6 +45,48 @@ export type Database = {
           public_key?: string | null;
         };
         Relationships: [];
+      };
+      allow_lists: {
+        Row: {
+          created_at: string | null;
+          id: number;
+          phase_id: number;
+          remaining_allocation: number;
+          taker_ordinal_address_id: number;
+          total_allocation: number;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: number;
+          phase_id: number;
+          remaining_allocation: number;
+          taker_ordinal_address_id: number;
+          total_allocation: number;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: number;
+          phase_id?: number;
+          remaining_allocation?: number;
+          taker_ordinal_address_id?: number;
+          total_allocation?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_phase_id';
+            columns: ['phase_id'];
+            isOneToOne: false;
+            referencedRelation: 'launchpad_phases';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_taker_payment_address_id';
+            columns: ['taker_ordinal_address_id'];
+            isOneToOne: false;
+            referencedRelation: 'addresses';
+            referencedColumns: ['id'];
+          }
+        ];
       };
       artists: {
         Row: {
@@ -134,6 +201,7 @@ export type Database = {
       collections: {
         Row: {
           artist_id: number | null;
+          banner_image: string | null;
           description: string | null;
           discord_link: string | null;
           icon: string | null;
@@ -147,6 +215,7 @@ export type Database = {
         };
         Insert: {
           artist_id?: number | null;
+          banner_image?: string | null;
           description?: string | null;
           discord_link?: string | null;
           icon?: string | null;
@@ -160,6 +229,7 @@ export type Database = {
         };
         Update: {
           artist_id?: number | null;
+          banner_image?: string | null;
           description?: string | null;
           discord_link?: string | null;
           icon?: string | null;
@@ -250,6 +320,114 @@ export type Database = {
           }
         ];
       };
+      launchpad_phases: {
+        Row: {
+          created_at: string | null;
+          end_date: number | null;
+          id: number;
+          is_public: boolean | null;
+          launchpad_id: number;
+          name: string;
+          phase_number: number;
+          price: number;
+          remaining_inscriptions: number;
+          start_date: number;
+          status: Database['public']['Enums']['launchpad_status'];
+          total_inscriptions: number;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          end_date?: number | null;
+          id?: number;
+          is_public?: boolean | null;
+          launchpad_id: number;
+          name: string;
+          phase_number: number;
+          price: number;
+          remaining_inscriptions: number;
+          start_date: number;
+          status: Database['public']['Enums']['launchpad_status'];
+          total_inscriptions: number;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          end_date?: number | null;
+          id?: number;
+          is_public?: boolean | null;
+          launchpad_id?: number;
+          name?: string;
+          phase_number?: number;
+          price?: number;
+          remaining_inscriptions?: number;
+          start_date?: number;
+          status?: Database['public']['Enums']['launchpad_status'];
+          total_inscriptions?: number;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_launchpad_id';
+            columns: ['launchpad_id'];
+            isOneToOne: false;
+            referencedRelation: 'launchpads';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      launchpads: {
+        Row: {
+          created_at: string | null;
+          id: number;
+          maker_payment_address_id: number;
+          marketplace_id: string | null;
+          meta_data: Json | null;
+          status: Database['public']['Enums']['launchpad_status'];
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          id?: number;
+          maker_payment_address_id: number;
+          marketplace_id?: string | null;
+          meta_data?: Json | null;
+          status: Database['public']['Enums']['launchpad_status'];
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: number;
+          maker_payment_address_id?: number;
+          marketplace_id?: string | null;
+          meta_data?: Json | null;
+          status?: Database['public']['Enums']['launchpad_status'];
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_maker_payment_address_id';
+            columns: ['maker_payment_address_id'];
+            isOneToOne: false;
+            referencedRelation: 'addresses';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_marketplace_id';
+            columns: ['marketplace_id'];
+            isOneToOne: false;
+            referencedRelation: 'marketplaces';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_marketplace_id';
+            columns: ['marketplace_id'];
+            isOneToOne: false;
+            referencedRelation: 'marketplaces_anon';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
       marketplaces: {
         Row: {
           api_key: string;
@@ -312,9 +490,11 @@ export type Database = {
       };
       orderbook: {
         Row: {
+          batch_id: number | null;
           delisted_at: string | null;
           id: number;
           index_in_maker_psbt: number;
+          is_launchpad: boolean | null;
           maker_ordinal_address_id: number;
           maker_output_value: number;
           maker_payment_address_id: number;
@@ -323,21 +503,26 @@ export type Database = {
           marketplace_maker_fee: number;
           marketplace_taker_fee: number;
           merged_psbt: string | null;
+          phase_id: number | null;
           platform_fee_btc_address_id: number;
           platform_maker_fee: number;
           platform_taker_fee: number;
           price: number;
-          psbt: string | null;
+          psbt_id: number;
           relisted_at: string | null;
+          relisted_maker_output_value: number | null;
           relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
+          timestamp: string | null;
           utxo_id: number;
         };
         Insert: {
+          batch_id?: number | null;
           delisted_at?: string | null;
           id?: number;
           index_in_maker_psbt: number;
+          is_launchpad?: boolean | null;
           maker_ordinal_address_id: number;
           maker_output_value: number;
           maker_payment_address_id: number;
@@ -346,21 +531,26 @@ export type Database = {
           marketplace_maker_fee?: number;
           marketplace_taker_fee?: number;
           merged_psbt?: string | null;
+          phase_id?: number | null;
           platform_fee_btc_address_id: number;
           platform_maker_fee?: number;
           platform_taker_fee?: number;
           price: number;
-          psbt?: string | null;
+          psbt_id: number;
           relisted_at?: string | null;
+          relisted_maker_output_value?: number | null;
           relisted_price?: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
+          timestamp?: string | null;
           utxo_id: number;
         };
         Update: {
+          batch_id?: number | null;
           delisted_at?: string | null;
           id?: number;
           index_in_maker_psbt?: number;
+          is_launchpad?: boolean | null;
           maker_ordinal_address_id?: number;
           maker_output_value?: number;
           maker_payment_address_id?: number;
@@ -369,18 +559,28 @@ export type Database = {
           marketplace_maker_fee?: number;
           marketplace_taker_fee?: number;
           merged_psbt?: string | null;
+          phase_id?: number | null;
           platform_fee_btc_address_id?: number;
           platform_maker_fee?: number;
           platform_taker_fee?: number;
           price?: number;
-          psbt?: string | null;
+          psbt_id?: number;
           relisted_at?: string | null;
+          relisted_maker_output_value?: number | null;
           relisted_price?: number | null;
           side?: string;
           status?: Database['public']['Enums']['order_book_status'];
+          timestamp?: string | null;
           utxo_id?: number;
         };
         Relationships: [
+          {
+            foreignKeyName: 'fk_batch_id';
+            columns: ['batch_id'];
+            isOneToOne: false;
+            referencedRelation: 'psbt_batches';
+            referencedColumns: ['id'];
+          },
           {
             foreignKeyName: 'fk_maker_ordinal_address_id';
             columns: ['maker_ordinal_address_id'];
@@ -410,6 +610,20 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'fk_marketplace_id';
+            columns: ['marketplace_id'];
+            isOneToOne: false;
+            referencedRelation: 'marketplaces_anon';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_phase_id';
+            columns: ['phase_id'];
+            isOneToOne: false;
+            referencedRelation: 'launchpad_phases';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'fk_platform_fee_btc_address_id';
             columns: ['platform_fee_btc_address_id'];
             isOneToOne: false;
@@ -417,10 +631,81 @@ export type Database = {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'fk_psbt_id';
+            columns: ['psbt_id'];
+            isOneToOne: false;
+            referencedRelation: 'psbts';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'fk_utxo_id';
             columns: ['utxo_id'];
             isOneToOne: false;
             referencedRelation: 'utxos';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      psbt_batches: {
+        Row: {
+          batch_number: number;
+          id: number;
+          inscription_count: number;
+          phase_id: number;
+          status: Database['public']['Enums']['phase_batch_status'];
+        };
+        Insert: {
+          batch_number: number;
+          id?: number;
+          inscription_count: number;
+          phase_id: number;
+          status: Database['public']['Enums']['phase_batch_status'];
+        };
+        Update: {
+          batch_number?: number;
+          id?: number;
+          inscription_count?: number;
+          phase_id?: number;
+          status?: Database['public']['Enums']['phase_batch_status'];
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_phase_id';
+            columns: ['phase_id'];
+            isOneToOne: false;
+            referencedRelation: 'launchpad_phases';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      psbts: {
+        Row: {
+          batch_id: number | null;
+          created_at: string | null;
+          id: number;
+          is_signed: boolean | null;
+          psbt_data: string | null;
+        };
+        Insert: {
+          batch_id?: number | null;
+          created_at?: string | null;
+          id?: number;
+          is_signed?: boolean | null;
+          psbt_data?: string | null;
+        };
+        Update: {
+          batch_id?: number | null;
+          created_at?: string | null;
+          id?: number;
+          is_signed?: boolean | null;
+          psbt_data?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_batch_id';
+            columns: ['batch_id'];
+            isOneToOne: false;
+            referencedRelation: 'psbt_batches';
             referencedColumns: ['id'];
           }
         ];
@@ -676,9 +961,98 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      marketplaces_anon: {
+        Row: {
+          description: string | null;
+          id: string | null;
+          launchpad_fee_btc_address_id: number | null;
+          launchpad_maker_fee: number | null;
+          launchpad_taker_fee: number | null;
+          marketplace_fee_btc_address_id: number | null;
+          marketplace_maker_fee: number | null;
+          marketplace_taker_fee: number | null;
+          name: string | null;
+          rate_limit_level: number | null;
+          url: string | null;
+        };
+        Insert: {
+          description?: string | null;
+          id?: string | null;
+          launchpad_fee_btc_address_id?: number | null;
+          launchpad_maker_fee?: number | null;
+          launchpad_taker_fee?: number | null;
+          marketplace_fee_btc_address_id?: number | null;
+          marketplace_maker_fee?: number | null;
+          marketplace_taker_fee?: number | null;
+          name?: string | null;
+          rate_limit_level?: number | null;
+          url?: string | null;
+        };
+        Update: {
+          description?: string | null;
+          id?: string | null;
+          launchpad_fee_btc_address_id?: number | null;
+          launchpad_maker_fee?: number | null;
+          launchpad_taker_fee?: number | null;
+          marketplace_fee_btc_address_id?: number | null;
+          marketplace_maker_fee?: number | null;
+          marketplace_taker_fee?: number | null;
+          name?: string | null;
+          rate_limit_level?: number | null;
+          url?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_launchpad_fee_btc_address_id';
+            columns: ['launchpad_fee_btc_address_id'];
+            isOneToOne: false;
+            referencedRelation: 'addresses';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_marketplace_fee_btc_address_id';
+            columns: ['marketplace_fee_btc_address_id'];
+            isOneToOne: false;
+            referencedRelation: 'addresses';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
     };
     Functions: {
+      get_collections: {
+        Args: {
+          search_keyword: string;
+        };
+        Returns: {
+          id: number;
+          slug: string;
+          name: string;
+          icon: string;
+          is_under_review: boolean;
+          floor_price: number;
+          total_supply: number;
+          total_listings: number;
+        }[];
+      };
+      get_collections_count: {
+        Args: {
+          search_keyword: string;
+        };
+        Returns: number;
+      };
+      get_inscriptions_with_price_by_collection_slug: {
+        Args: {
+          _collection_slug: string;
+        };
+        Returns: {
+          price: number;
+          order_id: number;
+          order_status: string;
+          inscription_id: string;
+          name: string;
+        }[];
+      };
       get_inscriptions_without_collection: {
         Args: {
           inscription_ids: string[];
@@ -688,9 +1062,144 @@ export type Database = {
           collection_id: number;
         }[];
       };
+      get_orderbook_by_address: {
+        Args: {
+          _address: string;
+        };
+        Returns: {
+          batch_id: number | null;
+          delisted_at: string | null;
+          id: number;
+          index_in_maker_psbt: number;
+          is_launchpad: boolean | null;
+          maker_ordinal_address_id: number;
+          maker_output_value: number;
+          maker_payment_address_id: number;
+          marketplace_fee_btc_address_id: number;
+          marketplace_id: string;
+          marketplace_maker_fee: number;
+          marketplace_taker_fee: number;
+          merged_psbt: string | null;
+          phase_id: number | null;
+          platform_fee_btc_address_id: number;
+          platform_maker_fee: number;
+          platform_taker_fee: number;
+          price: number;
+          psbt_id: number;
+          relisted_at: string | null;
+          relisted_maker_output_value: number | null;
+          relisted_price: number | null;
+          side: string;
+          status: Database['public']['Enums']['order_book_status'];
+          timestamp: string | null;
+          utxo_id: number;
+        }[];
+      };
+      get_orderbook_by_inscription_id: {
+        Args: {
+          _inscription_id: string;
+        };
+        Returns: {
+          batch_id: number | null;
+          delisted_at: string | null;
+          id: number;
+          index_in_maker_psbt: number;
+          is_launchpad: boolean | null;
+          maker_ordinal_address_id: number;
+          maker_output_value: number;
+          maker_payment_address_id: number;
+          marketplace_fee_btc_address_id: number;
+          marketplace_id: string;
+          marketplace_maker_fee: number;
+          marketplace_taker_fee: number;
+          merged_psbt: string | null;
+          phase_id: number | null;
+          platform_fee_btc_address_id: number;
+          platform_maker_fee: number;
+          platform_taker_fee: number;
+          price: number;
+          psbt_id: number;
+          relisted_at: string | null;
+          relisted_maker_output_value: number | null;
+          relisted_price: number | null;
+          side: string;
+          status: Database['public']['Enums']['order_book_status'];
+          timestamp: string | null;
+          utxo_id: number;
+        }[];
+      };
+      get_trade_history_by_order_id: {
+        Args: {
+          _order_id: number;
+        };
+        Returns: {
+          fee_rate: number | null;
+          id: number;
+          order_id: number;
+          status: Database['public']['Enums']['trade_history_status'];
+          taker_ordinal_address_id: number | null;
+          taker_payment_address_id: number | null;
+          timestamp: string;
+          transaction_id: string | null;
+        }[];
+      };
+      gtrgm_compress: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      gtrgm_decompress: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      gtrgm_in: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      gtrgm_options: {
+        Args: {
+          '': unknown;
+        };
+        Returns: undefined;
+      };
+      gtrgm_out: {
+        Args: {
+          '': unknown;
+        };
+        Returns: unknown;
+      };
+      set_limit: {
+        Args: {
+          '': number;
+        };
+        Returns: number;
+      };
+      show_limit: {
+        Args: Record<PropertyKey, never>;
+        Returns: number;
+      };
+      show_trgm: {
+        Args: {
+          '': string;
+        };
+        Returns: string[];
+      };
     };
     Enums: {
-      order_book_status: 'active' | 'inactive' | 'pending_taker_confirmation' | 'pending_maker_confirmation' | 'broadcast';
+      launchpad_status: 'active' | 'pending';
+      order_book_status:
+        | 'active'
+        | 'inactive'
+        | 'pending_taker_confirmation'
+        | 'pending_maker_confirmation'
+        | 'broadcast'
+        | 'canceled';
+      phase_batch_status: 'processing' | 'unsigned' | 'signed';
       trade_history_status: 'mempool' | 'confirmed' | 'sniped' | 'initiated';
     };
     CompositeTypes: {
@@ -768,4 +1277,17 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
     ? PublicSchema['Enums'][PublicEnumNameOrOptions]
+    : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes'] | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    : never = never
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
+    ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
     : never;

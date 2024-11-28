@@ -35,7 +35,7 @@ export default async function RootLayout({
 
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${satoshiVariable.variable} font-sans`}>
+      <body className={`${satoshiVariable.variable} bg-ob-purple-darkest font-sans`}>
         <Providers session={session}>
           <Header />
           {children}

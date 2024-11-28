@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 export * from './imgs';
 export * from './time';
+export * from './cache';
 
 export const APP_NAME = 'Trio Marketplace';
 const CLEAN_APP_NAME = APP_NAME.replace(/ /g, '-').toLowerCase();
@@ -23,16 +24,31 @@ export const USE_LOW_POSTAGE = true;
 export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
-export const EXPLORER_URL = process.env.ORDINALS_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
-export const MEMPOOL_URL = process.env.MEMPOOL_URL || 'https://mempool.space';
+// 144 Blocks is the cycle length for synthetic staking
+// TODO: This should ultimately be dynamic and configurable
+export const XP_MINING_CYCLE_LENGTH = 144;
+export const AVERAGE_BLOCK_TIME = 10;
+
+export const EXPLORER_URL = process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://explorer.ordinalsbot.com';
+export const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.ordinalsbot.com';
+export const MEMPOOL_URL = process.env.NEXT_PUBLIC_MEMPOOL_API_URL || `${PUBLIC_API_URL}/mempool`;
+export const ORDINALSBOT_MARKETPLACE_API_URL = process.env.ORDINALSBOT_MARKETPLACE_API_URL as string;
+export const ORDINALSBOT_PUBLIC_API_KEY = process.env.ORDINALSBOT_PUBLIC_API_KEY as string;
+
+export const ORDINALSBOT_MARKETPLACE_API_KEY = process.env.ORDINALSBOT_MARKETPLACE_API_KEY as string;
+export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+export const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
 export enum ESUPPORTED_WALLETS {
   UNISAT = 'unisat',
   XVERSE = 'xverse',
   MAGIC_EDEN = 'magic-eden',
   LEATHER = 'leather',
+  ORANGE = 'orange',
   OKX = 'okx',
-  OYL = 'oyl'
+  OYL = 'oyl',
+  PHANTOM = 'phantom',
+  WIZZ = 'wizz'
 }
 
 export enum EFILTERS {
@@ -62,6 +78,65 @@ export enum EVIEW_TYPES {
 }
 
 export const ViewTypeValues = Object.values(EVIEW_TYPES);
-export const NETWORK = process.env.NEXT_PUBLIC_NETWORK?.toLowerCase() || 'mainnet';
+export enum ENETWORK {
+  MAINNET = 'mainnet',
+  TESTNET = 'testnet',
+  SIGNET = 'signet'
+}
+export const NETWORK: ENETWORK = (process.env.NEXT_PUBLIC_NETWORK?.toLowerCase() || 'mainnet') as ENETWORK;
 
 export const DEFAULT_FEE_RATE = 3;
+
+// TODO: Calculate actual fee estimates.
+export const ESTIMATED_TX_FEE = {
+  SINGLE_INSCRIPTION_BUY: 522.5
+};
+
+export const SPOTLIGHT_COLLECTION_SLUG = {
+  [ENETWORK.MAINNET]: 'satoshibles-the-ordinals',
+  [ENETWORK.SIGNET]: 'underground-fragments',
+  [ENETWORK.TESTNET]: 'test'
+};
+
+export const TRIO_EXCHANGES: { label: string; link: string; img: string }[] = [
+  {
+    label: 'Gate.io',
+    link: 'https://www.gate.io/trade/TRIO_USDT',
+    img: '/img/exchanges/gateio.svg'
+  },
+  {
+    label: 'MEXC Global',
+    link: 'https://www.mexc.com/exchange/TRIO_USDT',
+    img: '/img/exchanges/mexc.svg'
+  },
+  {
+    label: 'BingX',
+    link: 'https://bingx.com/en/spot/TRIOUSDT/',
+    img: '/img/exchanges/bingx.svg'
+  },
+  {
+    label: 'UniSat',
+    link: 'https://unisat.io/market/brc20?tick=TRIO',
+    img: '/img/exchanges/logo_unisat.svg'
+  },
+  {
+    label: 'BitPanda',
+    link: 'https://www.bitpanda.com/en/prices/trio-ordinalsbot-trio',
+    img: ''
+  },
+  {
+    label: 'CoinW',
+    link: 'https://www.coinw.com/spot/trio(ordinals)usdt',
+    img: ''
+  },
+  {
+    label: 'DotSwap',
+    link: 'https://www.dotswap.app/swap#B_%E2%80%A2BTC_%E2%80%A2TRIO',
+    img: ''
+  },
+  {
+    label: 'BefiLabs',
+    link: 'https://befilabs.com/app/',
+    img: ''
+  }
+];

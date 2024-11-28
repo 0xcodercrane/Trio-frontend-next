@@ -10,12 +10,12 @@ interface SizeSelectorProps {
 }
 
 const DEFAULT_CONFIG: SizeSelectorConfig = {
-  [ESIZES.XS]: true,
-  [ESIZES.SM]: false,
-  [ESIZES.MD]: true,
+  [ESIZES.XS]: false,
+  [ESIZES.SM]: true,
+  [ESIZES.MD]: false,
   [ESIZES.LG]: false,
-  [ESIZES.XL]: false,
-  [ESIZES.XXL]: true
+  [ESIZES.XL]: true,
+  [ESIZES.XXL]: false
 };
 
 export function SizeSelector({ config = DEFAULT_CONFIG }: SizeSelectorProps) {
@@ -25,6 +25,7 @@ export function SizeSelector({ config = DEFAULT_CONFIG }: SizeSelectorProps) {
     <div className='flex flex-row items-center gap-4'>
       {SizesValues.map((s: ESIZES) => (
         <Button
+          variant='tab'
           key={s}
           onClick={() => setSize(s)}
           className={`${size === s ? 'active' : ''} ${config[s] ? 'visible' : 'hidden'} text-xs uppercase`}

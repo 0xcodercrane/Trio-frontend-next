@@ -50,7 +50,7 @@ export const mapComponentVariantsToColor = (variant: EComponentVariants) => {
       };
     default:
       return {
-        bg: 'bg-ob-black-light',
+        bg: 'bg-ob-purple-dark',
         text: 'text-ob-white',
         border: 'border border-ob-black-light'
       };

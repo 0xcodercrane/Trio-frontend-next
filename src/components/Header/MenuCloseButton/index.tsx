@@ -6,7 +6,7 @@ import { useContext } from 'react';
 export default function MenuCloseButton() {
   const { menuDisclosure } = useContext(GlobalContext);
   return (
-    <Button variant='secondary' size='icon' onClick={menuDisclosure.close}>
+    <Button variant='icon' size='icon' onClick={menuDisclosure.close}>
       <X />
     </Button>
   );

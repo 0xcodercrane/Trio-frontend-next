@@ -1,4 +1,5 @@
 import { Disclosure } from '@/lib/hooks/useDisclosure';
+import { TPointsMapping } from './pointsConfig';
 
 export enum EMenuType {
   PROFILE = 'profile',
@@ -14,4 +15,5 @@ export interface IGlobalContext {
   menuType: EMenuType;
   menuBG: string;
   setMenuType: (type: EMenuType) => void;
+  pointsConfig: TPointsMapping | null;
 }

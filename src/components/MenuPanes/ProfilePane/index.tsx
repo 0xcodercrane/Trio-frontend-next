@@ -6,31 +6,32 @@ import { shortenAddress } from '@/lib/utilities';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useContext, useState } from 'react';
 import { BuyTrioTab } from './BuyTrio';
+import { MyAssetsTab } from './MyAssetsTab';
 import { PointsPane } from '../PointsPane/PointsPane';
 import OrdersPane from '../OrdersPane';
 
 enum EProfilePanes {
-  ACCOUNT = 'account',
-  BUY_TRIO = 'buy trio',
-  ORDERS = 'orders',
-  COLLECTED = 'collected',
-  POINTS = 'trio points'
+  // ACCOUNT = 'account',
+  MY_ASSETS = 'My Assets',
+  BUY_TRIO = 'Buy TRIO',
+  // ORDERS = 'orders',
+  POINTS = 'Points'
 }
 
 const ProfilePaneValues = Object.values(EProfilePanes);
 
 const ProfilePaneConfig = {
-  [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
+  // [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
+  [EProfilePanes.MY_ASSETS]: () => <MyAssetsTab />,
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
-  [EProfilePanes.ORDERS]: () => <OrdersPane />,
-  [EProfilePanes.COLLECTED]: () => <div className='text-white'>Collected</div>,
+  // [EProfilePanes.ORDERS]: () => <OrdersPane />,
   [EProfilePanes.POINTS]: () => <PointsPane />
 };
 
 export default function ProfilePane() {
   const { wallet, logout } = useContext(AuthContext);
   const { disconnect } = useLaserEyes();
-  const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.ACCOUNT);
+  const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.MY_ASSETS);
 
   return (
     <div className='flex flex-col justify-start'>
@@ -62,6 +63,7 @@ export default function ProfilePane() {
               <Button
                 size='sm'
                 key={index}
+                variant='tab'
                 onClick={() => setActivePane(pane)}
                 className={activePane === pane ? 'active' : ''}
               >

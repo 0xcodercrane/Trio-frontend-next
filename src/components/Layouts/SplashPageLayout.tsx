@@ -11,21 +11,23 @@ interface SplashPageLayoutProps {
     src?: string;
   };
   className?: string;
+  childrenWrapperJustify?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
 }
 
 export default function SplashPageLayout({
   children,
   orientation = 'ltr',
   media: { type, id, src },
-  className
+  className,
+  childrenWrapperJustify = 'center'
 }: SplashPageLayoutProps) {
   return (
-    <div
-      className={`flex max-h-[80vh] flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}
-    >
-      <div className='flex basis-1/2 items-center justify-center'>
+    <div className={`flex flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}>
+      <div className='flex basis-1/2 items-start justify-start'>
         {type === 'inscription' ? (
-          <MediaWrapper id={id} size='full' className='relative overflow-hidden rounded-xl' />
+          <div className='w-full'>
+            <MediaWrapper id={id} size='full' className='relative max-w-[600px] overflow-hidden rounded-xl' />
+          </div>
         ) : (
           <Image
             src={src ?? ''}
@@ -36,7 +38,7 @@ export default function SplashPageLayout({
           />
         )}
       </div>
-      <div className='flex basis-1/2 flex-col justify-center'>{children}</div>
+      <div className={`flex basis-1/2 flex-col justify-${childrenWrapperJustify}`}>{children}</div>
     </div>
   );
 }

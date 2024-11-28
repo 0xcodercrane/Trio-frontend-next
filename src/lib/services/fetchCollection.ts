@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getEntireCollectionBySlug, getEntireCollectionById } from '../supabase';
+import { TPagination } from '../hooks/usePagination/pagination.types';
 
 export const useCollectionBySlugQuery = (slug: string) => {
   return useQuery({

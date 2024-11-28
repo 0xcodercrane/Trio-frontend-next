@@ -17,3 +17,5 @@ export type Collection = Database['public']['Tables']['collections']['Row'] & {
   artist: Artist;
   inscriptions?: Inscription[];
 };
+
+export type OrderbookItem = Database['public']['Tables']['orderbook']['Row'];

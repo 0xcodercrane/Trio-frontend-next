@@ -1,6 +1,7 @@
 import Section from '../Section';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Skeleton } from '../ui/skeleton';
+import { Button } from '../ui/button';
 
 export default function PopularArtists() {
   return (
@@ -15,12 +16,12 @@ export default function PopularArtists() {
           <div className='flex h-full basis-1/6 flex-col items-center justify-center gap-4'>
             <h3>Popular</h3>
             <div className='flex flex-row items-center justify-between gap-4'>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
                 <ChevronLeft color='white' size={30} />
-              </div>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
+              </Button>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
                 <ChevronRight color='white' size={30} />
-              </div>
+              </Button>
             </div>
           </div>
           <div className='flex h-full basis-5/6 flex-row gap-4'>
@@ -33,17 +34,17 @@ export default function PopularArtists() {
           <div className='flex h-full basis-1/6 flex-col items-center justify-center gap-4'>
             <h3>Trending</h3>
             <div className='flex flex-row items-center justify-between gap-4'>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
                 <ChevronLeft color='white' size={30} />
-              </div>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
+              </Button>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
                 <ChevronRight color='white' size={30} />
-              </div>
+              </Button>
             </div>
           </div>
           <div className='flex h-full basis-5/6 flex-row gap-4'>
             {Array.from({ length: 4 }).map((_, index) => (
-              <Skeleton className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]' key={index} />
+              <Skeleton className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-dark' key={index} />
             ))}
           </div>
         </div>
@@ -51,17 +52,17 @@ export default function PopularArtists() {
           <div className='flex h-full basis-1/6 flex-col items-center justify-center gap-4'>
             <h3>A-Z</h3>
             <div className='flex flex-row items-center justify-between gap-4'>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
                 <ChevronLeft color='white' size={30} />
-              </div>
-              <div className='flex h-[60px] w-[60px] items-center justify-center rounded-full bg-ob-grey'>
+              </Button>
+              <Button variant='icon' className='h-[60px] w-[60px]' size='icon'>
                 <ChevronRight color='white' size={30} />
-              </div>
+              </Button>
             </div>
           </div>
           <div className='flex h-full basis-5/6 flex-row gap-4'>
             {Array.from({ length: 4 }).map((_, index) => (
-              <Skeleton className='h-full w-full max-w-[256px] rounded-xl bg-[#252525]' key={index} />
+              <Skeleton className='h-full w-full max-w-[256px] rounded-xl bg-ob-purple-dark' key={index} />
             ))}
           </div>
         </div>

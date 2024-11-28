@@ -11,9 +11,9 @@ const itemGap = 'gap-4';
 const labelGap = 'gap-2';
 export default function Page() {
   return (
-    <Section className='bg-ob-black-light'>
+    <Section className='bg-ob-purple-dark'>
       <Container padding>
-        <div className={`flex w-full flex-col bg-ob-black-light py-[--section-vertical-padding] pt-[--header-height]`}>
+        <div className={`flex w-full flex-col bg-ob-purple-dark py-[--section-vertical-padding] pt-[--header-height]`}>
           <div className={`flex flex-col ${sectionGap}`}>
             <hr className='border-ob-grey-lighter' />
             {/* Tags */}

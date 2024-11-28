@@ -6,11 +6,13 @@ const DEFAULT_MAX = 100;
 
 export const useFilter = create<FilterState>()((set, get) => ({
   filters: {},
-  viewType: EVIEW_TYPES.LIST,
+  viewType: EVIEW_TYPES.GRID,
   setViewType: (viewType: EVIEW_TYPES) => set({ viewType }),
   size: ESIZES.MD,
   setSize: (size: ESIZES) => set({ size }),
   offset: 0,
+  searchKeyword: '',
+  setSearchKeyword: (searchKeyword) => set({ searchKeyword }),
   limit: 10,
   max: DEFAULT_MAX,
   hasNext: () => get().offset + get().limit < get().max,

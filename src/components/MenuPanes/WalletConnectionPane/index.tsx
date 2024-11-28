@@ -1,15 +1,10 @@
 'use client';
 
-import React, { ReactElement, useContext, useEffect, useMemo, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { StaticImageData } from 'next/image';
-import { ChevronRight } from 'lucide-react';
-import { GlobalContext } from '@/app/providers/GlobalContext';
-import { signInWithCustomToken } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-import { ESUPPORTED_WALLETS, NETWORK, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
-import { AuthContext } from '@/app/providers/AuthContext';
-import { signIn } from 'next-auth/react';
+import { ChevronRight, MonitorDown } from 'lucide-react';
+import { ESUPPORTED_WALLETS, NETWORK } from '@/lib/constants';
 import { toast } from 'sonner';
 import {
   UNISAT,
@@ -18,143 +13,76 @@ import {
   LEATHER,
   OKX,
   OYL,
+  ORANGE,
   useLaserEyes,
   OylLogo,
   UnisatLogo,
   MagicEdenLogo,
   LeatherLogo,
   XverseLogo,
-  OkxLogo
+  OkxLogo,
+  PHANTOM,
+  PhantomLogo,
+  WIZZ,
+  WizzLogo
 } from '@omnisat/lasereyes';
 import { Container } from '@/components/Container';
-import LoadingScreen from '@/components/common/LoadingScreen';
 import { Loading } from '@/components/common';
 
 const WALLET_OPTIONS: {
   [key in ESUPPORTED_WALLETS]: {
     name: string;
     icon: StaticImageData | ReactElement;
-    provider: typeof XVERSE | typeof UNISAT | typeof MAGIC_EDEN | typeof LEATHER | typeof OKX | typeof OYL;
+    provider:
+      | typeof XVERSE
+      | typeof UNISAT
+      | typeof MAGIC_EDEN
+      | typeof LEATHER
+      | typeof OKX
+      | typeof OYL
+      | typeof PHANTOM
+      | typeof ORANGE
+      | typeof WIZZ;
     recommended?: boolean;
+    downloadUrl?: string;
   };
 } = {
   [XVERSE]: {
     name: 'Xverse',
     icon: <XverseLogo size={24} />,
     provider: XVERSE,
-    recommended: true
+    recommended: true,
+    downloadUrl: 'https://www.xverse.app/download'
   },
-  [UNISAT]: { name: 'Unisat', icon: <UnisatLogo size={24} />, provider: UNISAT },
+  [UNISAT]: { name: 'Unisat', icon: <UnisatLogo size={24} />, provider: UNISAT, downloadUrl: 'https://unisat.io/download' },
   [MAGIC_EDEN]: {
     name: 'Magic Eden',
     icon: <MagicEdenLogo size={24} />,
-    provider: MAGIC_EDEN
+    provider: MAGIC_EDEN,
+    downloadUrl: 'https://wallet.magiceden.io/download'
   },
-  [LEATHER]: { name: 'Leather', icon: <LeatherLogo size={24} />, provider: LEATHER },
-  [OYL]: { name: 'OYL', icon: <OylLogo size={24} />, provider: OYL },
-  [OKX]: { name: 'OKX', icon: <OkxLogo size={24} />, provider: OKX }
+  [LEATHER]: {
+    name: 'Leather',
+    icon: <LeatherLogo size={24} />,
+    provider: LEATHER,
+    downloadUrl: 'https://leather.io/install-extension'
+  },
+  [OYL]: { name: 'OYL', icon: <OylLogo size={24} />, provider: OYL, downloadUrl: 'https://www.oyl.io/' },
+  [OKX]: { name: 'OKX', icon: <OkxLogo size={24} />, provider: OKX, downloadUrl: 'https://www.okx.com/download' },
+  [PHANTOM]: { name: 'Phantom', icon: <PhantomLogo size={24} />, provider: PHANTOM, downloadUrl: 'https://phantom.app/' },
+  [ORANGE]: { name: 'Orange', icon: <span>🟠</span>, provider: ORANGE, downloadUrl: 'https://orangecrypto.com' },
+  [WIZZ]: { name: 'Wizz', icon: <WizzLogo size={24} />, provider: WIZZ, downloadUrl: 'https://wizzwallet.io' }
 };
 
 export default function WalletConnectionPane() {
-  const { menuDisclosure } = useContext(GlobalContext);
-  const { loginWithWallet, loading, logout } = useContext(AuthContext);
-
   const [loginStates, setLoginStates] = useState({
     connect: false,
     sign: false,
     loading: false
   });
 
-  const {
-    connect,
-    connected,
-    address,
-    publicKey,
-    signMessage,
-    paymentAddress,
-    paymentPublicKey,
-    provider,
-    isInitializing,
-    hasUnisat,
-    hasXverse,
-    hasOkx,
-    hasMagicEden,
-    hasLeather,
-    hasOyl
-  } = useLaserEyes();
-
-  const signIntoFirebase = async (address: string, signature: string) => {
-    try {
-      const response = await fetch('/api/auth/customToken', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ address, signature }) // Send the address and its signature
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch custom token');
-      }
-
-      const data = await response.json();
-      const customToken = data.customToken;
-
-      // Use the custom token to authenticate with Firebase
-      try {
-        await signInWithCustomToken(auth, customToken);
-
-        const idToken = await auth.currentUser?.getIdToken(true);
-        if (idToken) {
-          // Sign in with next-auth, which establishes a session
-          await signIn('credentials', { redirect: false, idToken });
-          return true;
-        }
-      } catch (error) {
-        console.error('Error signing in with custom token:', error);
-        return false;
-      }
-    } catch (error) {
-      console.error('Fetch Error: ', error);
-      return false;
-    }
-  };
-
-  useEffect(() => {
-    if (isInitializing || auth.currentUser || loading) return;
-
-    // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
-    if (connected) {
-      setLoginStates({ connect: true, sign: false, loading: true });
-      const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
-        try {
-          const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
-          if (!signedMessage) {
-            setLoginStates({ connect: false, sign: false, loading: false });
-            logout();
-            return toast.error('Failed to sign message');
-          }
-          const signInResult = await signIntoFirebase(address, signedMessage);
-
-          if (signInResult) {
-            menuDisclosure.close();
-            return loginWithWallet({
-              ordinalsAddress: address,
-              ordinalsPublicKey: publicKey,
-              paymentAddress,
-              paymentPublicKey,
-              wallet
-            });
-          }
-        } catch (error) {
-          toast.error('User rejected request');
-          logout();
-        }
-      };
-
-      signMessageForFirebase(provider);
-    }
-  }, [connected]);
+  const { connect, hasUnisat, hasXverse, hasOkx, hasMagicEden, hasLeather, hasOyl, hasPhantom, hasWizz, hasOrange } =
+    useLaserEyes();
 
   const handleConnect = async (provider: ESUPPORTED_WALLETS) => {
     try {
@@ -175,13 +103,16 @@ export default function WalletConnectionPane() {
       [ESUPPORTED_WALLETS.MAGIC_EDEN]: hasMagicEden,
       [ESUPPORTED_WALLETS.LEATHER]: hasLeather,
       [ESUPPORTED_WALLETS.OKX]: hasOkx,
-      [ESUPPORTED_WALLETS.OYL]: hasOyl
+      [ESUPPORTED_WALLETS.OYL]: hasOyl,
+      [ESUPPORTED_WALLETS.PHANTOM]: hasPhantom,
+      [ESUPPORTED_WALLETS.WIZZ]: hasWizz,
+      [ESUPPORTED_WALLETS.ORANGE]: hasOrange
     };
-  }, [hasUnisat, hasXverse, hasMagicEden, hasLeather, hasLeather, hasOkx, hasOyl]);
+  }, [hasUnisat, hasXverse, hasMagicEden, hasLeather, hasLeather, hasOkx, hasOyl, hasPhantom, hasOrange, hasWizz]);
 
   return (
     <Container padding justify='center'>
-      <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-black text-white'>
+      <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-purple-darkest text-white'>
         {!loginStates.connect && <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>}
 
         <div className='flex w-full flex-col items-center justify-center gap-4'>
@@ -191,25 +122,26 @@ export default function WalletConnectionPane() {
           {loginStates.loading && <Loading />}
           {!loginStates.connect &&
             Object.entries(WALLET_OPTIONS).map(([key, wallet]) => {
+              const hasWallet = WalletInstallationMatrix[key as ESUPPORTED_WALLETS];
               return (
                 WalletInstallationMatrix[key as ESUPPORTED_WALLETS] && (
                   <Button
                     key={wallet.name}
-                    variant='outline'
+                    variant='ghost'
                     className='w-full min-w-fit max-w-[33%] justify-between hover:text-white'
-                    // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
-                    onClick={() => handleConnect(key)}
+                    onClick={() => {
+                      // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
+                      if (hasWallet) return handleConnect(key);
+                      else if (wallet.downloadUrl && window) window.open(wallet.downloadUrl);
+                    }}
                   >
                     <div className='flex w-full flex-row items-center gap-2'>
                       <div className='max-h-[var(--button-height-xs)] max-w-[var(--button-height-xs)]'>
                         {React.isValidElement(wallet.icon) ? wallet.icon : null}
                       </div>
                       <span>{wallet.name}</span>
-                      {key === ESUPPORTED_WALLETS.XVERSE && (
-                        <span className='rounded-full bg-zinc-800 px-2 py-1 text-xs'>Recommended</span>
-                      )}
                     </div>
-                    <ChevronRight size={20} className='hover:text-white' />
+                    {hasWallet ? <ChevronRight size={20} className='hover:text-white' /> : <MonitorDown size={20} />}
                   </Button>
                 )
               );

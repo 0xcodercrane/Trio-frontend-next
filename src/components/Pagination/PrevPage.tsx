@@ -5,7 +5,7 @@ import { useFilter } from '@/lib/hooks/useFilter';
 export default function PrevPage() {
   const { prevPage, hasPrev } = useFilter();
   return (
-    <Button size='icon' onClick={prevPage} disabled={!hasPrev()}>
+    <Button variant='tab' size='icon' onClick={prevPage} disabled={!hasPrev()}>
       <ChevronLeft />
     </Button>
   );
