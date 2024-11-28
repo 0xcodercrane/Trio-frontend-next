@@ -22,7 +22,10 @@ export const TextRenderer = memo(({ content }: { content: string }) => {
 
   // TODO add the different text sizes/styles
   return (
-    <pre className={`text-content max-w-full md:flex ${content.length < 150 ? 'short-text' : ''}`} style={{ fontSize }}>
+    <pre
+      className={`text-content max-w-full text-white md:flex ${content.length < 150 ? 'short-text' : ''}`}
+      style={{ fontSize }}
+    >
       {content}
     </pre>
   );
