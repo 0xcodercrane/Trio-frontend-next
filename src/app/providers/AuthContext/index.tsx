@@ -70,6 +70,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
         signOut({ redirect: false });
       })
       .catch((error) => {
+        setLoading(false);
         console.error('Error signing out:', error);
         toast.error('Failed to sign out');
       });
@@ -199,11 +200,9 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
 
   useEffect(() => {
     if (isInitializing || auth.currentUser || loading) return;
-
-    setLoading(true);
-
     // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
     if (connected && !auth.currentUser) {
+      setLoading(true);
       const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
         try {
           const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
