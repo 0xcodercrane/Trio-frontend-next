@@ -1,25 +1,18 @@
-import { create } from 'zustand';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { ONE_SECOND } from '@/lib/constants';
-import { fetchBlockHeight } from '@/lib/services';
-import { BlockHeightState } from '@/types';
 
-const useBlockHeightState = create<BlockHeightState>()((set, get) => ({
-  tip: 0,
-  setTip: (tip: number) => set({ tip })
-}));
+const fetchBlockHeight = async () => {
+  try {
+    return (await fetch('/api/blockHeight')).json();
+  } catch (e) {
+    throw new Error('Failed to fetch block height.');
+  }
+};
 
-export const useBlockHeight = () => {
-  const queryResult = useQuery({
-    queryKey: ['blockHeight', 'tip'],
+export const useBlockHeight = () =>
+  useQuery({
+    queryKey: ['blockHeight'],
     queryFn: fetchBlockHeight,
     initialData: 0,
     select: (data) => (data ? data : 0),
-    placeholderData: keepPreviousData,
-    refetchInterval: 20 * ONE_SECOND.as('milliseconds') // 20 seconds
+    placeholderData: keepPreviousData
   });
-
-  const blockHeightState = useBlockHeightState();
-
-  return { ...queryResult, ...blockHeightState };
-};

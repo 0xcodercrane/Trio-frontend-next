@@ -160,8 +160,6 @@ export default function Launchpad() {
           startDate: convertToUnixTimestamp(new Date(phase.startDate), phase.startTime),
           endDate: convertToUnixTimestamp(new Date(phase.endDate), phase.endTime)
         }));
-
-        console.log(data);
       } catch (error) {
         console.error('Submission error:', error);
       }

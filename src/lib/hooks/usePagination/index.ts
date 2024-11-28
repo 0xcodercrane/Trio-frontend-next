@@ -6,6 +6,12 @@ interface UsePaginationProps {
   max: number;
 }
 
+export const DEFAULT_INITIAL_PAGINATION = {
+  max: 100,
+  initialOffset: 0,
+  initialLimit: 10
+};
+
 const usePagination = ({ initialOffset = 0, initialLimit = 10, max }: UsePaginationProps) => {
   const [offset, setOffset] = useState(initialOffset);
   const [limit, setLimit] = useState(initialLimit);

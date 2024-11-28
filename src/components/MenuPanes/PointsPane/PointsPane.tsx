@@ -6,7 +6,6 @@ import { useTokenBalanceQuery, useTrioInfoQuery } from '@/lib/services';
 import { useContext } from 'react';
 
 export const PointsPane = () => {
-  // TODO handle loading
   const { user, wallet } = useContext(AuthContext);
 
   const { data: trioInfo } = useTrioInfoQuery();

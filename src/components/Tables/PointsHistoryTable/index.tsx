@@ -1,10 +1,12 @@
 'use client';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { DEFAULT_INITIAL_PAGINATION, usePagination } from '@/lib/hooks';
 import { useRewardsQuery } from '@/lib/services/fetchUserRewards';
 import { formatDate } from '@/lib/utilities';
 
 export default function PointsHistoryTable() {
-  const { data: rewards, isSuccess: rewardsSuccess } = useRewardsQuery();
+  const pagination = usePagination(DEFAULT_INITIAL_PAGINATION);
+  const { data: rewards, isSuccess: rewardsSuccess } = useRewardsQuery(pagination);
   return (
     <Table>
       <TableBody>
