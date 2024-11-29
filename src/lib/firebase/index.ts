@@ -28,7 +28,7 @@ const functions = getFunctions(app);
 let analytics: Analytics | null = null;
 
 // First check to see if we are running in the browser. If we are, call isSupported.
-if (window !== undefined) {
+if (window && window !== undefined) {
   isSupported().then((supported) => {
     if (supported) analytics = getAnalytics(app);
   });
