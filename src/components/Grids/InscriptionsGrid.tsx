@@ -23,7 +23,7 @@ export default function InscriptionsGrid({
   const router = useRouter();
   const { size } = useFilter();
   return (
-    <div className={`flex flex-row flex-wrap gap-4`}>
+    <div className='flex flex-row flex-wrap gap-2'>
       {inscriptions.map((inscription, index) => (
         <div key={inscription.inscription_id} className={`relative ${mapSizeToBasis(size)} group cursor-pointer`}>
           {loading ? (

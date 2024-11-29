@@ -26,7 +26,7 @@ export const ImageRenderer = memo(({ content }: { content: Blob }) => {
   return (
     <Image
       src={url}
-      alt={`bitcoin inscription`}
+      alt='bitcoin inscription'
       className='h-full w-full'
       loading='lazy'
       style={{ imageRendering: 'pixelated', objectFit: 'cover' }}

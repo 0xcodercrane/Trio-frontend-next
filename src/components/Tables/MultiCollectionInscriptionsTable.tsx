@@ -45,7 +45,7 @@ export default function MultiCollectionInscriptionsTable({
                       size={48}
                       square
                       blur={nextPageLoading}
-                      className={`relative overflow-hidden rounded-sm`}
+                      className='relative overflow-hidden rounded-sm'
                     />
                     <span className='text-lg font-bold'>{inscription.name}</span>
                   </div>

@@ -10,18 +10,10 @@ export const Submitted = () => {
         </span>
 
         <div className='mt-4 grid grid-cols-1 items-center justify-center gap-4 xl:grid-cols-2'>
-          <Button
-            size={'lg'}
-            variant={'secondary'}
-            className='mx-auto w-[280px!important] max-w-[280px!important] px-8 font-bold'
-          >
+          <Button size='lg' variant='default' className='mx-auto w-[280px!important] max-w-[280px!important] px-8 font-bold'>
             View launch Page
           </Button>
-          <Button
-            size={'lg'}
-            variant={'secondary'}
-            className='mx-auto w-[280px!important] max-w-[280px!important] px-8 font-bold'
-          >
+          <Button size='lg' variant='default' className='mx-auto w-[280px!important] max-w-[280px!important] px-8 font-bold'>
             Manage My Launches
           </Button>
         </div>

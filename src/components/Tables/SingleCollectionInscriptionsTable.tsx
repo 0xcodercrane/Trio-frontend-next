@@ -41,7 +41,7 @@ export default function SingleCollectionInscriptionsTable({
                         id={inscription.inscription_id}
                         size='full'
                         blur={nextPageLoading}
-                        className={`relative overflow-hidden rounded-sm`}
+                        className='relative overflow-hidden rounded-sm'
                       />
                     </div>
                     <span className='text-lg font-bold'>{inscription.name}</span>

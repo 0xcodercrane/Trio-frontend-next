@@ -22,7 +22,7 @@ export default function Carousel({ inscriptions, loading }: { inscriptions: Insc
                 key={inscription_id}
                 className={`relative max-h-[--inscription-large] max-w-[--inscription-large] basis-1/6 ${index === 2 ? 'grow' : ''}`}
               >
-                <InscriptionOverlay id={inscription_id} name={'Test'} />
+                <InscriptionOverlay id={inscription_id} name='Test' />
                 <MediaWrapper id={inscription_id} size='full' className='relative overflow-hidden rounded-xl' />
               </div>
             ))}

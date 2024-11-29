@@ -29,6 +29,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     address,
     publicKey,
     signMessage,
+    signPsbt,
     paymentAddress,
     paymentPublicKey,
     provider,
@@ -242,6 +243,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
   return (
     <AuthContext.Provider
       value={{
+        signPsbt,
         isAuthenticated,
         loginWithWallet,
         logout,

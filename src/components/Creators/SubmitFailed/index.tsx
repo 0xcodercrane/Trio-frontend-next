@@ -7,7 +7,7 @@ export const SubmitFailed = () => {
         <div className='text-center text-4xl font-bold'>Failure State</div>
         <span className='text-center text-sm text-ob-grey-lightest'>This may take some time</span>
         <div className='mt-4'>
-          <Button size='lg' variant={'secondary'} className='w-[240px] max-w-[240px] px-8 font-bold'>
+          <Button size='lg' variant='secondary' className='w-[240px] max-w-[240px] px-8 font-bold'>
             Manage My Launches
           </Button>
         </div>

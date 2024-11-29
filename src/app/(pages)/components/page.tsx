@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <Section className='bg-ob-purple-dark'>
       <Container padding>
-        <div className={`flex w-full flex-col bg-ob-purple-dark py-[--section-vertical-padding] pt-[--header-height]`}>
+        <div className='flex w-full flex-col bg-ob-purple-dark py-[--section-vertical-padding] pt-[--header-height]'>
           <div className={`flex flex-col ${sectionGap}`}>
             <hr className='border-ob-grey-lighter' />
             {/* Tags */}
