@@ -4,13 +4,16 @@ import { EOrderFlowStates } from '@/types';
 import { useListings, usePaddingOutputs } from '@/lib/hooks';
 import { useState } from 'react';
 import { Loading } from '@/components/common';
+import { useLaserEyes } from '@omnisat/lasereyes';
 
 interface BuyNowProps {
   orderId: number | undefined;
+  price: number | undefined;
   inscriptionId: string;
 }
 
-export default function BuyNow({ orderId, inscriptionId }: BuyNowProps) {
+export default function BuyNow({ orderId, inscriptionId, price }: BuyNowProps) {
+  const { balance } = useLaserEyes();
   const [isPendingPurchase, setIsPendingPurchase] = useState(false);
   const { buyListing } = useListings();
   const { setOrderFlowState, setTxId } = useOrderFlow();
@@ -31,6 +34,8 @@ export default function BuyNow({ orderId, inscriptionId }: BuyNowProps) {
     }
   };
 
+  const hasEnoughBalance = balance && price && balance > price;
+
   return (
     <div className='flex flex-col items-center gap-4'>
       {!isPaddingOutputsCheckPending && !hasPaddingOutputs && (
@@ -43,7 +48,7 @@ export default function BuyNow({ orderId, inscriptionId }: BuyNowProps) {
         </Button>
       )}
       <Button
-        disabled={!orderId || isPendingPurchase || !hasPaddingOutputs || isPaddingOutputsCheckPending}
+        disabled={!orderId || isPendingPurchase || !hasPaddingOutputs || isPaddingOutputsCheckPending || !hasEnoughBalance}
         className='min-w-full rounded-lg text-lg'
         onClick={handleBuy}
       >
