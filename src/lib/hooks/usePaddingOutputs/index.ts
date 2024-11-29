@@ -4,6 +4,7 @@ import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useContext, useState } from 'react';
 import { toast } from 'sonner';
+import { useFeeRates } from '../useFeeRates';
 
 interface PaddingOutputsCheckDataResponse {
   paddingOutputsExist: boolean;
@@ -30,7 +31,7 @@ const checkPaddingOutputs = async (address?: string): Promise<GenericResponse<Pa
   }
 };
 
-const setupPaddingOutputs = async (
+const getPaddingOutputsSetupPsbt = async (
   address: string,
   publicKey: string,
   feeRate: number
@@ -54,24 +55,28 @@ const usePaddingOutputs = () => {
   const { wallet } = useContext(AuthContext);
   const { signPsbt } = useLaserEyes();
   const queryClient = useQueryClient();
+  const { feeRate } = useFeeRates();
 
-  const { data: hasPaddingOutputs, isPending: paddingOutputsCheckIsPending } = useQuery({
+  const { data: hasPaddingOutputs, isPending: isPaddingOutputsCheckPending } = useQuery({
     queryKey: ['padding-outputs-check', wallet?.paymentAddress],
     queryFn: () => checkPaddingOutputs(wallet?.paymentAddress),
     select: (data) => isResponseSuccess(data) && data.payload.paddingOutputsExist,
     enabled: !!wallet?.paymentAddress
   });
 
+  const [isPaddingOuputsSetupInProgress, setIsPaddingOutputsSetupInProgess] = useState(false);
+
+  // MEMO: Wrapper around any call that needs to be checked.
   const withPaddingOutputs = useCallback(
-    async (callback: () => any, feeRate: number) => {
-      if (paddingOutputsCheckIsPending || !wallet) {
+    async (callback: () => any) => {
+      if (isPaddingOutputsCheckPending || !wallet) {
         return;
       }
       if (hasPaddingOutputs) {
         return callback();
       }
-
-      const response = await setupPaddingOutputs(wallet.paymentAddress, wallet.paymentPublicKey, feeRate);
+      setIsPaddingOutputsSetupInProgess(true);
+      const response = await getPaddingOutputsSetupPsbt(wallet.paymentAddress, wallet.paymentPublicKey, feeRate);
 
       if (response.success) {
         const result = await signPsbt(response.payload.psbt, true, true);
@@ -81,19 +86,29 @@ const usePaddingOutputs = () => {
           setTimeout(async () => {
             await queryClient.invalidateQueries({ queryKey: ['padding-outputs-check', wallet?.paymentAddress] });
             const cbResult = await callback();
+            setIsPaddingOutputsSetupInProgess(false);
             resolve(cbResult);
           }, 10000); // Wait for 10s to let backend catch up with the padding setup tx in the mempool.
         });
       } else {
         console.error('Setting up padding outputs failed:', response.error);
         toast.error('Setting up padding outputs failed.');
+        setIsPaddingOutputsSetupInProgess(false);
         return;
       }
     },
-    [hasPaddingOutputs, paddingOutputsCheckIsPending, wallet]
+    [hasPaddingOutputs, isPaddingOutputsCheckPending, wallet, feeRate]
   );
 
-  return { withPaddingOutputs };
+  const setupPaddingOutputs = useCallback(() => withPaddingOutputs(() => {}), [withPaddingOutputs]);
+
+  return {
+    hasPaddingOutputs,
+    isPaddingOutputsCheckPending,
+    isPaddingOuputsSetupInProgress,
+    withPaddingOutputs,
+    setupPaddingOutputs
+  };
 };
 
 export { usePaddingOutputs };
