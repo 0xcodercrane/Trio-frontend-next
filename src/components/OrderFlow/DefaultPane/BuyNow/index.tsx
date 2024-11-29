@@ -1,20 +1,24 @@
 import { useOrderFlow } from '@/lib/hooks/useOrderFlow';
 import { Button } from '../../../ui/button';
 import { EOrderFlowStates } from '@/types';
-import { useFeeRates, useListings } from '@/lib/hooks';
+import { useListings, usePaddingOutputs } from '@/lib/hooks';
 import { useState } from 'react';
 import { Loading } from '@/components/common';
+import { useLaserEyes } from '@omnisat/lasereyes';
 
 interface BuyNowProps {
   orderId: number | undefined;
+  price: number | undefined;
   inscriptionId: string;
 }
 
-export default function BuyNow({ orderId, inscriptionId }: BuyNowProps) {
+export default function BuyNow({ orderId, inscriptionId, price }: BuyNowProps) {
+  const { balance } = useLaserEyes();
   const [isPendingPurchase, setIsPendingPurchase] = useState(false);
   const { buyListing } = useListings();
   const { setOrderFlowState, setTxId } = useOrderFlow();
-  const { feeRate } = useFeeRates();
+  const { hasPaddingOutputs, setupPaddingOutputs, isPaddingOuputsSetupInProgress, isPaddingOutputsCheckPending } =
+    usePaddingOutputs();
 
   const handleBuy = async () => {
     if (!orderId) {
@@ -22,7 +26,7 @@ export default function BuyNow({ orderId, inscriptionId }: BuyNowProps) {
     }
 
     setIsPendingPurchase(true);
-    const txId = await buyListing(orderId, feeRate, inscriptionId);
+    const txId = await buyListing(orderId, inscriptionId);
     setIsPendingPurchase(false);
     if (txId) {
       setTxId(txId);
@@ -30,9 +34,24 @@ export default function BuyNow({ orderId, inscriptionId }: BuyNowProps) {
     }
   };
 
+  const hasEnoughBalance = balance && price && balance > price;
+
   return (
-    <div className='flex flex-row items-center gap-4'>
-      <Button disabled={!orderId || isPendingPurchase} className='min-w-full rounded-lg text-lg' onClick={handleBuy}>
+    <div className='flex flex-col items-center gap-4'>
+      {!isPaddingOutputsCheckPending && !hasPaddingOutputs && (
+        <Button
+          disabled={!orderId || isPendingPurchase || isPaddingOutputsCheckPending || isPaddingOuputsSetupInProgress}
+          className='min-w-full rounded-lg text-lg'
+          onClick={setupPaddingOutputs}
+        >
+          {isPaddingOuputsSetupInProgress ? <Loading className='p-2 text-ob-purple-dark' /> : 'Prepare Wallet'}
+        </Button>
+      )}
+      <Button
+        disabled={!orderId || isPendingPurchase || !hasPaddingOutputs || isPaddingOutputsCheckPending || !hasEnoughBalance}
+        className='min-w-full rounded-lg text-lg'
+        onClick={handleBuy}
+      >
         {isPendingPurchase ? <Loading className='p-2 text-ob-purple-dark' /> : 'Buy Now'}
       </Button>
       {/* <div className='flex h-full flex-col items-center justify-center'>

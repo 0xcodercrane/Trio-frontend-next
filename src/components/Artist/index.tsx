@@ -32,7 +32,7 @@ export default function Artist({ slug }: ArtistProps) {
         <div className='absolute z-20 h-full w-full bg-gradient-to-t from-ob-black via-ob-black/[0.80] to-transparent'></div>
         <Image
           src='/img/placeholder-hero.jpg'
-          alt={`some hero image`}
+          alt='some hero image'
           className='animate-fade-in h-full w-full'
           width={1000}
           height={1000}

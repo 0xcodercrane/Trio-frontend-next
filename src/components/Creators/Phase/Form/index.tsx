@@ -1,15 +1,16 @@
 'use client';
-import * as v from 'valibot';
+import FieldInfo from '@/components/common/FieldInfo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { phaseFormSchema, TPhaseFormSchema } from '@/types/creators';
+import { useForm } from '@tanstack/react-form';
+import validate from 'bitcoin-address-validation';
 import Image from 'next/image';
 import { useState } from 'react';
-import FieldInfo from '@/components/common/FieldInfo';
-import validate from 'bitcoin-address-validation';
-import { FileUpload } from '../../FileUpload';
-import { TPhaseDataSchema, TPhaseSchema, phaseSchema } from '../../DeterminePhases';
-import { useForm } from '@tanstack/react-form';
+import { toast } from 'sonner';
+import * as v from 'valibot';
+import { FileUpload } from '../../../forms/common/FileUpload';
 
 const allowListUploadSchema = v.array(v.pipe(v.string(), v.trim()));
 
@@ -20,25 +21,25 @@ enum UploadTypes {
 
 const FinishedForm = ({
   phaseIndex,
-  title,
+  name,
   setIsOpenEdit,
   handleToggleIsFinished,
   data
 }: {
-  title: string;
+  name: string;
   setIsOpenEdit: (isOpen: boolean) => void;
-  data: TPhaseSchema | undefined;
+  data: TPhaseFormSchema['phases'][0] | undefined;
   handleToggleIsFinished: (index: number, isFinished: boolean) => void;
   phaseIndex: number;
 }) => {
   return (
     <>
       <div className='flex justify-between'>
-        <div>{title}</div>
+        <div>{name}</div>
         <button onClick={() => setIsOpenEdit(true)} className='flex cursor-pointer items-center gap-2 xl:hidden'>
           <label className='font-bold'>Edit</label>
           <div className='rounded-sm bg-white p-2'>
-            <Image width={10} height={10} src={'/img/creators/pen.svg'} alt='pen' />
+            <Image width={10} height={10} src='/img/creators/pen.svg' alt='pen' />
           </div>
         </button>
       </div>
@@ -83,7 +84,7 @@ const FinishedForm = ({
         >
           <label className='font-bold'>Edit</label>
           <div className='rounded-sm bg-white p-2'>
-            <Image width={10} height={10} src={'/img/creators/pen.svg'} alt='pen' />
+            <Image width={10} height={10} src='/img/creators/pen.svg' alt='pen' />
           </div>
         </button>
       </div>
@@ -92,19 +93,21 @@ const FinishedForm = ({
 };
 
 const EditForm = ({
-  phaseIndex,
-  title,
-  hasWhiteList,
   form,
+  phaseIndex,
+  isAllowList,
+  setIsAllowList,
+  isUpdatingTanstackArray,
   handleDeletedPhaseConfig,
   handleFinishForm
 }: {
+  form: ReturnType<typeof useForm<TPhaseFormSchema>>;
   phaseIndex: number;
-  title: string;
-  hasWhiteList: boolean;
-  form: ReturnType<typeof useForm<TPhaseDataSchema>>;
+  isAllowList: boolean;
+  isUpdatingTanstackArray: boolean;
+  setIsAllowList: (isAllowList: boolean) => void;
   handleDeletedPhaseConfig: (index: number) => void;
-  handleFinishForm: (newPhase: TPhaseSchema) => void;
+  handleFinishForm: (newPhase: TPhaseFormSchema['phases'][0]) => void;
 }) => {
   const [uploadType, setUploadType] = useState(UploadTypes.MANUALL);
 
@@ -112,44 +115,97 @@ const EditForm = ({
     <>
       <div className='flex w-full justify-between'>
         <div className='flex items-center gap-2'>
-          <label className='font-bold'>{title}</label>
+          <label className='font-bold'>{isAllowList ? 'Whitelist Sale' : 'Public Sale'}</label>
           <div className='rounded-sm bg-white p-2'>
-            <Image width={10} height={10} src={'/img/creators/pen.svg'} alt='pen' />
+            <Image width={10} height={10} src='/img/creators/pen.svg' alt='pen' />
           </div>
         </div>
         <div className='flex gap-6'>
-          {hasWhiteList && (
-            <div className='flex items-center gap-2'>
-              <Input type='checkbox' className='h-6 w-6 accent-white' defaultChecked={true} />
-              <label className='font-bold text-ob-grey-lighter'>Allowlist</label>
-            </div>
-          )}
+          <form.Field
+            name={`phases[${phaseIndex}].isPublic`}
+            children={(field: any) => {
+              const { state, name, handleBlur, handleChange } = field;
+
+              return (
+                <div className='flex items-center gap-2'>
+                  <Input
+                    id={name}
+                    type='checkbox'
+                    className='h-6 w-6 accent-white'
+                    checked={!state.value}
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      setIsAllowList(e.target.checked);
+                      handleChange(!e.target.checked);
+                      if (e.target.checked) {
+                        form.setFieldValue(`phases[${phaseIndex}].name`, 'Whitelist Sale');
+                      } else {
+                        form.setFieldValue(`phases[${phaseIndex}].name`, 'Public Sale');
+                      }
+                    }}
+                  />
+                  <label className='font-bold text-ob-grey-lighter' htmlFor={name}>
+                    Allowlist
+                  </label>
+                </div>
+              );
+            }}
+          />
 
           <button
             type='button'
             onClick={() => handleDeletedPhaseConfig(phaseIndex)}
             className='rounded-sm bg-white p-2 transition duration-200 hover:bg-ob-white-80'
           >
-            <Image width={10} height={10} src={'/img/creators/times.svg'} alt='pen' />
+            <Image width={10} height={10} src='/img/creators/times.svg' alt='pen' />
           </button>
         </div>
       </div>
 
-      <div className={`grid grid-cols-1 gap-6 ${hasWhiteList ? 'xl:grid-cols-2' : 'xl:grid-cols-1'} mt-4`}>
+      <div className={`grid grid-cols-1 gap-6 ${isAllowList ? 'xl:grid-cols-2' : 'xl:grid-cols-1'} mt-4`}>
         <div className='order-1 grid grid-cols-2 gap-4 xl:order-2'>
           <form.Field
-            name={`data[${phaseIndex}].startDate`}
+            name={`phases[${phaseIndex}].startDate`}
             validators={{
-              onChangeListenTo: [`data[${phaseIndex}].endDate`],
+              onBlurListenTo: [`phases[${phaseIndex - 1}].endDate`, `phases[${phaseIndex - 1}].endTime`],
+              onChangeListenTo: [`phases[${phaseIndex}].endDate`, `phases[${phaseIndex}].startTime`],
               onChange: ({ value, fieldApi }: { value: string; fieldApi: any }) => {
-                if (!value) {
-                  return 'End date cannot be empty';
+                if (isUpdatingTanstackArray) {
+                  return undefined;
                 }
 
-                const endDate = new Date(fieldApi.form.getFieldValue(`data[${phaseIndex}].endDate`));
+                if (!value) {
+                  return 'Start date cannot be empty.';
+                }
 
-                if (new Date(endDate).getTime() < new Date(value).getTime()) {
-                  return 'The start date cannot be in the future than the end date.';
+                const startDate = new Date(value);
+                const rawStartTime = fieldApi.form.getFieldValue(`phases[${phaseIndex}].startTime`);
+
+                const rawEndDate = fieldApi.form.getFieldValue(`phases[${phaseIndex}].endDate`);
+                const endDate = rawEndDate ? new Date(rawEndDate) : null;
+
+                if (endDate && endDate.getTime() < startDate.getTime()) {
+                  return 'The start date cannot be later than the end date of the current phase.';
+                }
+
+                if (phaseIndex > 0) {
+                  if (rawStartTime) {
+                    const [hours, minutes] = rawStartTime.split(':').map((t: string) => (Number(t) ? Number(t) : 0));
+                    startDate.setHours(hours, minutes, 0, 0);
+                  }
+
+                  const rawPrevEndDate = fieldApi.form.getFieldValue(`phases[${phaseIndex - 1}].endDate`);
+                  const rawPrevEndTime = fieldApi.form.getFieldValue(`phases[${phaseIndex - 1}].endTime`);
+                  const prevPhaseEndDate = rawPrevEndDate ? new Date(rawPrevEndDate) : null;
+
+                  if (prevPhaseEndDate && rawPrevEndTime) {
+                    const [hours, minutes] = rawPrevEndTime.split(':').map((t: string) => (Number(t) ? Number(t) : 0));
+                    prevPhaseEndDate.setHours(hours, minutes, 0, 0);
+                  }
+
+                  if (prevPhaseEndDate && prevPhaseEndDate.getTime() > startDate.getTime()) {
+                    return 'The start date of the current phase must be after the end date of the previous phase.';
+                  }
                 }
 
                 return undefined;
@@ -160,7 +216,7 @@ const EditForm = ({
 
               return (
                 <div className='flex w-full flex-col gap-1'>
-                  <label className='text-sm' htmlFor={name}>
+                  <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     Start Date
                   </label>
                   <Input
@@ -168,7 +224,7 @@ const EditForm = ({
                     value={state.value || ''}
                     type='date'
                     placeholder='01/12/24'
-                    className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
+                    className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
                   />
@@ -179,16 +235,20 @@ const EditForm = ({
           />
 
           <form.Field
-            name={`data[${phaseIndex}].endDate`}
+            name={`phases[${phaseIndex}].endDate`}
             validators={{
-              onChangeListenTo: [`data[${phaseIndex}].startDate`],
+              onChangeListenTo: [`phases[${phaseIndex}].startDate`],
               onChange: ({ value, fieldApi }: { value: string; fieldApi: any }) => {
+                if (isUpdatingTanstackArray) {
+                  return undefined;
+                }
+
                 if (!value) {
                   return 'End date cannot be empty';
                 }
 
                 const endDate = new Date(value);
-                const startDate = new Date(fieldApi.form.getFieldValue(`data[${phaseIndex}].startDate`));
+                const startDate = new Date(fieldApi.form.getFieldValue(`phases[${phaseIndex}].startDate`));
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 endDate.setHours(0, 0, 0, 0);
@@ -203,6 +263,11 @@ const EditForm = ({
                   return 'End date cannot be in the past than start date';
                 }
 
+                const oneDayInMillis = 24 * 60 * 60 * 1000;
+                if (endDate.getTime() - startDate.getTime() < oneDayInMillis) {
+                  return 'End date must be at least 1 day later than the start date';
+                }
+
                 return undefined;
               }
             }}
@@ -211,7 +276,7 @@ const EditForm = ({
 
               return (
                 <div className='flex w-full flex-col gap-1'>
-                  <label className='text-sm' htmlFor={name}>
+                  <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     End Date
                   </label>
                   <Input
@@ -219,7 +284,7 @@ const EditForm = ({
                     value={state.value || ''}
                     type='date'
                     placeholder='01/12/24'
-                    className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
+                    className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
                   />
@@ -230,12 +295,17 @@ const EditForm = ({
           />
 
           <form.Field
-            name={`data[${phaseIndex}].startTime`}
+            name={`phases[${phaseIndex}].startTime`}
             validators={{
               onChange: ({ value }: { value: string }) => {
-                if (!value) {
-                  return 'Start Time date cannot be empty';
+                if (isUpdatingTanstackArray) {
+                  return undefined;
                 }
+
+                if (!value) {
+                  return 'Start time cannot be empty.';
+                }
+
                 return undefined;
               }
             }}
@@ -244,7 +314,7 @@ const EditForm = ({
 
               return (
                 <div className='flex w-full flex-col gap-1'>
-                  <label className='text-sm' htmlFor={name}>
+                  <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     Start Time
                   </label>
                   <Input
@@ -252,7 +322,7 @@ const EditForm = ({
                     value={state.value || ''}
                     type='time'
                     placeholder='00:00'
-                    className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
+                    className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
                   />
@@ -263,9 +333,13 @@ const EditForm = ({
           />
 
           <form.Field
-            name={`data[${phaseIndex}].endTime`}
+            name={`phases[${phaseIndex}].endTime`}
             validators={{
               onChange: ({ value }: { value: string }) => {
+                if (isUpdatingTanstackArray) {
+                  return undefined;
+                }
+
                 if (!value) {
                   return 'End Time date cannot be empty';
                 }
@@ -277,7 +351,7 @@ const EditForm = ({
 
               return (
                 <div className='flex w-full flex-col gap-1'>
-                  <label className='text-sm' htmlFor={name}>
+                  <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     End Time
                   </label>
                   <Input
@@ -285,7 +359,7 @@ const EditForm = ({
                     value={state.value || ''}
                     type='time'
                     placeholder='00:00'
-                    className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
+                    className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
                   />
@@ -296,15 +370,19 @@ const EditForm = ({
           />
 
           <form.Field
-            name={`data[${phaseIndex}].price`}
+            name={`phases[${phaseIndex}].price`}
             validators={{
               onChange: ({ value }: { value: number }) => {
-                if (value === 0) {
+                if (isUpdatingTanstackArray) {
+                  return undefined;
+                }
+
+                if (!value || value === 0) {
                   return 'Price cannot be empty';
                 }
 
-                if (value < 0.00000546) {
-                  return 'Price should be greater than 0.00000546';
+                if (value < 1) {
+                  return 'Price should be greater than 1';
                 }
 
                 return undefined;
@@ -315,17 +393,17 @@ const EditForm = ({
 
               return (
                 <div className='flex w-full flex-col gap-1'>
-                  <label className='text-sm' htmlFor={name}>
+                  <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     Price (BTC)
                   </label>
                   <Input
                     id={name}
-                    value={state.value || 0}
+                    value={state.value || ''}
                     type='number'
                     placeholder='0.001'
-                    className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
+                    className='w-full appearance-none border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
-                    onChange={(e) => handleChange(Number(e.target.value))}
+                    onChange={(e) => handleChange(e.target.value)}
                   />
                   <FieldInfo field={field} />
                 </div>
@@ -334,10 +412,14 @@ const EditForm = ({
           />
 
           <form.Field
-            name={`data[${phaseIndex}].allocation`}
+            name={`phases[${phaseIndex}].allocation`}
             validators={{
               onChange: ({ value }: { value: number }) => {
-                if (value === 0) {
+                if (isUpdatingTanstackArray) {
+                  return undefined;
+                }
+
+                if (value === 0 || !value) {
                   return 'Allocation cannot be empty';
                 }
 
@@ -353,17 +435,17 @@ const EditForm = ({
 
               return (
                 <div className='flex w-full flex-col gap-1'>
-                  <label className='text-sm' htmlFor={name}>
+                  <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     Allocation Limit
                   </label>
                   <Input
                     id={name}
-                    value={state.value || 0}
+                    value={state.value || ''}
                     type='number'
                     placeholder='5'
-                    className='w-full border-none bg-ob-grey-light px-5 py-7 outline-none'
+                    className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
-                    onChange={(e) => handleChange(Number(e.target.value))}
+                    onChange={(e) => handleChange(e.target.value)}
                   />
                   <FieldInfo field={field} />
                 </div>
@@ -371,107 +453,144 @@ const EditForm = ({
             }}
           />
         </div>
-        {hasWhiteList && (
-          <div className='order-2 flex flex-col gap-3 xl:order-1'>
-            <div>Upload / Enter Addresses</div>
 
-            <div className='mt-1 flex gap-2'>
-              <Button
-                type='button'
-                onClick={() => setUploadType(UploadTypes.MANUALL)}
-                variant={uploadType === UploadTypes.MANUALL ? 'secondary' : 'default'}
-                size={'sm'}
-                className='rounded-md'
-              >
-                Enter Manually
-              </Button>
-              <Button
-                type='button'
-                onClick={() => setUploadType(UploadTypes.CSV)}
-                variant={uploadType === UploadTypes.CSV ? 'secondary' : 'default'}
-                size={'sm'}
-                className='rounded-md'
-              >
-                Upload CSV
-              </Button>
-            </div>
+        <div className={`order-2 flex-col gap-3 xl:order-1 ${isAllowList ? 'flex' : 'hidden'}`}>
+          <div className='text-ob-grey-lightest'>Upload / Enter Addresses</div>
 
-            <div className='flex w-full flex-col gap-2'>
-              <form.Field
-                name={`data[${phaseIndex}].allowList`}
-                validators={{
-                  onChangeAsyncDebounceMs: 1000,
-                  onChangeAsync: async ({ value }: { value: string }) => {
-                    if (!value) {
-                      return 'BTC address cannot be empty';
-                    }
+          <div className='mt-1 flex gap-2'>
+            <Button
+              type='button'
+              onClick={() => setUploadType(UploadTypes.MANUALL)}
+              variant={uploadType === UploadTypes.MANUALL ? 'secondary' : 'default'}
+              size='sm'
+              className='rounded-md'
+            >
+              Enter Manually
+            </Button>
+            <Button
+              type='button'
+              onClick={() => setUploadType(UploadTypes.CSV)}
+              variant={uploadType === UploadTypes.CSV ? 'secondary' : 'default'}
+              size='sm'
+              className='rounded-md'
+            >
+              Upload CSV
+            </Button>
+          </div>
 
-                    const addresses = value
-                      .trim()
-                      .split('\n')
-                      .flatMap((line) => line.split(',').map((part) => part.trim()))
-                      .filter((address) => address);
-
-                    for (const address of addresses) {
-                      const isValidBTCAddress = await validate(address.trim());
-                      if (!isValidBTCAddress) {
-                        return 'Invalid BTC address is included';
-                      }
-                    }
-
+          <div className='flex w-full flex-col gap-2'>
+            <form.Field
+              name={`phases[${phaseIndex}].allowList`}
+              validators={{
+                onChangeAsyncDebounceMs: 1000,
+                onChangeAsync: async ({ value }: { value: string }) => {
+                  if (isUpdatingTanstackArray || !isAllowList) {
                     return undefined;
                   }
-                }}
-                children={(field: any) => {
-                  const { state, handleBlur, handleChange } = field;
 
-                  return (
-                    <>
-                      {uploadType === UploadTypes.MANUALL ? (
-                        <>
-                          <Textarea
-                            value={state.value || ''}
-                            placeholder='Enter your addresses separated by commas'
-                            className='w-full border-none bg-ob-grey-light px-5 py-5 outline-none'
-                            rows={6}
-                            onBlur={handleBlur}
-                            onChange={(e) => handleChange(e.target.value)}
-                          />
-                        </>
-                      ) : (
-                        <div className='group flex min-h-40 cursor-pointer items-center justify-center rounded-md border-[1px] border-[#FFFFFF33]'>
-                          <FileUpload
-                            schema={allowListUploadSchema}
-                            setData={handleChange}
-                            size='sm'
-                            acceptFileType={'text/csv'}
-                            accept={['.csv']}
-                          />
-                        </div>
-                      )}
-                      <FieldInfo field={field} />
-                    </>
-                  );
-                }}
-              />
-            </div>
+                  if (!value || !value.trim()) {
+                    return 'Allowlist cannot be empty';
+                  }
 
-            <div className='flex items-center gap-2'>
-              <Input type='checkbox' className='h-6 w-6 accent-white' defaultChecked={true} />
-              <label className='font-bold text-ob-grey-lighter'>Same allocation for all adresses? </label>
-            </div>
+                  const lines = value
+                    .trim()
+                    .split('\n')
+                    .filter((line) => line.trim());
+
+                  const invalidEntries: string[] = [];
+
+                  for (const line of lines) {
+                    // Split address and allocation
+                    const [address, allocation] = line.split(',').map((part) => part.trim());
+
+                    // Validate Bitcoin address
+                    const isValidBTCAddress = await validate(address);
+                    if (!isValidBTCAddress) {
+                      invalidEntries.push(`Invalid BTC address: "${address}"`);
+                      continue;
+                    }
+
+                    // Validate allocation if present
+                    if (allocation && isNaN(Number(allocation))) {
+                      invalidEntries.push(`Invalid allocation for address "${address}": "${allocation}" must be a number`);
+                    }
+                  }
+
+                  // If there are any invalid entries, return error message
+                  if (invalidEntries.length > 0) {
+                    return invalidEntries.join('\n');
+                  }
+
+                  return undefined;
+                }
+              }}
+              children={(field: any) => {
+                const { state, handleBlur, handleChange } = field;
+
+                return (
+                  <>
+                    {uploadType === UploadTypes.MANUALL ? (
+                      <>
+                        <Textarea
+                          value={state.value || ''}
+                          placeholder='Enter your addresses separated by commas'
+                          className='w-full border-none bg-ob-purple px-5 py-5 outline-none'
+                          rows={6}
+                          onBlur={handleBlur}
+                          onChange={(e) => handleChange(e.target.value)}
+                        />
+                      </>
+                    ) : (
+                      <div className='group flex min-h-40 cursor-pointer items-center justify-center rounded-md border-[1px] border-[#FFFFFF33]'>
+                        <FileUpload
+                          schema={allowListUploadSchema}
+                          setData={handleChange}
+                          size='sm'
+                          acceptFileType='text/csv'
+                          accept={['.csv']}
+                        />
+                      </div>
+                    )}
+                    <FieldInfo field={field} />
+                  </>
+                );
+              }}
+            />
           </div>
-        )}
+
+          <form.Field
+            name={`phases[${phaseIndex}].isSameAllocation`}
+            children={(field: any) => {
+              const { state, handleBlur, handleChange } = field;
+
+              return (
+                <>
+                  {/* <div className='flex items-center gap-2'>
+                    <Input
+                      checked={state.value || false}
+                      onChange={(e) => handleChange(e.target.checked)}
+                      onBlur={handleBlur}
+                      type='checkbox'
+                      className='h-6 w-6 accent-white'
+                    />
+                    <FieldInfo field={field} />
+                    <label className='font-bold text-ob-grey-lighter'>Same allocation for all adresses? </label>
+                  </div> */}
+                </>
+              );
+            }}
+          />
+        </div>
       </div>
 
       <Button
         onClick={() => {
-          handleFinishForm(form.state.values.data[phaseIndex]);
+          handleFinishForm(form.state.values.phases[phaseIndex]);
         }}
         type='button'
-        size={'lg'}
-        variant={'secondary'}
-        className='mt-6 font-bold'
+        size='lg'
+        variant='default'
+        className='mt-6 rounded-md font-bold'
       >
         Done
       </Button>
@@ -482,60 +601,102 @@ const EditForm = ({
 const PhaseForm = ({
   form,
   isFinished,
-  title,
-  hasWhiteList,
+  name,
+  isPublic,
   phaseIndex,
+  isSameAllocation,
+  isUpdatingTanstackArray,
   handleDeletedPhaseConfig,
   handleToggleIsFinished
 }: {
-  form: ReturnType<typeof useForm<TPhaseDataSchema>>;
+  form: ReturnType<typeof useForm<TPhaseFormSchema>>;
   isFinished: boolean;
-  title: string;
-  hasWhiteList: boolean;
+  name: string;
+  isPublic: boolean;
   phaseIndex: number;
+  isSameAllocation: boolean;
+  isUpdatingTanstackArray: boolean;
   handleDeletedPhaseConfig: (index: number) => void;
   handleToggleIsFinished: (index: number, isFinished: boolean) => void;
 }) => {
   const [isOpenEdit, setIsOpenEdit] = useState(!isFinished);
-  const [phase, setPhase] = useState<TPhaseSchema>();
+  const [isAllowList, setIsAllowList] = useState<boolean>(!isPublic);
 
-  const handleFinishForm = (newPhase: TPhaseSchema) => {
+  const handleFinishForm = (newPhase: TPhaseFormSchema['phases'][0]) => {
     try {
       const today = new Date();
       const endDate = new Date(newPhase.endDate);
       const startDate = new Date(newPhase.startDate);
+      const startTime = newPhase.startTime;
 
       today.setHours(0, 0, 0, 0);
       endDate.setHours(0, 0, 0, 0);
       startDate.setHours(0, 0, 0, 0);
 
       if (new Date(endDate).getTime() < new Date(startDate).getTime()) {
-        return console.log('The start date cannot be in the future than the end date.');
+        return toast.error('The start date cannot be in the future than the end date.');
       }
 
       if (new Date(endDate).getTime() < new Date(today).getTime()) {
-        return console.log('The start date cannot be in the past');
+        return toast.error('The start date cannot be in the past');
       }
 
-      if (hasWhiteList && !newPhase.allowList) {
-        return console.log('White list can not be empty');
-      }
-      const parsedData = v.parse(phaseSchema, newPhase);
+      const oneDayInMillis = 24 * 60 * 60 * 1000;
 
-      setPhase(parsedData);
-      handleToggleIsFinished(phaseIndex, true);
+      if (endDate.getTime() - startDate.getTime() < oneDayInMillis) {
+        return toast.error('End date must be at least 1 day later than the start date.');
+      }
+
+      if (!startTime) {
+        return toast.error('Start time is required.');
+      }
+
+      if (phaseIndex > 0) {
+        const rawPrevEndDate = form.state.values.phases[phaseIndex - 1].endDate;
+        const rawPrevEndTime = form.state.values.phases[phaseIndex - 1].endTime;
+        const prevPhaseEndDate = rawPrevEndDate ? new Date(rawPrevEndDate) : null;
+
+        const [hours, minutes] = startTime.split(':').map((t: string) => (Number(t) ? Number(t) : 0));
+        startDate.setHours(hours, minutes, 0, 0);
+
+        if (prevPhaseEndDate && rawPrevEndTime) {
+          const [hours, minutes] = rawPrevEndTime.split(':').map((t: string) => (Number(t) ? Number(t) : 0));
+          prevPhaseEndDate.setHours(hours, minutes, 0, 0);
+        }
+
+        if (prevPhaseEndDate && prevPhaseEndDate.getTime() > startDate.getTime()) {
+          return toast.error('The start date of the current phase must be after the end date of the previous phase.');
+        }
+      }
+
+      if (isAllowList && !newPhase.allowList?.trim()) {
+        return toast.error('White list can not be empty.');
+      }
+      v.parse(phaseFormSchema.entries.phases.item, {
+        ...newPhase,
+        price: Number(newPhase.price),
+        allocation: Number(newPhase.allocation)
+      });
       setIsOpenEdit(false);
-    } catch (error) {}
+      handleToggleIsFinished(phaseIndex, true);
+    } catch (error: any) {
+      if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error(error.toString());
+      }
+    }
   };
 
   return (
-    <div className='flex w-full flex-col gap-8 rounded-md bg-ob-black-light p-8'>
+    <div className='flex w-full flex-col gap-8 rounded-md bg-ob-purple-dark p-8'>
       {isOpenEdit ? (
         <EditForm
           phaseIndex={phaseIndex}
-          title={title}
-          hasWhiteList={hasWhiteList}
           form={form}
+          isAllowList={isAllowList}
+          isUpdatingTanstackArray={isUpdatingTanstackArray}
+          setIsAllowList={setIsAllowList}
           handleDeletedPhaseConfig={handleDeletedPhaseConfig}
           handleFinishForm={handleFinishForm}
         />
@@ -543,9 +704,9 @@ const PhaseForm = ({
         <FinishedForm
           phaseIndex={phaseIndex}
           handleToggleIsFinished={handleToggleIsFinished}
-          title={title}
+          name={name}
           setIsOpenEdit={setIsOpenEdit}
-          data={form.state.values.data[phaseIndex]}
+          data={form.state.values.phases[phaseIndex]}
         />
       )}
     </div>

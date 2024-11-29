@@ -98,45 +98,47 @@ export const SPOTLIGHT_COLLECTION_SLUG = {
   [ENETWORK.TESTNET]: 'test'
 };
 
+export const IMG_DIR = '/img';
+
 export const TRIO_EXCHANGES: { label: string; link: string; img: string }[] = [
   {
     label: 'Gate.io',
     link: 'https://www.gate.io/trade/TRIO_USDT',
-    img: '/img/exchanges/gateio.svg'
+    img: `${IMG_DIR}/exchanges/gateio.svg`
   },
   {
     label: 'MEXC Global',
     link: 'https://www.mexc.com/exchange/TRIO_USDT',
-    img: '/img/exchanges/mexc.svg'
+    img: `${IMG_DIR}/exchanges/mexc.svg`
   },
   {
     label: 'BingX',
     link: 'https://bingx.com/en/spot/TRIOUSDT/',
-    img: '/img/exchanges/bingx.svg'
+    img: `${IMG_DIR}/exchanges/bingx.svg`
   },
   {
     label: 'UniSat',
     link: 'https://unisat.io/market/brc20?tick=TRIO',
-    img: '/img/exchanges/logo_unisat.svg'
+    img: `${IMG_DIR}/exchanges/unisat.svg`
   },
   {
     label: 'BitPanda',
     link: 'https://www.bitpanda.com/en/prices/trio-ordinalsbot-trio',
-    img: ''
+    img: `${IMG_DIR}/exchanges/bitpanda.svg`
   },
   {
     label: 'CoinW',
     link: 'https://www.coinw.com/spot/trio(ordinals)usdt',
-    img: ''
+    img: `${IMG_DIR}/exchanges/coinw.svg`
   },
   {
     label: 'DotSwap',
     link: 'https://www.dotswap.app/swap#B_%E2%80%A2BTC_%E2%80%A2TRIO',
-    img: ''
+    img: `${IMG_DIR}/exchanges/dotswap.svg`
   },
   {
     label: 'BefiLabs',
     link: 'https://befilabs.com/app/',
-    img: ''
+    img: `${IMG_DIR}/exchanges/befilabs.svg`
   }
 ];

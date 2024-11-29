@@ -7,7 +7,7 @@ export const SVGRenderer = memo(({ content }: { content: string }) => {
   const contentReplace = useMemo(() => content.replaceAll('/content/', 'https://ordinals.com/content/'), [content]);
 
   return (
-    <div className={`html-viewer`}>
+    <div className='html-viewer'>
       <label className='checkbox-label'>
         <input
           type='checkbox'

@@ -1,61 +1,49 @@
 'use client';
+import { useContext, useState } from 'react';
+import * as v from 'valibot';
+import { uploadImageAndGetURL } from '@/lib/utilities/uploadImageAndGetURL';
+import Section from '@/components/Section';
+import { v4 as uuidv4 } from 'uuid';
 import { StepItem } from '@/components/common/StepItem';
 import { Container } from '@/components/Container';
-import {
-  ChooseInscriptions,
-  DeterminePhases,
-  GetStarted,
-  informationSchema,
-  inscriptionDataSchema,
-  phaseDataSchema,
-  SubmitInformation,
-  SubmitProject,
-  TInformationSchema,
-  TInscriptionDataSchema,
-  TPhaseDataSchema
-} from '@/components/Creators';
 import { SubmitFailed } from '@/components/Creators/SubmitFailed';
 import { Submitted } from '@/components/Creators/Submitted';
 import { Submitting } from '@/components/Creators/Submitting';
-import Section from '@/components/Section';
+import { convertStringAllowListToArray } from '@/lib/utilities/convertStringAllowListToArray';
+import { convertToUnixTimestamp } from '@/lib/utilities/convertToUnixTimestamp';
 import { useForm } from '@tanstack/react-form';
 import { valibotValidator } from '@tanstack/valibot-form-adapter';
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
-import * as v from 'valibot';
-
-export const launchpadSchema = v.object({
-  information: informationSchema,
-  inscriptions: inscriptionDataSchema,
-  phase: phaseDataSchema
-});
-
-export enum ESteps {
-  START = 1,
-  INFORMATION = 2,
-  CHOOSE = 3,
-  DETERMINE = 4,
-  SUBMIT = 5
-}
-
-export enum ESubmit {
-  SUBMIT = 1,
-  SUBMITTING = 2,
-  SUBMITTED = 3,
-  FAILED = 4
-}
+import { ChooseInscriptions, DeterminePhases, GetStarted, SubmitInformation, SubmitProject } from '@/components/Creators';
+import {
+  ESteps,
+  ESubmit,
+  informationFormSchema,
+  inscriptionFormSchema,
+  InscriptionInputTypes,
+  phaseFormSchema,
+  TInformationFormSchema,
+  TInscriptionFormSchema,
+  TPhaseFormSchema
+} from '@/types/creators';
+import { toast } from 'sonner';
+import { AuthContext } from '@/app/providers/AuthContext';
+import { IWallet } from '@/types';
+import { ChooseLaunchType } from '../ChooseLaunchType';
 
 const StepConfig = {
   [ESteps.START]: {
     label: 'Get Started'
   },
-  [ESteps.INFORMATION]: {
+  [ESteps.CHOOSE_TYPE]: {
+    label: 'Choose Launch Type'
+  },
+  [ESteps.INFORAMATION]: {
     label: 'Submit Information'
   },
-  [ESteps.CHOOSE]: {
+  [ESteps.INSCRIPTIONS]: {
     label: 'Choose Inscriptions'
   },
-  [ESteps.DETERMINE]: {
+  [ESteps.PHASE]: {
     label: 'Determine Phase'
   },
   [ESteps.SUBMIT]: {
@@ -63,130 +51,232 @@ const StepConfig = {
   }
 };
 
-export interface TPhaseConfig {
-  hasWhiteList: boolean;
-  title: string;
-  hasAddPhase: boolean;
-  uuid: string;
-  isFinished: boolean;
-}
+const informationDefaultValues = {
+  name: '',
+  description: '',
+  creator_name: '',
+  creator_btc_address: '',
+  creator_email: '',
+  icon: null,
+  banner_image: null
+};
 
-export type TLaunchpadSchema = v.InferInput<typeof launchpadSchema>;
+const phasesDefaultValues = {
+  phases: [
+    {
+      name: 'Whitelist Sale',
+      price: NaN,
+      allocation: 1,
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      endTime: '',
+      isPublic: false,
+      isSameAllocation: true,
+      isFinished: false,
+      allowList: '',
+      uuid: uuidv4()
+    },
+    {
+      name: 'Whitelist Sale',
+      price: NaN,
+      allocation: 1,
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      endTime: '',
+      isPublic: false,
+      isSameAllocation: true,
+      isFinished: false,
+      allowList: '',
+      uuid: uuidv4()
+    },
+    {
+      name: 'Public Sale',
+      price: NaN,
+      allocation: 1,
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      endTime: '',
+      isPublic: true,
+      isSameAllocation: true,
+      isFinished: false,
+      uuid: uuidv4()
+    }
+  ]
+};
 
-function convertToUnixTimestamp(date: Date, time: string) {
-  const [hours, minutes] = time.split(':');
-  return date.setHours(Number(hours), Number(minutes)) / 1000;
-}
+const prepareRequestBody = async (
+  meta: TInformationFormSchema,
+  data: TInscriptionFormSchema['inscriptions'],
+  phases: TPhaseFormSchema['phases'],
+  wallet: IWallet | null
+) => {
+  const collectionSlug = `${meta.name.trim().toLowerCase().replace(/\s+/g, '_')}`;
+  const iconImgUrl = meta?.icon ? await uploadImageAndGetURL(meta?.icon, `/launchpad/${collectionSlug}`) : '';
+  const bannerImgUrl = meta?.banner_image
+    ? await uploadImageAndGetURL(meta?.banner_image, `/launchpad/${collectionSlug}`)
+    : '';
 
-function convertStringAllowListToArray(allowList: string | undefined) {
-  return allowList
-    ? allowList
-        .trim()
-        .split('\n')
-        .flatMap((line) => line.split(',').map((part) => part.trim()))
-        .filter((address) => address)
-    : [];
-}
+  if (!meta?.website_link) delete meta.website_link;
+  if (!meta?.discord_link) delete meta.discord_link;
+  if (!meta?.telegram_link) delete meta.telegram_link;
+  if (!meta?.instagram_link) delete meta.instagram_link;
+  if (!meta?.twitter_link) delete meta.twitter_link;
+
+  const metaWithOptionalIcon = {
+    ...meta,
+    banner_image: bannerImgUrl,
+    slug: collectionSlug,
+    icon: iconImgUrl,
+    telegram_link: 'test',
+    instagram_link: 'test'
+  };
+
+  const phasesData = phases.map((phase) => {
+    const basePhase = {
+      name: phase.name,
+      price: Number(phase.price),
+      startDate: convertToUnixTimestamp(new Date(phase.startDate), phase.startTime),
+      endDate: convertToUnixTimestamp(new Date(phase.endDate), phase.endTime),
+      isPublic: phase.isPublic
+    };
+
+    if (!phase.isPublic) {
+      return {
+        ...basePhase,
+        allowList: convertStringAllowListToArray(phase.allowList, Number(phase.allocation), phase.isPublic)
+      };
+    }
+    return basePhase;
+  });
+
+  return {
+    makerPaymentAddress: wallet?.paymentAddress,
+    makerPaymentPublicKey: wallet?.paymentPublicKey,
+    makerOrdinalPublicKey: wallet?.ordinalsPublicKey,
+    makerOrdinalAddress: wallet?.ordinalsAddress,
+    meta: metaWithOptionalIcon,
+    data,
+    phases: phasesData
+  };
+};
+
+const preparePhaseParse = (phases: TPhaseFormSchema['phases']) => {
+  return phases.map((p) => ({
+    name: p.name,
+    price: Number(p.price),
+    allocation: Number(p.allocation),
+    startDate: p.startDate,
+    endDate: p.endDate,
+    startTime: p.startTime,
+    endTime: p.endTime,
+    isPublic: p.isPublic,
+    isSameAllocation: p.isSameAllocation,
+    isFinished: p.isFinished,
+    allowList: p.allowList,
+    uuid: p.uuid
+  }));
+};
 
 export default function Launchpad() {
+  const { wallet, isAuthenticated } = useContext(AuthContext);
   const [currentStep, setCurrentStep] = useState<ESteps>(ESteps.START);
   const [submit, setSubmit] = useState<ESubmit>(ESubmit.SUBMIT);
 
-  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
-  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+  const [bannerPreview, setBannerPreview] = useState<string | null | undefined>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null | undefined>(null);
 
-  const [phaseConfig, setPhaseConfigData] = useState<TPhaseConfig[]>([
-    {
-      hasWhiteList: true,
-      title: 'Whitelist',
-      hasAddPhase: true,
-      uuid: uuidv4(),
-      isFinished: false
-    },
-    {
-      hasWhiteList: true,
-      title: 'Whitelist',
-      hasAddPhase: true,
-      uuid: uuidv4(),
-      isFinished: false
-    },
-    {
-      hasWhiteList: false,
-      title: 'Public',
-      hasAddPhase: false,
-      uuid: uuidv4(),
-      isFinished: false
-    }
-  ]);
+  const [uploadTab, setUploadTab] = useState<InscriptionInputTypes>(InscriptionInputTypes.UPLOAD);
 
-  const informationFrom = useForm({
-    onSubmit: async ({ value }: { value: TInformationSchema }) => {
+  const [launchpadId, setLaunchpadId] = useState<string>('');
+
+  const informationForm = useForm({
+    defaultValues: {
+      ...informationDefaultValues,
+      creator_btc_address: wallet?.ordinalsAddress && isAuthenticated ? wallet?.ordinalsAddress : ''
+    },
+    onSubmit: async ({ value }: { value: TInformationFormSchema }) => {
       try {
-        v.parse(informationSchema, value);
+        v.parse(informationFormSchema, value);
+        setCurrentStep(ESteps.INSCRIPTIONS);
       } catch (error) {
-        console.log('Submission error:', error);
+        toast.error(`Submission error:, ${error}`);
       }
     },
     validatorAdapter: valibotValidator()
   });
 
-  const inscriptionFrom = useForm({
-    onSubmit: async ({ value }: { value: TInscriptionDataSchema }) => {
+  const inscriptionForm = useForm({
+    onSubmit: async ({ value }: { value: TInscriptionFormSchema }) => {
       try {
-        v.parse(informationSchema, value);
+        v.parse(inscriptionFormSchema, value);
+        setCurrentStep(ESteps.PHASE);
       } catch (error) {
-        console.log('Submission error:', error);
+        toast.error(`Submission error:, ${error}`);
       }
     },
     validatorAdapter: valibotValidator()
   });
 
   const phasesForm = useForm({
-    defaultValues: {
-      data: [
-        { price: 0, allocation: 0, startDate: '', endDate: '', startTime: '', endTime: '', allowList: '' },
-        { price: 0, allocation: 0, startDate: '', endDate: '', startTime: '', endTime: '', allowList: '' },
-        { price: 0, allocation: 0, startDate: '', endDate: '', startTime: '', endTime: '', allowList: '' }
-      ]
-    },
-    onSubmit: async ({ value }: { value: TPhaseDataSchema }) => {
+    defaultValues: phasesDefaultValues,
+    onSubmit: async ({ value }: { value: TPhaseFormSchema }) => {
       try {
-        const parsedData = v.parse(phaseDataSchema, value);
-
-        const data = parsedData.data.map((phase) => ({
-          price: phase.price,
-          allocation: phase.allocation,
-          allowList: convertStringAllowListToArray(phase?.allowList),
-          startDate: convertToUnixTimestamp(new Date(phase.startDate), phase.startTime),
-          endDate: convertToUnixTimestamp(new Date(phase.endDate), phase.endTime)
-        }));
+        const phases = preparePhaseParse(value.phases);
+        v.parse(phaseFormSchema, { phases });
+        await handleSubmit();
       } catch (error) {
-        console.error('Submission error:', error);
+        toast.error(`Submission error:, ${error}`);
       }
     },
     validatorAdapter: valibotValidator()
   });
 
-  const launchpadFrom = useForm({
-    onSubmit: async ({ value }: { value: TLaunchpadSchema }) => {
-      try {
-        v.parse(informationSchema, value);
-      } catch (error) {
-        console.log('Submission error:', error);
+  const handleSubmit = async () => {
+    if (!isAuthenticated) {
+      toast.error('Please connect wallet.');
+      return;
+    }
+
+    try {
+      const phases = preparePhaseParse(phasesForm.state.values.phases);
+
+      const parsedMeta = v.parse(informationFormSchema, informationForm.state.values);
+      const parsedData = v.parse(inscriptionFormSchema.entries.inscriptions, inscriptionForm.state.values.inscriptions);
+      const parsedPhase = v.parse(phaseFormSchema.entries.phases, phases);
+      const launchpadData = await prepareRequestBody(parsedMeta, parsedData, parsedPhase, wallet);
+
+      const response = await fetch('/api/launchpad/create', {
+        method: 'POST',
+        body: JSON.stringify({ launchpadData })
+      });
+
+      if (!response.ok) {
+        const resJson = await response.json();
+        throw new Error(resJson?.error || 'Failed to create a launchpad.');
       }
-    },
-    validatorAdapter: valibotValidator()
-  });
+
+      const res = await response.json();
+      if (res?.launchpadId) {
+        setLaunchpadId(res?.launchpadId);
+        setCurrentStep(ESteps.SUBMIT);
+      }
+    } catch (error) {
+      toast.error(`Submission error:, ${error}`);
+    }
+  };
 
   const renderTitle = () => {
     switch (currentStep) {
       case ESteps.START:
         return '';
-      case ESteps.INFORMATION:
+      case ESteps.INFORAMATION:
         return 'Launch Your Ordinals Collection';
-      case ESteps.CHOOSE:
+      case ESteps.INSCRIPTIONS:
         return 'Choose Inscriptions';
-      case ESteps.DETERMINE:
+      case ESteps.PHASE:
         return 'Determine Phase';
       case ESteps.SUBMIT:
         switch (submit) {
@@ -204,37 +294,54 @@ export default function Launchpad() {
     }
   };
 
+  const handleStepClick = (step: ESteps) => {
+    setCurrentStep(step);
+  };
+
+  const handleLaunch = () => {
+    setSubmit(ESubmit.SUBMITTING);
+
+    try {
+      setTimeout(() => {
+        setSubmit(ESubmit.SUBMITTED);
+      }, 3000);
+    } catch (error) {
+      setSubmit(ESubmit.FAILED);
+    }
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case ESteps.START:
         return <GetStarted setStep={setCurrentStep} />;
-      case ESteps.INFORMATION:
+      case ESteps.CHOOSE_TYPE:
+        return <ChooseLaunchType setStep={setCurrentStep} />;
+      case ESteps.INFORAMATION:
         return (
           <SubmitInformation
             setStep={setCurrentStep}
-            form={informationFrom}
+            form={informationForm}
             bannerPreview={bannerPreview}
             setBannerPreview={setBannerPreview}
             thumbnailPreview={thumbnailPreview}
             setThumbnailPreview={setThumbnailPreview}
           />
         );
-      case ESteps.CHOOSE:
-        return <ChooseInscriptions setStep={setCurrentStep} form={inscriptionFrom} />;
-      case ESteps.DETERMINE:
+      case ESteps.INSCRIPTIONS:
         return (
-          <DeterminePhases
+          <ChooseInscriptions
             setStep={setCurrentStep}
-            form={phasesForm}
-            handleSubmitProject={handleSubmitProject}
-            phaseConfig={phaseConfig}
-            setPhaseConfigData={setPhaseConfigData}
+            form={inscriptionForm}
+            uploadTab={uploadTab}
+            setUploadTab={setUploadTab}
           />
         );
+      case ESteps.PHASE:
+        return <DeterminePhases setStep={setCurrentStep} form={phasesForm} />;
       case ESteps.SUBMIT:
         switch (submit) {
           case ESubmit.SUBMIT:
-            return <SubmitProject />;
+            return <SubmitProject launchpadId={launchpadId} setStep={setCurrentStep} launch={handleLaunch} />;
           case ESubmit.SUBMITTING:
             return <Submitting />;
           case ESubmit.SUBMITTED:
@@ -247,29 +354,12 @@ export default function Launchpad() {
     }
   };
 
-  const handleSubmitProject = () => {
-    setSubmit(ESubmit.SUBMITTING);
-
-    try {
-      setTimeout(() => {
-        setSubmit(ESubmit.SUBMITTED);
-      }, 2000);
-    } catch (error) {
-      setSubmit(ESubmit.FAILED);
-    }
-  };
-
-  const handleStepClick = (step: ESteps) => {
-    setCurrentStep(step);
-  };
-
   return (
     <Section className='bg-ob-purple-darkest'>
       <Container>
         <h2 className='mt-14 font-sans'>{renderTitle()}</h2>
-
         <div className='mt-8 flex w-full flex-col gap-4 lg:flex-row'>
-          <div className='rounded-md bg-ob-grey-light p-4 lg:p-8'>
+          <div className='rounded-md bg-ob-purple-dark p-4 lg:p-8'>
             <ul className='flex flex-col gap-2'>
               {Object.values(StepConfig).map(({ label }: { label: string }, index: ESteps) => (
                 <StepItem key={index} onClick={handleStepClick} label={label} number={index + 1} currentStep={currentStep} />

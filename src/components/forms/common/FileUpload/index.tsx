@@ -1,18 +1,27 @@
+import Image from 'next/image';
 import * as v from 'valibot';
 import { useDropzone } from 'react-dropzone';
-import Image from 'next/image';
 import { useCallback, useMemo, useState } from 'react';
-import { TInscriptionSchema } from '../ChooseInscriptions';
 
 type FileUploadProps<T> = {
-  schema: any;
-  setData: (data: string) => void;
+  schema?: any;
+  setData: (data: File | string) => void;
   size: string;
   acceptFileType: string;
   accept: string[];
+  preview?: string | null | undefined;
+  setPreview?: (preview: string | null | undefined) => void;
 };
 
-export const FileUpload = <T,>({ schema, setData, size, acceptFileType, accept }: FileUploadProps<T>) => {
+export const FileUpload = <T,>({
+  schema,
+  setData,
+  size,
+  acceptFileType,
+  accept,
+  preview,
+  setPreview
+}: FileUploadProps<T>) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadingError, setUploadingError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -21,15 +30,22 @@ export const FileUpload = <T,>({ schema, setData, size, acceptFileType, accept }
     async (acceptedFiles: File[]) => {
       setUploadingError(null);
       setSuccess(false);
+      setPreview?.(null);
       setUploading(true);
 
       const file = acceptedFiles[0];
 
-      const isJSON = file?.type === 'application/json';
-      const isCSV = file?.type === 'text/csv' || file?.name?.endsWith('.csv');
-
-      if (file?.type !== acceptFileType) {
+      if (file?.type !== acceptFileType && !file?.type.startsWith('image/')) {
         setUploadingError('Invalid file format. Please upload a correct file type.');
+        setUploading(false);
+        return;
+      }
+
+      if (file?.type.startsWith('image/')) {
+        setData(file);
+        const previewURL = URL.createObjectURL(file);
+        setPreview?.(previewURL);
+        setSuccess(true);
         setUploading(false);
         return;
       }
@@ -41,24 +57,14 @@ export const FileUpload = <T,>({ schema, setData, size, acceptFileType, accept }
         try {
           const uploadedData = reader.result as string;
 
-          if (isJSON) {
+          if (file?.type === 'application/json') {
             const parsedData = JSON.parse(uploadedData);
-            const inscriptionIdPattern = /^[a-f0-9]{64}i\d+$/;
-            parsedData.map((i: TInscriptionSchema) => {
-              if (!inscriptionIdPattern.test(i.id)) {
-                throw new Error('Invalid inscription ID(s) found.');
-              }
-            });
             v.parse(schema, parsedData);
           }
 
-          if (isCSV || isJSON) {
-            setData(uploadedData);
-            setSuccess(true);
-          }
+          setData(uploadedData);
+          setSuccess(true);
         } catch (error: any) {
-          console.log(error?.message);
-
           if (error?.name === 'SyntaxError') {
             setUploadingError('Invalid Data format.');
           } else if (error instanceof v.ValiError) {
@@ -124,6 +130,15 @@ export const FileUpload = <T,>({ schema, setData, size, acceptFileType, accept }
       );
     }
 
+    if (preview) {
+      return (
+        <div className='flex flex-col items-center'>
+          <img alt='Uploaded Preview' src={preview} className='max-h-44 max-w-full rounded shadow-md' />
+          <p className='mt-4 text-center text-sm font-bold text-green-600'>Successfully uploaded.</p>
+        </div>
+      );
+    }
+
     if (success) {
       return (
         <div className='flex flex-col items-center'>
@@ -151,7 +166,7 @@ export const FileUpload = <T,>({ schema, setData, size, acceptFileType, accept }
         <p className='mt-4 text-center text-sm font-medium text-ob-grey-lighter'>Click or drag to upload files</p>
       </div>
     );
-  }, [success, uploadingError, uploading, isDragActive]);
+  }, [success, uploadingError, uploading, isDragActive, preview]);
 
   return (
     <div {...getRootProps()} className='group flex h-full w-full cursor-pointer items-center justify-center'>

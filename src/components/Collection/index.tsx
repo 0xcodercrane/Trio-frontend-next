@@ -22,7 +22,7 @@ export default function Collection({ slug }: CollectionProps) {
         {banner_image && (
           <img
             src={banner_image}
-            alt={`banner image`}
+            alt='banner image'
             className='h-full w-full'
             width={1000}
             height={1000}

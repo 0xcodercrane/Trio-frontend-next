@@ -62,7 +62,7 @@ export default function Tag({ variant = EComponentVariants.Default, label, class
       <div
         className={`relative ml-[1px] flex h-full w-full flex-row items-center justify-between rounded-full px-4 ${inner} min-h-[calc(var(--button-height-sm)-2px)] max-w-[calc(100%-2px)] gap-2`}
       >
-        <span className={`text-nowrap text-center text-sm font-semibold`}>{label}</span>
+        <span className='text-nowrap text-center text-sm font-semibold'>{label}</span>
         {info && <Info size={12} />}
       </div>
     </div>

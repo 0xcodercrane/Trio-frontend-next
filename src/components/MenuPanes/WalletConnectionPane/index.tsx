@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactElement, useMemo, useState } from 'react';
+import React, { ReactElement, useContext, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { StaticImageData } from 'next/image';
 import { ChevronRight, MonitorDown } from 'lucide-react';
@@ -28,6 +28,7 @@ import {
 } from '@omnisat/lasereyes';
 import { Container } from '@/components/Container';
 import { Loading } from '@/components/common';
+import { AuthContext } from '@/app/providers/AuthContext';
 
 const WALLET_OPTIONS: {
   [key in ESUPPORTED_WALLETS]: {
@@ -75,19 +76,13 @@ const WALLET_OPTIONS: {
 };
 
 export default function WalletConnectionPane() {
-  const [loginStates, setLoginStates] = useState({
-    connect: false,
-    sign: false,
-    loading: false
-  });
-
+  const { loading: signingInProgress, isAuthenticated } = useContext(AuthContext);
   const { connect, hasUnisat, hasXverse, hasOkx, hasMagicEden, hasLeather, hasOyl, hasPhantom, hasWizz, hasOrange } =
     useLaserEyes();
 
   const handleConnect = async (provider: ESUPPORTED_WALLETS) => {
     try {
       await connect(provider as any);
-      setLoginStates({ connect: true, sign: false, loading: true });
     } catch (error: any) {
       if (error.message.includes('Please switch networks')) {
         return toast.error(`Please switch your wallets to ${NETWORK}`);
@@ -113,14 +108,18 @@ export default function WalletConnectionPane() {
   return (
     <Container padding justify='center'>
       <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-purple-darkest text-white'>
-        {!loginStates.connect && <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>}
-
+        {!isAuthenticated && !signingInProgress && (
+          <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>
+        )}
         <div className='flex w-full flex-col items-center justify-center gap-4'>
-          {loginStates.connect && !loginStates.sign && (
-            <span className='text-2xl'>Connecting wallet... please sign the message</span>
+          {!isAuthenticated && signingInProgress && (
+            <>
+              <span className='text-2xl'>Connecting wallet... please sign the message</span>
+              <Loading />
+            </>
           )}
-          {loginStates.loading && <Loading />}
-          {!loginStates.connect &&
+          {!isAuthenticated &&
+            !signingInProgress &&
             Object.entries(WALLET_OPTIONS).map(([key, wallet]) => {
               const hasWallet = WalletInstallationMatrix[key as ESUPPORTED_WALLETS];
               return (

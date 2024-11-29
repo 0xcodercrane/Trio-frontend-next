@@ -1,54 +1,34 @@
 'use client';
-import * as v from 'valibot';
-import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import Phase from '../Phase';
-import { ESteps, TPhaseConfig } from '../Launchpad';
+import { Button } from '@/components/ui/button';
 import { v4 as uuidv4 } from 'uuid';
+import { useState } from 'react';
+import { ESteps } from '@/types/creators';
 
-export const phaseSchema = v.object({
-  price: v.pipe(v.number(), v.minValue(0.00000546, 'Price cannot be empty')),
-  allocation: v.pipe(v.number(), v.minValue(1, 'Allocation cannot be empty')),
-  startDate: v.pipe(v.string(), v.nonEmpty('Start date cannot be empty')),
-  endDate: v.pipe(v.string(), v.nonEmpty('End date cannot be empty')),
-  startTime: v.pipe(v.string(), v.nonEmpty('Start time cannot be empty')),
-  endTime: v.pipe(v.string(), v.nonEmpty('End time cannot be empty')),
-  allowList: v.optional(v.string())
-});
+export const DeterminePhases = ({ form, setStep }: { form: any; setStep: (step: number) => void }) => {
+  const [isUpdatingTanstackArray, setIsUpdatingTanstackArray] = useState(false);
 
-export const phaseDataSchema = v.object({
-  data: v.array(phaseSchema)
-});
-
-export type TPhaseDataSchema = v.InferInput<typeof phaseDataSchema>;
-export type TPhaseSchema = v.InferInput<typeof phaseSchema>;
-
-export const DeterminePhases = ({
-  form,
-  phaseConfig,
-  setStep,
-  handleSubmitProject,
-  setPhaseConfigData
-}: {
-  form: any;
-  phaseConfig: TPhaseConfig[];
-  setStep: (step: number) => void;
-  handleSubmitProject: () => void;
-  setPhaseConfigData: (newConfig: TPhaseConfig[]) => void;
-}) => {
-  const handleAddNewPhaseConfig = (index: number, newConfig: TPhaseConfig) => {
+  const handleAddNewPhaseConfig = (index: number) => {
     try {
-      form.insertFieldValue('data', index + 1, {
+      const newPhase = {
+        name: 'Whitelist  Sale',
         price: 0,
-        allocation: 0,
+        allocation: 1,
         startDate: '',
         endDate: '',
         startTime: '',
         endTime: '',
-        allowList: ''
-      });
+        isPublic: false,
+        isSameAllocation: true,
+        isFinished: false,
+        allowList: '',
+        uuid: uuidv4()
+      };
 
-      const updatedConfig: TPhaseConfig[] = [...phaseConfig.slice(0, index + 1), newConfig, ...phaseConfig.slice(index + 1)];
-      setPhaseConfigData(updatedConfig);
+      setIsUpdatingTanstackArray(true);
+      form.insertFieldValue('phases', index + 1, newPhase);
+      setTimeout(() => setIsUpdatingTanstackArray(false), 0);
     } catch (error) {
       console.log(error);
     }
@@ -56,72 +36,59 @@ export const DeterminePhases = ({
 
   const handleDeletedPhaseConfig = (index: number) => {
     try {
-      form.removeFieldValue('data', index);
-      const updatedConfig: TPhaseConfig[] = [...phaseConfig.slice(0, index), ...phaseConfig.slice(index + 1)];
-      setPhaseConfigData(updatedConfig);
+      setIsUpdatingTanstackArray(true);
+      form.removeFieldValue('phases', index);
+      setTimeout(() => setIsUpdatingTanstackArray(false), 0);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleToggleIsFinished = (index: number, isFinished: boolean) => {
-    const updatedConfig: TPhaseConfig[] = [...phaseConfig];
-    if (updatedConfig[index]) {
-      updatedConfig[index] = {
-        ...updatedConfig[index],
-        isFinished: isFinished
-      };
-    }
-
-    setPhaseConfigData(updatedConfig);
-  };
-
-  const handleGoToNextStep = () => {
-    try {
-      v.parse(phaseDataSchema, form.state.values);
-      setStep(ESteps.DETERMINE + 1);
-      handleSubmitProject();
-    } catch (error) {
-      console.log(error);
-    }
+    setIsUpdatingTanstackArray(true);
+    form.replaceFieldValue('phases', index, { ...form.state.values.phases[index], isFinished });
+    setTimeout(() => setIsUpdatingTanstackArray(false), 0);
   };
 
   return (
-    <div className='flex w-full flex-col gap-12 rounded-md bg-ob-black text-white'>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className='flex w-full flex-col gap-12 rounded-md bg-ob-purple-darkest text-white'
+    >
       <div className='flex flex-col gap-12'>
-        <form.Field name='data' mode='array'>
+        <form.Field name='phases' mode='array'>
           {(field: any) => (
             <>
-              {field.state.value.map((_: any, index: number) => {
+              {field.state.value.map((phase: any, index: number) => {
                 return (
                   <Phase
-                    key={phaseConfig[index]?.uuid + index}
+                    key={phase.uuid + index}
                     form={form}
-                    isFinished={phaseConfig[index]?.isFinished}
+                    name={phase.name}
                     phaseNumber={index + 1}
-                    title={phaseConfig[index]?.title}
-                    hasWhiteList={phaseConfig[index]?.hasWhiteList}
-                    hasAddPhase={phaseConfig[index]?.hasAddPhase}
+                    isPublic={phase.isPublic}
+                    isFinished={phase.isFinished}
+                    isSameAllocation={phase.isSameAllocation}
+                    isUpdatingTanstackArray={isUpdatingTanstackArray}
                     handleAddNewPhaseConfig={handleAddNewPhaseConfig}
                     handleDeletedPhaseConfig={handleDeletedPhaseConfig}
                     handleToggleIsFinished={handleToggleIsFinished}
                   />
                 );
               })}
+
               {!field.state.value.length ? (
                 <div className='flex items-center justify-center'>
                   <Button
                     onClick={() => {
-                      handleAddNewPhaseConfig(0, {
-                        hasWhiteList: true,
-                        title: 'Whitelist',
-                        hasAddPhase: true,
-                        uuid: uuidv4(),
-                        isFinished: false
-                      });
+                      handleAddNewPhaseConfig(0);
                     }}
-                    size={'lg'}
-                    variant={'secondary'}
+                    size='lg'
+                    variant='secondary'
                     type='button'
                   >
                     Add Phase
@@ -136,13 +103,33 @@ export const DeterminePhases = ({
       </div>
 
       <div className='mt-16 flex justify-center gap-2'>
-        <Button onClick={() => setStep(ESteps.DETERMINE - 1)} type='button' variant='secondary' size='lg'>
+        <Button
+          onClick={() => setStep(ESteps.INSCRIPTIONS)}
+          type='button'
+          variant='default'
+          className='min-w-52 rounded-md'
+          size='lg'
+        >
           Previous
         </Button>
-        <Button onClick={() => handleGoToNextStep()} type='button' variant='secondary' size='lg'>
-          Next
-        </Button>
+        <form.Subscribe
+          selector={(state: any) => [state.canSubmit, state.isSubmitting]}
+          children={([canSubmit, isSubmitting]: any) => (
+            <Button
+              type='submit'
+              disabled={!canSubmit || isSubmitting}
+              variant='default'
+              className='min-w-52 gap-2 rounded-md'
+              size='lg'
+            >
+              Next
+              {isSubmitting && (
+                <Image alt='Uploading' src='/img/creators/loader.png' className='animate-spin' width={20} height={20} />
+              )}
+            </Button>
+          )}
+        />
       </div>
-    </div>
+    </form>
   );
 };

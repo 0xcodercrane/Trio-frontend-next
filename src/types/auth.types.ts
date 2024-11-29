@@ -12,7 +12,10 @@ export interface IAuthContext {
   isAuthenticated: boolean;
   loginWithWallet: (wallet: IWallet) => void;
   logout: () => void;
-
+  signPsbt: (
+    psbt: string,
+    finalize?: boolean
+  ) => Promise<{ signedPsbtHex?: string; signedPsbtBase64?: string; txId?: string } | undefined>;
   wallet: IWallet | null;
 
   loading: boolean;

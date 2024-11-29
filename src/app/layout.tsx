@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import { authOptions } from '@/lib/auth';
 import { Toaster } from 'sonner';
 import MenuPanes from '@/components/MenuPanes';
+import FirebaseAnalytics from '@/components/FirebaseAnalytics';
 
 const satoshiVariable = localFont({
   src: [
@@ -42,6 +43,7 @@ export default async function RootLayout({
           <Footer />
           <MenuPanes />
           <Toaster richColors />
+          <FirebaseAnalytics />
         </Providers>
       </body>
     </html>

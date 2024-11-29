@@ -5,11 +5,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useContext } from 'react';
 import { toast } from 'sonner';
 import { usePaddingOutputs } from '../usePaddingOutputs';
+import { useFeeRates } from '../useFeeRates';
 
 // TODO: Add Pending states while async functions are being executed
 export function useListings() {
   const { wallet } = useContext(AuthContext);
   const { signPsbt } = useLaserEyes();
+  const { feeRate } = useFeeRates();
   const queryClient = useQueryClient();
 
   const { withPaddingOutputs } = usePaddingOutputs();
@@ -282,7 +284,7 @@ export function useListings() {
   );
 
   const buyListing = useCallback(
-    (id: number, feeRate: number, inscriptionId: string): Promise<string | undefined> =>
+    (id: number, inscriptionId: string): Promise<string | undefined> =>
       withPaddingOutputs(async () => {
         try {
           if (!wallet) {
@@ -344,8 +346,8 @@ export function useListings() {
           console.error('Buying inscription failed: ', error);
           return;
         }
-      }, feeRate),
-    [wallet, withPaddingOutputs]
+      }),
+    [wallet, withPaddingOutputs, feeRate]
   );
 
   return { listInscriptions, updateListingPrice, cancelListing, buyListing };
