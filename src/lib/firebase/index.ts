@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getFunctions } from 'firebase/functions';
+import { Analytics, getAnalytics, isSupported } from 'firebase/analytics';
 import 'firebase/remote-config';
 import 'firebase/analytics';
 
@@ -23,4 +24,14 @@ const firestore = getFirestore(app);
 const storage = getStorage(app);
 const functions = getFunctions(app);
 
-export { app, auth, firestore, storage, functions };
+// Initialize Analytics
+let analytics: Analytics | null = null;
+
+// First check to see if we are running in the browser. If we are, call isSupported.
+if (window !== undefined) {
+  isSupported().then((supported) => {
+    if (supported) analytics = getAnalytics(app);
+  });
+}
+
+export { app, auth, firestore, storage, functions, analytics };
