@@ -14,6 +14,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  setDoc,
   sum,
   where
 } from 'firebase/firestore';
@@ -234,6 +235,14 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       signMessageForFirebase(provider);
     }
   }, [connected]);
+
+  useEffect(() => {
+    // If the user has a wallet, set it as the default wallet if it hasn't already been set
+    if (!user?.defaultAddress && wallet?.ordinalsAddress && auth?.currentUser) {
+      const userRef = doc(firestore, 'users', auth?.currentUser.uid);
+      setDoc(userRef, { defaultAddress: wallet?.ordinalsAddress }, { merge: true });
+    }
+  }, [user, auth]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, authStateChanged);

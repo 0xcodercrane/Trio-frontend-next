@@ -16,3 +16,4 @@ export * from './states';
 export * from './rewards';
 export * from './pointAllocations';
 export * from './pointsConfig';
+export * from './stakedBalance';
