@@ -151,11 +151,15 @@ export function XPMining() {
               </div>
 
               {balanceData && balanceData?.balance < 1 && (
-                <div className='w-100 mb-4 mt-4 flex flex-col justify-center rounded bg-ob-white-20 p-5 text-center align-middle'>
-                  You need to hold some TRIO for at least 24 hours to start Mining XP Points.
-                  <Button variant='outline' className='mt-3' onClick={open}>
-                    Buy Trio Now
-                  </Button>
+                <div className='mb-4 mt-4 flex w-full flex-col justify-center rounded bg-ob-purple-light p-5 text-center'>
+                  <span className='font-bold text-ob-yellow'>
+                    You need to hold some TRIO for at least 24 hours to start Mining XP Points.
+                  </span>
+                  <div className='flex w-full items-center justify-center'>
+                    <Button variant='outline' className='mt-3' onClick={open}>
+                      Buy Trio Now
+                    </Button>
+                  </div>
                 </div>
               )}
 
@@ -224,7 +228,7 @@ export function XPMining() {
             <div className='flex flex-col items-center justify-center gap-6 py-1 text-center'>
               <div
                 onClick={close}
-                className='absolute right-2 top-2 flex h-[24px] w-[24px] items-center justify-center rounded-full bg-ob-white-20 hover:cursor-pointer hover:opacity-60'
+                className='absolute right-2 top-2 flex h-[24px] w-[24px] items-center justify-center rounded-full bg-ob-purple-darkest hover:cursor-pointer hover:opacity-60'
               >
                 <X size={20} />
               </div>

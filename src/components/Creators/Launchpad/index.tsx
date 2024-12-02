@@ -29,6 +29,7 @@ import { toast } from 'sonner';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { IWallet } from '@/types';
 import { ChooseLaunchType } from '../ChooseLaunchType';
+import { auth } from '@/lib/firebase';
 
 const StepConfig = {
   [ESteps.START]: {
@@ -114,10 +115,9 @@ const prepareRequestBody = async (
   wallet: IWallet | null
 ) => {
   const collectionSlug = `${meta.name.trim().toLowerCase().replace(/\s+/g, '_')}`;
-  const iconImgUrl = meta?.icon ? await uploadImageAndGetURL(meta?.icon, `/launchpad/${collectionSlug}`) : '';
-  const bannerImgUrl = meta?.banner_image
-    ? await uploadImageAndGetURL(meta?.banner_image, `/launchpad/${collectionSlug}`)
-    : '';
+  const storagePath = `/launchpad/${auth?.currentUser?.uid}/${collectionSlug}/`;
+  const iconImgUrl = meta?.icon ? await uploadImageAndGetURL(meta?.icon, storagePath) : '';
+  const bannerImgUrl = meta?.banner_image ? await uploadImageAndGetURL(meta?.banner_image, storagePath) : '';
 
   if (!meta?.website_link) delete meta.website_link;
   if (!meta?.discord_link) delete meta.discord_link;

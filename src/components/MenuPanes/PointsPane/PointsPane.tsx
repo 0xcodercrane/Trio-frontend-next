@@ -1,5 +1,6 @@
 'use client';
 import { AuthContext } from '@/app/providers/AuthContext';
+import XPMiningChart from '@/components/Charts/XPMiningChart';
 import { Stat } from '@/components/common';
 import { PointsHistoryTable } from '@/components/Tables';
 import { useTokenBalanceQuery, useTrioInfoQuery } from '@/lib/services';
@@ -23,6 +24,7 @@ export const PointsPane = () => {
             </p>
           </div>
           <PointsHistoryTable />
+          <XPMiningChart />
         </div>
 
         <div className='flex flex-col gap-8'>

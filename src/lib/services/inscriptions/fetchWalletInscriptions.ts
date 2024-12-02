@@ -22,7 +22,7 @@ export const fetchWalletInscriptions = async (
 
 export const useWalletInscriptions = (address: string, wallet: string = 'xverse') => {
   return useInfiniteQuery({
-    queryKey: ['wallet-token-balance', address, wallet],
+    queryKey: ['wallet-inscriptions', address, wallet],
     queryFn: async ({ pageParam }) => fetchWalletInscriptions(address, wallet, pageParam as number),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
