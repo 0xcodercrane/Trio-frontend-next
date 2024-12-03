@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+export * from './cache';
 export * from './imgs';
 export * from './time';
-export * from './cache';
 
 export const APP_NAME = 'Trio Marketplace';
 const CLEAN_APP_NAME = APP_NAME.replace(/ /g, '-').toLowerCase();
@@ -25,6 +25,7 @@ export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
 export const SATS_TO_BTC_CONVERSION_FACTOR = 10 ** 8;
+export const MINIMUM_SATS = 0.00000546;
 
 // 144 Blocks is the cycle length for synthetic staking
 // TODO: This should ultimately be dynamic and configurable
