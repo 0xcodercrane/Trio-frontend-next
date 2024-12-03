@@ -1,4 +1,8 @@
-export const convertStringAllowListToArray = (allowList: string | undefined, allocation: number, isPublic: boolean) => {
+export const convertStringAllowListToArray = (
+  allowList: string | undefined,
+  allocation: number,
+  isSameAllocation: boolean
+) => {
   if (!allowList?.trim()) {
     return undefined;
   }
@@ -20,7 +24,7 @@ export const convertStringAllowListToArray = (allowList: string | undefined, all
 
     const parsedAllocation = alloc && !isNaN(Number(alloc)) ? Number(alloc) : 1;
     entries[address] = {
-      allocation: isPublic ? allocation : parsedAllocation
+      allocation: isSameAllocation ? allocation : parsedAllocation
     };
   }
 

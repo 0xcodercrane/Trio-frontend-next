@@ -60,8 +60,22 @@ export const informationFormSchema = v.object({
       v.startsWith('https://discord', 'Please provide a valid Discord link (e.g., https://discord.gg/...).')
     )
   ),
-  telegram_link: v.optional(v.pipe(v.string(), v.trim())),
-  instagram_link: v.optional(v.pipe(v.string(), v.trim())),
+  telegram_link: v.optional(
+    v.pipe(
+      v.string(),
+      v.trim(),
+      v.url('Please provide a valid URL.'),
+      v.startsWith('https://t.me', 'Please provide a valid Telegram link (e.g., https://t.me/username).')
+    )
+  ),
+  instagram_link: v.optional(
+    v.pipe(
+      v.string(),
+      v.trim(),
+      v.url('Please provide a valid URL.'),
+      v.startsWith('https://instagram.com', 'Please provide a valid Instagram link (e.g., https://instagram.com/username).')
+    )
+  ),
   creator_name: v.pipe(
     v.string(),
     v.trim(),
@@ -119,7 +133,7 @@ export const phaseFormSchema = v.object({
   phases: v.array(
     v.object({
       name: v.pipe(v.string(), v.trim(), v.nonEmpty('Phase name is required.')),
-      price: v.pipe(v.number(), v.minValue(1, 'Price must be at least 1')),
+      price: v.pipe(v.number(), v.minValue(0.00000546, 'Price must be at least 0.00000546')),
       allocation: v.pipe(v.number(), v.minValue(1, 'Allocation is required and must be at least 1.')),
       startDate: v.pipe(v.string(), v.nonEmpty('Start date is required.')),
       endDate: v.pipe(v.string(), v.nonEmpty('End date is required.')),
