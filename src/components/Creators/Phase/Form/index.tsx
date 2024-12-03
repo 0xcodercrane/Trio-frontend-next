@@ -96,15 +96,21 @@ const EditForm = ({
   form,
   phaseIndex,
   isAllowList,
-  setIsAllowList,
+  isSameAllocation,
   isUpdatingTanstackArray,
+  allowSameAllocation,
+  setAllowSameAllocation,
+  setIsAllowList,
   handleDeletedPhaseConfig,
   handleFinishForm
 }: {
   form: ReturnType<typeof useForm<TPhaseFormSchema>>;
   phaseIndex: number;
   isAllowList: boolean;
+  isSameAllocation: boolean;
   isUpdatingTanstackArray: boolean;
+  allowSameAllocation: boolean;
+  setAllowSameAllocation: (same: boolean) => void;
   setIsAllowList: (isAllowList: boolean) => void;
   handleDeletedPhaseConfig: (index: number) => void;
   handleFinishForm: (newPhase: TPhaseFormSchema['phases'][0]) => void;
@@ -381,8 +387,8 @@ const EditForm = ({
                   return 'Price cannot be empty';
                 }
 
-                if (value < 1) {
-                  return 'Price should be greater than 1';
+                if (value < 0.00000546) {
+                  return 'Price should be greater than 0.00000546';
                 }
 
                 return undefined;
@@ -440,6 +446,7 @@ const EditForm = ({
                   </label>
                   <Input
                     id={name}
+                    disabled={!allowSameAllocation}
                     value={state.value || ''}
                     type='number'
                     placeholder='5'
@@ -565,17 +572,20 @@ const EditForm = ({
 
               return (
                 <>
-                  {/* <div className='flex items-center gap-2'>
+                  <div className='flex items-center gap-2'>
                     <Input
                       checked={state.value || false}
-                      onChange={(e) => handleChange(e.target.checked)}
+                      onChange={(e) => {
+                        setAllowSameAllocation(e.target.checked);
+                        handleChange(e.target.checked);
+                      }}
                       onBlur={handleBlur}
                       type='checkbox'
                       className='h-6 w-6 accent-white'
                     />
                     <FieldInfo field={field} />
                     <label className='font-bold text-ob-grey-lighter'>Same allocation for all adresses? </label>
-                  </div> */}
+                  </div>
                 </>
               );
             }}
@@ -621,6 +631,7 @@ const PhaseForm = ({
 }) => {
   const [isOpenEdit, setIsOpenEdit] = useState(!isFinished);
   const [isAllowList, setIsAllowList] = useState<boolean>(!isPublic);
+  const [allowSameAllocation, setAllowSameAllocation] = useState<boolean>(isSameAllocation);
 
   const handleFinishForm = (newPhase: TPhaseFormSchema['phases'][0]) => {
     try {
@@ -672,6 +683,7 @@ const PhaseForm = ({
       if (isAllowList && !newPhase.allowList?.trim()) {
         return toast.error('White list can not be empty.');
       }
+
       v.parse(phaseFormSchema.entries.phases.item, {
         ...newPhase,
         price: Number(newPhase.price),
@@ -695,7 +707,10 @@ const PhaseForm = ({
           phaseIndex={phaseIndex}
           form={form}
           isAllowList={isAllowList}
+          isSameAllocation={isSameAllocation}
           isUpdatingTanstackArray={isUpdatingTanstackArray}
+          allowSameAllocation={allowSameAllocation}
+          setAllowSameAllocation={setAllowSameAllocation}
           setIsAllowList={setIsAllowList}
           handleDeletedPhaseConfig={handleDeletedPhaseConfig}
           handleFinishForm={handleFinishForm}

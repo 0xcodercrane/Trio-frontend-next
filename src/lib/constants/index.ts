@@ -24,6 +24,8 @@ export const USE_LOW_POSTAGE = true;
 export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
+export const SATS_TO_BTC_CONVERSION_FACTOR = 10 ** 8;
+
 // 144 Blocks is the cycle length for synthetic staking
 // TODO: This should ultimately be dynamic and configurable
 export const XP_MINING_CYCLE_LENGTH = 144;

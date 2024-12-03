@@ -30,6 +30,7 @@ import { AuthContext } from '@/app/providers/AuthContext';
 import { IWallet } from '@/types';
 import { ChooseLaunchType } from '../ChooseLaunchType';
 import { auth } from '@/lib/firebase';
+import { SATS_TO_BTC_CONVERSION_FACTOR } from '@/lib/constants';
 
 const StepConfig = {
   [ESteps.START]: {
@@ -129,15 +130,13 @@ const prepareRequestBody = async (
     ...meta,
     banner_image: bannerImgUrl,
     slug: collectionSlug,
-    icon: iconImgUrl,
-    telegram_link: 'test',
-    instagram_link: 'test'
+    ...(iconImgUrl && { icon: iconImgUrl })
   };
 
   const phasesData = phases.map((phase) => {
     const basePhase = {
       name: phase.name,
-      price: Number(phase.price),
+      price: Number(phase.price) * SATS_TO_BTC_CONVERSION_FACTOR,
       startDate: convertToUnixTimestamp(new Date(phase.startDate), phase.startTime),
       endDate: convertToUnixTimestamp(new Date(phase.endDate), phase.endTime),
       isPublic: phase.isPublic
@@ -146,7 +145,7 @@ const prepareRequestBody = async (
     if (!phase.isPublic) {
       return {
         ...basePhase,
-        allowList: convertStringAllowListToArray(phase.allowList, Number(phase.allocation), phase.isPublic)
+        allowList: convertStringAllowListToArray(phase.allowList, Number(phase.allocation), phase.isSameAllocation)
       };
     }
     return basePhase;
@@ -201,8 +200,12 @@ export default function Launchpad() {
       try {
         v.parse(informationFormSchema, value);
         setCurrentStep(ESteps.INSCRIPTIONS);
-      } catch (error) {
-        toast.error(`Submission error:, ${error}`);
+      } catch (error: any) {
+        if (error?.message) {
+          toast.error(error?.message);
+        } else {
+          toast.error(error.toString());
+        }
       }
     },
     validatorAdapter: valibotValidator()
@@ -213,8 +216,12 @@ export default function Launchpad() {
       try {
         v.parse(inscriptionFormSchema, value);
         setCurrentStep(ESteps.PHASE);
-      } catch (error) {
-        toast.error(`Submission error:, ${error}`);
+      } catch (error: any) {
+        if (error?.message) {
+          toast.error(error?.message);
+        } else {
+          toast.error(error.toString());
+        }
       }
     },
     validatorAdapter: valibotValidator()
@@ -227,8 +234,12 @@ export default function Launchpad() {
         const phases = preparePhaseParse(value.phases);
         v.parse(phaseFormSchema, { phases });
         await handleSubmit();
-      } catch (error) {
-        toast.error(`Submission error:, ${error}`);
+      } catch (error: any) {
+        if (error?.message) {
+          toast.error(error?.message);
+        } else {
+          toast.error(error.toString());
+        }
       }
     },
     validatorAdapter: valibotValidator()
@@ -259,6 +270,12 @@ export default function Launchpad() {
       }
 
       const res = await response.json();
+
+      if (!res?.collectionOnboardResponse?.success) {
+        toast.error(res?.collectionOnboardResponse?.error);
+        return;
+      }
+
       if (res?.launchpadId) {
         setLaunchpadId(res?.launchpadId);
         setCurrentStep(ESteps.SUBMIT);
