@@ -91,17 +91,17 @@ export function useListings() {
 
         if (mutateOnSuccess) {
           // MEMO: Adds 1000ms delay for supabase to catch up with the changes.
-          setTimeout(
-            () =>
-              // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
-              //        to refresh queries that fetch orders for multiple items, this needs to be extended.
-              queryClient.invalidateQueries({
-                predicate: (query) =>
-                  query.queryKey[0] === 'orderbook-by-inscription-id' &&
-                  inscriptions.some((i) => i.inscription_id === query.queryKey[1])
-              }),
-            1000
-          );
+          setTimeout(() => {
+            // MEMO: This invalidates only single orderbook-by-inscription-id queries, if we decide
+            //        to refresh queries that fetch orders for multiple items, this needs to be extended.
+            queryClient.invalidateQueries({
+              predicate: (query) =>
+                (query.queryKey[0] === 'orderbook-by-inscription-id' &&
+                  inscriptions.some((i) => i.inscription_id === query.queryKey[1])) ||
+                (query.queryKey[0] === 'inscriptions-with-prices-by-collection-slug' &&
+                  inscriptions.some((i) => i.collectionSlug === query.queryKey[1]))
+            });
+          }, 1000);
           toast.success('Inscription listed successfully');
         }
 
@@ -116,7 +116,13 @@ export function useListings() {
   );
 
   const updateListingPrice = useCallback(
-    async (inscriptionId: string, listingId: number, newPriceSats: number, mutateOnSuccess = true) => {
+    async (
+      inscriptionId: string,
+      listingId: number,
+      newPriceSats: number,
+      collectionSlug: string | undefined,
+      mutateOnSuccess = true
+    ) => {
       try {
         if (!wallet) {
           throw new Error('Please connect your wallet.');
@@ -197,7 +203,10 @@ export function useListings() {
               //        to refresh queries that fetch orders for multiple items, this needs to be extended.
               queryClient.invalidateQueries({
                 predicate: (query) =>
-                  query.queryKey[0] === 'orderbook-by-inscription-id' && inscriptionId === query.queryKey[1]
+                  (query.queryKey[0] === 'orderbook-by-inscription-id' && inscriptionId === query.queryKey[1]) ||
+                  (!!collectionSlug &&
+                    query.queryKey[0] === 'inscriptions-with-prices-by-collection-slug' &&
+                    collectionSlug === query.queryKey[1])
               }),
             1000
           );

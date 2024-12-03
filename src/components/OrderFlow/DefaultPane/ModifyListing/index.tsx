@@ -12,7 +12,15 @@ enum EModifyListingState {
   PRICE_CHANGE,
   DELISTING
 }
-const ModifyListing = ({ listing, inscriptionId }: { listing: OrderbookItem; inscriptionId: string }) => {
+const ModifyListing = ({
+  listing,
+  inscriptionId,
+  collectionSlug
+}: {
+  listing: OrderbookItem;
+  inscriptionId: string;
+  collectionSlug?: string;
+}) => {
   const [modificationState, setModificationState] = useState<EModifyListingState>(EModifyListingState.DEFAULT);
   const [newPrice, setNewPrice] = useState<string>('0');
 
@@ -28,7 +36,7 @@ const ModifyListing = ({ listing, inscriptionId }: { listing: OrderbookItem; ins
     if (!newPriceSats) {
       return;
     }
-    await updateListingPrice(inscriptionId, listing.id, newPriceSats);
+    await updateListingPrice(inscriptionId, listing.id, newPriceSats, collectionSlug);
     setModificationState(EModifyListingState.DEFAULT);
   };
 

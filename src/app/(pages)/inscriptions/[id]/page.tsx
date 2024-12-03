@@ -70,7 +70,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 )}
               </div>
               <Divider className='my-4' />
-              <OrderFlow inscriptionId={id} />
+              <OrderFlow inscriptionId={id} collectionSlug={collectionData?.collection?.slug} />
               <InscriptionInfo details={inscriptionData?.details} />
             </div>
           </Container>

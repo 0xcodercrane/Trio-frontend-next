@@ -8,6 +8,7 @@ import { useInscriptionOrder } from '@/lib/hooks';
 
 export interface OrderFlowPaneBaseProps {
   inscriptionId: string;
+  collectionSlug: string | undefined;
 }
 
 const OrderFlowConfig = {
@@ -16,7 +17,7 @@ const OrderFlowConfig = {
   [EOrderFlowStates.Complete]: CompletePane
 };
 
-export default function OrderFlow({ inscriptionId }: OrderFlowPaneBaseProps) {
+export default function OrderFlow({ inscriptionId, collectionSlug }: OrderFlowPaneBaseProps) {
   const { state, setOrderFlowState, setTxId } = useOrderFlow();
 
   const OrderFlowState = OrderFlowConfig[state];
@@ -43,7 +44,7 @@ export default function OrderFlow({ inscriptionId }: OrderFlowPaneBaseProps) {
 
   return (
     <div className='flex h-full w-full'>
-      <OrderFlowState inscriptionId={inscriptionId} />
+      <OrderFlowState inscriptionId={inscriptionId} collectionSlug={collectionSlug} />
     </div>
   );
 }

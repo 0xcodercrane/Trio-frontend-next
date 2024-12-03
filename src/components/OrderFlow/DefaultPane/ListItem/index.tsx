@@ -8,9 +8,10 @@ import { TermsAndConditions } from '../../../TermsAndConditions';
 
 interface ListItemProps {
   inscriptionId: string | undefined;
+  collectionSlug?: string;
 }
 
-export default function ListItem({ inscriptionId }: ListItemProps) {
+export default function ListItem({ inscriptionId, collectionSlug }: ListItemProps) {
   const { listInscriptions } = useListings();
 
   const [price, setPrice] = useState<string>('0');
@@ -23,7 +24,7 @@ export default function ListItem({ inscriptionId }: ListItemProps) {
     if (!inscriptionId || !priceInSats) {
       return;
     }
-    await listInscriptions([{ inscription_id: inscriptionId, price: priceInSats }]);
+    await listInscriptions([{ inscription_id: inscriptionId, price: priceInSats, collectionSlug }]);
   };
 
   const priceInSats = bitcoinToSats(parseFloat(price));

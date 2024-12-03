@@ -12,7 +12,7 @@ import { ESTIMATED_TX_FEE } from '@/lib/constants';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
 import { ModifyListing } from './ModifyListing';
 
-export default function DefaultPane({ inscriptionId }: OrderFlowPaneBaseProps) {
+export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlowPaneBaseProps) {
   const { latestOrder, isPending } = useInscriptionOrder(inscriptionId);
   const { data } = useInscriptionDataQuery(inscriptionId);
   const { wallet } = useContext(AuthContext);
@@ -31,9 +31,9 @@ export default function DefaultPane({ inscriptionId }: OrderFlowPaneBaseProps) {
           {/* OWNER OF INSCRIPTION */}
           {isInscriptionOwner ? (
             hasActiveListing ? (
-              <ModifyListing listing={latestOrder} inscriptionId={inscriptionId} />
+              <ModifyListing listing={latestOrder} inscriptionId={inscriptionId} collectionSlug={collectionSlug} />
             ) : (
-              <ListItem inscriptionId={inscriptionId} />
+              <ListItem inscriptionId={inscriptionId} collectionSlug={collectionSlug} />
             )
           ) : (
             <>
