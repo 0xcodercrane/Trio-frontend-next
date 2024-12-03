@@ -201,7 +201,11 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
   };
 
   useEffect(() => {
-    if (isInitializing || auth.currentUser || loading) return;
+    if (isInitializing || loading) return;
+
+    if (!connected) {
+      return logout();
+    }
     // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
     if (connected && !auth.currentUser) {
       setLoading(true);
@@ -234,7 +238,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
 
       signMessageForFirebase(provider);
     }
-  }, [connected]);
+  }, [connected, isInitializing, loading]);
 
   useEffect(() => {
     // If the user has a wallet, set it as the default wallet if it hasn't already been set
