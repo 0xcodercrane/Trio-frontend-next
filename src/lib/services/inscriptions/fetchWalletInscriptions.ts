@@ -1,40 +1,46 @@
-import { GenericResponse, isResponseError, isResponseSuccess } from '@/types';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { PUBLIC_API_URL } from '@/lib/constants';
+import { GenericResponse, isResponseSuccess } from '@/types';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useMemo, useState } from 'react';
 
 const PAGINATION_LIMIT = 20;
 
-export const fetchWalletInscriptions = async (
-  address: string,
-  wallet: string = 'xverse',
-  pageParam: number
-): Promise<GenericResponse<any>> => {
-  const response = await fetch(
-    `/api/inscriptions/wallet/${wallet}/${address}?offset=${pageParam * PAGINATION_LIMIT}&limit=${PAGINATION_LIMIT}`,
-    {
-      cache: 'no-store'
-    }
-  );
+const fetchWalletInscriptions = async (address: string): Promise<GenericResponse<string[]>> => {
+  const searchParams = new URLSearchParams({
+    address,
+    excludeCommonRanges: 'true'
+  }).toString();
+
+  const response = await fetch(`${PUBLIC_API_URL}/satscanner/find-special-ranges?${searchParams}`, {
+    cache: 'no-store'
+  });
   if (!response.ok) {
     return { success: false, error: 'Failed to fetch inscriptions in wallet.' };
   }
-  return { success: true, payload: await response.json() };
+  const payload = await response.json();
+  console.log(payload);
+  return { success: true, payload: payload.result.inscriptions.map(({ inscriptions: [inscription] }: any) => inscription) };
 };
 
-export const useWalletInscriptions = (address: string, wallet: string = 'xverse') => {
-  return useInfiniteQuery({
-    queryKey: ['wallet-inscriptions', address, wallet],
-    queryFn: async ({ pageParam }) => fetchWalletInscriptions(address, wallet, pageParam as number),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (isResponseError(lastPage)) {
-        return null;
-      }
-      const inscriptionsFetchedCount = PAGINATION_LIMIT * (lastPageParam + 1);
-      if (lastPage.payload.total_inscriptions > inscriptionsFetchedCount) {
-        return lastPageParam + 1;
-      }
-      return null;
-    },
-    select: (data) => data.pages.map((page) => (isResponseSuccess(page) ? page.payload.results : [])).flat()
+// MEMO: Fetches all inscription but ready for infinite scroll integration.
+export const useWalletInscriptions = (address: string | undefined) => {
+  const queryResult = useQuery({
+    queryKey: ['inscriptions-by-address', address],
+    queryFn: () => fetchWalletInscriptions(address || ''),
+    enabled: !!address,
+    select: (data) => (isResponseSuccess(data) ? data.payload : [])
   });
+
+  // MEMO: Simulating pagination here because API returns all the results at once.
+  const [lastPage, setLastPage] = useState(1);
+
+  const paginatedResult = useMemo(
+    () => (queryResult?.data ? queryResult.data.slice(0, PAGINATION_LIMIT * lastPage) : []),
+    [queryResult.data, lastPage]
+  );
+
+  const hasNextPage = (queryResult.data?.length || 0) > PAGINATION_LIMIT * lastPage;
+  const fetchNextPage = useCallback(() => setLastPage((currentPage) => currentPage + 1), []);
+
+  return { data: paginatedResult, hasNextPage, fetchNextPage };
 };
