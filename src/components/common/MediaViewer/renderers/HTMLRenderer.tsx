@@ -9,7 +9,7 @@ export const HTMLRenderer = memo(({ content, id, type }: HtmlProps) => {
   const iframeSrc = id ? `${EXPLORER_URL}/content/${id}` : `data:${type},${encodeURIComponent(content)}`;
 
   return (
-    <div className='html-viewer'>
+    <div className='html-viewer text-white'>
       <label className='checkbox-label'>
         <input type='checkbox' className='checkbox' checked={showSource} onChange={() => setShowSource((prev) => !prev)} />
         View Source

@@ -3,6 +3,7 @@ import { useOrderFlow } from '@/lib/hooks';
 import { shortenTxid } from '@/lib/utilities';
 import { Tag } from '../../../common';
 import { EComponentVariants } from '@/types';
+import { MEMPOOL_SPACE_URL } from '@/lib/constants';
 
 export default function MempoolTx() {
   const { txId } = useOrderFlow();
@@ -11,7 +12,7 @@ export default function MempoolTx() {
       <div className='flex flex-row items-center justify-between'>
         <div className='flex flex-col gap-2'>
           <span className='text-2xl font-bold text-white'>Pending Transaction</span>
-          <a target='_blank' href={`https://mempool.space/tx/${txId}`} className='flex flex-row gap-2'>
+          <a target='_blank' href={`${MEMPOOL_SPACE_URL}/tx/${txId}`} className='flex flex-row gap-2'>
             <span className='text-ob-grey-lightest'>Transaction ID</span>
             <span className='text-ob-grey-lightest'>{txId && shortenTxid(txId)}</span>
           </a>

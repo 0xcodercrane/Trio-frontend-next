@@ -1,5 +1,6 @@
 import { Tag } from '@/components/common';
 import { Button } from '@/components/ui/button';
+import { MEMPOOL_SPACE_URL } from '@/lib/constants';
 import { useFeeRates } from '@/lib/hooks';
 import { shortenTxid } from '@/lib/utilities';
 import { EComponentVariants } from '@/types';
@@ -53,7 +54,7 @@ const MintAction = ({
           <div className='flex flex-row items-center justify-between'>
             <div className='flex flex-col gap-2'>
               <span className='text-2xl font-bold text-white'>Pending Transaction</span>
-              <a target='_blank' href={`https://mempool.space/signet/tx/${txid}`} className='flex flex-row gap-2'>
+              <a target='_blank' href={`${MEMPOOL_SPACE_URL}/tx/${txid}`} className='flex flex-row gap-2'>
                 <span className='text-ob-grey-lightest'>Transaction ID</span>
                 <span className='text-ob-grey-lightest'>{txid && shortenTxid(txid)}</span>
               </a>
