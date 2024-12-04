@@ -71,7 +71,7 @@ const CustomTooltip = ({ payload, label, active }: any) => {
     return (
       <div className='flex flex-col items-center bg-ob-purple-darkest p-4 text-white'>
         <span>Block {label}</span>
-        <span>{payload[0].payload.balance} TRIO</span>
+        <span>{payload[0]?.payload.balance || 0} TRIO</span>
       </div>
     );
   }

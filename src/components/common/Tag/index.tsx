@@ -1,5 +1,6 @@
 'use client';
 
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { EComponentVariants } from '@/types';
 import { Info } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -42,7 +43,7 @@ export default function Tag({ variant = EComponentVariants.Default, label, class
         };
       default:
         return {
-          inner: 'bg-ob-black text-white',
+          inner: 'bg-ob-purple-darkest text-white',
           outer: `bg-gradient-to-${dir} from-ob-blue to-ob-green`
         };
     }
@@ -56,14 +57,21 @@ export default function Tag({ variant = EComponentVariants.Default, label, class
 
   return (
     <div
-      className={`relative h-[--button-height-sm] max-h-[--button-height-md] min-w-[96px] rounded-full p-[1px] shadow-lg ${className}`}
+      className={`relative h-[--button-height-sm] max-h-[--button-height-md] min-w-[96px] rounded-sm p-[1px] shadow-lg ${className}`}
     >
-      <div className={`absolute inset-0 h-full w-full rounded-full ${outer} duration-100 ease-in-out`}></div>
+      <div className={`absolute inset-0 h-full w-full rounded-sm ${outer} duration-100 ease-in-out`}></div>
       <div
-        className={`relative ml-[1px] flex h-full w-full flex-row items-center justify-between rounded-full px-4 ${inner} min-h-[calc(var(--button-height-sm)-2px)] max-w-[calc(100%-2px)] gap-2`}
+        className={`relative ml-[1px] flex h-full w-full flex-row items-center justify-between rounded-sm px-4 ${inner} min-h-[calc(var(--button-height-sm)-2px)] max-w-[calc(100%-2px)] gap-2`}
       >
         <span className='text-nowrap text-center text-sm font-semibold'>{label}</span>
-        {info && <Info size={12} />}
+        {info && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info size={12} />
+            </TooltipTrigger>
+            <TooltipContent>{info}</TooltipContent>
+          </Tooltip>
+        )}
       </div>
     </div>
   );

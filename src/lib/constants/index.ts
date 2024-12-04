@@ -145,3 +145,5 @@ export const TRIO_EXCHANGES: { label: string; link: string; img: string }[] = [
     img: `${IMG_DIR}/exchanges/befilabs.svg`
   }
 ];
+
+export const TOOLTIP_HOVER_DELAY = 200;

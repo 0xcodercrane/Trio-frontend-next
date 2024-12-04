@@ -1,5 +1,10 @@
 import { DocumentReference, Timestamp } from 'firebase/firestore';
 
+export enum ERewardState {
+  Default = 'default',
+  Ineligable = 'ineligable',
+  Granted = 'granted'
+}
 export enum ERewardType {
   Order = 'order',
   Stake = 'stake',

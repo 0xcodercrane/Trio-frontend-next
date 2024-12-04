@@ -10,10 +10,11 @@ import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from 'next-themes';
 import AuthContextProvider from './AuthContext';
 
-import { NETWORK, ONE_MINUTE } from '@/lib/constants';
+import { NETWORK, ONE_MINUTE, TOOLTIP_HOVER_DELAY } from '@/lib/constants';
 import { FRACTAL_MAINNET, FRACTAL_TESTNET, LaserEyesProvider, MAINNET, SIGNET, TESTNET, TESTNET4 } from '@omnisat/lasereyes';
 import GlobalContextProvider from './GlobalContext';
 import { mapAppNetworkToLaserEyesNetwork } from '@/lib/utilities';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 interface ProvidersProps {
   children: NonNullable<ReactNode>;
@@ -52,7 +53,9 @@ const Providers: FC<ProvidersProps> = ({ children, session }) => {
         <SessionProvider session={session} refetchInterval={5 * ONE_MINUTE.as('seconds')} refetchOnWindowFocus={true}>
           <QueryClientProvider client={client}>
             <AuthContextProvider>
-              <GlobalContextProvider>{children}</GlobalContextProvider>
+              <GlobalContextProvider>
+                <TooltipProvider delayDuration={TOOLTIP_HOVER_DELAY}>{children}</TooltipProvider>
+              </GlobalContextProvider>
             </AuthContextProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>

@@ -6,6 +6,7 @@ import { useCallback, useContext } from 'react';
 import { toast } from 'sonner';
 import { usePaddingOutputs } from '../usePaddingOutputs';
 import { useFeeRates } from '../useFeeRates';
+import { pushOrderToFirebase } from '@/lib/services/points';
 
 // TODO: Add Pending states while async functions are being executed
 export function useListings() {
@@ -350,6 +351,9 @@ export function useListings() {
           queryClient.invalidateQueries({ queryKey: ['orderbook'] });
           queryClient.invalidateQueries({ queryKey: ['orderbook-by-inscription-id', inscriptionId] });
           toast.success(`Transaction broadcasted: ${txId}`);
+
+          await pushOrderToFirebase(id, takerOrdinalAddress);
+
           return txId;
         } catch (error) {
           console.error('Buying inscription failed: ', error);

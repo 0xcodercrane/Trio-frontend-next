@@ -3,7 +3,7 @@ import { Button } from '../../../ui/button';
 import { EOrderFlowStates } from '@/types';
 import { useListings, usePaddingOutputs } from '@/lib/hooks';
 import { useState } from 'react';
-import { Loading } from '@/components/common';
+import { Loading, Tag } from '@/components/common';
 import { useLaserEyes } from '@omnisat/lasereyes';
 
 interface BuyNowProps {
@@ -47,16 +47,16 @@ export default function BuyNow({ orderId, inscriptionId, price }: BuyNowProps) {
           {isPaddingOuputsSetupInProgress ? <Loading className='p-2 text-ob-purple-dark' /> : 'Prepare Wallet'}
         </Button>
       )}
-      <Button
-        disabled={!orderId || isPendingPurchase || !hasPaddingOutputs || isPaddingOutputsCheckPending || !hasEnoughBalance}
-        className='min-w-full rounded-lg text-lg'
-        onClick={handleBuy}
-      >
-        {isPendingPurchase ? <Loading className='p-2 text-ob-purple-dark' /> : 'Buy Now'}
-      </Button>
-      {/* <div className='flex h-full flex-col items-center justify-center'>
-        <Tag label='+ 1,000 XP' variant={EComponentVariants.Default} />
-      </div> */}
+      <div className='flex w-full flex-row items-center justify-between gap-4'>
+        <Button
+          disabled={!orderId || isPendingPurchase || !hasPaddingOutputs || isPaddingOutputsCheckPending || !hasEnoughBalance}
+          className='w-full max-w-full rounded-lg text-lg'
+          onClick={handleBuy}
+        >
+          {isPendingPurchase ? <Loading className='p-2 text-ob-purple-dark' /> : 'Buy Now'}
+        </Button>
+        <Tag label='+ 1000 XP' info='This order receives 1000 XP for upon completion' />
+      </div>
     </div>
   );
 }
