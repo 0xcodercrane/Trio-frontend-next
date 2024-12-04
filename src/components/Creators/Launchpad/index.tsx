@@ -1,19 +1,18 @@
 'use client';
-import { useContext, useState } from 'react';
-import * as v from 'valibot';
-import { uploadImageAndGetURL } from '@/lib/utilities/uploadImageAndGetURL';
-import Section from '@/components/Section';
-import { v4 as uuidv4 } from 'uuid';
+import { AuthContext } from '@/app/providers/AuthContext';
 import { StepItem } from '@/components/common/StepItem';
 import { Container } from '@/components/Container';
+import { ChooseInscriptions, DeterminePhases, GetStarted, SubmitInformation, SubmitProject } from '@/components/Creators';
 import { SubmitFailed } from '@/components/Creators/SubmitFailed';
 import { Submitted } from '@/components/Creators/Submitted';
 import { Submitting } from '@/components/Creators/Submitting';
+import Section from '@/components/Section';
+import { SATS_TO_BTC_CONVERSION_FACTOR } from '@/lib/constants';
+import { auth } from '@/lib/firebase';
 import { convertStringAllowListToArray } from '@/lib/utilities/convertStringAllowListToArray';
 import { convertToUnixTimestamp } from '@/lib/utilities/convertToUnixTimestamp';
-import { useForm } from '@tanstack/react-form';
-import { valibotValidator } from '@tanstack/valibot-form-adapter';
-import { ChooseInscriptions, DeterminePhases, GetStarted, SubmitInformation, SubmitProject } from '@/components/Creators';
+import { uploadImageAndGetURL } from '@/lib/utilities/uploadImageAndGetURL';
+import { IWallet } from '@/types';
 import {
   ESteps,
   ESubmit,
@@ -25,12 +24,13 @@ import {
   TInscriptionFormSchema,
   TPhaseFormSchema
 } from '@/types/creators';
+import { useForm } from '@tanstack/react-form';
+import { valibotValidator } from '@tanstack/valibot-form-adapter';
+import { useContext, useState } from 'react';
 import { toast } from 'sonner';
-import { AuthContext } from '@/app/providers/AuthContext';
-import { IWallet } from '@/types';
+import { v4 as uuidv4 } from 'uuid';
+import * as v from 'valibot';
 import { ChooseLaunchType } from '../ChooseLaunchType';
-import { auth } from '@/lib/firebase';
-import { SATS_TO_BTC_CONVERSION_FACTOR } from '@/lib/constants';
 
 const StepConfig = {
   [ESteps.START]: {
@@ -271,8 +271,9 @@ export default function Launchpad() {
 
       const res = await response.json();
 
-      if (!res?.collectionOnboardResponse?.success) {
-        toast.error(res?.collectionOnboardResponse?.error);
+      if (res?.collectionOnboardResponse !== true && !res?.collectionOnboardResponse?.success) {
+        const errorMessage = res?.collectionOnboardResponse?.error || 'An error occurred while onboarding the collection.';
+        toast.error(errorMessage);
         return;
       }
 

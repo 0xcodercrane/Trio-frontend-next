@@ -106,45 +106,51 @@ export const informationFormSchema = v.object({
 
 //inscription form
 export const inscriptionFormSchema = v.object({
-  inscriptions: v.array(
-    v.object({
-      id: v.pipe(v.string(), v.trim()),
-      meta: v.optional(
-        v.object({
-          attributes: v.optional(
-            v.array(
-              v.object({
-                value: v.pipe(v.string(), v.trim()),
-                trait_type: v.pipe(v.string(), v.trim())
-              })
-            )
-          ),
-          name: v.pipe(v.string(), v.trim()),
-          high_res_img_url: v.optional(v.pipe(v.pipe(v.string(), v.trim()), v.url()))
-        })
-      )
-    })
+  inscriptions: v.pipe(
+    v.array(
+      v.object({
+        id: v.pipe(v.string(), v.trim()),
+        meta: v.optional(
+          v.object({
+            attributes: v.optional(
+              v.array(
+                v.object({
+                  value: v.pipe(v.string(), v.trim()),
+                  trait_type: v.pipe(v.string(), v.trim())
+                })
+              )
+            ),
+            name: v.pipe(v.string(), v.trim()),
+            high_res_img_url: v.optional(v.pipe(v.pipe(v.string(), v.trim()), v.url()))
+          })
+        )
+      })
+    ),
+    v.minLength(1, 'Empty inscription array.')
   ),
   inscriptionsString: v.pipe(v.string(), v.nonEmpty('Inscription Data can not be empty.'))
 });
 
 //phase form
 export const phaseFormSchema = v.object({
-  phases: v.array(
-    v.object({
-      name: v.pipe(v.string(), v.trim(), v.nonEmpty('Phase name is required.')),
-      price: v.pipe(v.number(), v.minValue(0.00000546, 'Price must be at least 0.00000546')),
-      allocation: v.pipe(v.number(), v.minValue(1, 'Allocation is required and must be at least 1.')),
-      startDate: v.pipe(v.string(), v.nonEmpty('Start date is required.')),
-      endDate: v.pipe(v.string(), v.nonEmpty('End date is required.')),
-      startTime: v.pipe(v.string(), v.nonEmpty('Start time is required.')),
-      endTime: v.pipe(v.string(), v.nonEmpty('End time is required.')),
-      isPublic: v.boolean(),
-      isSameAllocation: v.boolean(),
-      allowList: v.optional(v.string(), 'Allow list is optional but must be a valid string if provided.'),
-      isFinished: v.boolean(),
-      uuid: v.pipe(v.string(), v.uuid('UUID must be a valid universally unique identifier.'))
-    })
+  phases: v.pipe(
+    v.array(
+      v.object({
+        name: v.pipe(v.string(), v.trim(), v.nonEmpty('Phase name is required.')),
+        price: v.pipe(v.number(), v.minValue(0.00000546, 'Price must be at least 0.00000546')),
+        allocation: v.pipe(v.number(), v.minValue(1, 'Allocation is required and must be at least 1.')),
+        startDate: v.pipe(v.string(), v.nonEmpty('Start date is required.')),
+        endDate: v.pipe(v.string(), v.nonEmpty('End date is required.')),
+        startTime: v.pipe(v.string(), v.nonEmpty('Start time is required.')),
+        endTime: v.pipe(v.string(), v.nonEmpty('End time is required.')),
+        isPublic: v.boolean(),
+        isSameAllocation: v.boolean(),
+        allowList: v.optional(v.string(), 'Allow list is optional but must be a valid string if provided.'),
+        isFinished: v.boolean(),
+        uuid: v.pipe(v.string(), v.uuid('UUID must be a valid universally unique identifier.'))
+      })
+    ),
+    v.minLength(1, 'There should be at least 1 phase.')
   )
 });
 
