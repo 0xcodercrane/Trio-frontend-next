@@ -106,24 +106,27 @@ export const informationFormSchema = v.object({
 
 //inscription form
 export const inscriptionFormSchema = v.object({
-  inscriptions: v.array(
-    v.object({
-      id: v.pipe(v.string(), v.trim()),
-      meta: v.optional(
-        v.object({
-          attributes: v.optional(
-            v.array(
-              v.object({
-                value: v.pipe(v.string(), v.trim()),
-                trait_type: v.pipe(v.string(), v.trim())
-              })
-            )
-          ),
-          name: v.pipe(v.string(), v.trim()),
-          high_res_img_url: v.optional(v.pipe(v.pipe(v.string(), v.trim()), v.url()))
-        })
-      )
-    })
+  inscriptions: v.pipe(
+    v.array(
+      v.object({
+        id: v.pipe(v.string(), v.trim()),
+        meta: v.optional(
+          v.object({
+            attributes: v.optional(
+              v.array(
+                v.object({
+                  value: v.pipe(v.string(), v.trim()),
+                  trait_type: v.pipe(v.string(), v.trim())
+                })
+              )
+            ),
+            name: v.pipe(v.string(), v.trim()),
+            high_res_img_url: v.optional(v.pipe(v.pipe(v.string(), v.trim()), v.url()))
+          })
+        )
+      })
+    ),
+    v.minLength(1, 'Empty inscription array.')
   ),
   inscriptionsString: v.pipe(v.string(), v.nonEmpty('Inscription Data can not be empty.'))
 });
