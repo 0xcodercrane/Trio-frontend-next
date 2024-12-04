@@ -11,6 +11,7 @@ import Section from '@/components/Section';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useInscriptionWithCollectionData } from '@/lib/services';
 import { shortenAddress } from '@/lib/utilities';
+import { EJustify, EMediaType } from '@/types';
 import Link from 'next/link';
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -22,7 +23,7 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <div className='mt-12 flex h-auto w-full flex-col bg-ob-purple-darkest'>
       <Section className='flex items-center justify-center'>
-        <SplashPageLayout media={{ type: 'inscription', id }} childrenWrapperJustify='start'>
+        <SplashPageLayout media={{ type: EMediaType.INSCRIPTION, id }} childrenWrapperJustify={EJustify.CENTER}>
           <Container paddingLeft className='basis-1/2'>
             <div className='flex h-full flex-col justify-start gap-4'>
               <div className='w-full'>

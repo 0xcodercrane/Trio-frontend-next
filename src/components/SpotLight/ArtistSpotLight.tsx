@@ -2,11 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { useArtistQuery } from '@/lib/services';
-import InscriptionSkeleton from '../Skeletons/InscriptionSkeleton';
-import { MediaWrapper } from '../common';
 import Section from '../Section';
 import { SplashPageLayout } from '../Layouts';
 import { useRouter } from 'next/navigation';
+import { EMediaType, EOrientation } from '@/types';
 
 export function ArtistSpotLight({ slug }: { slug: string }) {
   const { data, isPending, error } = useArtistQuery(slug);
@@ -14,8 +13,8 @@ export function ArtistSpotLight({ slug }: { slug: string }) {
   return (
     <Section className='bg-ob-purple-darkest' padding={false} paddingLeft={false}>
       <SplashPageLayout
-        media={{ type: 'inscription', id: data?.collections && data.collections[0].inscriptions[0].inscription_id }}
-        orientation='rtl'
+        media={{ type: EMediaType.INSCRIPTION, id: data?.collections && data.collections[0].inscriptions[0].inscription_id }}
+        orientation={EOrientation.LTR}
       >
         <div className='flex flex-col gap-4'>
           <h2 className='font-bold capitalize'>About {data?.name}</h2>

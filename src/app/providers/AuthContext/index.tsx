@@ -1,7 +1,6 @@
 'use client';
 import { signIn, signOut } from 'next-auth/react';
 import { createContext, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { IAuthContext, IWallet } from '../../../types/auth.types';
 import { onAuthStateChanged, signInWithCustomToken, User } from 'firebase/auth';
 import { auth, firestore } from '@/lib/firebase';
 import { ESUPPORTED_WALLETS, WALLET_COOKIE, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
@@ -18,7 +17,7 @@ import {
   sum,
   where
 } from 'firebase/firestore';
-import { EUserRole, RoleValues, TUser, TUserProfile } from '@/types/user.types';
+import { EUserRole, RoleValues, TUser, TUserProfile, IAuthContext, IWallet } from '@/types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { toast } from 'sonner';
 

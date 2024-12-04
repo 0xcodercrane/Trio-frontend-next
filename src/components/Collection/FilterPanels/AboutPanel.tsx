@@ -1,12 +1,11 @@
 'use client';
-import { MediaWrapper } from '@/components/common';
 import { Container } from '@/components/Container';
-import { HeroLayout, SplashPageLayout } from '@/components/Layouts';
-import InscriptionSkeleton from '@/components/Skeletons/InscriptionSkeleton';
+import { SplashPageLayout } from '@/components/Layouts';
 import { Button } from '@/components/ui/button';
 import { useFilter } from '@/lib/hooks/useFilter';
 import { useCollectionBySlugQuery } from '@/lib/services';
 import { useInscriptionsByCollectionSlug } from '@/lib/services/fetchInscriptionsByCollectionSlug';
+import { EMediaType } from '@/types';
 
 export const AboutPanel = ({ slug }: { slug: string }) => {
   const { offset, limit } = useFilter();
@@ -22,7 +21,7 @@ export const AboutPanel = ({ slug }: { slug: string }) => {
   const { data: collectionData } = useCollectionBySlugQuery(slug);
 
   return (
-    <SplashPageLayout media={{ type: 'inscription', id: inscriptions?.[0]?.inscription_id }}>
+    <SplashPageLayout media={{ type: EMediaType.INSCRIPTION, id: inscriptions?.[0]?.inscription_id }}>
       <div className='flex h-full flex-col items-center justify-center'>
         <Container padding>
           <div className='flex flex-col gap-8'>
