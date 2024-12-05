@@ -31,6 +31,7 @@ import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 import * as v from 'valibot';
 import { ChooseLaunchType } from '../ChooseLaunchType';
+import { auth } from '@/lib/firebase';
 
 const StepConfig = {
   [ESteps.START]: {
