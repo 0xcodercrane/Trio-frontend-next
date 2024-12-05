@@ -8,7 +8,6 @@ import { Submitted } from '@/components/Creators/Submitted';
 import { Submitting } from '@/components/Creators/Submitting';
 import Section from '@/components/Section';
 import { SATS_TO_BTC_CONVERSION_FACTOR } from '@/lib/constants';
-import { auth } from '@/lib/firebase';
 import { convertStringAllowListToArray } from '@/lib/utilities/convertStringAllowListToArray';
 import { convertToUnixTimestamp } from '@/lib/utilities/convertToUnixTimestamp';
 import { uploadImageAndGetURL } from '@/lib/utilities/uploadImageAndGetURL';
