@@ -17,14 +17,14 @@ import TrioMarkets from '../TrioMarkets';
 
 export function XPMining() {
   const { user, wallet } = useContext(AuthContext);
+  const { pointsConfig } = useContext(GlobalContext);
+
   const { data: tip } = useBlockHeight();
   const {
     data: balanceData,
     isPending: balanceDataIsPending,
     error: balanceDataError
   } = useTokenBalanceQuery(wallet?.ordinalsAddress, 'TRIO');
-
-  const { pointsConfig } = useContext(GlobalContext);
 
   const currentBlockInCycle = useMemo(() => tip % XP_MINING_CYCLE_LENGTH, [tip]);
   const currentBlockProgress = useMemo(() => Math.floor(currentBlockInCycle / 12), [currentBlockInCycle]);

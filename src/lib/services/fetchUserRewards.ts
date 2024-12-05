@@ -1,4 +1,4 @@
-import { collection, getDocs, limit, orderBy, query, startAt, where } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { auth, firestore } from '../firebase';
 import { useQuery } from '@tanstack/react-query';
 import { TReward } from '@/types/rewards';
