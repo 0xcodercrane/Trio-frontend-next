@@ -1,20 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/Container';
-import { NETWORK } from '@/lib/constants';
+import { NETWORK, OB_SOCIALS_CONFIG } from '@/lib/constants';
+import Socials from '../Socials';
 
 export default function Footer() {
   return (
     <footer className='w-full bg-ob-purple-dark pb-8 pt-12 text-white'>
       <Container padding>
-        <div className='mb-32 grid grid-cols-1 gap-8 md:grid-cols-3'>
+        <div className='mb-32 grid grid-cols-2 gap-8 md:grid-cols-3'>
           <div className='flex flex-col items-start gap-4'>
             <img src='/img/trio-logo.svg' alt='OrdinalsBot Logo' width={95} height={30} />
             <span className='w-full text-left italic text-ob-grey-lightest'>
               Connected to <span className='font-bold text-ob-green-light'>{NETWORK}</span>
             </span>
+            <div className='flex gap-4 md:hidden'>
+              <Socials config={OB_SOCIALS_CONFIG} />
+            </div>
           </div>
-          <div className='col-span-2 grid grid-cols-2 gap-8'>
+          <div className='grid grid-cols-2 gap-8 md:col-span-2'>
             <div>
               <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400'>GENERAL</h3>
               <ul className='space-y-2'>
@@ -62,12 +66,8 @@ export default function Footer() {
             <span className='mr-2 text-sm font-bold'>Powered by</span>
             <Image src='/img/ob-logo.svg' alt='OrdinalsBot Logo' width={100} height={24} loading='lazy' />
           </div>
-          <div className='flex space-x-4'>
-            {['instagram', 'x', 'telegram', 'discord'].map((social) => (
-              <Link key={social} href={`#${social}`} className='transition-opacity hover:opacity-75'>
-                <Image src={`/img/socials/${social}.svg`} alt={`${social} icon`} width={24} height={24} loading='lazy' />
-              </Link>
-            ))}
+          <div className='hidden space-x-4 md:flex'>
+            <Socials config={OB_SOCIALS_CONFIG} />
           </div>
         </div>
       </Container>

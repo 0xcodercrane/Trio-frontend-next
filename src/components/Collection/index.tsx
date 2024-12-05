@@ -52,10 +52,6 @@ export default function Collection({ slug }: CollectionProps) {
                       label: 'x',
                       url: twitter_link
                     }
-                    // {
-                    //   label: 'instagram',
-                    //   url: 'https://instagram.com/ordinalsbot'
-                    // }
                   ].map((row, index) => {
                     if (row.url === null) return null;
                     return (

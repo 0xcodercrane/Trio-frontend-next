@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { getSocialIcon } from '../utilities/socials';
+import { TSocialsConfig } from '@/types/socials';
 export * from './cache';
 export * from './imgs';
 export * from './time';
@@ -155,3 +157,29 @@ const MEMPOOL_SPACE_URLS = {
 };
 
 export const MEMPOOL_SPACE_URL = MEMPOOL_SPACE_URLS[NETWORK];
+
+export enum ESOCIALS {
+  Instagram = 'instagram',
+  X = 'x',
+  Telegram = 'telegram',
+  Discord = 'discord',
+  YouTube = 'youtube'
+}
+export const OB_SOCIALS_CONFIG: TSocialsConfig = {
+  [ESOCIALS.Discord]: {
+    img: getSocialIcon(ESOCIALS.Discord),
+    link: 'https://discord.com/invite/9nBhVgCjct'
+  },
+  [ESOCIALS.YouTube]: {
+    img: getSocialIcon(ESOCIALS.YouTube),
+    link: 'https://www.youtube.com/@ordinalsbot'
+  },
+  [ESOCIALS.Telegram]: {
+    img: getSocialIcon(ESOCIALS.Telegram),
+    link: 'https://t.me/ordinalsbot'
+  },
+  [ESOCIALS.X]: {
+    img: getSocialIcon(ESOCIALS.X),
+    link: 'https://x.com/trio_xyz'
+  }
+};
