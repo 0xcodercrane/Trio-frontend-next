@@ -509,9 +509,6 @@ export type Database = {
           platform_taker_fee: number;
           price: number;
           psbt_id: number;
-          relisted_at: string | null;
-          relisted_maker_output_value: number | null;
-          relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
           timestamp: string | null;
@@ -537,9 +534,6 @@ export type Database = {
           platform_taker_fee?: number;
           price: number;
           psbt_id: number;
-          relisted_at?: string | null;
-          relisted_maker_output_value?: number | null;
-          relisted_price?: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
           timestamp?: string | null;
@@ -565,9 +559,6 @@ export type Database = {
           platform_taker_fee?: number;
           price?: number;
           psbt_id?: number;
-          relisted_at?: string | null;
-          relisted_maker_output_value?: number | null;
-          relisted_price?: number | null;
           side?: string;
           status?: Database['public']['Enums']['order_book_status'];
           timestamp?: string | null;
@@ -1020,6 +1011,17 @@ export type Database = {
       };
     };
     Functions: {
+      clone_utxo_and_data: {
+        Args: {
+          new_utxo: string;
+          old_utxo: string;
+        };
+        Returns: {
+          id: number;
+          utxo: string;
+          is_spent: boolean;
+        }[];
+      };
       get_collections: {
         Args: {
           search_keyword: string;
@@ -1062,6 +1064,17 @@ export type Database = {
           collection_id: number;
         }[];
       };
+      get_latest_fee_rate: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          economy_fee: number;
+          fastest_fee: number;
+          half_hour_fee: number;
+          hour_fee: number;
+          minimum_fee: number;
+          ts: string;
+        }[];
+      };
       get_orderbook_by_address: {
         Args: {
           _address: string;
@@ -1086,9 +1099,6 @@ export type Database = {
           platform_taker_fee: number;
           price: number;
           psbt_id: number;
-          relisted_at: string | null;
-          relisted_maker_output_value: number | null;
-          relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
           timestamp: string | null;
@@ -1119,9 +1129,6 @@ export type Database = {
           platform_taker_fee: number;
           price: number;
           psbt_id: number;
-          relisted_at: string | null;
-          relisted_maker_output_value: number | null;
-          relisted_price: number | null;
           side: string;
           status: Database['public']['Enums']['order_book_status'];
           timestamp: string | null;

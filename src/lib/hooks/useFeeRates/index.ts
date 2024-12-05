@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { FeeRateState } from '@/types';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchFeeRates } from '@/lib/services';
-import { DEFAULT_FEE_RATE, ONE_SECOND } from '@/lib/constants';
+import { DEFAULT_FEE_RATE, FEE_RATES_CACHE_AGE } from '@/lib/constants';
 
 const useFeeRate = create<FeeRateState>()((set, get) => ({
   feeRate: DEFAULT_FEE_RATE,
@@ -15,7 +15,7 @@ export const useFeeRates = () => {
     queryFn: fetchFeeRates,
     select: ({ data }) => (data ? data[0] : null),
     placeholderData: keepPreviousData,
-    refetchInterval: 20 * ONE_SECOND.as('milliseconds') // 20 seconds
+    refetchInterval: FEE_RATES_CACHE_AGE.as('milliseconds')
   });
 
   const feeRateState = useFeeRate();
