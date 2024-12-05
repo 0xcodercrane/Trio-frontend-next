@@ -74,7 +74,7 @@ export function Pools() {
             ].map(({ label, value, loading }, index) => (
               <div key={index} className='flex flex-col border-l-2 border-l-ob-yellow pl-2'>
                 <span className='text-sm uppercase text-ob-yellow'>{label}</span>
-                <span>{loading ? <Loading size={24} /> : value}</span>
+                <span className='text-lg'>{loading ? <Loading size={24} /> : value}</span>
               </div>
             ))}
           </div>

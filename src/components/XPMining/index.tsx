@@ -1,6 +1,6 @@
 'use client';
 
-import { CandlestickChart, Wallet, WandSparkles, X } from 'lucide-react';
+import { Database, Wallet, WandSparkles, X } from 'lucide-react';
 import { Container } from '../Container';
 import { AVERAGE_BLOCK_TIME, ONE_SECOND, XP_MINING_CYCLE_LENGTH } from '@/lib/constants';
 import { useContext, useEffect, useMemo, useState } from 'react';
@@ -112,24 +112,24 @@ export function XPMining() {
                 {[
                   {
                     label: 'Buy Trio on an Exchange',
-                    icon: <CandlestickChart size={24} stroke='#fff' />
+                    icon: <Database size={24} stroke='#D6E814' />
                   },
                   {
                     label: 'Move TRIO to a non-custodial wallet',
-                    icon: <Wallet size={24} stroke='#fff' />
+                    icon: <Wallet size={24} stroke='#D6E814' />
                   },
                   {
                     label: 'Earn points every day for holding TRIO',
-                    icon: <WandSparkles size={24} stroke='#fff' />
+                    icon: <WandSparkles size={24} stroke='#D6E814' />
                   }
                 ].map(({ label, icon }, index) => (
                   <div
                     className='flex w-1/3 flex-col items-center justify-between gap-4 rounded-lg bg-ob-purple-dark p-4'
                     key={index}
                   >
-                    <div className='h-[24px] min-h-[24px] w-[24px] opacity-50'>{icon}</div>
-                    <div className='flex h-full flex-col justify-between gap-2'>
-                      <span className='text-center text-sm'>Step {index + 1}</span>
+                    <div className='h-[24px] min-h-[24px] w-[24px]'>{icon}</div>
+                    <div className='flex h-full flex-col items-center justify-between gap-2'>
+                      <span className='text-center text-xs'>Step {index + 1}</span>
                       <span className='text-center text-sm'>{label}</span>
                     </div>
                   </div>
