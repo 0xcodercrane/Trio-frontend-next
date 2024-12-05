@@ -36,6 +36,17 @@ export default function BuyNow({ orderId, inscriptionId, price }: BuyNowProps) {
 
   const hasEnoughBalance = balance && price && balance > price;
 
+  // TODO: Remove when debugging is done.
+  console.table([
+    ['Field Name', 'Required value', 'Value'],
+    ['orderId', 'NOT FALSY', orderId],
+    ['price', 'NOT FALSY', price],
+    ['balance', 'NOT FALSY', balance],
+    ['isPendingPurchase', 'FALSE', isPendingPurchase],
+    ['isPaddingOutputsCheckPending', 'FALSE', isPaddingOutputsCheckPending],
+    ['hasEnoughBalance', 'TRUE', hasEnoughBalance],
+    ['hasPaddingOutputs', 'TRUE', hasPaddingOutputs]
+  ]);
   return (
     <div className='flex flex-col items-center gap-4'>
       {!isPaddingOutputsCheckPending && !hasPaddingOutputs && (
