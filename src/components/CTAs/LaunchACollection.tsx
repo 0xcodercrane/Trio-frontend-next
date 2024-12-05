@@ -1,15 +1,11 @@
 'use client';
-
-import { Button } from '@/components/ui/button';
 import { useRandomInscriptionsQuery } from '@/lib/services';
 import { MediaWrapper } from '../common';
 import { Skeleton } from '../ui/skeleton';
 import { Container } from '../Container';
-import { useRouter } from 'next/navigation';
 import { ButtonLink } from '../common/ButtonLink';
 
 export default function LaunchACollection() {
-  const router = useRouter();
   const { data, isPending, error } = useRandomInscriptionsQuery({ limit: 8, offset: 0 });
 
   return (
