@@ -1,15 +1,27 @@
 'use client';
 
 import { useMemo } from 'react';
-import { EPoolState, TLotteryPool, TProportionatePool } from '@/types';
+import { EPoolState, EPoolType, TLotteryPool, TProportionatePool } from '@/types';
 import { mapPoolToState } from '../helpers';
 import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
 import { formatBlock } from '@/lib/utilities';
+import { ProportionatePool } from '../ProportionatePool';
+import { LotteryPool } from '../LotteryPool';
 
-export default function Pool({ pool, children }: { pool: TLotteryPool | TProportionatePool; children: React.ReactNode }) {
+export default function Pool({ pool }: { pool: TLotteryPool | TProportionatePool }) {
   const { data: tip } = useBlockHeight();
   const { startBlock, endBlock } = pool;
-  const poolState: EPoolState = useMemo(() => mapPoolToState(pool, tip), [pool, tip]);
+  const poolState: EPoolState = useMemo(() => mapPoolToState(pool, tip || 0), [pool, tip]);
+
+  const renderPool = () => {
+    switch (pool.type) {
+      case EPoolType.WINNER_TAKES_ALL:
+      case EPoolType.N_WINNERS:
+        return <LotteryPool pool={pool as TLotteryPool} />;
+      default:
+        return <ProportionatePool pool={pool as TProportionatePool} />;
+    }
+  };
 
   return (
     <div className='relative rounded-lg bg-ob-purple-light'>
@@ -20,7 +32,7 @@ export default function Pool({ pool, children }: { pool: TLotteryPool | TProport
       )}
       {poolState === EPoolState.UPCOMING && (
         <div className='absolute left-0 top-0 z-20 flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg bg-ob-black/[0.80]'>
-          <span className='text-lg'>Pool Opening in {formatBlock(startBlock - tip)} blocks</span>
+          <span className='text-lg'>Pool Opening in {formatBlock(startBlock - (tip || 0))} blocks</span>
           <span className='text-sm italic'>(block {formatBlock(startBlock)})</span>
         </div>
       )}
@@ -33,7 +45,7 @@ export default function Pool({ pool, children }: { pool: TLotteryPool | TProport
         </div>
       )}
 
-      {children}
+      {renderPool()}
     </div>
   );
 }

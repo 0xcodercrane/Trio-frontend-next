@@ -1,11 +1,9 @@
 'use client';
 
-import { EPoolState, EPoolType, TLotteryPool, TProportionatePool } from '@/types';
+import { EPoolState, TLotteryPool, TProportionatePool } from '@/types';
 import { useContext, useState } from 'react';
 import { Loading } from '../common';
 import Pool from './Pool';
-import { LotteryPool } from './LotteryPool';
-import { ProportionatePool } from './ProportionatePool';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { useTokenBalanceQuery } from '@/lib/services';
 import Section from '../Section';
@@ -33,16 +31,6 @@ export function Pools() {
   const { pools, loading } = usePoolsQuery();
   const { data: tip } = useBlockHeight();
   const [activeTab, setActiveTab] = useState(ETabs.All);
-
-  const renderPool = (pool: TLotteryPool | TProportionatePool) => {
-    switch (pool.type) {
-      case EPoolType.WINNER_TAKES_ALL:
-      case EPoolType.N_WINNERS:
-        return <LotteryPool pool={pool as TLotteryPool} />;
-      default:
-        return <ProportionatePool pool={pool as TProportionatePool} />;
-    }
-  };
 
   return (
     <Section>
@@ -124,11 +112,7 @@ export function Pools() {
 
               if (!showPool) return null;
 
-              return (
-                <Pool pool={pool} key={pool.id}>
-                  {renderPool(pool)}
-                </Pool>
-              );
+              return <Pool pool={pool} key={pool.id} />;
             })}
           </div>
         </div>

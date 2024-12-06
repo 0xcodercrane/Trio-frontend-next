@@ -27,7 +27,7 @@ export const ProporationateDisplay = ({
 
   const { typeText, additionalInfo } = mapPoolTypeToLabel(type);
 
-  const { totalPointsAllocated, minPointsAllocation } = pool as TProportionatePool;
+  const { minPointsAllocation } = pool as TProportionatePool;
 
   const poolState = useMemo(() => mapPoolToState(pool, tip), [pool, tip]);
 

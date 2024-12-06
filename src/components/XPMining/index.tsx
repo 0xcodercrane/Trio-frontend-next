@@ -26,7 +26,7 @@ export function XPMining() {
     error: balanceDataError
   } = useTokenBalanceQuery(wallet?.ordinalsAddress, 'TRIO');
 
-  const currentBlockInCycle = useMemo(() => tip % XP_MINING_CYCLE_LENGTH, [tip]);
+  const currentBlockInCycle = useMemo(() => (tip || 0) % XP_MINING_CYCLE_LENGTH, [tip]);
   const currentBlockProgress = useMemo(() => Math.floor(currentBlockInCycle / 12), [currentBlockInCycle]);
   const currentBlockPercent = useMemo(() => (currentBlockInCycle / XP_MINING_CYCLE_LENGTH) * 100 - 4, [currentBlockInCycle]);
   const blocksRemaining = useMemo(() => XP_MINING_CYCLE_LENGTH - currentBlockInCycle, [currentBlockInCycle]);

@@ -12,7 +12,7 @@ export function NetworkAdmin() {
       <span className='text-2xl text-ob-yellow'>Network</span>
       <div className='flex flex-row justify-start gap-4'>
         <DataItem label='network' value={NETWORK} />
-        <DataItem label='block height' value={tip.toString()} />
+        <DataItem label='block height' value={tip ? tip.toString() : '0'} />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { EPoolState, TPool } from '@/types';
 
-export const mapPoolToState = (pool: TPool, blockHeight: number): EPoolState => {
+export const mapPoolToState = (pool: TPool, blockHeight?: number): EPoolState => {
+  if (!blockHeight) return EPoolState.PENDING;
   if (pool.startBlock === -1) return EPoolState.PENDING;
   if (pool.startBlock > blockHeight) return EPoolState.UPCOMING;
   if (pool.startBlock < blockHeight && (pool.endBlock > blockHeight || pool.endBlock === -1)) return EPoolState.LIVE;

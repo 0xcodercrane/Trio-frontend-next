@@ -49,7 +49,7 @@ export function BlockCountdown({
   }, [blocksRemaining]);
 
   const content = useMemo(() => {
-    if (!toTheSecondTime || !blocksRemaining) return '• • •';
+    if (!toTheSecondTime || !blocksRemaining || !tip) return '• • •';
     const toTheSecondDisplay = toTheSecondTime.toFormat(`d'd' h'h' m'm' s's`);
 
     if (startBlock === -1) {
