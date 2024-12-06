@@ -184,6 +184,12 @@ export const OB_SOCIALS_CONFIG: TSocialsConfig = {
   }
 };
 
+export const SATS_IN_BITCOIN = 100000000;
+
+export const PERCENTAGE_CONVERSION_FACTOR = 100;
+export const BPS_TO_DECIMAL_CONVERSION_FACTOR = 10000;
+export const BPS_TO_PERCENTAGE_CONVERSION_FACTOR = 100;
+// Defined in basis points.
 export const MARKETPLACE_MAKER_FEE_BPS = 0;
 export const MARKETPLACE_TAKER_FEE_BPS = 150;
 export const MARKETPLACE_TRIO_DISCOUNT_THRESHOLD = 500;

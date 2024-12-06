@@ -1,7 +1,7 @@
 import { AuthContext } from '@/app/providers/AuthContext';
 import { MARKETPLACE_MAKER_FEE_BPS, MARKETPLACE_TAKER_FEE_BPS, MARKETPLACE_TRIO_DISCOUNT_THRESHOLD } from '@/lib/constants';
-import { usePrices, useTokenBalanceQuery, useTrioInfoQuery } from '@/lib/services';
-import { satsToBitcoin } from '@/lib/utilities';
+import { usePrices, useTokenBalanceQuery } from '@/lib/services';
+import { bpsToDecimal, bpsToPercentage, satsToBitcoin } from '@/lib/utilities';
 import { useContext } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
@@ -13,13 +13,13 @@ interface FeesPanelProps {
 export default function FeesPanel({ listPriceSats, variant = 'buy' }: FeesPanelProps) {
   const { satsToUsd } = usePrices();
 
-  const { user, wallet } = useContext(AuthContext);
+  const { wallet } = useContext(AuthContext);
 
   const { data: tokenBalance } = useTokenBalanceQuery(wallet?.ordinalsAddress || '', 'TRIO');
-  const hasTrioDiscount = tokenBalance && parseInt(tokenBalance.overall_balance) >= MARKETPLACE_TRIO_DISCOUNT_THRESHOLD;
+  const hasTrioDiscount = tokenBalance && tokenBalance.overallBalance >= MARKETPLACE_TRIO_DISCOUNT_THRESHOLD;
 
-  const feeBps = variant === 'buy' ? MARKETPLACE_TAKER_FEE_BPS : MARKETPLACE_MAKER_FEE_BPS;
-  const feeSats = listPriceSats ? (feeBps / 10000) * listPriceSats : 0;
+  const feeMultiplier = bpsToDecimal(variant === 'buy' ? MARKETPLACE_TAKER_FEE_BPS : MARKETPLACE_MAKER_FEE_BPS);
+  const feeSats = (listPriceSats || 0) * feeMultiplier;
   const pricePlusFee = feeSats + (listPriceSats || 0);
   const priceMinusFee = (listPriceSats || 0) - feeSats;
   const totalPrice = hasTrioDiscount ? listPriceSats : variant === 'buy' ? pricePlusFee : priceMinusFee;
@@ -34,8 +34,8 @@ export default function FeesPanel({ listPriceSats, variant = 'buy' }: FeesPanelP
       <div className={`flex w-full flex-row text-white ${hasTrioDiscount && 'line-through'}`}>
         <div className='basis-1/3'>
           {variant === 'buy'
-            ? `Taker Fee (${MARKETPLACE_TAKER_FEE_BPS / 100}%)`
-            : `Marketplace Fee (${MARKETPLACE_MAKER_FEE_BPS / 100}%)`}
+            ? `Taker Fee (${bpsToPercentage(MARKETPLACE_TAKER_FEE_BPS)}%)`
+            : `Marketplace Fee (${bpsToPercentage(MARKETPLACE_MAKER_FEE_BPS)}%)`}
           :
         </div>
         <div className='basis-1/3'>{satsToBitcoin(feeSats)} BTC</div>

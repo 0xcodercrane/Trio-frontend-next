@@ -32,7 +32,7 @@ export const useTokenBalanceQuery = (address?: string, ticker: string = 'TRIO') 
     }),
     enabled: !!address,
     select: ({ result }) => ({
-      ...result[0],
+      overallBalance: Number(result[0].available_balance) / BRC20_CONVERSION_FACTOR || 0,
       balance: Number(result[0].available_balance) / BRC20_CONVERSION_FACTOR || 0
     })
   });

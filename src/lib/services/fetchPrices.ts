@@ -2,6 +2,7 @@ import { FxRateResponse, Prices } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { formatUsdValue } from '../utilities';
+import { SATS_IN_BITCOIN } from '../constants';
 
 const PRICES_FRESHNESS_PERIOD = 600 * 1000; // 10 minutes
 
@@ -50,7 +51,7 @@ export const usePrices = () => {
    */
   const satsToUsd = useCallback(
     (satsAmount: number | undefined) => {
-      const { value } = bitcoinToUsd(satsAmount && satsAmount / 100000000);
+      const { value } = bitcoinToUsd(satsAmount && satsAmount / SATS_IN_BITCOIN);
       const formatted = formatUsdValue(value || 0);
       return { value, formatted };
     },
