@@ -8,7 +8,7 @@ export default function PendingPane({ inscriptionId }: OrderFlowPaneBaseProps) {
 
   return (
     <div className='flex h-full w-full flex-col gap-8 rounded-lg bg-ob-purple-dark p-4'>
-      <FeesPanel listPriceSats={latestOrder?.price} feeSats={latestOrder?.platform_taker_fee} />
+      <FeesPanel listPriceSats={latestOrder?.price} />
       {/* <LeadingFee orderId={''} /> */}
       <MempoolTx />
     </div>

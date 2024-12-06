@@ -40,7 +40,7 @@ export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlow
               {/* NOT OWNER: Render buy form or inform the item is not listed. */}
               {hasActiveListing ? (
                 <>
-                  <FeesPanel listPriceSats={latestOrder.price} feeSats={latestOrder.platform_taker_fee} />
+                  <FeesPanel listPriceSats={latestOrder.price} />
                   <FeeSelector txVirtualSize={txVirtualSize} />
                   <TermsAndConditions actionName='Buy Now' />
                   <BuyNow price={latestOrder?.price} orderId={latestOrder?.id} inscriptionId={inscriptionId} />

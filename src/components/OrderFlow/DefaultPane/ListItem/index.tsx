@@ -33,7 +33,7 @@ export default function ListItem({ inscriptionId, collectionSlug }: ListItemProp
   return (
     <>
       <div className='flex flex-col gap-6 p-4'>
-        <FeesPanel listPriceSats={priceInSats} feeSats={marketplaceFeeSats} variant='listing' />
+        <FeesPanel listPriceSats={priceInSats} variant='listing' />
         <form className='flex flex-col gap-2 rounded-lg bg-ob-purple p-4'>
           <div className='flex w-full flex-row items-center justify-between rounded-sm bg-white pr-2 ring-1 ring-ob-white-20'>
             <Input

@@ -183,3 +183,7 @@ export const OB_SOCIALS_CONFIG: TSocialsConfig = {
     link: 'https://x.com/trio_xyz'
   }
 };
+
+export const MARKETPLACE_MAKER_FEE_BPS = 0;
+export const MARKETPLACE_TAKER_FEE_BPS = 150;
+export const MARKETPLACE_TRIO_DISCOUNT_THRESHOLD = 500;

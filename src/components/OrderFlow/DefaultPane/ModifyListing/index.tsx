@@ -51,7 +51,7 @@ const ModifyListing = ({
   return (
     <>
       <div className='flex flex-col gap-6 p-4'>
-        <FeesPanel listPriceSats={currentPriceInSats} feeSats={currentMarketplaceFeeSats} variant='listing' />
+        <FeesPanel listPriceSats={currentPriceInSats} variant='listing' />
         {(() => {
           switch (modificationState) {
             case EModifyListingState.DEFAULT:
