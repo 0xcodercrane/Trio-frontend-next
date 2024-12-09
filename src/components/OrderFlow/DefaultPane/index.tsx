@@ -8,16 +8,22 @@ import { useContext } from 'react';
 import { AuthContext } from '@/app/providers/AuthContext';
 import ListItem from '@/components/OrderFlow/DefaultPane/ListItem';
 import { useInscriptionOrder } from '@/lib/hooks';
-import { ESTIMATED_TX_FEE } from '@/lib/constants';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
 import { ModifyListing } from './ModifyListing';
+import { calculateTxVBytes } from '@/lib/utilities';
+import { TX_PARAMS_BUY_LISTING } from '@/lib/constants';
+
+const txVirtualSize = calculateTxVBytes(
+  TX_PARAMS_BUY_LISTING.inputsCount,
+  TX_PARAMS_BUY_LISTING.outputsCount,
+  TX_PARAMS_BUY_LISTING.inputScript,
+  TX_PARAMS_BUY_LISTING.outputScript
+);
 
 export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlowPaneBaseProps) {
   const { latestOrder, isPending } = useInscriptionOrder(inscriptionId);
   const { data } = useInscriptionDataQuery(inscriptionId);
   const { wallet } = useContext(AuthContext);
-
-  const txVirtualSize = ESTIMATED_TX_FEE.SINGLE_INSCRIPTION_BUY;
 
   const hasActiveListing = latestOrder?.status === 'active';
 
@@ -41,7 +47,7 @@ export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlow
               {hasActiveListing ? (
                 <>
                   <FeesPanel listPriceSats={latestOrder.price} />
-                  <FeeSelector txVirtualSize={txVirtualSize} />
+                  <FeeSelector txVirtualSize={txVirtualSize.txVBytes} />
                   <TermsAndConditions actionName='Buy Now' />
                   <BuyNow price={latestOrder?.price} orderId={latestOrder?.id} inscriptionId={inscriptionId} />
                 </>
