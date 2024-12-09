@@ -8,6 +8,8 @@ import { FileUpload } from '../../forms/common/FileUpload';
 import { ESteps, informationFormSchema, PLACE_HOLDER } from '@/types/creators';
 import * as v from 'valibot';
 import { ENETWORK, NETWORK } from '@/lib/constants';
+import { getEntireCollectionBySlug } from '@/lib/supabase';
+import { Loading } from '@/components/common';
 
 export const SubmitInformation = ({
   form,
@@ -24,6 +26,31 @@ export const SubmitInformation = ({
   setBannerPreview: (preview: string | null | undefined) => void;
   setThumbnailPreview: (preview: string | null | undefined) => void;
 }) => {
+  const validateCollectionNameAndUniqueSlug = async (name: string): Promise<string | undefined> => {
+    try {
+      // Validate collection name against the schema
+      v.parse(informationFormSchema.entries.name, name);
+    } catch (error) {
+      return error instanceof Error ? error.message : 'Invalid collection name';
+    }
+
+    // Generate slug from collection name
+    const slug = name.trim().toLowerCase().replace(/\s+/g, '-');
+
+    try {
+      const res: { data: Array<any> | null } = await getEntireCollectionBySlug(slug);
+
+      // Check if slug is already in use
+      if (res?.data?.length) {
+        return 'Collection name is already taken.';
+      }
+
+      return undefined; // Name is valid and slug is unique
+    } catch (error) {
+      return error instanceof Error ? error.message : 'Error validating collection slug';
+    }
+  };
+
   return (
     <form
       onSubmit={(e) => {
@@ -38,7 +65,17 @@ export const SubmitInformation = ({
           <form.Field
             name='name'
             validators={{
-              onChange: informationFormSchema.entries.name
+              onChangeAsyncDebounceMs: 1000,
+              onChangeAsync: async ({ value }: { value: string }) => {
+                if (value) {
+                  return await validateCollectionNameAndUniqueSlug(value);
+                }
+              },
+              onsubmit: async ({ value }: { value: string }) => {
+                if (value) {
+                  return await validateCollectionNameAndUniqueSlug(value);
+                }
+              }
             }}
             children={(field: any) => {
               const { state, name, handleBlur, handleChange } = field;
@@ -440,9 +477,15 @@ export const SubmitInformation = ({
         </Button>
         <form.Subscribe
           selector={(state: any) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit]: any) => (
-            <Button type='submit' disabled={!canSubmit} variant='default' className='min-w-52 rounded-md' size='lg'>
-              Next
+          children={([canSubmit, isSubmitting]: any) => (
+            <Button
+              type='submit'
+              disabled={!canSubmit || isSubmitting}
+              variant='default'
+              className='min-w-52 rounded-md'
+              size='lg'
+            >
+              {isSubmitting ? <Loading size={32} /> : 'Next'}
             </Button>
           )}
         />

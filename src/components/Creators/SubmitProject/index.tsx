@@ -5,6 +5,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { convertUnixToLocalTimeString } from '@/lib/utilities/convertUnixTImeToLocalTime';
+import { satsToBitcoin } from '@/lib/utilities';
 
 const FETCH_INTERVAL = 8000;
 let intervalId: number | NodeJS.Timeout;
@@ -52,7 +53,7 @@ const PhaseRow = ({ phase, handleSignPSBTByPhase, signing }: any) => (
       </div>
       <div className='flex h-14 flex-col items-stretch justify-center'>
         <div className='text-sm'>Price</div>
-        <div className='mt-2 text-sm text-ob-grey-lighter'>{phase?.price}</div>
+        <div className='mt-2 text-sm text-ob-grey-lighter'>{satsToBitcoin(phase?.price)} BTC</div>
       </div>
       <div className='flex h-14 flex-col items-stretch justify-center'>
         <div className='text-sm'>Start Time</div>
@@ -364,7 +365,7 @@ export const SubmitProject = ({
                 >
                   {phase.name}
                   <span className='text-sm font-normal text-ob-grey-lighter'>
-                    {phase.price} BTC ({phase.price * 10e8} Sats)
+                    {satsToBitcoin(phase.price)} BTC ({phase.price} Sats)
                   </span>
                 </div>
               );

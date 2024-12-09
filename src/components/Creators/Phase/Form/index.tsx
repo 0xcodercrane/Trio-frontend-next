@@ -491,12 +491,13 @@ const EditForm = ({
               name={`phases[${phaseIndex}].allowList`}
               validators={{
                 onChangeAsyncDebounceMs: 1000,
-                onChangeAsync: async ({ value }: { value: string }) => {
+                onChangeListenTo: [`phases[${phaseIndex}].isSameAllocation`],
+                onChangeAsync: async ({ value, fieldApi }: { value: string; fieldApi: any }) => {
                   if (isUpdatingTanstackArray || !isAllowList) {
                     return undefined;
                   }
 
-                  if (!value || !value.trim()) {
+                  if (!value?.trim()) {
                     return 'Allowlist cannot be empty';
                   }
 
@@ -506,6 +507,8 @@ const EditForm = ({
                     .filter((line) => line.trim());
 
                   const invalidEntries: string[] = [];
+
+                  const isSameAllocation = fieldApi.form.getFieldValue(`phases[${phaseIndex}].isSameAllocation`);
 
                   for (const line of lines) {
                     // Split address and allocation
@@ -518,9 +521,22 @@ const EditForm = ({
                       continue;
                     }
 
+                    // Convert allocation to a number if present
+                    const allocationNumber = Number(allocation);
+
+                    /// Handle missing allocation when required
+                    if (!isSameAllocation && !allocation) {
+                      invalidEntries.push(`Missing allocation for address "${address}"`);
+                      continue;
+                    }
+
                     // Validate allocation if present
-                    if (allocation && isNaN(Number(allocation))) {
-                      invalidEntries.push(`Invalid allocation for address "${address}": "${allocation}" must be a number`);
+                    if (
+                      allocation &&
+                      (!Number.isInteger(allocationNumber) || allocationNumber < 1 || isNaN(allocationNumber))
+                    ) {
+                      invalidEntries.push(`Invalid allocation for address "${address}": "${allocation}"`);
+                      continue;
                     }
                   }
 

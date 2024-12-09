@@ -1,4 +1,5 @@
 import { TimeLeft } from '@/components/common';
+import { satsToBitcoin } from '@/lib/utilities';
 import { EPhaseState, TAllocation, TPhase, TPhaseStatusProps } from '@/types/launchpad';
 import Image from 'next/image';
 import numeral from 'numeral';
@@ -62,7 +63,8 @@ const PhaseStatus: React.FC<TPhaseStatusProps> = ({
     <div className='flex flex-col gap-3'>
       {launchInfo.phases.map((phase: TPhase, index: number) => {
         const { price } = phase;
-        const btcPrice = price / 10e8;
+
+        const btcPrice = satsToBitcoin(price);
         const state = mapPhaseToState(phase);
         const color = mapStateToColor(state);
 

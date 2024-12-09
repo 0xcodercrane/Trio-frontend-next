@@ -7,7 +7,6 @@ import { SubmitFailed } from '@/components/Creators/SubmitFailed';
 import { Submitted } from '@/components/Creators/Submitted';
 import { Submitting } from '@/components/Creators/Submitting';
 import Section from '@/components/Section';
-import { SATS_TO_BTC_CONVERSION_FACTOR } from '@/lib/constants';
 import { convertStringAllowListToArray } from '@/lib/utilities/convertStringAllowListToArray';
 import { convertToUnixTimestamp } from '@/lib/utilities/convertToUnixTimestamp';
 import { uploadImageAndGetURL } from '@/lib/utilities/uploadImageAndGetURL';
@@ -31,6 +30,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as v from 'valibot';
 import { ChooseLaunchType } from '../ChooseLaunchType';
 import { auth } from '@/lib/firebase';
+import { bitcoinToSats } from '@/lib/utilities';
 
 const StepConfig = {
   [ESteps.START]: {
@@ -115,7 +115,7 @@ const prepareRequestBody = async (
   phases: TPhaseFormSchema['phases'],
   wallet: IWallet | null
 ) => {
-  const collectionSlug = `${meta.name.trim().toLowerCase().replace(/\s+/g, '_')}`;
+  const collectionSlug = `${meta.name.trim().toLowerCase().replace(/\s+/g, '-')}`;
   const storagePath = `/launchpad/${auth?.currentUser?.uid}/${collectionSlug}/`;
   const iconImgUrl = meta?.icon ? await uploadImageAndGetURL(meta?.icon, storagePath) : '';
   const bannerImgUrl = meta?.banner_image ? await uploadImageAndGetURL(meta?.banner_image, storagePath) : '';
@@ -136,7 +136,7 @@ const prepareRequestBody = async (
   const phasesData = phases.map((phase) => {
     const basePhase = {
       name: phase.name,
-      price: Number(phase.price) * SATS_TO_BTC_CONVERSION_FACTOR,
+      price: bitcoinToSats(Number(phase.price)),
       startDate: convertToUnixTimestamp(new Date(phase.startDate), phase.startTime),
       endDate: convertToUnixTimestamp(new Date(phase.endDate), phase.endTime),
       isPublic: phase.isPublic
@@ -248,6 +248,11 @@ export default function Launchpad() {
   const handleSubmit = async () => {
     if (!isAuthenticated) {
       toast.error('Please connect wallet.');
+      return;
+    }
+
+    if (!wallet) {
+      toast.error('Wallet is not configured correctly.');
       return;
     }
 

@@ -1,10 +1,10 @@
 'use client';
-import Image from 'next/image';
 import Phase from '../Phase';
 import { Button } from '@/components/ui/button';
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from 'react';
 import { ESteps } from '@/types/creators';
+import { Loading } from '@/components/common';
 
 export const DeterminePhases = ({ form, setStep }: { form: any; setStep: (step: number) => void }) => {
   const [isUpdatingTanstackArray, setIsUpdatingTanstackArray] = useState(false);
@@ -122,10 +122,7 @@ export const DeterminePhases = ({ form, setStep }: { form: any; setStep: (step: 
               className='min-w-52 gap-2 rounded-md'
               size='lg'
             >
-              Next
-              {isSubmitting && (
-                <Image alt='Uploading' src='/img/creators/loader.png' className='animate-spin' width={20} height={20} />
-              )}
+              {isSubmitting ? <Loading size={32} /> : 'Next'}
             </Button>
           )}
         />
