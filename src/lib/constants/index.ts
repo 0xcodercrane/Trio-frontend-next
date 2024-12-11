@@ -92,7 +92,7 @@ export const NETWORK: ENETWORK = (process.env.NEXT_PUBLIC_NETWORK?.toLowerCase()
 
 export const DEFAULT_FEE_RATE = 3;
 
-export const TX_PARAMS_BUY_LISTING = {
+export const TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING = {
   inputsCount: 4,
   outputsCount: 6,
   inputScript: 'P2WPKH',

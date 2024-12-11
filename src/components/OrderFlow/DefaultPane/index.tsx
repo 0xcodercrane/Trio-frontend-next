@@ -11,13 +11,13 @@ import { useInscriptionOrder } from '@/lib/hooks';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
 import { ModifyListing } from './ModifyListing';
 import { calculateTxVBytes } from '@/lib/utilities';
-import { TX_PARAMS_BUY_LISTING } from '@/lib/constants';
+import { TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING } from '@/lib/constants';
 
-const txVirtualSize = calculateTxVBytes(
-  TX_PARAMS_BUY_LISTING.inputsCount,
-  TX_PARAMS_BUY_LISTING.outputsCount,
-  TX_PARAMS_BUY_LISTING.inputScript,
-  TX_PARAMS_BUY_LISTING.outputScript
+const DEFAULT_VIRTUAL_SIZE = calculateTxVBytes(
+  TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING.inputsCount,
+  TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING.outputsCount,
+  TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING.inputScript,
+  TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING.outputScript
 );
 
 export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlowPaneBaseProps) {
@@ -47,7 +47,7 @@ export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlow
               {hasActiveListing ? (
                 <>
                   <FeesPanel listPriceSats={latestOrder.price} />
-                  <FeeSelector txVirtualSize={txVirtualSize.txVBytes} />
+                  <FeeSelector txVirtualSize={DEFAULT_VIRTUAL_SIZE.txVBytes} />
                   <TermsAndConditions actionName='Buy Now' />
                   <BuyNow price={latestOrder?.price} orderId={latestOrder?.id} inscriptionId={inscriptionId} />
                 </>
