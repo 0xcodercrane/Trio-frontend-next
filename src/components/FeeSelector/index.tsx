@@ -22,6 +22,12 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
   const { satsToUsd } = usePrices();
 
   useEffect(() => {
+    if (feeRatesData && selectedFeeOption !== EFeeOptions.CUSTOM) {
+      setFeeRate(feeRatesData[feeOptionsConfig[selectedFeeOption].dbKey]);
+    }
+  }, [feeRatesData]);
+
+  useEffect(() => {
     if (feeRatesData && !customFee) {
       setCustomFee(feeRatesData.fastest_fee);
     }
