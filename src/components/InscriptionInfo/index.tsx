@@ -1,8 +1,12 @@
 import { InscriptionDetails } from '@/lib/services';
-import React, { useState } from 'react';
-import { Button } from '../ui/button';
+import React, { ReactNode, useState } from 'react';
 import { Attribute } from '@/types';
-import { shortenInscriptionId } from '@/lib/utilities';
+import { formatFileSize, shortenInscriptionId } from '@/lib/utilities';
+import { CopyButton } from '../CopyButton';
+import { DateTime } from 'luxon';
+import { Skeleton } from '../ui/skeleton';
+import Link from 'next/link';
+import { EXPLORER_URL } from '@/lib/constants';
 
 type InscriptionInfoProps = {
   details: InscriptionDetails | undefined;
@@ -13,6 +17,13 @@ enum EInfoState {
   DETAILS,
   ATTRIBUTES
 }
+
+const DataRow = ({ label, children, isPending }: { label: string; children: ReactNode; isPending: boolean }) => (
+  <>
+    <dt className='col-span-1'>{label}</dt>{' '}
+    <dd className='col-span-3 flex gap-2 break-words'>{isPending ? <Skeleton className='w-full' /> : children}</dd>
+  </>
+);
 
 export default function InscriptionInfo({ details }: InscriptionInfoProps) {
   const [selectedTab, setSelectedTab] = useState<EInfoState>(EInfoState.DETAILS);
@@ -37,17 +48,27 @@ export default function InscriptionInfo({ details }: InscriptionInfoProps) {
           <div>
             <div className='text-xl'>Inscription Information</div>
             <dl className='mt-4 grid grid-cols-4 gap-2'>
-              <dt className='col-span-1'>Inscription ID</dt>{' '}
-              <dd className='col-span-3 break-words'>{shortenInscriptionId(details?.id ?? '')}</dd>
-              <dt className='col-span-1'>Inscription Number</dt>{' '}
-              <dd className='col-span-3 break-words'>{details?.number}</dd>
-              <dt className='col-span-1'>Sat Number</dt> <dd className='col-span-3 break-words'>{details?.sat}</dd>
-              {details?.charms && details.charms.length > 0 && (
-                <>
-                  <dt className='col-span-1'>Sat Type</dt>
-                  <dd className='col-span-3 break-words'>{details?.charms}</dd>
-                </>
-              )}
+              <DataRow label='Incription ID' isPending={!details}>
+                {shortenInscriptionId(details?.id || '')} <CopyButton text={details?.id || ''} />
+              </DataRow>
+              <DataRow label='Inscription Number' isPending={!details}>
+                {details?.number.toLocaleString()}
+              </DataRow>
+              <DataRow label='Content Type' isPending={!details}>
+                {details?.content_type}
+              </DataRow>
+              <DataRow label='Content Size' isPending={!details}>
+                {formatFileSize(details?.content_length || 0)}
+              </DataRow>
+              <DataRow label='Sat Number' isPending={!details}>
+                {details?.sat.toLocaleString()}
+              </DataRow>
+              <DataRow label='Inscribed' isPending={!details}>
+                {DateTime.fromSeconds(details?.timestamp || 0).toRelative()}
+              </DataRow>
+              <DataRow label='Preview' isPending={false}>
+                <Link href={`${EXPLORER_URL}/inscription/${details?.id}`}>View on Explorer</Link>
+              </DataRow>
             </dl>
           </div>
         ) : (

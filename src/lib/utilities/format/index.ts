@@ -5,3 +5,5 @@ export const formatUsdValue = (value: number) =>
 export const formatBlock = (block: number) => {
   return numeral(block).format('0,0');
 };
+
+export const formatFileSize = (size: number) => numeral(size).format('0.000b');
