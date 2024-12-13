@@ -1,12 +1,10 @@
 'use client';
 
+import { getHeight } from '@/lib/utilities';
 import { MediaWrapper } from '../common';
 import { InscriptionOverlay } from '../InscriptionOverlay';
 import { Skeleton } from '../ui/skeleton';
 import { useRouter } from 'next/navigation';
-import { useFilter } from '@/lib/hooks/useFilter';
-import { mapSizeToGlobalVar } from '../FilterPanel/FilterPanelHeader/SizeSelector';
-import { ESIZES } from '@/lib/constants';
 
 export default function InscriptionsGrid({
   inscriptions,
@@ -21,19 +19,24 @@ export default function InscriptionsGrid({
   loading: boolean;
 }) {
   const router = useRouter();
-  const { size } = useFilter();
+  // const { size } = useFilter();
   return (
-    <div className='flex flex-row flex-wrap gap-2'>
+    <div className='grid grid-cols-5 gap-2'>
       {inscriptions.map((inscription, index) => (
-        <div key={inscription.inscription_id} className={`relative ${mapSizeToBasis(size)} group cursor-pointer`}>
+        <div key={inscription.inscription_id} className={`group relative cursor-pointer`}>
           {loading ? (
-            <Skeleton className='h-full max-h-[--inscription-largest] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest] xs:min-h-[--inscription-tiniest] md:min-h-[--inscription-large]' />
+            <Skeleton
+              className={`${getHeight('basis-[20%]')} w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]`}
+            />
           ) : (
-            <div onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`)} className='cursor-pointer'>
+            <div
+              onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`)}
+              className='max-h-[18vw] cursor-pointer overflow-hidden rounded-xl'
+            >
               <MediaWrapper
                 id={inscription.inscription_id}
                 className='relative max-w-full overflow-hidden rounded-xl group-hover:opacity-80'
-                size={mapSizeToGlobalVar(size)}
+                size='18vw'
                 square
               />
 
@@ -50,16 +53,16 @@ export default function InscriptionsGrid({
   );
 }
 
-const mapSizeToBasis = (size: ESIZES) => {
-  switch (size) {
-    case ESIZES.XS:
-      return 'basis-[9%]';
-    case ESIZES.SM:
-    case ESIZES.MD:
-      return 'basis-[32%]';
-    case ESIZES.LG:
-    case ESIZES.XL:
-    case ESIZES.XXL:
-      return 'basis-[49%]';
-  }
-};
+// const mapSizeToBasis = (size: ESIZES) => {
+//   switch (size) {
+//     case ESIZES.XS:
+//       return 'basis-[9%]';
+//     case ESIZES.SM:
+//     case ESIZES.MD:
+//       return 'basis-[32%]';
+//     case ESIZES.LG:
+//     case ESIZES.XL:
+//     case ESIZES.XXL:
+//       return 'basis-[49%]';
+//   }
+// };

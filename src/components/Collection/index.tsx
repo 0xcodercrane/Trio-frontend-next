@@ -5,6 +5,7 @@ import { useCollectionBySlugQuery } from '@/lib/services';
 import { Container } from '@/components/Container';
 import { Panels } from '@/components/Collection/FilterPanels';
 import { Skeleton } from '../ui/skeleton';
+import { Img } from '../Img';
 
 interface CollectionProps {
   slug: string;
@@ -15,6 +16,7 @@ export default function Collection({ slug }: CollectionProps) {
 
   const { name, description, twitter_link, discord_link, website_link, artist, banner_image, icon } = data || {};
 
+  const hasBanner = !!banner_image;
   return (
     <div className='relative'>
       <div className='absolute z-0 h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))] w-full bg-ob-purple-dark'>
@@ -34,7 +36,9 @@ export default function Collection({ slug }: CollectionProps) {
       </div>
 
       <Container padding>
-        <div className='z-10 flex h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))] flex-row'>
+        <div
+          className={`z-10 flex ${hasBanner ? 'h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))]' : 'h-[24rem]'} flex-row`}
+        >
           <div className='flex h-full w-full flex-col justify-end'>
             <div className='flex w-full flex-row pb-12'>
               <div className='flex basis-1/2 flex-col justify-end gap-4'>
@@ -72,8 +76,24 @@ export default function Collection({ slug }: CollectionProps) {
                 <div className='flex flex-row gap-8'>
                   {[
                     {
-                      label: 'assets',
-                      value: data ? data.inscriptions.length : undefined
+                      label: 'floor price',
+                      value: 'XXX'
+                    },
+                    {
+                      label: 'all time volume',
+                      value: 'XXX'
+                    },
+                    {
+                      label: 'total supply',
+                      value: 'XXX'
+                    },
+                    {
+                      label: 'listed',
+                      value: 'XXX'
+                    },
+                    {
+                      label: 'owners',
+                      value: 'XXX'
                     },
                     // {
                     //   label: 'royalties',
@@ -104,7 +124,7 @@ export default function Collection({ slug }: CollectionProps) {
 
               <div className='flex basis-1/2 flex-row justify-end'>
                 {icon ? (
-                  <img className='h-[210px] w-[210px] rounded-xl' src={icon} />
+                  <Img fallback={<></>} className='h-[210px] w-[210px] rounded-xl' src={icon} />
                 ) : (
                   <Skeleton className='h-[210px] w-[210px] rounded-xl' />
                 )}

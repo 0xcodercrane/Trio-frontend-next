@@ -38,8 +38,8 @@ export default function Page({ params }: { params: { id: string } }) {
                 ) : (
                   <div className='my-2'>
                     {collectionData?.collection ? (
-                      <Link className='font-semibold text-ob-yellow' href={`/collections/${collectionData.collection.slug}`}>
-                        {collectionData.collection.name}
+                      <Link className='font-semibold' href={`/collections/${collectionData.collection.slug}`}>
+                        From {collectionData.collection.name}
                       </Link>
                     ) : (
                       <div className='text-white'>This inscription is not part of any recognized collection.</div>
@@ -64,20 +64,20 @@ export default function Page({ params }: { params: { id: string } }) {
                   // )
                 }
                 {!!inscriptionData && (
-                  <div className='mt-2 flex flex-row justify-start gap-4 text-white'>
-                    Owned by <Avatar size='xs' />
-                    {shortenAddress(inscriptionData.details?.address)}
+                  <div className='mt-2 flex flex-row justify-start gap-4 font-semibold text-white'>
+                    Owned by {shortenAddress(inscriptionData.details?.address)}
                   </div>
                 )}
               </div>
-              <Divider className='my-4' />
               <OrderFlow inscriptionId={id} collectionSlug={collectionData?.collection?.slug} />
               <InscriptionInfo details={inscriptionData?.details} />
             </div>
           </Container>
         </SplashPageLayout>
       </Section>
-      {collectionData?.collection_id && <Panels slug={(collectionData as unknown as any)?.collection?.slug || ''} />}
+      {collectionData?.collection_id && (
+        <Panels showOnlyItems slug={(collectionData as unknown as any)?.collection?.slug || ''} />
+      )}
     </div>
   );
 }

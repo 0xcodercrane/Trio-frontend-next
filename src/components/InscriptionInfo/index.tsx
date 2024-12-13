@@ -35,7 +35,7 @@ const AttributeCard = ({ name, value }: { name: string; value: string }) => (
 
 export default function InscriptionInfo({ details }: InscriptionInfoProps) {
   const [selectedTab, setSelectedTab] = useState<EInfoState>(EInfoState.DETAILS);
-  const { data: attributes, isPending } = useInscriptionAttributes(details?.id);
+  const { data: attributes } = useInscriptionAttributes(details?.id);
 
   return (
     <div className='rounded-lg bg-ob-purple-dark text-white'>

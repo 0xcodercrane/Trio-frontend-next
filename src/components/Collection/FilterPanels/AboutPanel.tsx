@@ -22,14 +22,14 @@ export const AboutPanel = ({ slug }: { slug: string }) => {
 
   return (
     <SplashPageLayout media={{ type: EMediaType.INSCRIPTION, id: inscriptions?.[0]?.inscription_id }}>
-      <div className='flex h-full flex-col items-center justify-center'>
+      <div className='ml-8 flex h-full flex-col items-center justify-center'>
         <Container padding>
           <div className='flex flex-col gap-8'>
             <h1>About</h1>
             <p>{collectionData?.description}</p>
-            <div className='flex flex-row gap-4'>
+            {/* <div className='flex flex-row gap-4'>
               <Button variant='secondary'>Buy Now</Button>
-            </div>
+            </div> */}
           </div>
         </Container>
       </div>
