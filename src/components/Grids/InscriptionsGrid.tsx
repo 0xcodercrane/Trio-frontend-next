@@ -23,7 +23,7 @@ export default function InscriptionsGrid({
   return (
     <div className='grid grid-cols-5 gap-2'>
       {inscriptions.map((inscription, index) => (
-        <div key={inscription.inscription_id} className={`group relative cursor-pointer`}>
+        <div key={inscription.inscription_id} className='group relative cursor-pointer'>
           {loading ? (
             <Skeleton
               className={`${getHeight('basis-[20%]')} w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]`}
