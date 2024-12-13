@@ -92,9 +92,11 @@ export const NETWORK: ENETWORK = (process.env.NEXT_PUBLIC_NETWORK?.toLowerCase()
 
 export const DEFAULT_FEE_RATE = 3;
 
-// TODO: Calculate actual fee estimates.
-export const ESTIMATED_TX_FEE = {
-  SINGLE_INSCRIPTION_BUY: 522.5
+export const TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING = {
+  inputsCount: 4,
+  outputsCount: 6,
+  inputScript: 'P2WPKH',
+  outputScript: 'P2TR'
 };
 
 export const SPOTLIGHT_COLLECTION_SLUG = {
