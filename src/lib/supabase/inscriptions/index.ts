@@ -34,3 +34,18 @@ export const getRandomInscriptions = async ({ offset, limit }: TPagination) =>
     .from('inscriptions')
     .select(INSCRIPTION_QUERY)
     .range(offset, offset + limit);
+
+export const getInscriptionAttributes = async (inscriptionId: string) =>
+  supabase
+    .from('inscriptions')
+    .select(
+      `
+        id,
+        attributes: attributes (
+          value,
+          value_type,
+          category: attribute_categories (name)
+        )
+      `
+    )
+    .eq('inscription_id', inscriptionId);

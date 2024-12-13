@@ -19,7 +19,7 @@ export enum ETABS {
 }
 
 export const TabValues = Object.values(ETABS);
-export const Panels = ({ slug }: { slug: string }) => {
+export const Panels = ({ slug, showOnlyItems = false }: { slug: string; showOnlyItems?: boolean }) => {
   const [currentTab, setCurrentTab] = useState(ETABS.ITEMS);
 
   const renderTab = () => {
@@ -44,7 +44,7 @@ export const Panels = ({ slug }: { slug: string }) => {
           <FilterPanelHeader
             setCurrentTab={(tab: string) => setCurrentTab(tab as ETABS)}
             currentTab={currentTab}
-            tabValues={TabValues}
+            tabValues={showOnlyItems ? ['Items'] : TabValues}
             toolbar={currentTab === ETABS.ITEMS}
             viewType={EVIEW_TYPES.GRID}
           />

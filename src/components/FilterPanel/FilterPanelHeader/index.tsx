@@ -42,7 +42,7 @@ export function FilterPanelHeader({
 
           {/* <SortBy /> */}
           {/* <ViewTypeSelector /> */}
-          {viewType === EVIEW_TYPES.GRID && <SizeSelector />}
+          {/* {viewType === EVIEW_TYPES.GRID && <SizeSelector />} */}
         </div>
       )}
     </div>
