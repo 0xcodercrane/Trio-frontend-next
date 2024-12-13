@@ -1,4 +1,4 @@
-import { InscriptionDetails } from '@/lib/services';
+import { InscriptionDetails, useInscriptionAttributes } from '@/lib/services';
 import React, { ReactNode, useState } from 'react';
 import { Attribute } from '@/types';
 import { formatFileSize, shortenInscriptionId } from '@/lib/utilities';
@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
 import { EXPLORER_URL } from '@/lib/constants';
+import { Card } from '../ui/card';
 
 type InscriptionInfoProps = {
   details: InscriptionDetails | undefined;
@@ -25,8 +26,17 @@ const DataRow = ({ label, children, isPending }: { label: string; children: Reac
   </>
 );
 
+const AttributeCard = ({ name, value }: { name: string; value: string }) => (
+  <div className='rounded-lg bg-ob-purple px-4 py-2 text-white'>
+    <dt className='mb-1 text-sm capitalize text-ob-grey-lightest'>{name}</dt>
+    <dd className='capitalize'>{value}</dd>
+  </div>
+);
+
 export default function InscriptionInfo({ details }: InscriptionInfoProps) {
   const [selectedTab, setSelectedTab] = useState<EInfoState>(EInfoState.DETAILS);
+  const { data: attributes, isPending } = useInscriptionAttributes(details?.id);
+
   return (
     <div className='rounded-lg bg-ob-purple-dark text-white'>
       <div className='flex basis-1/2 flex-row rounded-lg bg-ob-purple'>
@@ -36,12 +46,14 @@ export default function InscriptionInfo({ details }: InscriptionInfoProps) {
         >
           Details
         </button>
-        <button
-          className={`w-full rounded-lg p-4 text-center ${selectedTab === EInfoState.ATTRIBUTES ? 'bg-ob-purple-lighter' : 'bg-ob-purple'}`}
-          onClick={() => setSelectedTab(EInfoState.ATTRIBUTES)}
-        >
-          Attributes
-        </button>
+        {attributes?.attributes && attributes?.attributes?.length > 0 && (
+          <button
+            className={`w-full rounded-lg p-4 text-center ${selectedTab === EInfoState.ATTRIBUTES ? 'bg-ob-purple-lighter' : 'bg-ob-purple'}`}
+            onClick={() => setSelectedTab(EInfoState.ATTRIBUTES)}
+          >
+            Attributes
+          </button>
+        )}
       </div>
       <div className='p-4'>
         {selectedTab === EInfoState.DETAILS ? (
@@ -72,8 +84,11 @@ export default function InscriptionInfo({ details }: InscriptionInfoProps) {
             </dl>
           </div>
         ) : (
-          // TODO: Render attributes.
-          <>Coming soon.</>
+          <dl className='grid grid-cols-3 gap-2'>
+            {attributes?.attributes.map((attribute) => (
+              <AttributeCard key={attribute.category?.name} name={attribute.category?.name || ''} value={attribute.value} />
+            ))}
+          </dl>
         )}
       </div>
     </div>
