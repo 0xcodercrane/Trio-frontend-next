@@ -1,15 +1,17 @@
 'use client';
 import { EPoolType, TLotteryPool } from '@/types';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { auth, firestore } from '@/lib/firebase';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { LotteryAdd } from './LotteryAdd';
 import { LotteryDisplay } from './LotteryDisplay';
+import { AuthContext } from '@/app/providers/AuthContext';
+import { toast } from 'sonner';
 
 export const LotteryPool = ({ pool }: { pool: TLotteryPool }) => {
   const [poolView, setPoolView] = useState<'view' | 'add'>('view');
-
   const [totalUserTickets, setTotalUserTickets] = useState(0);
+  const { user } = useContext(AuthContext);
 
   const totalEstimatedValue = useMemo(() => {
     if (pool.type === EPoolType.PROPORTIONATE) return 0;
@@ -40,7 +42,11 @@ export const LotteryPool = ({ pool }: { pool: TLotteryPool }) => {
     return (
       <LotteryDisplay
         pool={pool}
-        toggleView={() => setPoolView('add')}
+        toggleView={() => {
+          if (user) {
+            setPoolView('add');
+          } else toast.info('Please connect your wallet');
+        }}
         totalEstimatedValue={totalEstimatedValue}
         totalUserTickets={totalUserTickets}
       />
