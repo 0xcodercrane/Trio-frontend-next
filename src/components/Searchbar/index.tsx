@@ -33,6 +33,7 @@ const Searchbar = ({ onChange, focusOnRender = false, className }: SearchbarProp
     if (inputRef.current && focusOnRender) {
       inputRef.current.focus();
     }
+    return () => clearSearchKeyword();
   }, []);
 
   return (
@@ -41,6 +42,7 @@ const Searchbar = ({ onChange, focusOnRender = false, className }: SearchbarProp
         className={`flex min-w-[200px] items-center justify-between gap-4 rounded-full bg-ob-purple-dark text-white has-[:focus]:bg-ob-purple ${className}`}
       >
         <Input
+          autoComplete='off'
           id='keyword'
           ref={inputRef}
           value={keyword}

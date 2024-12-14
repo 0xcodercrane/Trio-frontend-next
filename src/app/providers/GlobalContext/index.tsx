@@ -26,7 +26,7 @@ const GlobalContextProvider = ({ children }: { children: NonNullable<ReactNode> 
         return 'bg-ob-purple-darkest';
       case EMenuType.ACTIVITY:
       default:
-        return 'bg-ob-purple-dark';
+        return 'bg-ob-purple-darkest';
     }
   }, [menuType, menuDisclosure.isOpen]);
 

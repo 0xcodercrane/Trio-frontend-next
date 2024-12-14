@@ -7,7 +7,7 @@ import { CollectionsTable } from '@/components/Tables';
 export const MultiCollectionFilterPanel = () => {
   const { offset, limit, searchKeyword } = useFilter();
 
-  const { data, isPending } = useCollections({ offset, limit }, searchKeyword);
+  const { data, isLoading } = useCollections({ offset, limit }, searchKeyword);
 
   return (
     <div className='flex w-full flex-row gap-8'>
@@ -15,7 +15,7 @@ export const MultiCollectionFilterPanel = () => {
         <Filters currentFilter={currentFilter} setCurrentFilter={setCurrentFilter} />
       </div> */}
       <div className='w-full'>
-        <CollectionsTable isLoading={isPending} collections={data} />
+        <CollectionsTable isLoading={isLoading} collections={data} />
       </div>
     </div>
   );

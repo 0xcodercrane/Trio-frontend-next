@@ -10,19 +10,23 @@ import NavBar from '../NavBar';
 import ConnectedWallet from './ConnectedWallet';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { Container } from '../Container';
+import { Searchbar } from '../Searchbar';
 
-export default function Header() {
+interface HeaderProps {
+  renderSearchbar?: boolean;
+  onChangeSearch?: (searchKeyword: string) => void;
+}
+
+export default function Header({ renderSearchbar = false, onChangeSearch }: HeaderProps) {
   const { loading, isAuthenticated } = useContext(AuthContext);
-  const { menuDisclosure, menuBG } = useContext(GlobalContext);
 
   return (
-    <header
-      className={`relative z-20 flex h-[--header-height] max-h-[--header-height] w-full items-center ${menuBG} -mb-24`}
-    >
+    <header className='relative z-20 -mb-24 flex h-[--header-height] max-h-[--header-height] w-full items-center bg-ob-purple-darkest'>
       <Container padding>
         <div className='grid w-full grid-cols-[1fr_1.5fr_1fr] items-center'>
           <div className='flex h-full items-center'>
-            <Link href='/'>
+            <Link href='/' className='flex'>
+              <span className='text-xs'>ALPHA</span>
               <Image
                 className='w-aut h-[--header-content-height]'
                 src='/img/trio-logo.svg'
@@ -33,7 +37,17 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className='hidden items-center justify-center space-x-4 lg:flex'>{!menuDisclosure.isOpen && <NavBar />}</div>
+          <div className='hidden items-center justify-center space-x-4 lg:flex'>
+            {renderSearchbar && onChangeSearch ? (
+              <Searchbar
+                focusOnRender
+                onChange={onChangeSearch}
+                className='flex min-w-[320px] items-center justify-between gap-4 rounded-full bg-[#646464]/[.14] has-[:focus]:bg-[#646464]/[.25]'
+              />
+            ) : (
+              <NavBar />
+            )}
+          </div>
 
           {/* FIXME show mobile menu and hide these components - this will fix the shrinking icons as well */}
           <div className='col-span-2 flex items-center justify-end space-x-4 lg:col-span-1'>

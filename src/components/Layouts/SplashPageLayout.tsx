@@ -22,11 +22,11 @@ export default function SplashPageLayout({
   childrenWrapperJustify = 'center'
 }: SplashPageLayoutProps) {
   return (
-    <div className={`flex flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}>
+    <div className={`flex w-full flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}>
       <div className='flex basis-1/2 items-start justify-start'>
         {type === 'inscription' ? (
           <div className='w-full'>
-            <MediaWrapper id={id} size='full' className='relative max-w-[600px] overflow-hidden rounded-xl' />
+            <MediaWrapper id={id} size='full' className='relative w-full max-w-[600px] overflow-hidden rounded-xl' />
           </div>
         ) : (
           <Image
