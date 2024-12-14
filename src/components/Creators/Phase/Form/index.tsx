@@ -3,7 +3,7 @@ import FieldInfo from '@/components/common/FieldInfo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { MINIMUM_SATS } from '@/lib/constants';
+import { LOW_POSTAGE } from '@/lib/constants';
 import { phaseFormSchema, TPhaseFormSchema } from '@/types/creators';
 import { useForm } from '@tanstack/react-form';
 import validate from 'bitcoin-address-validation';
@@ -388,8 +388,8 @@ const EditForm = ({
                   return 'Price cannot be empty';
                 }
 
-                if (value < MINIMUM_SATS) {
-                  return 'Price should be greater than 0.00000546';
+                if (value < LOW_POSTAGE) {
+                  return `Price should be greater than ${LOW_POSTAGE} sats`;
                 }
 
                 return undefined;

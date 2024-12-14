@@ -3,14 +3,16 @@
 import { auth, firestore } from '@/lib/firebase';
 import { TProportionatePool } from '@/types';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { ProporationateDisplay } from './ProportionateDisplay';
 import { ProportionateAdd } from './ProportionateAdd';
+import { AuthContext } from '@/app/providers/AuthContext';
+import { toast } from 'sonner';
 
 export function ProportionatePool({ pool }: { pool: TProportionatePool }) {
   const [poolView, setPoolView] = useState<'view' | 'add'>('view');
-
   const [totalUserPoints, setTotaluserPoints] = useState(0);
+  const { user } = useContext(AuthContext);
 
   const totalPayout = useMemo(() => {
     if (!pool.totalPointsAllocated) return 0;
@@ -54,7 +56,11 @@ export function ProportionatePool({ pool }: { pool: TProportionatePool }) {
     return (
       <ProporationateDisplay
         pool={pool}
-        toggleView={() => setPoolView('add')}
+        toggleView={() => {
+          if (user) {
+            setPoolView('add');
+          } else return toast.info('Please connect your wallet');
+        }}
         totalUserPoints={totalUserPoints}
         totalPayout={totalPayout}
       />

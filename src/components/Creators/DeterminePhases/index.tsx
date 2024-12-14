@@ -1,10 +1,12 @@
 'use client';
-import Phase from '../Phase';
-import { Button } from '@/components/ui/button';
-import { v4 as uuidv4 } from 'uuid';
-import { useState } from 'react';
-import { ESteps } from '@/types/creators';
+
 import { Loading } from '@/components/common';
+import { Button } from '@/components/ui/button';
+import { ESteps } from '@/types/creators';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { v4 as uuidv4 } from 'uuid';
+import Phase from '../Phase';
 
 export const DeterminePhases = ({ form, setStep }: { form: any; setStep: (step: number) => void }) => {
   const [isUpdatingTanstackArray, setIsUpdatingTanstackArray] = useState(false);
@@ -35,6 +37,10 @@ export const DeterminePhases = ({ form, setStep }: { form: any; setStep: (step: 
   };
 
   const handleDeletedPhaseConfig = (index: number) => {
+    if (form.state.values.phases.length === 1) {
+      return toast.error('You must have at least one phase');
+    }
+
     try {
       setIsUpdatingTanstackArray(true);
       form.removeFieldValue('phases', index);
@@ -80,23 +86,6 @@ export const DeterminePhases = ({ form, setStep }: { form: any; setStep: (step: 
                   />
                 );
               })}
-
-              {!field.state.value.length ? (
-                <div className='flex items-center justify-center'>
-                  <Button
-                    onClick={() => {
-                      handleAddNewPhaseConfig(0);
-                    }}
-                    size='lg'
-                    variant='secondary'
-                    type='button'
-                  >
-                    Add Phase
-                  </Button>
-                </div>
-              ) : (
-                ''
-              )}
             </>
           )}
         </form.Field>

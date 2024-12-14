@@ -23,11 +23,11 @@ export const WALLET_SIGN_IN_MESSAGE = `Sign into ${APP_NAME} Application`;
 export const SESSION_TOKEN_NAME = `${CLEAN_APP_NAME}.session-token`;
 
 export const USE_LOW_POSTAGE = true;
+export const LOW_POSTAGE = 546; // value in sats
 export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
 
 export const SATS_TO_BTC_CONVERSION_FACTOR = 10 ** 8;
-export const MINIMUM_SATS = 0.00000546;
 
 // 144 Blocks is the cycle length for synthetic staking
 // TODO: This should ultimately be dynamic and configurable
@@ -92,9 +92,11 @@ export const NETWORK: ENETWORK = (process.env.NEXT_PUBLIC_NETWORK?.toLowerCase()
 
 export const DEFAULT_FEE_RATE = 3;
 
-// TODO: Calculate actual fee estimates.
-export const ESTIMATED_TX_FEE = {
-  SINGLE_INSCRIPTION_BUY: 522.5
+export const TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING = {
+  inputsCount: 4,
+  outputsCount: 6,
+  inputScript: 'P2WPKH',
+  outputScript: 'P2TR'
 };
 
 export const SPOTLIGHT_COLLECTION_SLUG = {
@@ -193,3 +195,12 @@ export const BPS_TO_PERCENTAGE_CONVERSION_FACTOR = 100;
 export const MARKETPLACE_MAKER_FEE_BPS = 0;
 export const MARKETPLACE_TAKER_FEE_BPS = 150;
 export const MARKETPLACE_TRIO_DISCOUNT_THRESHOLD = 500;
+
+// These environments pertain to the app instance.
+// They correspond to the environment environment variable used below
+export const ENV = process.env.NEXT_PUBLIC_ENV as ENVS;
+export enum ENVS {
+  DEV = 'dev',
+  SIGNET = 'signet',
+  PROD = 'prod'
+}
