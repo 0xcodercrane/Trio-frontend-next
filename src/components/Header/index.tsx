@@ -21,9 +21,7 @@ export default function Header({ renderSearchbar = false, onChangeSearch }: Head
   const { loading, isAuthenticated } = useContext(AuthContext);
 
   return (
-    <header
-      className={`relative z-20 -mb-24 flex h-[--header-height] max-h-[--header-height] w-full items-center bg-ob-purple-darkest`}
-    >
+    <header className='relative z-20 -mb-24 flex h-[--header-height] max-h-[--header-height] w-full items-center bg-ob-purple-darkest'>
       <Container padding>
         <div className='grid w-full grid-cols-[1fr_1.5fr_1fr] items-center'>
           <div className='flex h-full items-center'>

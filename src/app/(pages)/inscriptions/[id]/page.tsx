@@ -1,5 +1,6 @@
 'use client';
 
+import NotFound from '@/app/not-found';
 import { Panels } from '@/components/Collection/FilterPanels';
 import { Avatar, Divider } from '@/components/common';
 import { useInscriptionDataQuery } from '@/components/common/MediaViewer/useInscriptionDataQuery';
@@ -19,6 +20,10 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const { data: collectionData, isPending: isPendingCollectionData } = useInscriptionWithCollectionData(id) as any;
   const { data: inscriptionData, isLoading: isLoadingInscriptionData } = useInscriptionDataQuery(id);
+
+  if (!isLoadingInscriptionData && !inscriptionData) {
+    return <NotFound />;
+  }
 
   return (
     <div className='mt-12 flex h-auto w-full flex-col bg-ob-purple-darkest'>
