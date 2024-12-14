@@ -3,7 +3,9 @@ import Favorite from '@/components/Favorite';
 import NotificationButton from '@/components/Header/NotificationButton';
 import Section from '@/components/Section';
 import { Tag, Chit, Avatar } from '@/components/common';
+import { MempoolTx } from '@/components/common/MempoolTx';
 import { Button } from '@/components/ui/button';
+import { ENV, ENVS } from '@/lib/constants';
 import { ComponentVariantsValues, EComponentVariants } from '@/types';
 
 const sectionGap = 'gap-8';
@@ -95,6 +97,21 @@ export default function Page() {
               </div>
             </div>
             <hr className='border-ob-grey-lighter' />
+            {/* MempoolTx */}
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-col gap-4'>
+                <h3>Icons</h3>
+                <MempoolTx
+                  txid={
+                    [ENVS.PROD, ENVS.DEV].includes(ENV) // Dev and Prod use Mainnet
+                      ? '96624c05a77328292faf374e7fc21a65182cdc8210fc528caec0d9b106ec5c6b'
+                      : ENV === ENVS.SIGNET // Provide a different txid for Signet
+                        ? 'f1b09ed7ad93674959edecc67e1db071f0815fc91a5a7fc6676d29db144b05db'
+                        : ''
+                  }
+                />
+              </div>
+            </div>
           </div>
         </div>
       </Container>

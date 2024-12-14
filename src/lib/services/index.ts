@@ -12,7 +12,6 @@ export * from './fetchOrderBook';
 export * from './fetchPrices';
 export * from './fetchFeeRates';
 export * from './fetchTradeHistory';
-export * from './fetchBlockHeight';
 export * from './fetchCollections';
 export * from './launchpad';
 export * from './fetchInscriptionAttributes';

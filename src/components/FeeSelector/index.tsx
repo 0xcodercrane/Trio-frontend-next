@@ -5,9 +5,8 @@ import { Skeleton } from '../ui/skeleton';
 import { usePrices } from '@/lib/services';
 import { DEFAULT_FEE, DEFAULT_FEE_OPTIONS, feeOptionsConfig } from './constants';
 import CustomFeeInput from '../Inputs/CustomFeeInput';
-import { formatUsdValue } from '@/lib/utilities';
 import { EFeeOptions } from '@/types';
-import { useOrderFlow, useFeeRates } from '@/lib/hooks';
+import { useFeeRates } from '@/lib/hooks';
 
 interface FeeSelectorProps {
   feeOptions?: Partial<{ [key in EFeeOptions]: boolean }>;
@@ -78,7 +77,7 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
                 <Skeleton className='h-full w-full' />
               ) : (
                 <div
-                  className={`h-full cursor-pointer rounded-md border border-ob-purple-lighter ${selectedFeeOption === feeOption ? 'bg-ob-purple' : 'bg-ob-purple-dark'}`}
+                  className={`h-full cursor-pointer rounded-md border border-ob-purple-lighter ${selectedFeeOption === feeOption ? 'bg-ob-purple-dark' : 'bg-ob-purple'}`}
                 >
                   <input
                     type='radio'

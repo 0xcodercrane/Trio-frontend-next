@@ -19,3 +19,5 @@ export * from './pointsConfig';
 export * from './splash-layout';
 export * from './launchpad';
 export * from './stakedBalance';
+export * from './legacy-fees';
+export * from './mempool';
