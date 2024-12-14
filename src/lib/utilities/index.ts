@@ -4,6 +4,7 @@ export * from './style';
 export * from './date';
 export * from './format';
 export * from './number';
+export * from './tx-fees';
 
 export const shortenString = (str: string, firstAmount: number, lastAmount: number) => {
   if (!str) return '';
@@ -25,7 +26,7 @@ export const shortenTxid = (txid: string) => {
 export const shortenInscriptionId = (inscriptionId: string) => shortenString(inscriptionId, 6, 6);
 
 export const satsToBitcoin = (sats: number) => {
-  return sats / ONE_BITCOIN;
+  return (sats / ONE_BITCOIN).toFixed(8);
 };
 
 export const bitcoinToSats = (bitcoinAmount: number) => Math.round(bitcoinAmount * ONE_BITCOIN);
