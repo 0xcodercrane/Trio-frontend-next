@@ -8,7 +8,7 @@ export const MultiCollectionFilterPanel = () => {
   const { offset, limit, searchKeyword } = useFilter();
 
   const { data, isLoading } = useCollections({ offset, limit }, searchKeyword);
-  console.log(isLoading);
+
   return (
     <div className='flex w-full flex-row gap-8'>
       {/* <div className='basis-1/6'>
