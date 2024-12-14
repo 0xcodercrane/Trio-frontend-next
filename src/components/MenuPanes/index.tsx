@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { EMenuType } from '@/types/global-context.types';
 import ProfilePane from './ProfilePane';
@@ -17,6 +17,8 @@ export default function MenuPanes() {
   const { menuDisclosure, menuType, menuBG } = useContext(GlobalContext);
   const { isOpen } = menuDisclosure;
 
+  const [searchKeyword, setSearchKeyword] = useState('');
+
   if (!isOpen) return null;
 
   const renderPane = () => {
@@ -28,15 +30,15 @@ export default function MenuPanes() {
       case EMenuType.WALLET:
         return <WalletConnectionPane />;
       case EMenuType.SEARCH:
-        return <SearchPane />;
+        return <SearchPane searchKeyword={searchKeyword} />;
       default:
         return null;
     }
   };
 
   return (
-    <div className={`fixed inset-0 left-0 top-0 ${menuBG} z-50 text-black`}>
-      <Header />
+    <div className={`fixed inset-0 left-0 top-0 ${menuBG} z-50 text-white`}>
+      {menuType === EMenuType.SEARCH ? <Header renderSearchbar onChangeSearch={setSearchKeyword} /> : <Header />}
       {/* <div className='fixed left-0 top-0 z-50 flex h-[--header-height] w-full items-center justify-between bg-ob-purple-darkest'>
         <Container padding>
           <div className='flex flex-row justify-between'>

@@ -25,7 +25,7 @@ export default function InscriptionsGrid({
       {inscriptions.map((inscription, index) => (
         <div key={inscription.inscription_id} className='group relative cursor-pointer'>
           {loading ? (
-            <Skeleton className={`h-[18vw] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]`} />
+            <Skeleton className='h-[18vw] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]' />
           ) : (
             <div
               onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`, { scroll: true })}
