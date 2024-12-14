@@ -1,7 +1,7 @@
 /**
  * Fetch launchpad stats.
  */
-export const fetchLaunchpadStatus = async (id: number) => {
+export const fetchLaunchpadStatus = async (id: number | undefined) => {
   try {
     const response = await fetch(`/api/launchpad/get-launch-stats/${id}`, {
       method: 'POST',

@@ -15,8 +15,9 @@ import { createBuyOffer, fetchAllocationInfo, fetchLaunchpadStatus, submitBuyOff
 import { usePaddingOutputs } from '@/lib/hooks/usePaddingOutputs';
 import { SplashPageLayout } from '../Layouts';
 import LaunchpadMetaData from './launchpadMetadata';
+import { useLaunchpad } from '@/lib/services/fetchLaunchpad';
 
-export default function Mint({ id }: { id: number }) {
+export default function Mint({ id }: { id: string }) {
   const { wallet, isAuthenticated } = useContext(AuthContext);
   const { signPsbt } = useLaserEyes();
   const { withPaddingOutputs } = usePaddingOutputs();
@@ -24,15 +25,19 @@ export default function Mint({ id }: { id: number }) {
   const [mintState, setMintState] = useState<EMintState>(EMintState.DEFAULT);
   const [txid, setTxid] = useState<string | null>(null);
 
+  // Simply gets the supabaes launchpad row so that we can use the ID and plug into the rest of the code
+  // WARN: There is a more efficient way of doing this. Revisit this code later.
+  const { data: launchpad, isPending: launchpadPending, error: launchpadError } = useLaunchpad(id);
+
   const {
     data: launchInfo,
     isPending: launchInfoPending,
     refetch: refrechLaunchInfo
   } = useQuery({
     queryKey: ['launchpad-stats', id],
-    queryFn: () => fetchLaunchpadStatus(id),
+    queryFn: () => fetchLaunchpadStatus(launchpad?.id),
     select: (data) => data.payload,
-    enabled: !!id
+    enabled: !!launchpad?.id
   });
 
   const {
@@ -41,7 +46,7 @@ export default function Mint({ id }: { id: number }) {
     refetch: refetchAllocationInfo
   } = useQuery({
     queryKey: ['allocation-info', id, wallet?.ordinalsAddress],
-    queryFn: () => fetchAllocationInfo(id, wallet?.ordinalsAddress),
+    queryFn: () => fetchAllocationInfo(launchpad?.id, wallet?.ordinalsAddress),
     select: (data) => data.payload,
     enabled: !!id && isAuthenticated && !!wallet?.ordinalsAddress
   });

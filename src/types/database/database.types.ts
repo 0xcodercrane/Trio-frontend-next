@@ -1,31 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      graphql: {
-        Args: {
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-          extensions?: Json;
-        };
-        Returns: Json;
-      };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
   public: {
     Tables: {
       addresses: {
@@ -258,6 +233,50 @@ export type Database = {
           }
         ];
       };
+      edition_launchpad_orders: {
+        Row: {
+          backend_order_id: string;
+          charge_address: string;
+          charge_amount: number;
+          completed_and_indexed: boolean | null;
+          created_at: string | null;
+          editions_number_ordered: number;
+          id: string;
+          launchpad_id: number;
+          updated_at: string | null;
+        };
+        Insert: {
+          backend_order_id: string;
+          charge_address: string;
+          charge_amount: number;
+          completed_and_indexed?: boolean | null;
+          created_at?: string | null;
+          editions_number_ordered: number;
+          id?: string;
+          launchpad_id: number;
+          updated_at?: string | null;
+        };
+        Update: {
+          backend_order_id?: string;
+          charge_address?: string;
+          charge_amount?: number;
+          completed_and_indexed?: boolean | null;
+          created_at?: string | null;
+          editions_number_ordered?: number;
+          id?: string;
+          launchpad_id?: number;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_launchpad_id';
+            columns: ['launchpad_id'];
+            isOneToOne: false;
+            referencedRelation: 'launchpads';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
       fee_rates: {
         Row: {
           economy_fee: number;
@@ -378,33 +397,65 @@ export type Database = {
       };
       launchpads: {
         Row: {
+          collection_id: number | null;
           created_at: string | null;
+          edition_inscription_id: number | null;
           id: number;
+          launchpad_type: Database['public']['Enums']['launchpad_type'];
           maker_payment_address_id: number;
           marketplace_id: string | null;
           meta_data: Json | null;
+          number_of_editions: number | null;
+          remaining_editions: number | null;
+          slug: string;
           status: Database['public']['Enums']['launchpad_status'];
           updated_at: string | null;
         };
         Insert: {
+          collection_id?: number | null;
           created_at?: string | null;
+          edition_inscription_id?: number | null;
           id?: number;
+          launchpad_type?: Database['public']['Enums']['launchpad_type'];
           maker_payment_address_id: number;
           marketplace_id?: string | null;
           meta_data?: Json | null;
+          number_of_editions?: number | null;
+          remaining_editions?: number | null;
+          slug: string;
           status: Database['public']['Enums']['launchpad_status'];
           updated_at?: string | null;
         };
         Update: {
+          collection_id?: number | null;
           created_at?: string | null;
+          edition_inscription_id?: number | null;
           id?: number;
+          launchpad_type?: Database['public']['Enums']['launchpad_type'];
           maker_payment_address_id?: number;
           marketplace_id?: string | null;
           meta_data?: Json | null;
+          number_of_editions?: number | null;
+          remaining_editions?: number | null;
+          slug?: string;
           status?: Database['public']['Enums']['launchpad_status'];
           updated_at?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: 'fk_collection_id';
+            columns: ['collection_id'];
+            isOneToOne: false;
+            referencedRelation: 'collections';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'fk_edition_inscription_id';
+            columns: ['edition_inscription_id'];
+            isOneToOne: false;
+            referencedRelation: 'inscriptions';
+            referencedColumns: ['id'];
+          },
           {
             foreignKeyName: 'fk_maker_payment_address_id';
             columns: ['maker_payment_address_id'];
@@ -952,6 +1003,44 @@ export type Database = {
       };
     };
     Views: {
+      edition_launchpad_orders_anon: {
+        Row: {
+          charge_address: string | null;
+          charge_amount: number | null;
+          created_at: string | null;
+          editions_number_ordered: number | null;
+          id: string | null;
+          launchpad_id: number | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          charge_address?: string | null;
+          charge_amount?: number | null;
+          created_at?: string | null;
+          editions_number_ordered?: number | null;
+          id?: string | null;
+          launchpad_id?: number | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          charge_address?: string | null;
+          charge_amount?: number | null;
+          created_at?: string | null;
+          editions_number_ordered?: number | null;
+          id?: string | null;
+          launchpad_id?: number | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'fk_launchpad_id';
+            columns: ['launchpad_id'];
+            isOneToOne: false;
+            referencedRelation: 'launchpads';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
       marketplaces_anon: {
         Row: {
           description: string | null;
@@ -1011,6 +1100,34 @@ export type Database = {
       };
     };
     Functions: {
+      add_inscriptions_to_collection: {
+        Args: {
+          collection_id: number;
+          inscription_ids: string[];
+        };
+        Returns: number[];
+      };
+      check_and_decrease_phase_allocation: {
+        Args: {
+          phase_id: number;
+          taker_ordinal_address_id: number;
+        };
+        Returns: boolean;
+      };
+      check_insert_editions_order: {
+        Args: {
+          launchpad_id: number;
+          backend_order_id: string;
+          charge_address: string;
+          charge_amount: number;
+          editions_number_ordered: number;
+        };
+        Returns: {
+          order_id: string;
+          success: boolean;
+          error_message: string;
+        }[];
+      };
       clone_utxo_and_data: {
         Args: {
           new_utxo: string;
@@ -1020,6 +1137,49 @@ export type Database = {
           id: number;
           utxo: string;
           is_spent: boolean;
+        }[];
+      };
+      create_editions_launchpad:
+        | {
+            Args: {
+              _number_of_editions: number;
+              _edition_inscription_id: string;
+              _maker_payment_address: string;
+              _collection_id: number;
+              _meta_data?: Json;
+            };
+            Returns: number;
+          }
+        | {
+            Args: {
+              _slug: string;
+              _number_of_editions: number;
+              _edition_inscription_id: string;
+              _maker_payment_address: string;
+              _collection_id: number;
+              _meta_data?: Json;
+            };
+            Returns: number;
+          };
+      editions_launchpad_backend_order_completed: {
+        Args: {
+          backend_order_id: string;
+          inscription_ids: string[];
+        };
+        Returns: {
+          success: boolean;
+          error_message: string;
+        }[];
+      };
+      get_collection_stats: {
+        Args: {
+          collection_slug: string;
+        };
+        Returns: {
+          min_price: number;
+          total_volume_all_time: number;
+          distinct_listings_count: number;
+          total_inscriptions_count: number;
         }[];
       };
       get_collections: {
@@ -1074,6 +1234,29 @@ export type Database = {
           minimum_fee: number;
           ts: string;
         }[];
+      };
+      get_max_fee_rate: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          economy_fee: number;
+          fastest_fee: number;
+          half_hour_fee: number;
+          hour_fee: number;
+          minimum_fee: number;
+          ts: string;
+        }[];
+      };
+      get_or_insert_address: {
+        Args: {
+          _address: string;
+        };
+        Returns: number;
+      };
+      get_or_insert_inscription: {
+        Args: {
+          _inscription_id: string;
+        };
+        Returns: number;
       };
       get_orderbook_by_address: {
         Args: {
@@ -1180,6 +1363,13 @@ export type Database = {
         };
         Returns: unknown;
       };
+      increase_phase_and_allow_lists_allocation: {
+        Args: {
+          phase_id: number;
+          taker_ordinal_address_id: number;
+        };
+        Returns: boolean;
+      };
       set_limit: {
         Args: {
           '': number;
@@ -1196,9 +1386,19 @@ export type Database = {
         };
         Returns: string[];
       };
+      update_pending_taker_confirmation_listings: {
+        Args: {
+          time_seconds: number;
+          trade_history_status: Database['public']['Enums']['trade_history_status'];
+          orderbook_status: Database['public']['Enums']['order_book_status'];
+          new_orderbook_status: Database['public']['Enums']['order_book_status'];
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
-      launchpad_status: 'active' | 'pending';
+      launchpad_status: 'active' | 'pending' | 'completed';
+      launchpad_type: 'psbt' | 'editions';
       order_book_status:
         | 'active'
         | 'inactive'

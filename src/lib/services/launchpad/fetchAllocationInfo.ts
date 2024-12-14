@@ -1,7 +1,7 @@
 /**
  * Fetch allocation information for the user.
  */
-export const fetchAllocationInfo = async (id: number, address: string | undefined) => {
+export const fetchAllocationInfo = async (id: number | undefined, address: string | undefined) => {
   try {
     const response = await fetch(`/api/launchpad/get-allocation/${id}/${address}`, {
       method: 'GET',

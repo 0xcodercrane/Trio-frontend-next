@@ -1,6 +1,11 @@
 import NotFound from '@/app/not-found';
-import Section from '../Section';
 import SpartacusMint from './SpartacusMint';
+
+export enum ECustomMints {
+  Spartacus = 'spartacus'
+}
+
+export const CustomMintValues = Object.values(ECustomMints);
 
 export default function CustomMints({ id }: { id: string }) {
   switch (id) {
