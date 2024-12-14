@@ -10,11 +10,19 @@ const ServiceAccount: admin.ServiceAccount = {
 const SPARTACUS_APP_NAME = 'spartacus';
 
 export const getSpartacusApp = () => {
-  if (ENV !== ENVS.PROD) return null;
+  if (ENV !== ENVS.PROD) {
+    console.warn('Attempted to initialize Spartacus app outside of production environment');
+    return null;
+  }
+
+  // Check if app is already initialized
+  const existingApp = admin.apps.find((app) => app?.name === SPARTACUS_APP_NAME);
+  if (existingApp) {
+    return existingApp;
+  }
+
+  // Initialize the app
   try {
-    return admin.app(SPARTACUS_APP_NAME);
-  } catch (error) {
-    console.log(error);
     return admin.initializeApp(
       {
         serviceAccountId: process.env.SPARTACUS_FIREBASE_ADMIN_CLIENT_EMAIL,
@@ -23,5 +31,8 @@ export const getSpartacusApp = () => {
       },
       SPARTACUS_APP_NAME
     );
+  } catch (error) {
+    console.error('Failed to initialize Firebase app:', error);
+    throw error; // Re-throw error for proper error handling
   }
 };
