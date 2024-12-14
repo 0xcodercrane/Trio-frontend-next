@@ -35,7 +35,9 @@ export default function MultiCollectionInscriptionsTable({
             return (
               <TableRow
                 key={index}
-                onClick={() => router.push(`/collections/${inscription.collection?.slug}/${inscription.inscription_id}`)}
+                onClick={() =>
+                  router.push(`/collections/${inscription.collection?.slug}/${inscription.inscription_id}`, { scroll: true })
+                }
                 className='cursor-pointer'
               >
                 <TableCell>

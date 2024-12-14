@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { X } from 'lucide-react';
 import { Container } from '@/components/Container';
 import SearchPane from './SearchPane';
+import Header from '../Header';
 
 export default function MenuPanes() {
   const { menuDisclosure, menuType, menuBG } = useContext(GlobalContext);
@@ -35,7 +36,8 @@ export default function MenuPanes() {
 
   return (
     <div className={`fixed inset-0 left-0 top-0 ${menuBG} z-50 text-black`}>
-      <div className='fixed left-0 top-0 z-50 flex h-[--header-height] w-full items-center justify-between bg-ob-purple-darkest'>
+      <Header />
+      {/* <div className='fixed left-0 top-0 z-50 flex h-[--header-height] w-full items-center justify-between bg-ob-purple-darkest'>
         <Container padding>
           <div className='flex flex-row justify-between'>
             <div className='flex items-center'>
@@ -52,7 +54,7 @@ export default function MenuPanes() {
             </div>
           </div>
         </Container>
-      </div>
+      </div> */}
 
       <div className='absolute inset-0 top-[--header-height] z-40 overflow-y-auto bg-ob-purple-darkest'>
         <Container justify={menuType === EMenuType.WALLET ? 'center' : 'start'} direction='col' padding>

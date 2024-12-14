@@ -21,17 +21,15 @@ export default function InscriptionsGrid({
   const router = useRouter();
   // const { size } = useFilter();
   return (
-    <div className='grid grid-cols-5 gap-2'>
+    <div className='grid grid-cols-5 gap-4'>
       {inscriptions.map((inscription, index) => (
         <div key={inscription.inscription_id} className='group relative cursor-pointer'>
           {loading ? (
-            <Skeleton
-              className={`${getHeight('basis-[20%]')} w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]`}
-            />
+            <Skeleton className={`h-[18vw] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]`} />
           ) : (
             <div
-              onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`)}
-              className='max-h-[18vw] cursor-pointer overflow-hidden rounded-xl'
+              onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`, { scroll: true })}
+              className='cursor-pointer overflow-hidden rounded-xl'
             >
               <MediaWrapper
                 id={inscription.inscription_id}

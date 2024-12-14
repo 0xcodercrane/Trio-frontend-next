@@ -7,7 +7,7 @@ import { useFilter } from '../hooks';
 export const useCollections = (pagination: TPagination, searchKeyword = '') => {
   // TODO: filter should be moved out of global state
   const { setMax } = useFilter();
-  const { data, isPending } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['collections', pagination.offset, pagination.offset + pagination.limit, searchKeyword],
     queryFn: async () => getCollections(pagination, searchKeyword),
     select: ({ count, collections }) => ({ count: count.data, collections: collections.data || [] }),
@@ -20,5 +20,5 @@ export const useCollections = (pagination: TPagination, searchKeyword = '') => {
     }
   }, [data?.count]);
 
-  return { data: data?.collections || [], isPending };
+  return { data: data?.collections || [], isLoading: isFetching };
 };

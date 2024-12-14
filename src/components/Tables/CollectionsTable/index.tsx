@@ -35,7 +35,7 @@ export function CollectionsTable({
   } = useContext(GlobalContext);
 
   const handleRowClick = (collectionSlug: string) => {
-    router.push(`/collections/${collectionSlug}`);
+    router.push(`/collections/${collectionSlug}`, { scroll: true });
     close();
   };
 
@@ -61,14 +61,11 @@ export function CollectionsTable({
           {isLoading
             ? Array.from({ length: 10 }).map((_, indexRow) => (
                 <TableRow key={`row-${indexRow}`}>
-                  {Array.from({ length: 5 }).map((_, indexCell) => (
+                  {Array.from({ length: searchMode ? 2 : 4 }).map((_, indexCell) => (
                     <TableCell key={`cell-${indexCell}`}>
                       <Skeleton className='min-h-6 w-full' />
                     </TableCell>
                   ))}
-                  <TableCell align='right'>
-                    <Skeleton className='min-h-6 w-full' />
-                  </TableCell>
                 </TableRow>
               ))
             : collections.map((collection) => {
