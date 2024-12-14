@@ -6,6 +6,7 @@ import { Container } from '@/components/Container';
 import { Panels } from '@/components/Collection/FilterPanels';
 import { Skeleton } from '../ui/skeleton';
 import { Img } from '../Img';
+import NotFound from '@/app/not-found';
 
 interface CollectionProps {
   slug: string;
@@ -15,6 +16,10 @@ export default function Collection({ slug }: CollectionProps) {
   const { data, isPending, error } = useCollectionBySlugQuery(slug);
 
   const { name, description, twitter_link, discord_link, website_link, artist, banner_image, icon } = data || {};
+
+  if (!isPending && !data) {
+    return <NotFound />;
+  }
 
   const hasBanner = !!banner_image;
   return (
