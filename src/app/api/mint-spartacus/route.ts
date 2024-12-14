@@ -20,11 +20,10 @@ type RequestBody = {
   useLowPostage: boolean;
 };
 
-// get the Spartacus Firebase Admin App
-const admin = getSpartacusApp();
-
 export async function POST(req: Request) {
   try {
+    // get the Spartacus Firebase Admin App
+    const admin = getSpartacusApp();
     if (!admin) {
       return NextResponse.json({ message: `Spartacus not configured for ${ENV}` }, { status: 500 });
     }
