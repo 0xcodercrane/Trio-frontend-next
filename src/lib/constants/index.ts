@@ -165,7 +165,8 @@ export enum ESOCIALS {
   X = 'x',
   Telegram = 'telegram',
   Discord = 'discord',
-  YouTube = 'youtube'
+  YouTube = 'youtube',
+  Web = 'web'
 }
 export const OB_SOCIALS_CONFIG: TSocialsConfig = {
   [ESOCIALS.Discord]: {

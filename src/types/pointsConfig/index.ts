@@ -47,5 +47,6 @@ export enum EOrderSubType {
   BITMAP = 'bitmap',
   TEXT = 'text',
   INSCRIPTION = 'inscription',
-  BULK_INSCRIPTION = 'bulk-inscription'
+  BULK_INSCRIPTION = 'bulk-inscription',
+  SPARTACUS = 'spartacus'
 }

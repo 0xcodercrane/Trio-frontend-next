@@ -5,7 +5,7 @@ import Socials from '@/components/Socials';
 import { ENV, ENVS, ESOCIALS, USE_LOW_POSTAGE } from '@/lib/constants';
 import { getSocialIcon } from '@/lib/utilities/socials';
 import { TSocialsConfig } from '@/types/socials';
-import { collection, getCountFromServer, getFirestore, query, where } from 'firebase/firestore';
+import { collection, getCountFromServer, getFirestore, query, Timestamp, where } from 'firebase/firestore';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { getSpartacusApp } from './firebase';
 import { Button } from '@/components/ui/button';
@@ -21,11 +21,19 @@ import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQuery } from '@tanstack/react-query';
 import ob from '@/lib/ob';
 import { MempoolTx } from '@/components/common/MempoolTx';
+import { pushDirectOrderToFirebase } from '@/lib/services/points';
+import { auth } from '@/lib/firebase';
+import { OrderType } from 'ordinalsbot/dist/types/v1';
+import { EOrderSubType, ERewardState } from '@/types';
 
 const SOCIALS_CONFIG: TSocialsConfig = {
   [ESOCIALS.X]: {
     img: getSocialIcon(ESOCIALS.X),
     link: 'https://x.com/projspartacus'
+  },
+  [ESOCIALS.Web]: {
+    img: getSocialIcon(ESOCIALS.Web),
+    link: 'https://projectspartacus.xyz'
   }
 };
 
@@ -92,8 +100,19 @@ export function MintComponent() {
         setTxid(response);
         setStage(ESTAGES.Published);
         toast.success(`Successfully Broadcasted TX: ${response}`);
+        // Push the order into firebase for points processing
+        if (auth.currentUser) {
+          pushDirectOrderToFirebase({
+            id: order.id,
+            userId: auth.currentUser?.uid,
+            type: OrderType.DIRECT,
+            subType: EOrderSubType.SPARTACUS,
+            createdAt: Timestamp.now(),
+            rewardState: ERewardState.Default
+          });
+        }
       } catch (error: any) {
-        toast.error(error);
+        toast.error(error.message);
       }
     };
 
@@ -180,7 +199,9 @@ export function MintComponent() {
       )}
       <div className='flex flex-col gap-4'>
         <h1>Project Spartacus</h1>
-        <Socials config={SOCIALS_CONFIG} />
+        <div className='flex flex-row gap-2'>
+          <Socials config={SOCIALS_CONFIG} />
+        </div>
         <span className='max-w-[80%] text-3xl font-thin text-ob-white-40'>
           Stand with Julian Assange by publishing the Afghan War Logs to the Bitcoin Blockchain.
         </span>
