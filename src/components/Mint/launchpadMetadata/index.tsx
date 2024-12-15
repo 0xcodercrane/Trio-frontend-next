@@ -1,7 +1,22 @@
+import Socials from '@/components/Socials';
+import { ESOCIALS } from '@/lib/constants';
+import { getSocialIcon } from '@/lib/utilities/socials';
 import { TMetaData } from '@/types';
-import Image from 'next/image';
+import { TSocialsConfig } from '@/types/socials';
+import { useMemo } from 'react';
 
 const LaunchpadMetaData = ({ metaData }: { metaData: TMetaData }) => {
+  const socialsConfig: TSocialsConfig = useMemo(() => {
+    const { discord_link, twitter_link, website_link, instagram_link, telegram_link } = metaData;
+    const config: TSocialsConfig = {};
+    if (discord_link) config[ESOCIALS.Discord] = { link: discord_link, img: getSocialIcon(ESOCIALS.Discord) };
+    if (twitter_link) config[ESOCIALS.X] = { link: twitter_link, img: getSocialIcon(ESOCIALS.X) };
+    if (website_link) config[ESOCIALS.Web] = { link: website_link, img: getSocialIcon(ESOCIALS.Web) };
+    if (instagram_link) config[ESOCIALS.Instagram] = { link: instagram_link, img: getSocialIcon(ESOCIALS.Instagram) };
+    if (telegram_link) config[ESOCIALS.Telegram] = { link: telegram_link, img: getSocialIcon(ESOCIALS.Telegram) };
+    return config;
+  }, [metaData]);
+
   if (!metaData) {
     return (
       <>
@@ -26,34 +41,8 @@ const LaunchpadMetaData = ({ metaData }: { metaData: TMetaData }) => {
         <p className='text-ob-grey-lighter'>{metaData?.description}</p>
       </div>
 
-      <div className='flex flex-row gap-2'>
-        <div className='social-icons flex w-full flex-row justify-start gap-2'>
-          {metaData?.discord_link && (
-            <a href={metaData.discord_link} target='_blank' rel='noreferrer'>
-              <Image src='/img/socials/discord.svg' alt='discord' width={25} height={25} />
-            </a>
-          )}
-          {metaData?.twitter_link && (
-            <a href={metaData.twitter_link} target='_blank' rel='noreferrer'>
-              <Image src='/img/socials/x.svg' alt='discord' width={25} height={25} />
-            </a>
-          )}
-          {metaData?.website_link && (
-            <a href={metaData?.website_link} target='_blank' rel='noreferrer'>
-              <Image src='/img/socials/link.svg' alt='discord' width={25} height={25} />
-            </a>
-          )}
-          {metaData?.instagram_link && (
-            <a href={metaData?.instagram_link} target='_blank' rel='noreferrer'>
-              <Image src='/img/socials/instagram.svg' alt='discord' width={25} height={25} />
-            </a>
-          )}
-          {metaData?.telegram_link && (
-            <a href={metaData.telegram_link} target='_blank' rel='noreferrer'>
-              <Image src='/img/socials/telegram.svg' alt='discord' width={25} height={25} />
-            </a>
-          )}
-        </div>
+      <div className='flex w-full flex-row justify-start gap-4'>
+        <Socials config={socialsConfig} />
       </div>
     </>
   );

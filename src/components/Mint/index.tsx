@@ -140,10 +140,11 @@ export default function Mint({ id }: { id: string }) {
 
   const metaData: TMetaData = useMemo(() => launchInfo && launchInfo.meta_data, [launchInfo]);
 
+  // In both the totalInscriptions and remainingInscriptions, we are using the public phase to get the total and remaining inscriptions
   const totalInscriptions = useMemo(() => {
     if (launchInfo) {
-      const sum = launchInfo.phases.reduce((acc: any, phase: any) => acc + phase.total_inscriptions, 0);
-      return sum;
+      const publicPhase = launchInfo.phases.find((phase: TPhase) => phase.is_public);
+      return publicPhase.total_inscriptions;
     } else {
       return 0;
     }
@@ -151,8 +152,8 @@ export default function Mint({ id }: { id: string }) {
 
   const remainingInscriptions = useMemo(() => {
     if (launchInfo) {
-      const sum = launchInfo.phases.reduce((acc: any, phase: any) => acc + phase.remaining_inscriptions, 0);
-      return sum;
+      const publicPhase = launchInfo.phases.find((phase: TPhase) => phase.is_public);
+      return publicPhase.remaining_inscriptions;
     } else {
       return 0;
     }
