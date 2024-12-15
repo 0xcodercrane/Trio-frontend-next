@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useCollectionBySlugQuery } from '@/lib/services';
+import { useCollectionBySlugQuery, useCollectionStats } from '@/lib/services';
 import { Container } from '@/components/Container';
 import { Panels } from '@/components/Collection/FilterPanels';
 import { Skeleton } from '../ui/skeleton';
 import { Img } from '../Img';
 import NotFound from '@/app/not-found';
+import { satsToBitcoin } from '@/lib/utilities';
 
 interface CollectionProps {
   slug: string;
@@ -14,6 +15,7 @@ interface CollectionProps {
 
 export default function Collection({ slug }: CollectionProps) {
   const { data, isPending, error } = useCollectionBySlugQuery(slug);
+  const { data: stats, isPending: isPendingStats } = useCollectionStats(slug);
 
   const { name, description, twitter_link, discord_link, website_link, artist, banner_image, icon } = data || {};
 
@@ -82,23 +84,19 @@ export default function Collection({ slug }: CollectionProps) {
                   {[
                     {
                       label: 'floor price',
-                      value: 'XXX'
+                      value: `${stats?.min_price ? satsToBitcoin(stats?.min_price) : '—'} BTC`
                     },
                     {
                       label: 'all time volume',
-                      value: 'XXX'
-                    },
-                    {
-                      label: 'total supply',
-                      value: 'XXX'
+                      value: `${satsToBitcoin(stats?.total_volume_all_time ?? 0)} BTC`
                     },
                     {
                       label: 'listed',
-                      value: 'XXX'
+                      value: stats?.distinct_listings_count ?? 0
                     },
                     {
-                      label: 'owners',
-                      value: 'XXX'
+                      label: 'total supply',
+                      value: stats?.total_inscriptions_count ?? 0
                     },
                     // {
                     //   label: 'royalties',
@@ -120,7 +118,7 @@ export default function Collection({ slug }: CollectionProps) {
                     return (
                       <div key={index} className='flex flex-col justify-between capitalize text-white'>
                         <span className='bold text-sm'>{row.label}</span>
-                        <span className='bold'>{row.value ? row.value : <Skeleton className='min-h-6 w-full' />}</span>
+                        <span className='bold'>{isPendingStats ? <Skeleton className='min-h-6 w-full' /> : row.value}</span>
                       </div>
                     );
                   })}

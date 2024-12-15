@@ -1235,17 +1235,6 @@ export type Database = {
           ts: string;
         }[];
       };
-      get_max_fee_rate: {
-        Args: Record<PropertyKey, never>;
-        Returns: {
-          economy_fee: number;
-          fastest_fee: number;
-          half_hour_fee: number;
-          hour_fee: number;
-          minimum_fee: number;
-          ts: string;
-        }[];
-      };
       get_or_insert_address: {
         Args: {
           _address: string;

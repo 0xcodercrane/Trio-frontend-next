@@ -77,3 +77,5 @@ export const getCollections = async (pagination: TPagination, searchKeyword: str
     .range(pagination.offset, pagination.offset + pagination.limit - 1),
   count: await supabase.rpc('get_collections_count', { search_keyword: `%${searchKeyword}%` })
 });
+
+export const getCollectionStats = async (slug: string) => supabase.rpc('get_collection_stats', { collection_slug: slug });
