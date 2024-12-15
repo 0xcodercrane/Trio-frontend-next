@@ -7,8 +7,9 @@ import { useMemo } from 'react';
 
 const LaunchpadMetaData = ({ metaData }: { metaData: TMetaData }) => {
   const socialsConfig: TSocialsConfig = useMemo(() => {
-    const { discord_link, twitter_link, website_link, instagram_link, telegram_link } = metaData;
     const config: TSocialsConfig = {};
+    if (!metaData) return config;
+    const { discord_link, twitter_link, website_link, instagram_link, telegram_link } = metaData;
     if (discord_link) config[ESOCIALS.Discord] = { link: discord_link, img: getSocialIcon(ESOCIALS.Discord) };
     if (twitter_link) config[ESOCIALS.X] = { link: twitter_link, img: getSocialIcon(ESOCIALS.X) };
     if (website_link) config[ESOCIALS.Web] = { link: website_link, img: getSocialIcon(ESOCIALS.Web) };

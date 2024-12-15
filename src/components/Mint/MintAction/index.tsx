@@ -51,7 +51,7 @@ const MintAction = ({
       </Button>
       {txid && (
         <div className='flex h-full w-fit flex-col gap-4 rounded-lg bg-ob-purple p-4'>
-          <div className='flex flex-row items-center justify-between'>
+          <div className='flex flex-row items-center justify-between gap-4'>
             <div className='flex flex-col gap-2'>
               <span className='text-2xl font-bold text-white'>Pending Transaction</span>
               <a target='_blank' href={`${MEMPOOL_SPACE_URL}/tx/${txid}`} className='flex flex-row gap-2'>
