@@ -5,11 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { validateImage } from '@/lib/utilities/validateImage';
 import { FileUpload } from '../../forms/common/FileUpload';
-import { ESteps, informationFormSchema, PLACE_HOLDER } from '@/types/creators';
+import { ESteps, informationFormSchema, PLACEHOLDER } from '@/types/creators';
 import * as v from 'valibot';
-import { ENETWORK, NETWORK } from '@/lib/constants';
+import { ENETWORK, NETWORK, ONE_SECOND } from '@/lib/constants';
 import { getEntireCollectionBySlug } from '@/lib/supabase';
 import { Loading } from '@/components/common';
+import { stringToLaunchpadSlug } from '@/lib/utilities/launchpad';
+import { getLaunchpadBySlug } from '@/lib/supabase/launchpad';
 
 export const SubmitInformation = ({
   form,
@@ -26,7 +28,7 @@ export const SubmitInformation = ({
   setBannerPreview: (preview: string | null | undefined) => void;
   setThumbnailPreview: (preview: string | null | undefined) => void;
 }) => {
-  const validateCollectionNameAndUniqueSlug = async (name: string): Promise<string | undefined> => {
+  const validateCollectionName = async (name: string): Promise<string | undefined> => {
     try {
       // Validate collection name against the schema
       v.parse(informationFormSchema.entries.name, name);
@@ -35,7 +37,7 @@ export const SubmitInformation = ({
     }
 
     // Generate slug from collection name
-    const slug = name.trim().toLowerCase().replace(/\s+/g, '-');
+    const slug = stringToLaunchpadSlug(name);
 
     try {
       const res: { data: Array<any> | null } = await getEntireCollectionBySlug(slug);
@@ -43,6 +45,31 @@ export const SubmitInformation = ({
       // Check if slug is already in use
       if (res?.data?.length) {
         return 'Collection name is already taken.';
+      }
+
+      return undefined; // Name is valid and slug is unique
+    } catch (error) {
+      return error instanceof Error ? error.message : 'Error validating collection slug';
+    }
+  };
+
+  const validateLaunchpadSlug = async (name: string): Promise<string | undefined> => {
+    try {
+      // Validate collection name against the schema
+      v.parse(informationFormSchema.entries.name, name);
+    } catch (error) {
+      return error instanceof Error ? error.message : 'Invalid collection name';
+    }
+
+    // Generate slug from collection name
+    const slug = stringToLaunchpadSlug(name);
+
+    try {
+      const res: { data: Array<any> | null } = await getLaunchpadBySlug(slug);
+
+      // Check if slug is already in use
+      if (res?.data?.length) {
+        return 'Launchpad slug is already taken.';
       }
 
       return undefined; // Name is valid and slug is unique
@@ -65,15 +92,15 @@ export const SubmitInformation = ({
           <form.Field
             name='name'
             validators={{
-              onChangeAsyncDebounceMs: 1000,
+              onChangeAsyncDebounceMs: ONE_SECOND.toMillis(),
               onChangeAsync: async ({ value }: { value: string }) => {
                 if (value) {
-                  return await validateCollectionNameAndUniqueSlug(value);
+                  return validateCollectionName(value);
                 }
               },
               onsubmit: async ({ value }: { value: string }) => {
                 if (value) {
-                  return await validateCollectionNameAndUniqueSlug(value);
+                  return validateCollectionName(value);
                 }
               }
             }}
@@ -89,7 +116,45 @@ export const SubmitInformation = ({
                     id={name}
                     value={state.value || ''}
                     type='text'
-                    placeholder={PLACE_HOLDER}
+                    placeholder={PLACEHOLDER}
+                    className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
+                    onBlur={handleBlur}
+                    onChange={(e) => handleChange(e.target.value)}
+                  />
+                  <FieldInfo field={field} />
+                </div>
+              );
+            }}
+          />
+
+          <form.Field
+            name='slug'
+            validators={{
+              onChangeAsyncDebounceMs: ONE_SECOND.toMillis(),
+              onChangeAsync: async ({ value }: { value: string }) => {
+                if (value) {
+                  return validateLaunchpadSlug(value);
+                }
+              },
+              onsubmit: async ({ value }: { value: string }) => {
+                if (value) {
+                  return validateLaunchpadSlug(value);
+                }
+              }
+            }}
+            children={(field: any) => {
+              const { state, name, handleBlur, handleChange } = field;
+
+              return (
+                <div className='flex w-full flex-col gap-1'>
+                  <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
+                    Launchpad Slug
+                  </label>
+                  <Input
+                    id={name}
+                    value={state.value || ''}
+                    type='text'
+                    placeholder={PLACEHOLDER}
                     className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
@@ -115,7 +180,7 @@ export const SubmitInformation = ({
                   <Textarea
                     id={name}
                     value={state.value || ''}
-                    placeholder={PLACE_HOLDER}
+                    placeholder={PLACEHOLDER}
                     className='w-full border-none bg-ob-purple px-5 py-5 outline-none'
                     rows={6}
                     onBlur={handleBlur}
@@ -144,7 +209,7 @@ export const SubmitInformation = ({
                     id={name}
                     value={state.value || ''}
                     type='text'
-                    placeholder={PLACE_HOLDER}
+                    placeholder={PLACEHOLDER}
                     className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}
@@ -174,7 +239,7 @@ export const SubmitInformation = ({
                         id={name}
                         value={state.value || ''}
                         type='text'
-                        placeholder={PLACE_HOLDER}
+                        placeholder={PLACEHOLDER}
                         className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                         onBlur={handleBlur}
                         onChange={(e) => handleChange(e.target.value)}
@@ -207,7 +272,7 @@ export const SubmitInformation = ({
                         id={name}
                         value={state.value || ''}
                         type='text'
-                        placeholder={PLACE_HOLDER}
+                        placeholder={PLACEHOLDER}
                         className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                         onBlur={handleBlur}
                         onChange={(e) => handleChange(e.target.value)}
@@ -240,7 +305,7 @@ export const SubmitInformation = ({
                         id={name}
                         value={state.value || ''}
                         type='text'
-                        placeholder={PLACE_HOLDER}
+                        placeholder={PLACEHOLDER}
                         className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                         onBlur={handleBlur}
                         onChange={(e) => handleChange(e.target.value)}
@@ -273,7 +338,7 @@ export const SubmitInformation = ({
                         id={name}
                         value={state.value || ''}
                         type='text'
-                        placeholder={PLACE_HOLDER}
+                        placeholder={PLACEHOLDER}
                         className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                         onBlur={handleBlur}
                         onChange={(e) => handleChange(e.target.value)}
@@ -309,7 +374,7 @@ export const SubmitInformation = ({
                       id={name}
                       value={state.value || ''}
                       type='text'
-                      placeholder={PLACE_HOLDER}
+                      placeholder={PLACEHOLDER}
                       className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                       onBlur={handleBlur}
                       onChange={(e) => handleChange(e.target.value)}
@@ -336,7 +401,7 @@ export const SubmitInformation = ({
                       id={name}
                       value={state.value || ''}
                       type='text'
-                      placeholder={PLACE_HOLDER}
+                      placeholder={PLACEHOLDER}
                       className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                       onBlur={handleBlur}
                       onChange={(e) => handleChange(e.target.value)}
@@ -370,7 +435,7 @@ export const SubmitInformation = ({
                     id={name}
                     value={state.value || ''}
                     type='text'
-                    placeholder={PLACE_HOLDER}
+                    placeholder={PLACEHOLDER}
                     className='w-full border-none bg-ob-purple px-5 py-7 outline-none'
                     onBlur={handleBlur}
                     onChange={(e) => handleChange(e.target.value)}

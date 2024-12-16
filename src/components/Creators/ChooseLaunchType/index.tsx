@@ -173,7 +173,7 @@ export const ChooseLaunchType = ({ setStep }: { setStep: (step: number) => void 
           </Button>
           <Button
             disabled={!isAuthenticated}
-            onClick={() => setStep(ESteps.INFORAMATION)}
+            onClick={() => setStep(ESteps.INFORMATION)}
             size='lg'
             variant='default'
             className='min-w-52 rounded-md'

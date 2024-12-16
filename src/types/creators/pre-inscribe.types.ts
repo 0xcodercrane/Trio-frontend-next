@@ -1,11 +1,11 @@
 import * as v from 'valibot';
 
-export const PLACE_HOLDER = 'XXX';
+export const PLACEHOLDER = 'XXX';
 
 export enum ESteps {
   START = 1,
   CHOOSE_TYPE = 2,
-  INFORAMATION = 3,
+  INFORMATION = 3,
   INSCRIPTIONS = 4,
   PHASE = 5,
   SUBMIT = 6
@@ -36,6 +36,12 @@ export const informationFormSchema = v.object({
     v.trim(),
     v.minLength(3, 'Collection name must be at least 3 characters long.'),
     v.nonEmpty('Collection name is required.')
+  ),
+  slug: v.pipe(
+    v.string(),
+    v.trim(),
+    v.minLength(1, 'Collection slug must be at least 1 character long.'),
+    v.nonEmpty('Launchpad slug is required.')
   ),
   description: v.pipe(
     v.string(),

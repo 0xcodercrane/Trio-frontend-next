@@ -240,7 +240,7 @@ export const ChooseInscriptions = ({
 
       <div className='mt-16 flex justify-center gap-2'>
         <Button
-          onClick={() => setStep(ESteps.INFORAMATION)}
+          onClick={() => setStep(ESteps.INFORMATION)}
           type='button'
           variant='default'
           className='min-w-52 rounded-md'

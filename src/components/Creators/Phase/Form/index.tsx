@@ -47,7 +47,7 @@ const FinishedForm = ({
       <div className='flex items-center justify-between gap-2'>
         <div className='grid w-full grid-cols-3 gap-4 xl:grid-cols-7 xl:gap-6'>
           <div>
-            <div className='text-sm'>Price (BTC)</div>
+            <div className='text-sm'>Price (sats)</div>
             <div className='text-sm text-ob-grey-lighter'>{data?.price}</div>
           </div>
           <div>
@@ -401,7 +401,7 @@ const EditForm = ({
               return (
                 <div className='flex w-full flex-col gap-1'>
                   <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
-                    Price (BTC)
+                    Price (sats)
                   </label>
                   <Input
                     id={name}

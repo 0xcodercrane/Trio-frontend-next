@@ -30,7 +30,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as v from 'valibot';
 import { ChooseLaunchType } from '../ChooseLaunchType';
 import { auth } from '@/lib/firebase';
-import { bitcoinToSats } from '@/lib/utilities';
+import { stringToLaunchpadSlug } from '@/lib/utilities/launchpad';
 
 const StepConfig = {
   [ESteps.START]: {
@@ -39,7 +39,7 @@ const StepConfig = {
   [ESteps.CHOOSE_TYPE]: {
     label: 'Choose Launch Type'
   },
-  [ESteps.INFORAMATION]: {
+  [ESteps.INFORMATION]: {
     label: 'Submit Information'
   },
   [ESteps.INSCRIPTIONS]: {
@@ -55,6 +55,7 @@ const StepConfig = {
 
 const informationDefaultValues = {
   name: '',
+  slug: '',
   description: '',
   creator_name: '',
   creator_btc_address: '',
@@ -115,7 +116,8 @@ const prepareRequestBody = async (
   phases: TPhaseFormSchema['phases'],
   wallet: IWallet | null
 ) => {
-  const collectionSlug = `${meta.name.trim().toLowerCase().replace(/\s+/g, '-')}`;
+  const collectionSlug = stringToLaunchpadSlug(meta.name);
+  const launchpadSlug = stringToLaunchpadSlug(meta.slug);
   const storagePath = `/launchpad/${auth?.currentUser?.uid}/${collectionSlug}/`;
   const iconImgUrl = meta?.icon ? await uploadImageAndGetURL(meta?.icon, storagePath) : '';
   const bannerImgUrl = meta?.banner_image ? await uploadImageAndGetURL(meta?.banner_image, storagePath) : '';
@@ -129,14 +131,14 @@ const prepareRequestBody = async (
   const metaWithOptionalIcon = {
     ...meta,
     banner_image: bannerImgUrl,
-    slug: collectionSlug,
+    slug: launchpadSlug,
     ...(iconImgUrl && { icon: iconImgUrl })
   };
 
   const phasesData = phases.map((phase) => {
     const basePhase = {
       name: phase.name,
-      price: bitcoinToSats(Number(phase.price)),
+      price: Number(phase.price),
       startDate: convertToUnixTimestamp(new Date(phase.startDate), phase.startTime),
       endDate: convertToUnixTimestamp(new Date(phase.endDate), phase.endTime),
       isPublic: phase.isPublic
@@ -158,6 +160,7 @@ const prepareRequestBody = async (
     makerOrdinalAddress: wallet?.ordinalsAddress,
     meta: metaWithOptionalIcon,
     data,
+    slug: collectionSlug,
     phases: phasesData
   };
 };
@@ -295,7 +298,7 @@ export default function Launchpad() {
     switch (currentStep) {
       case ESteps.START:
         return '';
-      case ESteps.INFORAMATION:
+      case ESteps.INFORMATION:
         return 'Launch Your Ordinals Collection';
       case ESteps.INSCRIPTIONS:
         return 'Choose Inscriptions';
@@ -339,7 +342,7 @@ export default function Launchpad() {
         return <GetStarted setStep={setCurrentStep} />;
       case ESteps.CHOOSE_TYPE:
         return <ChooseLaunchType setStep={setCurrentStep} />;
-      case ESteps.INFORAMATION:
+      case ESteps.INFORMATION:
         return (
           <SubmitInformation
             setStep={setCurrentStep}
