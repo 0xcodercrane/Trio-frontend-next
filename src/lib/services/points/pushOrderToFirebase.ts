@@ -1,5 +1,5 @@
 import { auth, firestore } from '@/lib/firebase';
-import { ERewardState } from '@/types';
+import { EOrderSubType, ERewardState } from '@/types';
 import { TTrioAccountOrder } from '@/types/orders';
 import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { toast } from 'sonner';
@@ -9,6 +9,7 @@ export async function pushListingOrderToFirebase(id: number, address: string) {
 
   await addDoc(collection(firestore, 'orders'), {
     source: 'trio.xyz',
+    type: 'buy-listing',
     id,
     address,
     createdAt: Timestamp.now(),
