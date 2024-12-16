@@ -1,6 +1,7 @@
 'use client';
+import { ONE_SECOND } from '@/lib/constants';
 import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { useEffect, useMemo, useState } from 'react';
 
 export function BlockCountdown({
@@ -12,8 +13,7 @@ export function BlockCountdown({
   endBlock: number;
   format: 'block' | 'time';
 }) {
-  const [timeRemaining, setTimeRemaining] = useState<DateTime | null>(null);
-  const [toTheSecondTime, setToTheSecondTime] = useState<DateTime | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<Duration | null>(null);
   const [blocksRemaining, setBlocksRemaining] = useState<number | null>(null);
   const { data: tip } = useBlockHeight();
 
@@ -30,11 +30,12 @@ export function BlockCountdown({
         remainingBlocks = endBlock - tip;
       }
 
-      const remainingTime = remainingBlocks * 10 * 60 * 1000; // 10 minutes per block in milliseconds
-      const remaining = DateTime.now().plus({ milliseconds: remainingTime });
+      const remainingTime = remainingBlocks * 10 * 60 * ONE_SECOND.toMillis(); // 10 minutes per block in milliseconds
+      const remaining = Duration.fromMillis(remainingTime);
+
       setTimeRemaining(remaining);
       setBlocksRemaining(remainingBlocks);
-    }, 1000);
+    }, ONE_SECOND.toMillis());
 
     return () => clearInterval(interval);
   }, [tip, startBlock, endBlock]);
@@ -42,15 +43,15 @@ export function BlockCountdown({
   useEffect(() => {
     if (!blocksRemaining || blocksRemaining === -1) return;
     const interval = setInterval(() => {
-      setToTheSecondTime((prevTime) => (prevTime ? prevTime.minus({ seconds: 1 }) : timeRemaining));
-    }, 1000);
+      setTimeRemaining((prevTime) => (prevTime ? prevTime.minus({ second: 1 }) : timeRemaining));
+    }, ONE_SECOND.toMillis());
 
     return () => clearInterval(interval);
   }, [blocksRemaining]);
 
   const content = useMemo(() => {
-    if (!toTheSecondTime || !blocksRemaining || !tip) return '• • •';
-    const toTheSecondDisplay = toTheSecondTime.toFormat(`d'd' h'h' m'm' s's`);
+    if (!timeRemaining || !blocksRemaining || !tip) return '• • •';
+    const toTheSecondDisplay = timeRemaining.toFormat(`d'd' h'h' m'm' s's`);
 
     if (startBlock === -1) {
       return 'Pending';
@@ -65,7 +66,7 @@ export function BlockCountdown({
     } else {
       return 'Unknown Schema';
     }
-  }, [toTheSecondTime, blocksRemaining]);
+  }, [blocksRemaining]);
 
   return <div className='rounded-md border border-ob-yellow px-2 py-1 text-ob-yellow'>{content}</div>;
 }

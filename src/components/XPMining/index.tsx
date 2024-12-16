@@ -39,23 +39,22 @@ export function XPMining() {
   const { open, close, isOpen } = useDisclosure();
 
   useEffect(() => {
-    if (!user?.syntheticBalance) return;
+    if (!user?.syntheticBalance || !pointsConfig) return;
     const { syntheticBalance } = user;
-    const pointsPerBlock = syntheticBalance / 100 / XP_MINING_CYCLE_LENGTH;
+    const { staking } = pointsConfig;
+    const pointsPerBlock = syntheticBalance / staking.factor / XP_MINING_CYCLE_LENGTH;
     const pps = pointsPerBlock / AVERAGE_BLOCK_TIME / 60;
     setPointsPerSecond(pps);
     setTmpPoints(currentBlockInCycle * pointsPerBlock);
-  }, [user?.syntheticBalance, currentBlockInCycle]);
+  }, [user?.syntheticBalance, currentBlockInCycle, pointsConfig]);
 
   useEffect(() => {
-    if (!pointsConfig) return;
-    const { staking } = pointsConfig;
     const interval = setInterval(() => {
-      setTmpPoints((prevPoints) => (prevPoints + pointsPerSecond) / 2);
+      setTmpPoints((prevPoints) => prevPoints + pointsPerSecond / 2);
     }, ONE_SECOND.toMillis() / 2); // Update every half second
 
     return () => clearInterval(interval);
-  }, [pointsPerSecond, pointsConfig]);
+  }, [pointsPerSecond]);
 
   useEffect(() => {
     setTargetEndBlock(DateTime.now().plus({ seconds: blocksRemaining * AVERAGE_BLOCK_TIME * 60 }));
