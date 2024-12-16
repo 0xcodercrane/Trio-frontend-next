@@ -32,7 +32,10 @@ export async function GET() {
   try {
     const blockHeight = await fetchBlockHeight();
     const response = NextResponse.json(blockHeight);
-    response.headers.set('Cache-Control', 'no-store');
+
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+    response.headers.set('CDN-Cache-Control', 'no-store');
+    response.headers.set('Pragma', 'no-cache');
 
     return response;
   } catch (err: any) {
