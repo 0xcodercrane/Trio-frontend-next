@@ -106,7 +106,7 @@ export default function WalletConnectionPane() {
   }, [hasUnisat, hasXverse, hasMagicEden, hasLeather, hasLeather, hasOkx, hasOyl, hasPhantom, hasOrange, hasWizz]);
 
   return (
-    <Container padding justify='center'>
+    <Container padding justify='center' className='items-center'>
       <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-purple-darkest text-white'>
         {!isAuthenticated && !signingInProgress && (
           <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>
@@ -123,26 +123,24 @@ export default function WalletConnectionPane() {
             Object.entries(WALLET_OPTIONS).map(([key, wallet]) => {
               const hasWallet = WalletInstallationMatrix[key as ESUPPORTED_WALLETS];
               return (
-                WalletInstallationMatrix[key as ESUPPORTED_WALLETS] && (
-                  <Button
-                    key={wallet.name}
-                    variant='ghost'
-                    className='w-full min-w-fit max-w-[33%] justify-between hover:text-white'
-                    onClick={() => {
-                      // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
-                      if (hasWallet) return handleConnect(key);
-                      else if (wallet.downloadUrl && window) window.open(wallet.downloadUrl);
-                    }}
-                  >
-                    <div className='flex w-full flex-row items-center gap-2'>
-                      <div className='max-h-[var(--button-height-xs)] max-w-[var(--button-height-xs)]'>
-                        {React.isValidElement(wallet.icon) ? wallet.icon : null}
-                      </div>
-                      <span>{wallet.name}</span>
+                <Button
+                  key={wallet.name}
+                  variant='ghost'
+                  className='w-full min-w-fit max-w-[33%] justify-between hover:text-white'
+                  onClick={() => {
+                    // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
+                    if (hasWallet) return handleConnect(key);
+                    else if (wallet.downloadUrl && window) window.open(wallet.downloadUrl);
+                  }}
+                >
+                  <div className='flex w-full flex-row items-center gap-2'>
+                    <div className='max-h-[var(--button-height-xs)] max-w-[var(--button-height-xs)]'>
+                      {React.isValidElement(wallet.icon) ? wallet.icon : null}
                     </div>
-                    {hasWallet ? <ChevronRight size={20} className='hover:text-white' /> : <MonitorDown size={20} />}
-                  </Button>
-                )
+                    <span>{wallet.name}</span>
+                  </div>
+                  {hasWallet ? <ChevronRight size={20} className='hover:text-white' /> : <MonitorDown size={20} />}
+                </Button>
               );
             })}
         </div>
