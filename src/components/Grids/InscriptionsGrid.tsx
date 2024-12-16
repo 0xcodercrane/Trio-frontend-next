@@ -5,17 +5,13 @@ import { MediaWrapper } from '../common';
 import { InscriptionOverlay } from '../InscriptionOverlay';
 import { Skeleton } from '../ui/skeleton';
 import { useRouter } from 'next/navigation';
+import { InscriptionWithMetadata } from '@/types';
 
 export default function InscriptionsGrid({
   inscriptions,
   isFetching
 }: {
-  inscriptions: Array<{
-    inscription_id: string;
-    name: string;
-    order_status?: 'active' | 'inactive' | 'pending_taker_confirmation' | 'pending_maker_confirmation' | 'broadcast';
-    price?: number;
-  }>;
+  inscriptions: Array<InscriptionWithMetadata>;
   isFetching: boolean;
 }) {
   const router = useRouter();

@@ -1,6 +1,31 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+          extensions?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       addresses: {
@@ -1202,6 +1227,20 @@ export type Database = {
           search_keyword: string;
         };
         Returns: number;
+      };
+      get_inscription_details_wallet_view: {
+        Args: {
+          inscription_ids: string[];
+        };
+        Returns: {
+          inscription_id: string;
+          collection_name: string;
+          collection_slug: string;
+          collection_id: number;
+          collection_icon: string;
+          orderbook_status: string;
+          listed_price: number;
+        }[];
       };
       get_inscriptions_with_price_by_collection_slug: {
         Args: {
