@@ -31,6 +31,7 @@ import * as v from 'valibot';
 import { ChooseLaunchType } from '../ChooseLaunchType';
 import { auth } from '@/lib/firebase';
 import { stringToLaunchpadSlug } from '@/lib/utilities/launchpad';
+import { bitcoinToSats } from '@/lib/utilities';
 
 const StepConfig = {
   [ESteps.START]: {
@@ -132,14 +133,13 @@ const prepareRequestBody = async (
   const metaWithOptionalIcon = {
     ...meta,
     banner_image: bannerImgUrl,
-    slug: launchpadSlug,
     ...(iconImgUrl && { icon: iconImgUrl })
   };
 
   const phasesData = phases.map((phase) => {
     const basePhase = {
       name: phase.name,
-      price: Number(phase.price),
+      price: phase.price,
       startDate: convertToUnixTimestamp(new Date(phase.startDate), phase.startTime),
       endDate: convertToUnixTimestamp(new Date(phase.endDate), phase.endTime),
       isPublic: phase.isPublic
@@ -157,7 +157,7 @@ const prepareRequestBody = async (
   });
 
   return {
-    slug: collectionSlug,
+    slug: launchpadSlug,
     makerPaymentAddress: wallet?.paymentAddress,
     makerPaymentPublicKey: wallet?.paymentPublicKey,
     makerOrdinalPublicKey: wallet?.ordinalsPublicKey,
@@ -171,7 +171,7 @@ const prepareRequestBody = async (
 const preparePhaseParse = (phases: TPhaseFormSchema['phases']) => {
   return phases.map((p) => ({
     name: p.name,
-    price: Number(p.price),
+    price: bitcoinToSats(Number(p.price)),
     allocation: Number(p.allocation),
     startDate: p.startDate,
     endDate: p.endDate,
@@ -380,7 +380,7 @@ export default function Launchpad() {
           case ESubmit.SUBMITTING:
             return <Submitting />;
           case ESubmit.SUBMITTED:
-            return <Submitted />;
+            return <Submitted slug={informationForm.getFieldValue('name')} />;
           case ESubmit.FAILED:
             return <SubmitFailed />;
         }

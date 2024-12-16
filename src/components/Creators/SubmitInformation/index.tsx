@@ -47,6 +47,7 @@ export const SubmitInformation = ({
         return 'Collection name is already taken.';
       }
 
+      //TODO: Change this later. Success indicator should not be undefined
       return undefined; // Name is valid and slug is unique
     } catch (error) {
       return error instanceof Error ? error.message : 'Error validating collection slug';
@@ -92,10 +93,14 @@ export const SubmitInformation = ({
           <form.Field
             name='name'
             validators={{
-              onChangeAsyncDebounceMs: ONE_SECOND.toMillis(),
+              onChangeAsyncDebounceMs: ONE_SECOND.toMillis() / 2,
               onChangeAsync: async ({ value }: { value: string }) => {
                 if (value) {
-                  return validateCollectionName(value);
+                  const valid = await validateCollectionName(value);
+                  if (valid === undefined) {
+                    form.setFieldValue('slug', value.replace(/\s+/g, '-'));
+                    return valid;
+                  }
                 }
               },
               onsubmit: async ({ value }: { value: string }) => {

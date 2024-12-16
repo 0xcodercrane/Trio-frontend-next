@@ -1,11 +1,5 @@
 import { storage } from '@/lib/firebase';
-import { ref, uploadBytes } from 'firebase/storage';
-
-const constructImageURL = (metadata: { bucket: string; fullPath: string }): string => {
-  const baseURL = 'https://firebasestorage.googleapis.com/v0/b';
-  const { bucket, fullPath } = metadata;
-  return `${baseURL}/${bucket}/o/${encodeURIComponent(fullPath)}?alt=media`;
-};
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 export const uploadImageAndGetURL = async (file: File, path: string): Promise<string> => {
   try {
@@ -13,12 +7,12 @@ export const uploadImageAndGetURL = async (file: File, path: string): Promise<st
 
     const snapshot = await uploadBytes(storageRef, file);
 
-    const imageUrl = constructImageURL({
-      bucket: snapshot.metadata.bucket,
-      fullPath: snapshot.metadata.fullPath
-    });
-
-    return imageUrl;
+    if (snapshot) {
+      const downloadUrl = await getDownloadURL(snapshot.ref);
+      return downloadUrl;
+    } else {
+      throw new Error('Error uploading image');
+    }
   } catch (error) {
     console.error('Error uploading image:', error);
     throw error;
