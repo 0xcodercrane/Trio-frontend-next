@@ -31,7 +31,10 @@ const fetchBlockHeight = async () => {
 export async function GET() {
   try {
     const blockHeight = await fetchBlockHeight();
-    return NextResponse.json(blockHeight).headers.set('Cache-Control', 'no-store');
+    const response = NextResponse.json(blockHeight);
+    response.headers.set('Cache-Control', 'no-store');
+
+    return response;
   } catch (err: any) {
     console.error('Error in /api/blockHeight:', err.message);
     return NextResponse.json(
