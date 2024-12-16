@@ -143,7 +143,7 @@ export const phaseFormSchema = v.object({
     v.array(
       v.object({
         name: v.pipe(v.string(), v.trim(), v.nonEmpty('Phase name is required.')),
-        price: v.pipe(v.number(), v.minValue(0.00000546, 'Price must be at least 0.00000546')),
+        price: v.pipe(v.number(), v.minValue(0, 'Price cannot be negative')),
         allocation: v.pipe(v.number(), v.minValue(1, 'Allocation is required and must be at least 1.')),
         startDate: v.pipe(v.string(), v.nonEmpty('Start date is required.')),
         endDate: v.pipe(v.string(), v.nonEmpty('End date is required.')),

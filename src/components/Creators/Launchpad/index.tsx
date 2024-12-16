@@ -118,6 +118,7 @@ const prepareRequestBody = async (
 ) => {
   const collectionSlug = stringToLaunchpadSlug(meta.name);
   const launchpadSlug = stringToLaunchpadSlug(meta.slug);
+
   const storagePath = `/launchpad/${auth?.currentUser?.uid}/${collectionSlug}/`;
   const iconImgUrl = meta?.icon ? await uploadImageAndGetURL(meta?.icon, storagePath) : '';
   const bannerImgUrl = meta?.banner_image ? await uploadImageAndGetURL(meta?.banner_image, storagePath) : '';
@@ -147,20 +148,22 @@ const prepareRequestBody = async (
     if (!phase.isPublic) {
       return {
         ...basePhase,
-        allowList: convertStringAllowListToArray(phase.allowList, Number(phase.allocation), phase.isSameAllocation)
+        allowList: convertStringAllowListToArray(phase.allowList, Number(phase.allocation), phase.isSameAllocation),
+        ...(phase.isSameAllocation && { allocation: Number(phase.allocation) })
       };
     }
+
     return basePhase;
   });
 
   return {
+    slug: collectionSlug,
     makerPaymentAddress: wallet?.paymentAddress,
     makerPaymentPublicKey: wallet?.paymentPublicKey,
     makerOrdinalPublicKey: wallet?.ordinalsPublicKey,
     makerOrdinalAddress: wallet?.ordinalsAddress,
     meta: metaWithOptionalIcon,
     data,
-    slug: collectionSlug,
     phases: phasesData
   };
 };
@@ -315,7 +318,19 @@ export default function Launchpad() {
   };
 
   const handleStepClick = (step: ESteps) => {
-    setCurrentStep(step);
+    if (!isAuthenticated) {
+      return toast.error('Please connect your wallet.');
+    }
+
+    if (step === ESteps.INSCRIPTIONS) {
+      informationForm.handleSubmit();
+    } else if (step === ESteps.PHASE) {
+      inscriptionForm.handleSubmit();
+    } else if (step === ESteps.SUBMIT) {
+      phasesForm.handleSubmit();
+    } else {
+      setCurrentStep(step);
+    }
   };
 
   const handleLaunch = () => {

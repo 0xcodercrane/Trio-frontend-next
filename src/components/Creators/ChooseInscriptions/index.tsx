@@ -13,6 +13,24 @@ import {
   TInscriptionFormSchema
 } from '@/types/creators';
 
+const example: TInscriptionFormSchema['inscriptions'][0] = {
+  id: '1534190eb9d12542dbda23801f16001167b6228a75fae3354b98c794b69c1269i0',
+  meta: {
+    name: 'NFT #1',
+    high_res_img_url: 'https://hi_res_img.png',
+    attributes: [
+      {
+        trait_type: 'Clan',
+        value: 'Aoi'
+      },
+      {
+        trait_type: 'Class',
+        value: 'Warrior'
+      }
+    ]
+  }
+};
+
 export const ChooseInscriptions = ({
   setStep,
   form,
@@ -25,25 +43,19 @@ export const ChooseInscriptions = ({
   setUploadTab: (tab: InscriptionInputTypes) => void;
 }) => {
   const [inscriptioinTab, setInscriptionTab] = useState<InscriptionDisplayTypes>(InscriptionDisplayTypes.ID_NAME_ATTRIBUTES);
-  const [inscriptiondata, setInscriptionData] = useState<TInscriptionFormSchema['inscriptions']>(
-    form.state.values.inscriptions
-  );
+  const inscriptiondataExample: TInscriptionFormSchema['inscriptions'] = [example, example, example, example];
 
   const renderInscriptionDisplayContent = () => {
     if (inscriptioinTab === InscriptionDisplayTypes.ID_NAME_ATTRIBUTES) {
-      return (
-        <pre className='text-xs text-ob-grey-lighter'>
-          {inscriptiondata?.length ? JSON.stringify(form.state.values.inscriptions, null, 2) : ''}
-        </pre>
-      );
+      return <pre className='text-xs text-ob-grey-lighter'>{JSON.stringify(inscriptiondataExample, null, 2)}</pre>;
     } else if (inscriptioinTab === InscriptionDisplayTypes.ID_NAME) {
-      const data = inscriptiondata?.map((i: TInscriptionFormSchema['inscriptions'][0]) => ({
+      const data = inscriptiondataExample.map((i: TInscriptionFormSchema['inscriptions'][0]) => ({
         id: i.id,
-        name: i.meta?.name
+        name: i?.meta?.name
       }));
       return <pre className='text-xs text-ob-grey-lighter'>{data?.length ? JSON.stringify(data, null, 2) : ''}</pre>;
     } else {
-      const data = inscriptiondata?.map((i: TInscriptionFormSchema['inscriptions'][0]) => ({
+      const data = inscriptiondataExample.map((i: TInscriptionFormSchema['inscriptions'][0]) => ({
         id: i.id
       }));
       return <pre className='text-xs text-ob-grey-lighter'>{data?.length ? JSON.stringify(data, null, 2) : ''}</pre>;
@@ -186,7 +198,6 @@ export const ChooseInscriptions = ({
 
                     // Set parsed data in form and state
                     form.setFieldValue('inscriptions', inscriptionJsonData);
-                    setInscriptionData(inscriptionJsonData);
                   } catch (error: any) {
                     // Error handling based on type of error
                     if (error.name === 'SyntaxError') {

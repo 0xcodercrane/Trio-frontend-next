@@ -65,13 +65,13 @@ export default function Mint({ id }: { id: string }) {
     (feeRate: number) => {
       withPaddingOutputs(async () => {
         if (!wallet?.paymentAddress || !wallet?.paymentPublicKey) {
-          return handleError('Wallet information is incomplete');
+          return handleMintFailure('Wallet information is incomplete');
         }
 
         try {
           await executeMint(feeRate);
         } catch (error: any) {
-          handleError(error.message || 'Cannot mint due to an unexpected error');
+          handleMintFailure(error.message || 'Cannot mint due to an unexpected error');
         }
       });
     },
@@ -79,8 +79,8 @@ export default function Mint({ id }: { id: string }) {
   );
 
   const executeMint = async (feeRate: number) => {
-    if (!isAuthenticated) return handleError('Please connect your wallet');
-    if (currentPhase === null) return handleError('No active mint phase');
+    if (!isAuthenticated) return handleMintFailure('Please connect your wallet');
+    if (currentPhase === null) return handleMintFailure('No active mint phase');
 
     setMintState(EMintState.MINT_PROMPT);
 
@@ -125,16 +125,7 @@ export default function Mint({ id }: { id: string }) {
   };
 
   const handleMintFailure = (error: string) => {
-    resetMint();
     toast.error(error);
-  };
-
-  const handleError = (error: string) => {
-    toast.error(error);
-    return { success: false, error };
-  };
-
-  const resetMint = () => {
     setMintState(EMintState.DEFAULT);
   };
 

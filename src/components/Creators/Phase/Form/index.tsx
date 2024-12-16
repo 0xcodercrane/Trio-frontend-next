@@ -3,7 +3,7 @@ import FieldInfo from '@/components/common/FieldInfo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { LOW_POSTAGE } from '@/lib/constants';
+import { ZERO } from '@/lib/constants';
 import { phaseFormSchema, TPhaseFormSchema } from '@/types/creators';
 import { useForm } from '@tanstack/react-form';
 import validate from 'bitcoin-address-validation';
@@ -52,7 +52,7 @@ const FinishedForm = ({
           </div>
           <div>
             <div className='text-sm'>Allocations</div>
-            <div className='text-sm text-ob-grey-lighter'>{data?.allocation}</div>
+            <div className='text-sm text-ob-grey-lighter'>{data?.isPublic ? 'Unlimited' : data?.allocation}</div>
           </div>
           <div>
             <div className='text-sm'>Start Time</div>
@@ -72,7 +72,7 @@ const FinishedForm = ({
           </div>
           <div>
             <div className='text-sm'>Allow List</div>
-            <div className='text-sm text-ob-grey-lighter'>Active</div>
+            <div className='text-sm text-ob-grey-lighter'>{data?.isPublic ? 'Public' : 'Active'}</div>
           </div>
         </div>
         <button
@@ -97,7 +97,6 @@ const EditForm = ({
   form,
   phaseIndex,
   isAllowList,
-  isSameAllocation,
   isUpdatingTanstackArray,
   allowSameAllocation,
   setAllowSameAllocation,
@@ -108,7 +107,6 @@ const EditForm = ({
   form: ReturnType<typeof useForm<TPhaseFormSchema>>;
   phaseIndex: number;
   isAllowList: boolean;
-  isSameAllocation: boolean;
   isUpdatingTanstackArray: boolean;
   allowSameAllocation: boolean;
   setAllowSameAllocation: (same: boolean) => void;
@@ -193,6 +191,13 @@ const EditForm = ({
 
                 if (endDate && endDate.getTime() < startDate.getTime()) {
                   return 'The start date cannot be later than the end date of the current phase.';
+                }
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (startDate.getTime() < today.getTime()) {
+                  return 'End date cannot be in the past';
                 }
 
                 if (phaseIndex > 0) {
@@ -384,12 +389,12 @@ const EditForm = ({
                   return undefined;
                 }
 
-                if (!value || value === 0) {
+                if (!value) {
                   return 'Price cannot be empty';
                 }
 
-                if (value < LOW_POSTAGE) {
-                  return `Price should be greater than ${LOW_POSTAGE} sats`;
+                if (value < ZERO) {
+                  return `Price should be positive`;
                 }
 
                 return undefined;
@@ -399,7 +404,7 @@ const EditForm = ({
               const { state, name, handleBlur, handleChange } = field;
 
               return (
-                <div className='flex w-full flex-col gap-1'>
+                <div className={`${isAllowList ? 'col-span-1' : 'col-span-2'} flex w-full flex-col gap-1`}>
                   <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     Price (sats)
                   </label>
@@ -441,7 +446,7 @@ const EditForm = ({
               const { state, name, handleBlur, handleChange } = field;
 
               return (
-                <div className='flex w-full flex-col gap-1'>
+                <div className={`${isAllowList ? 'flex' : 'hidden'} flex w-full flex-col gap-1`}>
                   <label className='text-sm text-ob-grey-lightest' htmlFor={name}>
                     Allocation Limit
                   </label>
@@ -492,7 +497,7 @@ const EditForm = ({
               validators={{
                 onChangeAsyncDebounceMs: 1000,
                 onChangeListenTo: [`phases[${phaseIndex}].isSameAllocation`],
-                onChangeAsync: async ({ value, fieldApi }: { value: string; fieldApi: any }) => {
+                onChange: ({ value, fieldApi }: { value: string; fieldApi: any }) => {
                   if (isUpdatingTanstackArray || !isAllowList) {
                     return undefined;
                   }
@@ -515,7 +520,7 @@ const EditForm = ({
                     const [address, allocation] = line.split(',').map((part) => part.trim());
 
                     // Validate Bitcoin address
-                    const isValidBTCAddress = await validate(address);
+                    const isValidBTCAddress = validate(address);
                     if (!isValidBTCAddress) {
                       invalidEntries.push(`Invalid BTC address: "${address}"`);
                       continue;
@@ -724,7 +729,6 @@ const PhaseForm = ({
           phaseIndex={phaseIndex}
           form={form}
           isAllowList={isAllowList}
-          isSameAllocation={isSameAllocation}
           isUpdatingTanstackArray={isUpdatingTanstackArray}
           allowSameAllocation={allowSameAllocation}
           setAllowSameAllocation={setAllowSameAllocation}

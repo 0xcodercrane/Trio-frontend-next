@@ -1,6 +1,6 @@
+import { TSocialsConfig } from '@/types/socials';
 import type { Metadata } from 'next';
 import { getSocialIcon } from '../utilities/socials';
-import { TSocialsConfig } from '@/types/socials';
 export * from './cache';
 export * from './imgs';
 export * from './time';
@@ -26,6 +26,7 @@ export const USE_LOW_POSTAGE = true;
 export const LOW_POSTAGE = 546; // value in sats
 export const ONE_BITCOIN = 100000000;
 export const BRC20_CONVERSION_FACTOR = 10 ** 18;
+export const ZERO = 0;
 
 export const SATS_TO_BTC_CONVERSION_FACTOR = 10 ** 8;
 

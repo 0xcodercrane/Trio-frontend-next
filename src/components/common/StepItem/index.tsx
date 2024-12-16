@@ -13,15 +13,10 @@ export const StepItem: React.FC<{
   return (
     <li
       onClick={() => {
-        // if (isCompleted) onClick(number);
         onClick(number);
       }}
-      className={`group flex min-h-16 min-w-72 items-center gap-2 rounded-md px-4 py-2 font-sans transition-all duration-200 lg:px-5 ${
-        isCurrent
-          ? 'cursor-pointer bg-ob-purple text-white'
-          : isCompleted
-            ? 'cursor-pointer text-white'
-            : 'cursor-default text-ob-text-grey'
+      className={`group flex min-h-16 min-w-72 cursor-pointer items-center gap-2 rounded-md px-4 py-2 font-sans transition-all duration-200 lg:px-5 ${
+        isCurrent ? 'bg-ob-purple text-white' : isCompleted ? 'text-white' : 'text-ob-text-grey'
       }`}
     >
       {isCompleted ? (
