@@ -50,10 +50,9 @@ export function XPMining() {
   useEffect(() => {
     if (!pointsConfig) return;
     const { staking } = pointsConfig;
-    const { factor } = staking;
     const interval = setInterval(() => {
-      setTmpPoints((prevPoints) => prevPoints + pointsPerSecond / factor);
-    }, ONE_SECOND.toMillis() / factor);
+      setTmpPoints((prevPoints) => (prevPoints + pointsPerSecond) / 2);
+    }, ONE_SECOND.toMillis() / 2); // Update every half second
 
     return () => clearInterval(interval);
   }, [pointsPerSecond, pointsConfig]);
@@ -101,7 +100,7 @@ export function XPMining() {
               <span className='text-ob-white-40'>
                 TRIO is the first BRC20 token to offer a &lsquo;staking-like&rsquo; reward system. No action is required on
                 your part to initiate the mining process, other than connecting your wallet to one of the OrdinalsBot apps.
-                Once you connect your wallet, you will automatically start mining XP.
+                Once you connect your wallet, you will automatically start mining XP.&nbsp;
                 <span className='text-ob-yellow'>Every {XP_MINING_CYCLE_LENGTH} blocks</span>, your official mining balance
                 will be updated based on your TRIO holdings.
               </span>
