@@ -6,7 +6,7 @@ import { useInscriptionsWithPricesByCollection } from '@/lib/services';
 import { InscriptionsGrid } from '@/components/Grids';
 
 export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
-  const { data: inscriptionsWithPrices, isPending, fetchNextPage } = useInscriptionsWithPricesByCollection(slug);
+  const { data: inscriptionsWithPrices, isFetching, fetchNextPage } = useInscriptionsWithPricesByCollection(slug);
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
       </div> */}
       <div className='w-full'>
         {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out. */}
-        <InscriptionsGrid inscriptions={(inscriptionsWithPrices as any) ?? []} loading={isPending} />
+        <InscriptionsGrid inscriptions={(inscriptionsWithPrices as any) ?? []} isFetching={isFetching} />
         <div ref={ref} />
         {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
           // <SingleCollectionInscriptionsTable inscriptions={inscriptions} nextPageLoading={isPlaceholderData} /> */}

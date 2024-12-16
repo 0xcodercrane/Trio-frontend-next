@@ -19,7 +19,7 @@ export default function LaunchACollection() {
             most advanced collection launchpad in the industry.
           </span>
           <div className='flex flex-row gap-4'>
-            <ButtonLink href='/launchpad' buttonTxt='Launch' />
+            <ButtonLink href='/launchpad'>Launch</ButtonLink>
           </div>
         </div>
 

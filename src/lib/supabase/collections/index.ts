@@ -74,7 +74,8 @@ export const getCollectionIdFromSlug = async (slug: string) => supabase.from('co
 export const getCollections = async (pagination: TPagination, searchKeyword: string) => ({
   collections: await supabase
     .rpc('get_collections', { search_keyword: `%${searchKeyword}%` })
-    .range(pagination.offset, pagination.offset + pagination.limit - 1),
+    .range(pagination.offset, pagination.offset + pagination.limit - 1)
+    .order('id', { ascending: false }),
   count: await supabase.rpc('get_collections_count', { search_keyword: `%${searchKeyword}%` })
 });
 

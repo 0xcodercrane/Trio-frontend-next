@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 export default function InscriptionsGrid({
   inscriptions,
-  loading
+  isFetching
 }: {
   inscriptions: Array<{
     inscription_id: string;
@@ -16,37 +16,36 @@ export default function InscriptionsGrid({
     order_status?: 'active' | 'inactive' | 'pending_taker_confirmation' | 'pending_maker_confirmation' | 'broadcast';
     price?: number;
   }>;
-  loading: boolean;
+  isFetching: boolean;
 }) {
   const router = useRouter();
   // const { size } = useFilter();
   return (
     <div className='grid grid-cols-5 gap-4'>
-      {inscriptions.map((inscription, index) => (
-        <div key={inscription.inscription_id} className='group relative cursor-pointer'>
-          {loading ? (
-            <Skeleton className='h-[18vw] w-full min-w-[--inscription-tiniest] max-w-[--inscription-largest]' />
-          ) : (
-            <div
-              onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`, { scroll: true })}
-              className='cursor-pointer overflow-hidden rounded-xl'
-            >
-              <MediaWrapper
-                id={inscription.inscription_id}
-                className='relative max-w-full overflow-hidden rounded-xl group-hover:opacity-80'
-                size='18vw'
-                square
-              />
+      {isFetching
+        ? Array.from({ length: 10 }).map((_, indexRow) => (
+            <Skeleton key={`skeleton-inscriptions-grid-${indexRow}`} className='aspect-square w-full' />
+          ))
+        : inscriptions.map((inscription, index) => (
+            <div key={inscription.inscription_id} className='group relative cursor-pointer'>
+              <div
+                onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`, { scroll: true })}
+                className='cursor-pointer overflow-hidden rounded-xl'
+              >
+                <MediaWrapper
+                  id={inscription.inscription_id}
+                  className='relative aspect-square w-full overflow-hidden rounded-xl group-hover:opacity-80'
+                  square
+                />
 
-              <InscriptionOverlay
-                id={inscription.inscription_id}
-                name={inscription.name || ''}
-                price={inscription.order_status === 'active' ? inscription.price : undefined}
-              />
+                <InscriptionOverlay
+                  id={inscription.inscription_id}
+                  name={inscription.name || ''}
+                  price={inscription.order_status === 'active' ? inscription.price : undefined}
+                />
+              </div>
             </div>
-          )}
-        </div>
-      ))}
+          ))}
     </div>
   );
 }

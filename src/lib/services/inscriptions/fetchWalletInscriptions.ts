@@ -33,5 +33,5 @@ export const useWalletInscriptions = (address: string | undefined) => {
   const hasNextPage = (queryResult.data?.length || 0) > PAGINATION_LIMIT * lastPage;
   const fetchNextPage = useCallback(() => setLastPage((currentPage) => currentPage + 1), []);
 
-  return { data: paginatedResult, hasNextPage, fetchNextPage };
+  return { data: paginatedResult, isPending: queryResult.isPending, hasNextPage, fetchNextPage };
 };

@@ -7,6 +7,8 @@ import Notification from './NotificationButton';
 import HeaderPointsButton from './HeaderPointsButton';
 import PendingOrderButton from './PendingOrderButton';
 import MenuCloseButton from './MenuCloseButton';
+import { ButtonLink } from '../common/ButtonLink';
+import Link from 'next/link';
 
 export default function ConnectedWallet() {
   const { loading } = useContext(AuthContext);
@@ -28,7 +30,9 @@ export default function ConnectedWallet() {
           {/* <PendingOrderButton /> */}
           <HeaderPointsButton />
           {/* <Notification /> */}
-          <Avatar onClick={() => openMenu(EMenuType.PROFILE)} />
+          <Link className='hover:opacity-80' href='/profile'>
+            <Avatar />
+          </Link>
         </div>
       )}
     </div>

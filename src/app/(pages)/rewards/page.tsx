@@ -1,11 +1,11 @@
-import Points from '@/components/Points';
+import Rewards from '@/components/Rewards';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Points',
+  title: 'Rewards',
   description: 'Collect Experience Points (XP) and earn rewards'
 };
 
 export default function Page() {
-  return <Points />;
+  return <Rewards />;
 }

@@ -4,6 +4,7 @@ import XPMiningChart from '@/components/Charts/XPMiningChart';
 import { Stat } from '@/components/common';
 import { PointsHistoryTable } from '@/components/Tables';
 import { useTokenBalanceQuery, useTrioInfoQuery } from '@/lib/services';
+import Link from 'next/link';
 import { useContext } from 'react';
 
 export const PointsPane = () => {
@@ -19,12 +20,12 @@ export const PointsPane = () => {
           <div className='border-none bg-transparent text-white'>
             <div className='text-2xl font-bold'>My Points History</div>
             <p className='mb-2 max-w-[65ch] text-sm font-light text-white'>
-              Points are rewarded to users when they complete certain actions on ordinalsbot.com. Points can be redeemed in
-              our exclusive promotions.
+              Points are rewarded to users when they complete certain actions throughout the OrdinalsBot ecosystem. Points
+              can be redeemed in our <Link href='/rewards'>exclusive promotions</Link>.
             </p>
           </div>
           <PointsHistoryTable />
-          <XPMiningChart />
+          {/* <XPMiningChart /> */}
         </div>
 
         <div className='flex flex-col gap-8'>

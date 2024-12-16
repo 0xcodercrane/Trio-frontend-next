@@ -1,3 +1,4 @@
+'use client';
 import { AuthContext } from '@/app/providers/AuthContext';
 import { Avatar } from '@/components/common';
 import { Container } from '@/components/Container';

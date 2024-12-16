@@ -26,7 +26,7 @@ const NAV_CONFIG: TNavItem[] = [
   },
   {
     name: 'Rewards',
-    href: '/points'
+    href: '/rewards'
   }
 ];
 
