@@ -279,12 +279,6 @@ export default function Launchpad() {
 
       const res = await response.json();
 
-      if (res?.collectionOnboardResponse !== true && !res?.collectionOnboardResponse?.success) {
-        const errorMessage = res?.collectionOnboardResponse?.error || 'An error occurred while onboarding the collection.';
-        toast.error(errorMessage);
-        return;
-      }
-
       if (res?.launchpadId) {
         setLaunchpadId(res?.launchpadId);
         setCurrentStep(ESteps.SUBMIT);
