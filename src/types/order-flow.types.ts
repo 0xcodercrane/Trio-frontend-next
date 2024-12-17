@@ -7,5 +7,5 @@ export interface OrderFlowState {
   state: EOrderFlowStates;
   setOrderFlowState: (state: EOrderFlowStates) => void;
   txId: string | null;
-  setTxId: (txId: string) => void;
+  setTxId: (txId: string | null) => void;
 }

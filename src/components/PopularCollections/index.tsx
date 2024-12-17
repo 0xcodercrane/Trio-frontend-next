@@ -4,15 +4,13 @@ import Section from '@/components/Section';
 import { useActiveOrderbookWithInscriptionsQuery } from '@/lib/services';
 import { MediaWrapper } from '../common';
 import { Button } from '../ui/button';
-import { useContext, useMemo, useState } from 'react';
-import { AuthContext } from '@/app/providers/AuthContext';
-import { useListings } from '@/lib/hooks';
+import { useMemo, useState } from 'react';
+import { useWallet } from '@/lib/hooks';
 
 export default function PopularCollections() {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const satsToBitcoin = (sats: number) => sats / 100000000;
-  const { wallet } = useContext(AuthContext);
-  const { buyListing } = useListings();
+  const wallet = useWallet();
 
   const handleOnSaleNextClick = () => {
     if (!onSale) return;

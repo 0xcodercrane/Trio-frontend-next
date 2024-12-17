@@ -1,9 +1,8 @@
-import { AuthContext } from '@/app/providers/AuthContext';
 import { MARKETPLACE_MAKER_FEE_BPS, MARKETPLACE_TAKER_FEE_BPS, MARKETPLACE_TRIO_DISCOUNT_THRESHOLD } from '@/lib/constants';
 import { usePrices, useTokenBalanceQuery } from '@/lib/services';
 import { bpsToDecimal, bpsToPercentage, satsToBitcoin } from '@/lib/utilities';
-import { useContext } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { useWallet } from '@/lib/hooks';
 
 interface FeesPanelProps {
   listPriceSats: number | undefined;
@@ -13,7 +12,7 @@ interface FeesPanelProps {
 export default function FeesPanel({ listPriceSats, variant = 'buy' }: FeesPanelProps) {
   const { satsToUsd } = usePrices();
 
-  const { wallet } = useContext(AuthContext);
+  const wallet = useWallet();
 
   const { data: tokenBalance } = useTokenBalanceQuery(wallet?.ordinalsAddress || '', 'TRIO');
   const hasTrioDiscount = tokenBalance && tokenBalance.overallBalance >= MARKETPLACE_TRIO_DISCOUNT_THRESHOLD;

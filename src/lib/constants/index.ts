@@ -154,7 +154,7 @@ export const TRIO_EXCHANGES: { label: string; link: string; img: string }[] = [
 export const TOOLTIP_HOVER_DELAY = 200;
 
 const MEMPOOL_SPACE_URLS = {
-  [ENETWORK.MAINNET]: 'https://mempool.space/',
+  [ENETWORK.MAINNET]: 'https://mempool.space',
   [ENETWORK.SIGNET]: 'https://mempool.space/signet',
   [ENETWORK.TESTNET]: 'https://mempool.space/testnet4'
 };

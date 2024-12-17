@@ -6,15 +6,14 @@ import { ENV, ENVS, ESOCIALS, USE_LOW_POSTAGE } from '@/lib/constants';
 import { getSocialIcon } from '@/lib/utilities/socials';
 import { TSocialsConfig } from '@/types/socials';
 import { collection, getCountFromServer, getFirestore, query, Timestamp, where } from 'firebase/firestore';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getSpartacusApp } from './firebase';
 import { Button } from '@/components/ui/button';
 import { SpartacusFeesPanel } from './SpartacusFeesPanel';
 import { Input } from '@/components/ui/input';
 import FeeSelector from '@/components/FeeSelector';
-import { AuthContext } from '@/app/providers/AuthContext';
 import { toast } from 'sonner';
-import { useFeeRates } from '@/lib/hooks';
+import { useFeeRates, useWallet } from '@/lib/hooks';
 import { TSpartacusOrder } from './types';
 import { Loading } from '@/components/common';
 import { useLaserEyes } from '@omnisat/lasereyes';
@@ -59,7 +58,7 @@ export function MintComponent() {
   const [showCustomInput, setShowCustomInput] = useState(false);
   const { feeRate } = useFeeRates();
 
-  const { wallet } = useContext(AuthContext);
+  const wallet = useWallet();
   const { sendBTC } = useLaserEyes();
 
   const {

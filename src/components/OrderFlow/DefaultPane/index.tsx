@@ -4,10 +4,8 @@ import FeesPanel from '@/components/FeesPanel';
 import { OrderFlowPaneBaseProps } from '..';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useInscriptionDataQuery } from '@/components/common/MediaViewer/useInscriptionDataQuery';
-import { useContext } from 'react';
-import { AuthContext } from '@/app/providers/AuthContext';
 import ListItem from '@/components/OrderFlow/DefaultPane/ListItem';
-import { useInscriptionOrder } from '@/lib/hooks';
+import { useInscriptionOrder, useWallet } from '@/lib/hooks';
 import { TermsAndConditions } from '@/components/TermsAndConditions';
 import { ModifyListing } from './ModifyListing';
 import { calculateTxVBytes } from '@/lib/utilities';
@@ -23,7 +21,7 @@ const DEFAULT_VIRTUAL_SIZE = calculateTxVBytes(
 export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlowPaneBaseProps) {
   const { latestOrder, isPending } = useInscriptionOrder(inscriptionId);
   const { data } = useInscriptionDataQuery(inscriptionId);
-  const { wallet } = useContext(AuthContext);
+  const wallet = useWallet();
 
   const hasActiveListing = latestOrder?.status === 'active';
 

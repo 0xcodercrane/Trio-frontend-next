@@ -1,16 +1,16 @@
-import { AuthContext } from '@/app/providers/AuthContext';
 import { InscriptionItem, IWallet } from '@/types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { usePaddingOutputs } from '../usePaddingOutputs';
 import { useFeeRates } from '../useFeeRates';
 import { pushListingOrderToFirebase } from '@/lib/services/points';
+import { useWallet } from '../useWallet';
 
 // TODO: Add Pending states while async functions are being executed
 export function useListings() {
-  const { wallet } = useContext(AuthContext);
+  const wallet = useWallet();
   const { signPsbt } = useLaserEyes();
   const { feeRate } = useFeeRates();
   const queryClient = useQueryClient();

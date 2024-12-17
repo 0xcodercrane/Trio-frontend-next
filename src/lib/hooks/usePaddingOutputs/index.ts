@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useContext, useState } from 'react';
 import { toast } from 'sonner';
 import { useFeeRates } from '../useFeeRates';
+import { useWallet } from '../useWallet';
 
 interface PaddingOutputsCheckDataResponse {
   paddingOutputsExist: boolean;
@@ -52,7 +53,7 @@ const getPaddingOutputsSetupPsbt = async (
 };
 
 const usePaddingOutputs = () => {
-  const { wallet } = useContext(AuthContext);
+  const wallet = useWallet();
   const { signPsbt } = useLaserEyes();
   const queryClient = useQueryClient();
   const { feeRate } = useFeeRates();

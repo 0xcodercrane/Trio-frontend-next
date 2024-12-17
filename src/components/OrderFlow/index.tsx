@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DefaultPane from './DefaultPane';
 import PendingPane from './PendingPane';
 import CompletePane from './CompletePane';
 import { EOrderFlowStates } from '@/types';
 import { useOrderFlow } from '@/lib/hooks/useOrderFlow';
-import { useInscriptionOrder } from '@/lib/hooks';
+import { useInscriptionOrder, useWallet } from '@/lib/hooks';
 
 export interface OrderFlowPaneBaseProps {
   inscriptionId: string;
@@ -19,28 +19,31 @@ const OrderFlowConfig = {
 
 export default function OrderFlow({ inscriptionId, collectionSlug }: OrderFlowPaneBaseProps) {
   const { state, setOrderFlowState, setTxId } = useOrderFlow();
-
+  const wallet = useWallet();
   const OrderFlowState = OrderFlowConfig[state];
 
-  const { latestTrade, latestOrder } = useInscriptionOrder(inscriptionId);
+  const { latestTrade, latestOrder, tradeWasInMempool, takerOrdinalAddress } = useInscriptionOrder(inscriptionId);
 
   useEffect(() => {
-    setOrderFlowState(EOrderFlowStates.Default);
-  }, []);
-
-  useEffect(() => {
-    if (latestTrade && latestOrder) {
-      if (latestTrade.status === 'mempool' && (latestOrder.status === 'broadcast' || latestOrder.status === 'active')) {
+    if (latestOrder) {
+      if (latestTrade?.status === 'mempool') {
         setOrderFlowState(EOrderFlowStates.Pending);
         if (latestTrade.transaction_id) {
           setTxId(latestTrade.transaction_id);
         }
       }
-      if (latestTrade.status === 'confirmed') {
-        setOrderFlowState(EOrderFlowStates.Default);
+      if (latestTrade?.status === 'confirmed') {
+        if (tradeWasInMempool && wallet?.ordinalsAddress === takerOrdinalAddress?.address) {
+          setOrderFlowState(EOrderFlowStates.Complete);
+        } else {
+          setOrderFlowState(EOrderFlowStates.Default);
+        }
       }
     }
-  }, [latestTrade, latestOrder]);
+    return () => {
+      setOrderFlowState(EOrderFlowStates.Default);
+    };
+  }, [latestTrade, latestOrder, wallet?.ordinalsAddress, takerOrdinalAddress]);
 
   return (
     <div className='flex h-full w-full'>

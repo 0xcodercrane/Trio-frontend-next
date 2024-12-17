@@ -15,3 +15,4 @@ export * from './fetchTradeHistory';
 export * from './fetchCollections';
 export * from './launchpad';
 export * from './fetchInscriptionAttributes';
+export * from './fetchAddress';

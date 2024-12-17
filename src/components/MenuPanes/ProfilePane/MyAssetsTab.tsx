@@ -1,10 +1,9 @@
 'use client';
-import { AuthContext } from '@/app/providers/AuthContext';
 import { InscriptionsGrid } from '@/components/Grids';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useWallet } from '@/lib/hooks';
 import { useWalletInscriptions } from '@/lib/services/inscriptions/fetchWalletInscriptions';
 import { InscriptionWithMetadata } from '@/types';
-import { useContext } from 'react';
 
 const InscriptionsSection = ({
   sectionName,
@@ -22,7 +21,7 @@ const InscriptionsSection = ({
 };
 
 export const MyAssetsTab = () => {
-  const { wallet } = useContext(AuthContext);
+  const wallet = useWallet();
 
   const { inscriptions, isPending } = useWalletInscriptions(wallet?.ordinalsAddress);
 
