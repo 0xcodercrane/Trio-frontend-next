@@ -2,7 +2,7 @@
 
 import Section from '@/components/Section';
 import Socials from '@/components/Socials';
-import { ENV, ENVS, ESOCIALS, USE_LOW_POSTAGE } from '@/lib/constants';
+import { ENV, ENVS, ESOCIALS, TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING, USE_LOW_POSTAGE } from '@/lib/constants';
 import { getSocialIcon } from '@/lib/utilities/socials';
 import { TSocialsConfig } from '@/types/socials';
 import { collection, getCountFromServer, getFirestore, query, Timestamp, where } from 'firebase/firestore';
@@ -15,7 +15,7 @@ import FeeSelector from '@/components/FeeSelector';
 import { toast } from 'sonner';
 import { useFeeRates, useWallet } from '@/lib/hooks';
 import { TSpartacusOrder } from './types';
-import { Loading } from '@/components/common';
+import { Loading, Tag } from '@/components/common';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQuery } from '@tanstack/react-query';
 import ob from '@/lib/ob';
@@ -24,6 +24,7 @@ import { pushDirectOrderToFirebase } from '@/lib/services/points';
 import { auth } from '@/lib/firebase';
 import { OrderType } from 'ordinalsbot/dist/types/v1';
 import { EOrderSubType, ERewardState } from '@/types';
+import { calculateTxVBytes } from '@/lib/utilities';
 
 const SOCIALS_CONFIG: TSocialsConfig = {
   [ESOCIALS.X]: {
@@ -35,6 +36,13 @@ const SOCIALS_CONFIG: TSocialsConfig = {
     link: 'https://projectspartacus.xyz'
   }
 };
+
+const DEFAULT_VIRTUAL_SIZE = calculateTxVBytes(
+  1,
+  1,
+  TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING.inputScript,
+  TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING.outputScript
+);
 
 const TOTAL_NUMBER_OF_FILES = 76911;
 const spartacusApp = getSpartacusApp();
@@ -104,6 +112,7 @@ export function MintComponent() {
           pushDirectOrderToFirebase({
             id: order.id,
             userId: auth.currentUser?.uid,
+            source: 'trio.xyz',
             type: OrderType.DIRECT,
             subType: EOrderSubType.SPARTACUS,
             createdAt: Timestamp.now(),
@@ -181,7 +190,7 @@ export function MintComponent() {
     }
 
     return (
-      <Button className='w-full min-w-full' onClick={buttonAction} disabled={buttonLoading || order !== null}>
+      <Button className='w-full min-w-[66%]' onClick={buttonAction} disabled={buttonLoading || order !== null}>
         {buttonTxt} &nbsp; {buttonLoading && <Loading />}
       </Button>
     );
@@ -234,8 +243,11 @@ export function MintComponent() {
                     })}
                   </div>
                 )}
-                {stage === ESTAGES.Pay && <FeeSelector />}
-                {renderButtonForStage()}
+                {stage === ESTAGES.Pay && <FeeSelector txVirtualSize={DEFAULT_VIRTUAL_SIZE.txVBytes} />}
+                <div className='flex flex-row items-center justify-between gap-2'>
+                  {renderButtonForStage()}
+                  <Tag label='+ 1000 XP' info='This order receives 1000 XP for upon completion' />
+                </div>
                 <div className='flex flex-col gap-2'>
                   <div className='relative h-[5px] w-full bg-ob-purple-light/[0.80]'>
                     <div className='absolute h-full bg-ob-green-light' style={{ width: `${progress}%` }}></div>

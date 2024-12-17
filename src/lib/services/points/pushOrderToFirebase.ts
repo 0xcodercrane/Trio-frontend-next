@@ -18,6 +18,18 @@ export async function pushListingOrderToFirebase(id: number, address: string) {
   });
 }
 
+export async function pushPreinscribeMintOrderToFirebase(txid: string) {
+  if (!auth.currentUser) return { success: false, error: 'user is not authenticated' };
+  await addDoc(collection(firestore, 'orders'), {
+    source: 'trio.xyz',
+    type: 'preinscribe-mint',
+    txid,
+    createdAt: Timestamp.now(),
+    rewardState: ERewardState.Default,
+    userId: auth.currentUser?.uid
+  });
+}
+
 export async function pushDirectOrderToFirebase(order: TTrioAccountOrder) {
   // We process legacy orders differently than we process listing orders. Here are the notable differences
   //  - the document id is the order id

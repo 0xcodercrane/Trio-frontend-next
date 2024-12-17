@@ -12,7 +12,7 @@ interface TagProps {
   info?: string;
 }
 
-const SPIN_INTERVAL = 75;
+const SPIN_INTERVAL = 150;
 
 const DIRECTIONS = ['t', 'tr', 'r', 'br', 'b', 'bl', 'l', 'tl'];
 export default function Tag({ variant = EComponentVariants.Default, label, className, info }: TagProps) {

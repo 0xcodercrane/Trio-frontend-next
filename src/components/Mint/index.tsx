@@ -16,6 +16,7 @@ import { usePaddingOutputs } from '@/lib/hooks/usePaddingOutputs';
 import { SplashPageLayout } from '../Layouts';
 import LaunchpadMetaData from './launchpadMetadata';
 import { useLaunchpad } from '@/lib/services/fetchLaunchpad';
+import { pushPreinscribeMintOrderToFirebase } from '@/lib/services/points';
 
 export default function Mint({ id }: { id: string }) {
   const { wallet, isAuthenticated } = useContext(AuthContext);
@@ -110,9 +111,11 @@ export default function Mint({ id }: { id: string }) {
     const confirmResult = await submitBuyOffer(payload?.id, signedData.signedPsbtBase64);
 
     if (confirmResult.success) {
+      const { txId } = confirmResult.payload;
       refetchAllocationInfo();
       refrechLaunchInfo();
-      handleMintSuccess(confirmResult.payload.txId);
+      handleMintSuccess(txId);
+      pushPreinscribeMintOrderToFirebase(txId);
     } else {
       handleMintFailure(confirmResult.error);
     }
@@ -135,7 +138,7 @@ export default function Mint({ id }: { id: string }) {
   const totalInscriptions = useMemo(() => {
     if (launchInfo) {
       const publicPhase = launchInfo.phases.find((phase: TPhase) => phase.is_public);
-      return publicPhase.total_inscriptions;
+      return publicPhase?.total_inscriptions || 0;
     } else {
       return 0;
     }
@@ -144,7 +147,7 @@ export default function Mint({ id }: { id: string }) {
   const remainingInscriptions = useMemo(() => {
     if (launchInfo) {
       const publicPhase = launchInfo.phases.find((phase: TPhase) => phase.is_public);
-      return publicPhase.remaining_inscriptions;
+      return publicPhase?.remaining_inscriptions || 0;
     } else {
       return 0;
     }

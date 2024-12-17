@@ -49,6 +49,7 @@ const MintAction = ({
       >
         {mapStateToButtonText(mintState)}
       </Button>
+      <Tag label='+ 2000 XP' info='This order receives 2000 XP for upon completion' />
       {txid && (
         <div className='flex h-full w-fit flex-col gap-4 rounded-lg bg-ob-purple p-4'>
           <div className='flex flex-row items-center justify-between gap-4'>

@@ -26,12 +26,23 @@ export const shortenTxid = (txid: string) => {
 export const shortenInscriptionId = (inscriptionId: string) => shortenString(inscriptionId, 6, 6);
 
 export const satsToBitcoin = (sats: number) => {
-  return removeTrailingZeros((sats / ONE_BITCOIN).toString());
+  return cleanDecimalValue((sats / ONE_BITCOIN).toString());
 };
 function removeTrailingZeros(input: string): string {
   return input
     .replace(/(\.\d*?[1-9])0+$/g, '$1') // Removes trailing zeros after a decimal.
     .replace(/\.0+$/, ''); // Removes the decimal point if followed only by zeros.
+}
+
+function cleanDecimalValue(input: string): string {
+  // Limit to at most 8 decimal places
+  const limitedDecimals = input.includes('.') ? parseFloat(input).toFixed(8) : input;
+
+  // Remove trailing zeros and unnecessary decimal points
+  return limitedDecimals
+    .replace(/(\.\d*?[1-9])0+$/g, '$1') // Removes trailing zeros after non-zero decimals
+    .replace(/\.0+$/, '') // Removes the decimal if only zeros follow it
+    .replace(/(\.\d{8})\d+$/, '$1'); // Truncate strictly to 8 decimals if needed
 }
 
 export const bitcoinToSats = (bitcoinAmount: number) => Math.round(bitcoinAmount * ONE_BITCOIN);

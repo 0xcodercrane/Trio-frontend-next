@@ -80,17 +80,21 @@ const usePaddingOutputs = () => {
       const response = await getPaddingOutputsSetupPsbt(wallet.paymentAddress, wallet.paymentPublicKey, feeRate);
 
       if (response.success) {
-        const result = await signPsbt(response.payload.psbt, true, true);
-        toast.success(`Padding outputs setup broadcasted in ${result?.txId}`);
+        try {
+          const result = await signPsbt(response.payload.psbt, true, true);
+          toast.success(`Padding outputs setup broadcasted in ${result?.txId}`);
 
-        return new Promise((resolve) => {
-          setTimeout(async () => {
-            await queryClient.invalidateQueries({ queryKey: ['padding-outputs-check', wallet?.paymentAddress] });
-            const cbResult = await callback();
-            setIsPaddingOutputsSetupInProgess(false);
-            resolve(cbResult);
-          }, 10000); // Wait for 10s to let backend catch up with the padding setup tx in the mempool.
-        });
+          return new Promise((resolve) => {
+            setTimeout(async () => {
+              await queryClient.invalidateQueries({ queryKey: ['padding-outputs-check', wallet?.paymentAddress] });
+              const cbResult = await callback();
+              setIsPaddingOutputsSetupInProgess(false);
+              resolve(cbResult);
+            }, 10000); // Wait for 10s to let backend catch up with the padding setup tx in the mempool.
+          });
+        } catch (error) {
+          toast.error('Signing padding outputs setup failed.');
+        }
       } else {
         console.error('Setting up padding outputs failed:', response.error);
         toast.error('Setting up padding outputs failed.');

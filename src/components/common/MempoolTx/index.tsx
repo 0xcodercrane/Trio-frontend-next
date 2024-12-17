@@ -18,7 +18,7 @@ export const MempoolTx = ({ txid }: MempoolTxProps) => {
   const { data: tx, isPending: txPending, error: txError } = useMempoolTx(txid);
 
   const confirmations = useMemo(() => {
-    if (tx === null || !tip) return 0;
+    if (!tip || tx === null || tx === undefined || !tx?.status) return 0;
     const { block_height: confirmationHeight, confirmed } = tx.status;
     if (!confirmed || !confirmationHeight) return 0;
     if (tip === confirmationHeight) return 1;
@@ -33,7 +33,7 @@ export const MempoolTx = ({ txid }: MempoolTxProps) => {
           <span>No transaction found</span>
         </div>
       );
-    if (tx.status.confirmed) {
+    if (tx?.status?.confirmed) {
       // Confirmed
       return (
         <div
