@@ -34,7 +34,7 @@ interface MediaRendererProps extends BaseRendererProps {
 
 type RendererProps = ContentAsString | HTMLRendererProps | ImageRendererProps | MediaRendererProps;
 
-type ContentType = 'svg' | 'html' | 'image' | 'text' | 'json' | 'video' | 'audio' | 'unsupported';
+export type ContentType = 'svg' | 'html' | 'image' | 'text' | 'json' | 'video' | 'audio' | 'unsupported';
 
 const rendererMap: Record<ContentType, React.ComponentType<RendererProps>> = {
   svg: SVGRenderer as React.ComponentType<RendererProps>,
@@ -51,7 +51,7 @@ const rendererMap: Record<ContentType, React.ComponentType<RendererProps>> = {
   )
 };
 
-const getContentType = (mimeType: string): ContentType => {
+export const getContentType = (mimeType: string): ContentType => {
   if (mimeType.includes('image/svg+xml')) return 'svg';
   if (mimeType.includes('text/html')) return 'html';
   if (mimeType.includes('image/')) return 'image';

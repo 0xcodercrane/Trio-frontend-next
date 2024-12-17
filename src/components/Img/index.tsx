@@ -13,7 +13,7 @@ export function Img({ fallback, ...props }: ImgProps) {
   }
 
   if (isBroken) {
-    return fallback || <TriangleAlert color='#FF001B' className={props.className} />;
+    return fallback || <div className={`aspect-square rounded-md bg-white/20 ${props.className}`} />;
   }
 
   return <img onError={handleError} {...props} />;

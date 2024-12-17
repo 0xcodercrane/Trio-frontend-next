@@ -9,6 +9,7 @@ import { useContext, useMemo } from 'react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
 import { Img } from '@/components/Img';
 import { Info } from 'lucide-react';
+import { CollectionIcon } from '@/components/CollectionIcon';
 
 //TODO - Use supabase types - do not redeclare
 export function CollectionsTable({
@@ -63,7 +64,7 @@ export function CollectionsTable({
                 <TableRow key={`row-${indexRow}`}>
                   {Array.from({ length: searchMode ? 2 : 4 }).map((_, indexCell) => (
                     <TableCell key={`cell-${indexCell}`}>
-                      <Skeleton className='min-h-6 w-full' />
+                      <Skeleton className='min-h-12 w-full' />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -72,8 +73,13 @@ export function CollectionsTable({
                 return (
                   <TableRow key={collection.id} onClick={() => handleRowClick(collection.slug)} className='cursor-pointer'>
                     <TableCell>
-                      <div className='flex h-12 min-h-12 flex-row items-center gap-2'>
-                        <Img src={collection.icon || ''} className='h-12 w-12' />
+                      <div className='flex h-12 flex-row items-center gap-4'>
+                        <CollectionIcon
+                          showFallback
+                          slug={collection.slug}
+                          src={collection.icon}
+                          className='aspect-square w-12'
+                        />
                         <span className='text-lg font-bold'>{collection.name}</span>
                       </div>
                     </TableCell>

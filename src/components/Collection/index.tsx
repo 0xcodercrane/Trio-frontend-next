@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { ESOCIALS } from '@/lib/constants';
 import { getSocialIcon } from '@/lib/utilities/socials';
 import Socials from '../Socials';
-
+import { CollectionIcon } from '../CollectionIcon';
 interface CollectionProps {
   slug: string;
 }
@@ -22,7 +22,7 @@ export default function Collection({ slug }: CollectionProps) {
   const { data, isPending, error } = useCollectionBySlugQuery(slug);
   const { data: stats, isPending: isPendingStats } = useCollectionStats(slug);
 
-  const { name, description, twitter_link, discord_link, website_link, artist, banner_image, icon } = data || {};
+  const { name, twitter_link, discord_link, website_link, banner_image, icon } = data || {};
 
   const socialsConfig: TSocialsConfig = useMemo(() => {
     const config: TSocialsConfig = {};
@@ -112,9 +112,13 @@ export default function Collection({ slug }: CollectionProps) {
                 </div>
               </div>
 
-              <div className='flex basis-1/2 flex-row justify-end'>
-                {icon ? (
-                  <Img fallback={<></>} className='h-[210px] w-[210px] rounded-xl' src={icon} />
+              <div className='flex basis-1/2 flex-row items-end justify-end'>
+                {!isPending ? (
+                  <CollectionIcon
+                    className='h-[210px] w-[210px] overflow-hidden rounded-xl'
+                    src={icon ?? undefined}
+                    slug={slug}
+                  />
                 ) : (
                   <Skeleton className='h-[210px] w-[210px] rounded-xl' />
                 )}

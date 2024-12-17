@@ -40,7 +40,9 @@ export default async function RootLayout({
       <body className={`${satoshiVariable.variable} bg-ob-purple-darkest font-sans`} style={{ overscrollBehavior: 'none' }}>
         <Providers session={session}>
           <Header />
-          <MobileOverlayWrapper>{children}</MobileOverlayWrapper>
+          <MobileOverlayWrapper>
+            <div className='mt-24'>{children}</div>
+          </MobileOverlayWrapper>
           <Footer />
           <MenuPanes />
           <Toaster richColors />
