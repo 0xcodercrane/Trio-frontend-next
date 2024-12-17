@@ -8,6 +8,11 @@ import { Skeleton } from '../ui/skeleton';
 import { Img } from '../Img';
 import NotFound from '@/app/not-found';
 import { satsToBitcoin } from '@/lib/utilities';
+import { TSocialsConfig } from '@/types/socials';
+import { useMemo } from 'react';
+import { ESOCIALS } from '@/lib/constants';
+import { getSocialIcon } from '@/lib/utilities/socials';
+import Socials from '../Socials';
 
 interface CollectionProps {
   slug: string;
@@ -18,6 +23,14 @@ export default function Collection({ slug }: CollectionProps) {
   const { data: stats, isPending: isPendingStats } = useCollectionStats(slug);
 
   const { name, description, twitter_link, discord_link, website_link, artist, banner_image, icon } = data || {};
+
+  const socialsConfig: TSocialsConfig = useMemo(() => {
+    const config: TSocialsConfig = {};
+    if (discord_link) config[ESOCIALS.Discord] = { link: discord_link, img: getSocialIcon(ESOCIALS.Discord) };
+    if (twitter_link) config[ESOCIALS.X] = { link: twitter_link, img: getSocialIcon(ESOCIALS.X) };
+    if (website_link) config[ESOCIALS.Web] = { link: website_link, img: getSocialIcon(ESOCIALS.Web) };
+    return config;
+  }, [data]);
 
   if (!isPending && !data) {
     return <NotFound />;
@@ -50,33 +63,7 @@ export default function Collection({ slug }: CollectionProps) {
             <div className='flex w-full flex-row pb-12'>
               <div className='flex basis-1/2 flex-col justify-end gap-4'>
                 <div className='flex flex-row gap-4'>
-                  {[
-                    {
-                      label: 'discord',
-                      url: discord_link
-                    },
-                    {
-                      label: 'link',
-                      url: website_link
-                    },
-                    {
-                      label: 'x',
-                      url: twitter_link
-                    }
-                  ].map((row, index) => {
-                    if (row.url === null) return null;
-                    return (
-                      <div key={index} className=''>
-                        {row.url ? (
-                          <Link href={row.url} className='transition-opacity hover:opacity-75'>
-                            <img src={`/img/socials/${row.label}.svg`} alt={`${row} icon`} width={24} height={24} />
-                          </Link>
-                        ) : (
-                          <Skeleton className='h-6 w-6' />
-                        )}
-                      </div>
-                    );
-                  })}
+                  <Socials config={socialsConfig} />
                 </div>
                 <div>{name ? <h2 className='text-6xl text-white'>{name}</h2> : <Skeleton className='h-12 w-full' />}</div>
 

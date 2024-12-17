@@ -55,7 +55,7 @@ export default function BuyNow({ orderId, inscriptionId, price }: BuyNowProps) {
         >
           {isPendingPurchase ? <Loading className='p-2 text-ob-purple-dark' /> : 'Buy Now'}
         </Button>
-        <Tag label='+ 1000 XP' info='This order receives 1000 XP for upon completion' />
+        <Tag label='+ 2000 XP' info='This order receives 2000 XP for upon completion' />
       </div>
     </div>
   );
