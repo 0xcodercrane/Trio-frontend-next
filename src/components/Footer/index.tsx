@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Container } from '@/components/Container';
-import { NETWORK, OB_SOCIALS_CONFIG } from '@/lib/constants';
+import { ENV, ENVS, NETWORK, OB_SOCIALS_CONFIG } from '@/lib/constants';
 import Socials from '../Socials';
 
 export default function Footer() {
@@ -11,9 +11,11 @@ export default function Footer() {
         <div className='mb-32 grid grid-cols-2 gap-8 md:grid-cols-3'>
           <div className='flex flex-col items-start gap-4'>
             <img src='/img/trio-logo.svg' alt='OrdinalsBot Logo' width={95} height={30} />
-            <span className='w-full text-left italic text-ob-grey-lightest'>
-              Connected to <span className='font-bold text-ob-green-light'>{NETWORK}</span>
-            </span>
+            {ENV !== ENVS.PROD && (
+              <span className='w-full text-left italic text-ob-grey-lightest'>
+                Connected to <span className='font-bold text-ob-green-light'>{NETWORK}</span>
+              </span>
+            )}
             <div className='flex gap-4 md:hidden'>
               <Socials config={OB_SOCIALS_CONFIG} />
             </div>

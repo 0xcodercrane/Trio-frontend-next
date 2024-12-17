@@ -1,3 +1,5 @@
+export const maxDuration = 300; // This function can run for a maximum of 5 minutes
+
 import { ORDINALSBOT_MARKETPLACE_API_KEY, ORDINALSBOT_MARKETPLACE_API_URL } from '@/lib/constants';
 import { NextResponse } from 'next/server';
 
