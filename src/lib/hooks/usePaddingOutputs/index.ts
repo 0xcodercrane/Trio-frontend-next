@@ -56,7 +56,7 @@ const usePaddingOutputs = () => {
   const wallet = useWallet();
   const { signPsbt } = useLaserEyes();
   const queryClient = useQueryClient();
-  const { feeRate } = useFeeRates();
+  const { data, feeRate } = useFeeRates();
 
   const { data: hasPaddingOutputs, isPending: isPaddingOutputsCheckPending } = useQuery({
     queryKey: ['padding-outputs-check', wallet?.paymentAddress],
@@ -77,7 +77,11 @@ const usePaddingOutputs = () => {
         return callback();
       }
       setIsPaddingOutputsSetupInProgess(true);
-      const response = await getPaddingOutputsSetupPsbt(wallet.paymentAddress, wallet.paymentPublicKey, feeRate);
+      const response = await getPaddingOutputsSetupPsbt(
+        wallet.paymentAddress,
+        wallet.paymentPublicKey,
+        data?.fastest_fee || feeRate
+      );
 
       if (response.success) {
         try {

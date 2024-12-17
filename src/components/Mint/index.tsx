@@ -17,6 +17,7 @@ import { SplashPageLayout } from '../Layouts';
 import LaunchpadMetaData from './launchpadMetadata';
 import { useLaunchpad } from '@/lib/services/fetchLaunchpad';
 import { pushPreinscribeMintOrderToFirebase } from '@/lib/services/points';
+import { PaddingPrompt } from '../PaddingPrompt';
 
 export default function Mint({ id }: { id: string }) {
   const { wallet, isAuthenticated } = useContext(AuthContext);
@@ -202,12 +203,13 @@ export default function Mint({ id }: { id: string }) {
 
             <MintAction
               mint={mint}
-              isAuthenticated={isAuthenticated}
               mintState={mintState}
               txid={txid}
               hasAllocationInCurrentPhase={hasAllocationInCurrentPhase}
               launchInfoPending={launchInfoPending}
             />
+
+            <PaddingPrompt />
           </div>
         </SplashPageLayout>
       </Container>

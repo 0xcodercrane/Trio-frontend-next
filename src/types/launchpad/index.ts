@@ -83,7 +83,6 @@ export type TMintProcessProps = {
 };
 
 export type TMintActionProps = {
-  isAuthenticated: boolean;
   mintState: EMintState;
   hasAllocationInCurrentPhase: boolean;
   txid: string | null;

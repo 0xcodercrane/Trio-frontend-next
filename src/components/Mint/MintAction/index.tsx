@@ -1,3 +1,6 @@
+'use client';
+
+import { AuthContext } from '@/app/providers/AuthContext';
 import { Tag } from '@/components/common';
 import { Button } from '@/components/ui/button';
 import { MEMPOOL_SPACE_URL } from '@/lib/constants';
@@ -5,6 +8,7 @@ import { useFeeRates } from '@/lib/hooks';
 import { shortenTxid } from '@/lib/utilities';
 import { EComponentVariants } from '@/types';
 import { EMintState, TMintActionProps } from '@/types/launchpad';
+import { useContext } from 'react';
 
 const mapStateToButtonText = (mintState: EMintState): string => {
   switch (mintState) {
@@ -18,14 +22,8 @@ const mapStateToButtonText = (mintState: EMintState): string => {
   }
 };
 
-const MintAction = ({
-  isAuthenticated,
-  mintState,
-  hasAllocationInCurrentPhase,
-  txid,
-  mint,
-  launchInfoPending
-}: TMintActionProps) => {
+const MintAction = ({ mintState, hasAllocationInCurrentPhase, txid, mint, launchInfoPending }: TMintActionProps) => {
+  const { isAuthenticated } = useContext(AuthContext);
   const { data: feeRatesData } = useFeeRates();
 
   if (launchInfoPending) {
