@@ -27,7 +27,12 @@ const NAV_CONFIG: TNavItem[] = [
   {
     name: 'Rewards',
     href: '/rewards'
-  }
+  },
+  {
+    name: 'Token',
+    href: 'https://token.ordinalsbot.com',
+    target: '_blank'
+  },
 ];
 
 export default function NavBar() {
