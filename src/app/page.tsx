@@ -10,7 +10,7 @@ export const metadata: Metadata = DEFAULT_METADATA;
 export default function Home() {
   return (
     <Section>
-      <div className='relative isolate mt-10 overflow-hidden bg-gray-900' style={{ borderRadius: '50px' }}>
+      <div className='relative isolate mb-10 overflow-hidden bg-gray-900' style={{ borderRadius: '40px' }}>
         <div className='px-6 py-24 sm:px-6 sm:py-32 lg:px-8'>
           <div className='mx-auto max-w-2xl text-center'>
             <h2 className='text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl'>
@@ -47,6 +47,100 @@ export default function Home() {
             </radialGradient>
           </defs>
         </svg>
+      </div>
+
+      <div>
+        <div className='mx-auto mt-20'>
+          <div className='flex items-center justify-between space-x-4'>
+            <h2 className='text-white-900 text-lg font-medium'>Upcoming Mints</h2>
+          </div>
+          <div className='mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4'>
+            <Link href='/mint/punk-royale' className='group relative'>
+              <div className='relative'>
+                <img
+                  src='https://placehold.co/1360x1020'
+                  alt='Punk Royale'
+                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
+                />
+                <div className='absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100' aria-hidden='true'>
+                  <div className='w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter'>
+                    Go to Mint
+                  </div>
+                </div>
+              </div>
+              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
+                <span>
+                  <span>
+                    <span aria-hidden='true' className='absolute inset-0'></span>
+                    Punk Royale
+                  </span>
+                </span>
+                <p>LIVE</p>
+              </div>
+              <p className='mt-1 text-sm text-gray-500'>Mint</p>
+            </Link>
+
+            <div className='group relative'>
+              <div className='relative'>
+                <img
+                  src='https://placehold.co/1360x1020'
+                  alt='Satorials'
+                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
+                />
+              </div>
+              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
+                <span>
+                  <span>
+                    <span aria-hidden='true' className='absolute inset-0'></span>
+                    Satorials
+                  </span>
+                </span>
+                <p>Coming Soon</p>
+              </div>
+              <p className='mt-1 text-sm text-gray-500'>Mint</p>
+            </div>
+
+            <div className='group relative'>
+              <div className='relative'>
+                <img
+                  src='https://placehold.co/1360x1020'
+                  alt='Inners'
+                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
+                />
+              </div>
+              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
+                <span>
+                  <span>
+                    <span aria-hidden='true' className='absolute inset-0'></span>
+                    Inners
+                  </span>
+                </span>
+                <p>Coming Soon</p>
+              </div>
+              <p className='mt-1 text-sm text-gray-500'>Mint</p>
+            </div>
+
+            <div className='group relative'>
+              <div className='relative'>
+                <img
+                  src='https://placehold.co/1360x1020'
+                  alt='OrdiBoos'
+                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
+                />
+              </div>
+              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
+                <span>
+                  <span>
+                    <span aria-hidden='true' className='absolute inset-0'></span>
+                    OrdiBoos
+                  </span>
+                </span>
+                <p>Coming Soon</p>
+              </div>
+              <p className='mt-1 text-sm text-gray-500'>Mint</p>
+            </div>
+          </div>
+        </div>
       </div>
     </Section>
   );

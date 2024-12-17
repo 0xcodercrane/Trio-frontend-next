@@ -46,12 +46,12 @@
     --inscription-tiny: 144px;
     --inscription-smaller: 280px;
     --inscription-small: 320px;
-    --inscription-default: 360px;
-    --inscription-big: 400px;
-    --inscription-bigger: 420px;
-    --inscription-large: 500px;
-    --inscription-larger: 600px;
-    --inscription-largest: 900px;
+    --inscription-default: 340px;
+    --inscription-big: 350px;
+    --inscription-bigger: 400px;
+    --inscription-large: 420px;
+    --inscription-larger: 500px;
+    --inscription-largest: 600px;
 
     /* Charts */
     --chart-1: rgba(255, 255, 255, 0.8);
