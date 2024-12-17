@@ -39,7 +39,7 @@ const MintAction = ({ mintState, hasAllocationInCurrentPhase, txid, mint, launch
     <div className='flex flex-row items-center justify-between'>
       <Button
         disabled={
-          !isOutputsSetupInMempool ||
+          isOutputsSetupInMempool ||
           !hasPaddingOutputs ||
           !isAuthenticated ||
           [EMintState.MINTING, EMintState.PADDING].includes(mintState) ||
