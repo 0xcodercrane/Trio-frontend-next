@@ -24,6 +24,7 @@ export default function Pool({ pool }: { pool: TLotteryPool | TProportionatePool
   };
 
   const winner = useMemo(() => {
+    console.log(winners);
     if (winners) return winners[0];
     return null;
   }, [winners]);
@@ -42,20 +43,20 @@ export default function Pool({ pool }: { pool: TLotteryPool | TProportionatePool
         </div>
       )}
 
-      {poolState === EPoolState.ENDED && !winner && (
+      {poolState === EPoolState.ENDED && (
         <div className='absolute left-0 top-0 z-20 flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg bg-ob-black/[0.80]'>
           <span className='text-lg'>Pool Closed at {formatBlock(endBlock)}</span>
           <span>The winner of this pool will be announced soon</span>
-          <span className='text-sm italic'>(block {formatBlock(startBlock)})</span>
+          {/*<span className='text-sm italic'>(block {formatBlock(startBlock)})</span>*/}
         </div>
       )}
 
-      {poolState === EPoolState.ENDED && winner && (
+{/*      {poolState === EPoolState.ENDED && winner && (
         <div className='absolute left-0 top-0 z-20 flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg bg-ob-black/[0.80]'>
           <span className='text-lg'>Pool Closed at {formatBlock(endBlock)}</span>
           <span>The winner of this pool is {shortenAddress(winners[0])} </span>
         </div>
-      )}
+      )}*/}
 
       {renderPool()}
     </div>
