@@ -9,8 +9,8 @@ export const CustomMintValues = Object.values(ECustomMints);
 
 export default function CustomMints({ id }: { id: string }) {
   switch (id) {
+    // return <SpartacusMint />;
     case 'spartacus':
-      return <SpartacusMint />;
     default:
       return <NotFound />;
   }
