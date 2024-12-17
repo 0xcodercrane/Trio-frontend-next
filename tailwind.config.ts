@@ -215,7 +215,7 @@ const config = {
 
         // Purples
         'ob-purple-darkest': '#0D0216',
-        'ob-purple-dark': '#150028',
+        'ob-purple-dark': '#0f031c',
         'ob-purple': '#2B0059',
         'ob-purple-light': '#4D0398',
         'ob-purple-lighter': '#7D01FF'
