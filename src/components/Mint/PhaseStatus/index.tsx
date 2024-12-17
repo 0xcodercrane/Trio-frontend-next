@@ -110,10 +110,13 @@ const PhaseStatus: React.FC<TPhaseStatusProps> = ({
                 <div className='max-w-1/2 flex max-h-full flex-col gap-2'>
                   <div className='flex flex-row justify-between gap-2'>
                     <span className={`text-${color}`}>
-                      {state} {state === EPhaseState.LIVE && <span className='px-2 text-white'>Ends in</span>}
+                      {state}
+                      {state === EPhaseState.LIVE && phase.end_date !== null && (
+                        <span className='px-2 text-white'>Ends in</span>
+                      )}
                     </span>
-                    {state !== EPhaseState.ENDED && (
-                      <TimeLeft targetTime={state === EPhaseState.LIVE ? phase.end_date : phase.start_date} />
+                    {((state === EPhaseState.LIVE && phase.end_date !== null) || state === EPhaseState.UPCOMING) && (
+                      <TimeLeft targetTime={state === EPhaseState.LIVE ? phase.end_date! : phase.start_date} />
                     )}
                   </div>
                   <div className='flex w-full items-center justify-end gap-1 text-right'>
