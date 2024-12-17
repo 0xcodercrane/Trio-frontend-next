@@ -27,6 +27,7 @@ export type TProportionatePool = TPool & {
   totalPointsAllocated: number;
   minPointsAllocation: number;
   maxPointsAllocation: number;
+  winners: string[];
 };
 
 export type TLotteryPool = TPool & {

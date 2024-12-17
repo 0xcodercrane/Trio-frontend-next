@@ -8,7 +8,8 @@ const fetchBlockHeight = async () => {
     const response = await fetch(`${MEMPOOL_URL}/api/blocks/tip/height`, {
       headers: {
         'x-api-key': ORDINALSBOT_PUBLIC_API_KEY
-      }
+      },
+      cache: 'no-store'
     });
 
     if (!response.ok) {
