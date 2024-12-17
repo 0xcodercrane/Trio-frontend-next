@@ -56,7 +56,6 @@ export default function NavBar() {
           <SearchButton />
         </div>
       </div>
-      <div>Feature Roadmap</div>
     </>
   );
 }
