@@ -47,7 +47,7 @@ export default function LeadingFee({ orderId }: { orderId: string }) {
       )}
 
       <div className='flex h-full w-full flex-row items-center justify-between gap-4'>
-        <CustomFeeInput txVirtualSize={21} />
+        {/* <CustomFeeInput txVirtualSize={21} /> */}
         <Button variant='secondary' onClick={() => setOrderFlowState(EOrderFlowStates.Complete)}>
           Increase Fee
         </Button>

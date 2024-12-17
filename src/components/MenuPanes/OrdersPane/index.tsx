@@ -11,14 +11,14 @@ export default function OrdersPane() {
       <UserOrdersTable />
       <div className='grid grid-cols-2 gap-4'>
         <div className='grid grid-cols-2 gap-4'>
-          <CustomFeeInput txVirtualSize={TX_VIRTUAL_SIZE_PLACEHOLDER} />
+          {/* <CustomFeeInput txVirtualSize={TX_VIRTUAL_SIZE_PLACEHOLDER} /> */}
           <Button className='w-full min-w-full max-w-full' variant='secondary'>
             Increase All Losing Bids
           </Button>
         </div>
 
         <div className='grid grid-cols-2 gap-4'>
-          <CustomFeeInput txVirtualSize={TX_VIRTUAL_SIZE_PLACEHOLDER} />
+          {/* <CustomFeeInput txVirtualSize={TX_VIRTUAL_SIZE_PLACEHOLDER} /> */}
           <Button className='w-full min-w-full max-w-full' variant='secondary'>
             Increase All Max Fees
           </Button>
