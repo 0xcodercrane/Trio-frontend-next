@@ -25,8 +25,7 @@ export default function Header({ renderSearchbar = false, onChangeSearch }: Head
       <Container padding>
         <div className='grid w-full grid-cols-[1fr_1.5fr_1fr] items-center'>
           <div className='flex h-full items-center'>
-            <Link href='/' className='flex'>
-              <span className='text-xs'>ALPHA</span>
+            <Link href='/' className='flex items-center'>
               <Image
                 className='w-aut h-[--header-content-height]'
                 src='/img/trio-logo.svg'
@@ -34,6 +33,9 @@ export default function Header({ renderSearchbar = false, onChangeSearch }: Head
                 width={95}
                 height={30}
               />
+              <span className='me-2 -translate-y-2 translate-x-3 rounded bg-gray-100 px-2.5 py-0.5 text-xs font-bold text-gray-800 dark:bg-gray-700 dark:text-gray-300'>
+                Alpha
+              </span>
             </Link>
           </div>
 
