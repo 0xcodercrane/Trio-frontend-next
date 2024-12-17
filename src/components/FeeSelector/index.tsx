@@ -16,7 +16,7 @@ interface FeeSelectorProps {
 export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtualSize }: FeeSelectorProps) {
   // Local state
   const [selectedFeeOption, setSelectedFeeOption] = useState<EFeeOptions>(DEFAULT_FEE);
-  const [customFee, setCustomFee] = useState<number>();
+  const [customFee, setCustomFee] = useState<string>('');
   const { data: feeRatesData, isPending: isFeeRatesPending, setFeeRate } = useFeeRates();
   const { satsToUsd } = usePrices();
 
@@ -28,14 +28,14 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
 
   useEffect(() => {
     if (feeRatesData && !customFee) {
-      setCustomFee(feeRatesData.fastest_fee);
+      setCustomFee(feeRatesData.fastest_fee.toString());
     }
   }, [feeRatesData, customFee]);
 
   useEffect(() => {
     if (selectedFeeOption === EFeeOptions.CUSTOM) {
       if (!!customFee) {
-        setFeeRate(customFee);
+        setFeeRate(Number(customFee));
       }
     } else if (feeRatesData) {
       setFeeRate(feeRatesData[feeOptionsConfig[selectedFeeOption].dbKey]);
@@ -51,17 +51,15 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
     setSelectedFeeOption(feeOption);
     if (feeOption === EFeeOptions.CUSTOM) {
       if (customFee) {
-        setFeeRate(customFee);
+        setFeeRate(Number(customFee));
       }
     } else if (feeRatesData) {
       setFeeRate(feeRatesData[feeOptionsConfig[feeOption].dbKey]);
     }
   };
 
-  const handleCustomFeeRateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value) {
-      setCustomFee(parseFloat(event.target.value));
-    }
+  const handleCustomFeeRateChange = (value: string) => {
+    setCustomFee(value);
   };
 
   return (
@@ -95,16 +93,15 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
                         <div>
                           <CustomFeeInput
                             txVirtualSize={txVirtualSize}
-                            type='number'
-                            value={customFee ? customFee + 1 : feeRatesData.fastest_fee + 2} // Shows a value in the input box no matter what
-                            onChange={handleCustomFeeRateChange}
+                            value={customFee}
+                            onChange={(e) => handleCustomFeeRateChange(e.target.value)}
                           />
                         </div>
                       ) : (
                         <div className='text-sm text-ob-grey-lightest'>
-                          {currentFeeRate || feeRatesData.fastest_fee + 1} sats/vB ~{satsToUsd(txFee).formatted}
+                          {currentFeeRate} sats/vB ~{satsToUsd(txFee).formatted}
                         </div>
-                      )}{' '}
+                      )}
                     </div>
                   </label>
                 </div>
