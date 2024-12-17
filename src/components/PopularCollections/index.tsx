@@ -6,10 +6,10 @@ import { MediaWrapper } from '../common';
 import { Button } from '../ui/button';
 import { useMemo, useState } from 'react';
 import { useWallet } from '@/lib/hooks';
+import { satsToBitcoin } from '@/lib/utilities';
 
 export default function PopularCollections() {
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const satsToBitcoin = (sats: number) => sats / 100000000;
   const wallet = useWallet();
 
   const handleOnSaleNextClick = () => {
@@ -83,7 +83,7 @@ export default function PopularCollections() {
                   {wallet && (
                     <div className='flex flex-col items-center gap-2'>
                       <Button variant='secondary' onClick={() => handleBuyListing(list.id)}>
-                        Buy Now {satsToBitcoin(list.price).toFixed(6)} BTC
+                        Buy Now {satsToBitcoin(list.price)} BTC
                       </Button>
                     </div>
                   )}
