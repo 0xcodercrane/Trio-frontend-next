@@ -1,23 +1,23 @@
 'use client';
 
 import { AuthContext } from '@/app/providers/AuthContext';
-import { EMintState, TAllocation, TMetaData, TPhase, EMediaType, EOrientation } from '@/types';
+import { usePaddingOutputs } from '@/lib/hooks/usePaddingOutputs';
+import { createBuyOffer, fetchAllocationInfo, fetchLaunchpadStatus, submitBuyOffer } from '@/lib/services';
+import { useLaunchpad } from '@/lib/services/fetchLaunchpad';
+import { pushPreinscribeMintOrderToFirebase } from '@/lib/services/points';
+import { EMediaType, EMintState, EOrientation, TAllocation, TMetaData, TPhase } from '@/types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Container } from '../Container';
+import { SplashPageLayout } from '../Layouts';
+import { PaddingPrompt } from '../PaddingPrompt';
 import Section from '../Section';
+import LaunchpadMetaData from './launchpadMetadata';
 import MintAction from './MintAction';
 import MintProcess from './MintProcess';
 import PhaseStatus from './PhaseStatus';
-import { createBuyOffer, fetchAllocationInfo, fetchLaunchpadStatus, submitBuyOffer } from '@/lib/services';
-import { usePaddingOutputs } from '@/lib/hooks/usePaddingOutputs';
-import { SplashPageLayout } from '../Layouts';
-import LaunchpadMetaData from './launchpadMetadata';
-import { useLaunchpad } from '@/lib/services/fetchLaunchpad';
-import { pushPreinscribeMintOrderToFirebase } from '@/lib/services/points';
-import { PaddingPrompt } from '../PaddingPrompt';
 
 export default function Mint({ id }: { id: string }) {
   const { wallet, isAuthenticated } = useContext(AuthContext);
@@ -58,7 +58,9 @@ export default function Mint({ id }: { id: string }) {
     return (
       launchInfo?.phases.find((phase: TPhase) => {
         const now = Date.now();
-        return now >= phase.start_date * 1000 && now <= phase.end_date * 1000;
+        const start = phase.start_date * 1000;
+        const end = phase.end_date ? phase.end_date * 1000 : null;
+        return now >= start && (!end || now <= end);
       }) || null
     );
   }, [launchInfo]);

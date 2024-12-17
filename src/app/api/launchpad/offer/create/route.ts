@@ -18,7 +18,13 @@ export async function POST(req: Request) {
       body: JSON.stringify({ id, takerOrdinalAddress, takerPaymentAddress, takerPaymentPublicKey, feeRate })
     });
 
+    console.log('------ Detailed Error:1');
+    console.log(response);
+
     const data = await response.json();
+
+    console.log('------ Detailed Error:2');
+    console.log(response.ok);
 
     if (response.ok) {
       if (data.status === 'error') {
@@ -33,6 +39,8 @@ export async function POST(req: Request) {
         }
       );
     } else {
+      console.log('------ Detailed Error');
+      console.error(data);
       return NextResponse.json({ success: false, error: 'Error creating buy offer' });
     }
   } catch (error: any) {
