@@ -18,7 +18,13 @@ export async function POST(req: Request) {
       body: JSON.stringify({ id, takerOrdinalAddress, takerPaymentAddress, takerPaymentPublicKey, feeRate })
     });
 
+    console.log('------ Detailed Error:1');
+    console.log(response);
+
     const data = await response.json();
+
+    console.log('------ Detailed Error:2');
+    console.log(response.ok);
 
     if (response.ok) {
       if (data.status === 'error') {
