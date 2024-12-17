@@ -15,6 +15,7 @@ export default function CustomFeeInput({ txVirtualSize, value, ...props }: Custo
       <Input
         className='min-w-12 grow border-none bg-ob-purple-darkest pl-2 text-ob-grey-lightest'
         type='number'
+        value={value}
         {...props}
       />
       <span className='text-nowrap pl-1 text-sm text-ob-grey-lightest'>sats/vB | {satsToUsd(feeInUsd).formatted}</span>

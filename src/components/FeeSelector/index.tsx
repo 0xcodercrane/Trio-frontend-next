@@ -96,13 +96,13 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
                           <CustomFeeInput
                             txVirtualSize={txVirtualSize}
                             type='number'
-                            value={customFee}
+                            value={customFee ? customFee + 1 : feeRatesData.fastest_fee + 2} // Shows a value in the input box no matter what
                             onChange={handleCustomFeeRateChange}
                           />
                         </div>
                       ) : (
                         <div className='text-sm text-ob-grey-lightest'>
-                          {currentFeeRate} sats/vB ~{satsToUsd(txFee).formatted}
+                          {currentFeeRate || feeRatesData.fastest_fee + 1} sats/vB ~{satsToUsd(txFee).formatted}
                         </div>
                       )}{' '}
                     </div>
