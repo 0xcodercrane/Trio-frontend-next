@@ -16,11 +16,7 @@ export default function ConnectWallet() {
   return (
     <>
       {!menuDisclosure.isOpen && (
-        <Button
-          variant='secondary'
-          className='rounded-full bg-white px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-200'
-          onClick={handleOpenWalletMenu}
-        >
+        <Button variant='default' size='sm' onClick={handleOpenWalletMenu}>
           Connect
         </Button>
       )}

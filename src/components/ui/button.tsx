@@ -15,6 +15,7 @@ export const variants = {
     secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
     ghost:
       'hover:text-accent-foreground text-ob-white-40 hover:text-ob-white-80 *:grayscale *:hover:grayscale-0 border border-zinc-400',
+    faint: 'bg-white/5 hover:text-accent-foreground text-ob-white-20 hover:text-ob-white-80 *:grayscale *:hover:grayscale-0',
     link: 'text-primary underline-offset-4 hover:underline',
     tab: 'bg-ob-purple-dark text-white hover:bg-ob-purple-darkest [&.active]:text-white [&.active]:bg-ob-purple-light',
     icon: 'bg-white text-black hover:bg-ob-white/80 rounded-full',
@@ -22,7 +23,7 @@ export const variants = {
   },
   size: {
     default: 'h-[--button-height-md] px-8 min-w-[80px] w-auto max-w-[160px]',
-    sm: 'h-[--button-height-sm] px-3 text-sm max-w-[120px]',
+    sm: 'h-[--button-height-sm] px-5 text-sm max-w-[120px]',
     lg: 'h-[--button-height-lg] px-8 text-lg',
     icon: `
       xs:max-h-[--button-height-sm] xs:w-[--button-height-sm]

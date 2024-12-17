@@ -107,7 +107,7 @@ export default function WalletConnectionPane() {
 
   return (
     <Container padding justify='center' className='items-center'>
-      <div className='flex h-full flex-col items-center justify-center gap-8 bg-ob-purple-darkest text-white'>
+      <div className='mt-50 flex h-full flex-col items-center justify-center gap-8 bg-ob-purple-darkest text-white'>
         {!isAuthenticated && !signingInProgress && (
           <h2 className='text-4xl font-bold'>Choose a bitcoin wallet to connect</h2>
         )}
@@ -125,7 +125,8 @@ export default function WalletConnectionPane() {
               return (
                 <Button
                   key={wallet.name}
-                  variant='ghost'
+                  variant='faint'
+                  size='lg'
                   className='w-full min-w-fit max-w-[33%] justify-between hover:text-white'
                   onClick={() => {
                     // @ts-expect-error- Supported Wallets are the keys of the WalletProviderConfig object
