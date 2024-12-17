@@ -58,7 +58,7 @@ export default function Home() {
             <Link href='/mint/punk-royale' className='group relative'>
               <div className='relative'>
                 <img
-                  src='https://placehold.co/1360x1020'
+                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Fpunk-royale.webp?alt=media&token=27ed0587-a335-4511-8ebc-253319cfe902'
                   alt='Punk Royale'
                   className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
                 />
@@ -83,7 +83,7 @@ export default function Home() {
             <div className='group relative'>
               <div className='relative'>
                 <img
-                  src='https://placehold.co/1360x1020'
+                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Fsatorials.webp?alt=media&token=133da49f-246b-4057-8b57-a0b966c6aafb'
                   alt='Satorials'
                   className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
                 />
@@ -103,7 +103,7 @@ export default function Home() {
             <div className='group relative'>
               <div className='relative'>
                 <img
-                  src='https://placehold.co/1360x1020'
+                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Finners.webp?alt=media&token=25efd731-798c-4e79-aade-a381f47f2932'
                   alt='Inners'
                   className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
                 />
@@ -123,7 +123,7 @@ export default function Home() {
             <div className='group relative'>
               <div className='relative'>
                 <img
-                  src='https://placehold.co/1360x1020'
+                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Fordiboos.webp?alt=media&token=79925248-806e-4da8-9393-2bf5c8db9b01'
                   alt='OrdiBoos'
                   className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
                 />
