@@ -189,6 +189,7 @@ export const OB_SOCIALS_CONFIG: TSocialsConfig = {
 };
 
 export const SATS_IN_BITCOIN = 100000000;
+export const MIN_UTXO_VALUE = 546;
 
 export const PERCENTAGE_CONVERSION_FACTOR = 100;
 export const BPS_TO_DECIMAL_CONVERSION_FACTOR = 10000;
@@ -196,7 +197,7 @@ export const BPS_TO_PERCENTAGE_CONVERSION_FACTOR = 100;
 // Defined in basis points.
 export const MARKETPLACE_MAKER_FEE_BPS = 0;
 export const MARKETPLACE_TAKER_FEE_BPS = 150;
-export const MARKETPLACE_TRIO_DISCOUNT_THRESHOLD = 500;
+export const MARKETPLACE_TRIO_DISCOUNT_THRESHOLD = 50;
 
 // These environments pertain to the app instance.
 // They correspond to the environment environment variable used below
