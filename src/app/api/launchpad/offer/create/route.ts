@@ -33,6 +33,8 @@ export async function POST(req: Request) {
         }
       );
     } else {
+      console.log('------ Detailed Error');
+      console.error(data);
       return NextResponse.json({ success: false, error: 'Error creating buy offer' });
     }
   } catch (error: any) {
