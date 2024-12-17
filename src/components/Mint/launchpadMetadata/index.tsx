@@ -38,7 +38,7 @@ const LaunchpadMetaData = ({ metaData }: { metaData: TMetaData }) => {
   return (
     <>
       <div className='flex flex-col gap-2'>
-        <h2 className='text-4xl font-extrabold leading-none md:text-5xl lg:text-6xl xl:text-7xl'>{metaData?.name}</h2>
+        <h2 className='mb-5 text-2xl font-extrabold leading-none md:text-3xl lg:text-4xl xl:text-5xl'>{metaData?.name}</h2>
         <p className='text-ob-grey-lighter'>{metaData?.description}</p>
       </div>
 
