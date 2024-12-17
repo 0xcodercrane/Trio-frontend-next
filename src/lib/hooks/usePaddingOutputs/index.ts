@@ -2,10 +2,11 @@ import { AuthContext } from '@/app/providers/AuthContext';
 import { GenericResponse, isResponseSuccess } from '@/types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useFeeRates } from '../useFeeRates';
 import { useWallet } from '../useWallet';
+import { useLocalStorage } from 'usehooks-ts';
 
 interface PaddingOutputsCheckDataResponse {
   paddingOutputsExist: boolean;
@@ -52,11 +53,17 @@ const getPaddingOutputsSetupPsbt = async (
   }
 };
 
+const LOCAL_STORE_OUTPUTS_SETUP_MEMPOOL = 'OUTPUTS_SETUP_MEMPOOL';
+
 const usePaddingOutputs = () => {
   const wallet = useWallet();
   const { signPsbt } = useLaserEyes();
   const queryClient = useQueryClient();
   const { data, feeRate } = useFeeRates();
+  const [isOutputsSetupInMempool, setOutputsSetupInMempool, removeValue] = useLocalStorage(
+    `${LOCAL_STORE_OUTPUTS_SETUP_MEMPOOL}_${wallet?.paymentAddress}`,
+    false
+  );
 
   const { data: hasPaddingOutputs, isPending: isPaddingOutputsCheckPending } = useQuery({
     queryKey: ['padding-outputs-check', wallet?.paymentAddress],
@@ -66,6 +73,12 @@ const usePaddingOutputs = () => {
   });
 
   const [isPaddingOuputsSetupInProgress, setIsPaddingOutputsSetupInProgess] = useState(false);
+
+  useEffect(() => {
+    if (hasPaddingOutputs) {
+      setOutputsSetupInMempool(false);
+    }
+  }, [hasPaddingOutputs]);
 
   // MEMO: Wrapper around any call that needs to be checked.
   const withPaddingOutputs = useCallback(
@@ -77,6 +90,13 @@ const usePaddingOutputs = () => {
         return callback();
       }
       setIsPaddingOutputsSetupInProgess(true);
+
+      // MEMO: Workaround to not allow user to submit multiple output setup txs.
+      if (isOutputsSetupInMempool) {
+        toast.info('Padding outputs setup transaction was broadcasted, wait until it gets confirmed.');
+        return;
+      }
+
       const response = await getPaddingOutputsSetupPsbt(
         wallet.paymentAddress,
         wallet.paymentPublicKey,
@@ -87,7 +107,7 @@ const usePaddingOutputs = () => {
         try {
           const result = await signPsbt(response.payload.psbt, true, true);
           toast.success(`Padding outputs setup broadcasted in ${result?.txId}`);
-
+          setOutputsSetupInMempool(true);
           return new Promise((resolve) => {
             setTimeout(async () => {
               await queryClient.invalidateQueries({ queryKey: ['padding-outputs-check', wallet?.paymentAddress] });
@@ -115,6 +135,7 @@ const usePaddingOutputs = () => {
     hasPaddingOutputs,
     isPaddingOutputsCheckPending,
     isPaddingOuputsSetupInProgress,
+    isOutputsSetupInMempool,
     withPaddingOutputs,
     setupPaddingOutputs
   };

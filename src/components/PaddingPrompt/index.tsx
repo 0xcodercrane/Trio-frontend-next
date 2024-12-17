@@ -7,10 +7,24 @@ import { AuthContext } from '@/app/providers/AuthContext';
 
 export function PaddingPrompt() {
   const { isAuthenticated } = useContext(AuthContext);
-  const { hasPaddingOutputs, isPaddingOutputsCheckPending, isPaddingOuputsSetupInProgress, setupPaddingOutputs } =
-    usePaddingOutputs();
+  const {
+    hasPaddingOutputs,
+    isOutputsSetupInMempool,
+    isPaddingOutputsCheckPending,
+    isPaddingOuputsSetupInProgress,
+    setupPaddingOutputs
+  } = usePaddingOutputs();
 
-  if (hasPaddingOutputs || !isAuthenticated || isPaddingOutputsCheckPending) return null;
+  if (isOutputsSetupInMempool) {
+    return (
+      <div className='flex flex-col gap-4 bg-ob-purple p-4 text-white'>
+        Padding outputs setup transaction for the connected wallet is in the mempool, please wait until it gets confirmed to
+        mint.
+      </div>
+    );
+  }
+
+  if (isOutputsSetupInMempool || hasPaddingOutputs || !isAuthenticated || isPaddingOutputsCheckPending) return null;
 
   return (
     <div className='flex flex-col bg-ob-purple-dark p-4'>

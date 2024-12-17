@@ -4,7 +4,7 @@ import { AuthContext } from '@/app/providers/AuthContext';
 import { Tag } from '@/components/common';
 import { Button } from '@/components/ui/button';
 import { MEMPOOL_SPACE_URL } from '@/lib/constants';
-import { useFeeRates } from '@/lib/hooks';
+import { useFeeRates, usePaddingOutputs } from '@/lib/hooks';
 import { shortenTxid } from '@/lib/utilities';
 import { EComponentVariants } from '@/types';
 import { EMintState, TMintActionProps } from '@/types/launchpad';
@@ -25,6 +25,7 @@ const mapStateToButtonText = (mintState: EMintState): string => {
 const MintAction = ({ mintState, hasAllocationInCurrentPhase, txid, mint, launchInfoPending }: TMintActionProps) => {
   const { isAuthenticated } = useContext(AuthContext);
   const { data: feeRatesData } = useFeeRates();
+  const { hasPaddingOutputs, isOutputsSetupInMempool } = usePaddingOutputs();
 
   if (launchInfoPending) {
     return (
@@ -38,7 +39,11 @@ const MintAction = ({ mintState, hasAllocationInCurrentPhase, txid, mint, launch
     <div className='flex flex-row items-center justify-between'>
       <Button
         disabled={
-          !isAuthenticated || [EMintState.MINTING, EMintState.PADDING].includes(mintState) || !hasAllocationInCurrentPhase
+          !isOutputsSetupInMempool ||
+          !hasPaddingOutputs ||
+          !isAuthenticated ||
+          [EMintState.MINTING, EMintState.PADDING].includes(mintState) ||
+          !hasAllocationInCurrentPhase
         }
         onClick={() => {
           if (feeRatesData?.fastest_fee) mint(feeRatesData?.fastest_fee);
