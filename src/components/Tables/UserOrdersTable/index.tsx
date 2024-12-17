@@ -144,9 +144,7 @@ export default function UserOrdersTable() {
             <TableCell>
               <span className={`${mapBidStatusToTextColor(bidStatus)} font-bold uppercase`}>{bidStatus}</span>
             </TableCell>
-            <TableCell>
-              <CustomFeeInput txVirtualSize={TX_VIRTUAL_SIZE_PLACEHOLDER} />
-            </TableCell>
+            <TableCell>{/* <CustomFeeInput txVirtualSize={TX_VIRTUAL_SIZE_PLACEHOLDER} /> */}</TableCell>
             <TableCell>
               <Button onClick={() => {}} variant={mapOrderBidStatusToVariant(bidStatus)}>
                 Increase Fee
