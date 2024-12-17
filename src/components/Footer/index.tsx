@@ -22,13 +22,32 @@ export default function Footer() {
             <div>
               <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400'>GENERAL</h3>
               <ul className='space-y-2'>
-                {['Home', 'Creators', 'Partners', 'Marketplace'].map((item) => (
-                  <li key={item}>
+                {[
+                  {
+                    label: 'Home',
+                    href: '/'
+                  },
+                  {
+                    label: 'Creators',
+                    href: '/launchpad'
+                  },
+                  {
+                    label: 'Partners',
+                    href: 'https://ordinalsbot.com/partners',
+                    target: '_blank'
+                  },
+                  {
+                    label: 'Marketplace',
+                    href: '/collections'
+                  }
+                ].map(({ label, href, target }) => (
+                  <li key={label}>
                     <Link
-                      href={`#${item.toLowerCase()}`}
+                      href={href}
+                      target={target}
                       className='text-xl font-semibold transition-colors hover:text-gray-300'
                     >
-                      {item}
+                      {label}
                     </Link>
                   </li>
                 ))}
@@ -37,13 +56,35 @@ export default function Footer() {
             <div>
               <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400'>COMPANY</h3>
               <ul className='space-y-2'>
-                {['Developers', 'Guides', 'Help', 'Runes'].map((item) => (
-                  <li key={item}>
+                {[
+                  {
+                    label: 'Developers',
+                    href: 'https://docs.ordinalsbot.com',
+                    target: '_blank'
+                  },
+                  {
+                    label: 'Guides',
+                    href: 'https://www.youtube.com/@ordinalsbot',
+                    target: '_blank'
+                  },
+                  {
+                    label: 'Help',
+                    href: 'https://discord.com/invite/9nBhVgCjct',
+                    target: '_blank'
+                  },
+                  {
+                    label: 'Runes',
+                    href: 'https://ordinalsbot.com/runes',
+                    target: '_blank'
+                  }
+                ].map(({ label, href, target }) => (
+                  <li key={label}>
                     <Link
-                      href={`#${item.toLowerCase()}`}
+                      href={href}
+                      target={target}
                       className='text-xl font-semibold transition-colors hover:text-gray-300'
                     >
-                      {item}
+                      {label}
                     </Link>
                   </li>
                 ))}
@@ -54,11 +95,10 @@ export default function Footer() {
 
         <div className='text-ob-white flex flex-col items-center justify-between md:flex-row md:gap-2'>
           <div className='flex space-x-6'>
-            {/* TODO - add real links */}
-            <Link href='#privacy' className='text-sm transition-colors hover:text-gray-300'>
+            {/* <Link href='#privacy' className='text-sm transition-colors hover:text-gray-300'>
               Privacy Policy
-            </Link>
-            <Link href='#terms' className='text-sm transition-colors hover:text-gray-300'>
+            </Link> */}
+            <Link href='/terms' className='text-sm transition-colors hover:text-gray-300'>
               Terms & Conditions
             </Link>
           </div>
