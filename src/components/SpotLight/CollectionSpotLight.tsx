@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
 
 export function CollectionSpotLight({ slug }: { slug: string }) {
-  const { data, isPending, error } = useCollectionBySlugQuery(slug);
+  const { data, isPending } = useCollectionBySlugQuery(slug);
   return (
     <div className='mt-[--section-vertical-padding] flex flex-row gap-8'>
       <div className='flex h-full w-1/2 flex-col justify-center gap-8 py-24 text-white'>
