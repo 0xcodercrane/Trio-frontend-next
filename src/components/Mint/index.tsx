@@ -138,23 +138,9 @@ export default function Mint({ slug }: { slug: string }) {
   const metaData: TMetaData = useMemo(() => launchInfo && launchInfo.meta_data, [launchInfo]);
 
   // In both the totalInscriptions and remainingInscriptions, we are using the public phase to get the total and remaining inscriptions
-  const totalInscriptions = useMemo(() => {
-    if (launchInfo) {
-      const publicPhase = launchInfo.phases.find((phase: TPhase) => phase.is_public);
-      return publicPhase?.total_inscriptions || 0;
-    } else {
-      return 0;
-    }
-  }, [launchInfo]);
+  const totalInscriptions = launchInfo?.total_inscriptions || 1; // default to 1 to avoid division by zero
 
-  const remainingInscriptions = useMemo(() => {
-    if (launchInfo) {
-      const publicPhase = launchInfo.phases.find((phase: TPhase) => phase.is_public);
-      return publicPhase?.remaining_inscriptions || 0;
-    } else {
-      return 0;
-    }
-  }, [launchInfo]);
+  const remainingInscriptions = launchInfo?.remaining_inscriptions || 0;
 
   const percentComplete = useMemo(
     () => Number((((totalInscriptions - remainingInscriptions) / totalInscriptions) * 100).toFixed(2)) || 0,
