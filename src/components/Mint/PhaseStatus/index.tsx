@@ -1,7 +1,6 @@
 import { TimeLeft } from '@/components/common';
 import { satsToBitcoin } from '@/lib/utilities';
 import { EPhaseState, TAllocation, TPhase, TPhaseStatusProps } from '@/types/launchpad';
-import Image from 'next/image';
 import numeral from 'numeral';
 import React from 'react';
 
@@ -127,9 +126,6 @@ const PhaseStatus: React.FC<TPhaseStatusProps> = ({
                         {mapInscriptionsRemainingToContent(inscriptionsRemaining)}
                       </span>
                     )}
-                    {allocationForPhase && !allocationForPhase.is_public ? (
-                      <Image src='/img/lock.svg' alt='discord' width={15} height={15} />
-                    ) : null}
                   </div>
                 </div>
               </div>
