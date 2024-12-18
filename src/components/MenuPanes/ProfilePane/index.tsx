@@ -9,7 +9,6 @@ import { useContext, useState } from 'react';
 import { BuyTrioTab } from './BuyTrio';
 import { MyAssetsTab } from './MyAssetsTab';
 import { PointsPane } from '../PointsPane/PointsPane';
-import OrdersPane from '../OrdersPane';
 
 enum EProfilePanes {
   // ACCOUNT = 'account',

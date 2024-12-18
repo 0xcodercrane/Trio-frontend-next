@@ -1,17 +1,6 @@
-import Favorite from '@/components/Favorite';
 import { satsToBitcoin } from '@/lib/utilities';
 
-export const InscriptionOverlay = ({
-  id,
-  name,
-  rank,
-  price
-}: {
-  id: string;
-  name: string;
-  price?: number;
-  rank?: number;
-}) => {
+export const InscriptionOverlay = ({ name, rank, price }: { id: string; name: string; price?: number; rank?: number }) => {
   return (
     <div className='absolute bottom-0 z-10 flex h-full w-full flex-col justify-end rounded-xl'>
       {/* {

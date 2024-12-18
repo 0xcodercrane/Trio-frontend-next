@@ -1,8 +1,7 @@
-import { AuthContext } from '@/app/providers/AuthContext';
 import { GenericResponse, isResponseSuccess } from '@/types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useFeeRates } from '../useFeeRates';
 import { useWallet } from '../useWallet';
@@ -60,7 +59,7 @@ const usePaddingOutputs = () => {
   const { signPsbt } = useLaserEyes();
   const queryClient = useQueryClient();
   const { data, feeRate } = useFeeRates();
-  const [isOutputsSetupInMempool, setOutputsSetupInMempool, removeValue] = useLocalStorage(
+  const [isOutputsSetupInMempool, setOutputsSetupInMempool] = useLocalStorage(
     `${LOCAL_STORE_OUTPUTS_SETUP_MEMPOOL}_${wallet?.paymentAddress}`,
     false
   );
@@ -116,7 +115,7 @@ const usePaddingOutputs = () => {
               resolve(cbResult);
             }, 10000); // Wait for 10s to let backend catch up with the padding setup tx in the mempool.
           });
-        } catch (error) {
+        } catch (_error) {
           toast.error('Signing padding outputs setup failed.');
         }
       } else {

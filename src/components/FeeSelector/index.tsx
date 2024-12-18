@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { usePrices } from '@/lib/services';
 import { DEFAULT_FEE, DEFAULT_FEE_OPTIONS, feeOptionsConfig } from './constants';

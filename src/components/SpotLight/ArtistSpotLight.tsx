@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { EMediaType, EOrientation } from '@/types';
 
 export function ArtistSpotLight({ slug }: { slug: string }) {
-  const { data, isPending, error } = useArtistQuery(slug);
+  const { data } = useArtistQuery(slug);
   const router = useRouter();
   return (
     <Section className='bg-ob-purple-darkest' padding={false} paddingLeft={false}>

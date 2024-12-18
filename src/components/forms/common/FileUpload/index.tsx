@@ -3,7 +3,7 @@ import * as v from 'valibot';
 import { useDropzone } from 'react-dropzone';
 import { useCallback, useMemo, useState } from 'react';
 
-type FileUploadProps<T> = {
+type FileUploadProps = {
   schema?: any;
   setData: (data: File | string) => void;
   size: string;
@@ -13,15 +13,7 @@ type FileUploadProps<T> = {
   setPreview?: (preview: string | null | undefined) => void;
 };
 
-export const FileUpload = <T,>({
-  schema,
-  setData,
-  size,
-  acceptFileType,
-  accept,
-  preview,
-  setPreview
-}: FileUploadProps<T>) => {
+export const FileUpload = ({ schema, setData, size, acceptFileType, accept, preview, setPreview }: FileUploadProps) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadingError, setUploadingError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);

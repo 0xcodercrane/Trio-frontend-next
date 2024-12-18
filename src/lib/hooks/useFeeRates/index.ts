@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchFeeRates } from '@/lib/services';
 import { DEFAULT_FEE_RATE, FEE_RATES_CACHE_AGE } from '@/lib/constants';
 
-const useFeeRate = create<FeeRateState>()((set, get) => ({
+const useFeeRate = create<FeeRateState>()((set) => ({
   feeRate: DEFAULT_FEE_RATE,
   setFeeRate: (feeRate) => set({ feeRate })
 }));

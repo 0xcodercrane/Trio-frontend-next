@@ -1,4 +1,4 @@
-import { EXPLORER_URL, INSCRIPTIONS_CONTENT_CACHE_AGE } from '@/lib/constants';
+import { EXPLORER_URL } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {

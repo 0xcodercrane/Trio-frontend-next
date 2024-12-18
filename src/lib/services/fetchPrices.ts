@@ -18,7 +18,7 @@ const fetchPrices = async (): Promise<Prices> => {
         usd: trioInfo.quote.USD.price
       }
     };
-  } catch (e) {
+  } catch (_e) {
     throw new Error('Failed to fetch prices.');
   }
 };

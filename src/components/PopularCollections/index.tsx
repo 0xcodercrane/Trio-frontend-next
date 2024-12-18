@@ -37,7 +37,7 @@ export default function PopularCollections() {
     return [];
   }, [currentPage]);
 
-  const handleBuyListing = async (id: number) => {
+  const handleBuyListing = async () => {
     // const txId = await buyListing(id, 8);
   };
 
@@ -82,7 +82,7 @@ export default function PopularCollections() {
                     )}
                   {wallet && (
                     <div className='flex flex-col items-center gap-2'>
-                      <Button variant='secondary' onClick={() => handleBuyListing(list.id)}>
+                      <Button variant='secondary' onClick={() => handleBuyListing()}>
                         Buy Now {satsToBitcoin(list.price)} BTC
                       </Button>
                     </div>

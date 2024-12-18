@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { HtmlProps } from './types';
 import { EXPLORER_URL } from '@/lib/constants';
 

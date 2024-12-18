@@ -2,7 +2,7 @@ import { useAddressFromId, useOrderbookByInscriptionId, useTradeHistoryByOrderId
 import supabase from '@/lib/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useEffect, useState } from 'react';
-import { TEN_SECONDS, ONE_SECOND } from '@/lib/constants';
+import { TEN_SECONDS } from '@/lib/constants';
 
 export const useInscriptionOrder = (inscriptionId: string) => {
   const { data: orders, isPending: isPendingOrderbook } = useOrderbookByInscriptionId(inscriptionId);

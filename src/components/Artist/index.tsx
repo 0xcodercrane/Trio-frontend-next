@@ -15,7 +15,7 @@ interface ArtistProps {
 }
 
 export default function Artist({ slug }: ArtistProps) {
-  const { data, isPending, error } = useArtistQuery(slug);
+  const { data, isPending } = useArtistQuery(slug);
   if (isPending) return <LoadingScreen />;
   if (!data)
     return (
@@ -24,7 +24,7 @@ export default function Artist({ slug }: ArtistProps) {
       </div>
     );
 
-  const { name, description, twitter_url } = data!;
+  const { name, twitter_url } = data!;
 
   return (
     <div className='relative'>

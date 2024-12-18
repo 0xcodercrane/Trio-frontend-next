@@ -1,5 +1,4 @@
 import NotFound from '@/app/not-found';
-import SpartacusMint from './SpartacusMint';
 
 export enum ECustomMints {
   Spartacus = 'spartacus'

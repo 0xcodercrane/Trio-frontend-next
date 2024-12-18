@@ -15,7 +15,7 @@ interface MempoolTxProps {
 
 export const MempoolTx = ({ txid }: MempoolTxProps) => {
   const { data: tip } = useBlockHeight();
-  const { data: tx, isPending: txPending, error: txError } = useMempoolTx(txid);
+  const { data: tx } = useMempoolTx(txid);
 
   const confirmations = useMemo(() => {
     if (!tip || tx === null || tx === undefined || !tx?.status) return 0;

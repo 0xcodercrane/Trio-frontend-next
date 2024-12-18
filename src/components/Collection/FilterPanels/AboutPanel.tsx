@@ -1,7 +1,6 @@
 'use client';
 import { Container } from '@/components/Container';
 import { SplashPageLayout } from '@/components/Layouts';
-import { Button } from '@/components/ui/button';
 import { useFilter } from '@/lib/hooks/useFilter';
 import { useCollectionBySlugQuery } from '@/lib/services';
 import { useInscriptionsByCollectionSlug } from '@/lib/services/fetchInscriptionsByCollectionSlug';
@@ -9,12 +8,7 @@ import { EMediaType } from '@/types';
 
 export const AboutPanel = ({ slug }: { slug: string }) => {
   const { offset, limit } = useFilter();
-  const {
-    data: inscriptions,
-    isPending,
-    error,
-    isPlaceholderData
-  } = useInscriptionsByCollectionSlug(slug, {
+  const { data: inscriptions } = useInscriptionsByCollectionSlug(slug, {
     offset,
     limit
   });

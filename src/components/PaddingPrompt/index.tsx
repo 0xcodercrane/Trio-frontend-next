@@ -1,6 +1,6 @@
 'use client';
 
-import { usePaddingOutputs, useWallet } from '@/lib/hooks';
+import { usePaddingOutputs } from '@/lib/hooks';
 import { Button } from '../ui/button';
 import { useContext } from 'react';
 import { AuthContext } from '@/app/providers/AuthContext';

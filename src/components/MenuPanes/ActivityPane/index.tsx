@@ -5,7 +5,7 @@ import { useNotificationsQuery } from '@/lib/services/fetchNotifications';
 import { EComponentVariants } from '@/types';
 
 export default function ActivityPane() {
-  const { data, isPending, error } = useNotificationsQuery();
+  const { data } = useNotificationsQuery();
 
   return (
     <Container direction='col' justify='start'>

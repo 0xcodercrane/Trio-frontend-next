@@ -3,8 +3,6 @@ import { getTradeHistoryByOrderId } from '../supabase';
 import { TPagination } from '../hooks/usePagination/pagination.types';
 import { getTradeHistories, getTradeHistoryById } from '../supabase/tradeHistory';
 
-const PAGINATION_LIMIT = 20;
-
 // TODO: This should be subscribed to the supabase changes.
 export const useTradeHistoryByOrderId = (orderId: number | undefined) =>
   useQuery({

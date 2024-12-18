@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { InscriptionsGrid } from '@/components/Grids';
 import { useWalletInscriptions } from '@/lib/services/inscriptions/fetchWalletInscriptions';
 import { AuthContext } from '@/app/providers/AuthContext';

@@ -1,5 +1,5 @@
 import { useInscriptionsByCollectionSlug } from '@/lib/services/fetchInscriptionsByCollectionSlug';
-import { MediaViewer, MediaWrapper } from '../common';
+import { MediaViewer } from '../common';
 import { Img } from '../Img';
 import { useInscriptionDataQuery } from '../common/MediaViewer/useInscriptionDataQuery';
 import { getContentType } from '../common/MediaViewer/MediaViewer';

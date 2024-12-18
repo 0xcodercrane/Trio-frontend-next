@@ -1,15 +1,10 @@
 'use client';
 
-import { Collection } from '@/types/database';
 import { useContext, useState } from 'react';
 import { AboutPanel } from '@/components/Collection/FilterPanels/AboutPanel';
-import { ActivityPanel } from '@/components/Collection/FilterPanels/ActivityPanel';
 import { SingleCollectionFilterPanel } from '@/components/Collection/FilterPanels/SingleCollectionFilterPanel';
-import { useCollectionBySlugQuery } from '@/lib/services';
-import LoadingScreen from '@/components/common/LoadingScreen';
 import Section from '@/components/Section';
 import { FilterPanelHeader } from '@/components/FilterPanel';
-import { useFilter } from '@/lib/hooks/useFilter';
 import { EVIEW_TYPES } from '@/lib/constants';
 import { MyItemsPanel } from './MyItems';
 import { AuthContext } from '@/app/providers/AuthContext';

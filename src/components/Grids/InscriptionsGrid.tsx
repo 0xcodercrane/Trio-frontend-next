@@ -1,6 +1,5 @@
 'use client';
 
-import { getHeight } from '@/lib/utilities';
 import { MediaWrapper } from '../common';
 import { InscriptionOverlay } from '../InscriptionOverlay';
 import { Skeleton } from '../ui/skeleton';
@@ -22,7 +21,7 @@ export default function InscriptionsGrid({
         ? Array.from({ length: 10 }).map((_, indexRow) => (
             <Skeleton key={`skeleton-inscriptions-grid-${indexRow}`} className='aspect-square w-full' />
           ))
-        : inscriptions.map((inscription, index) => (
+        : inscriptions.map((inscription) => (
             <div key={inscription.inscription_id} className='group relative cursor-pointer'>
               <div
                 onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`, { scroll: true })}

@@ -6,7 +6,7 @@ import { MediaWrapper } from '../common';
 import { InscriptionOverlay } from '@/components/InscriptionOverlay';
 
 export default function FeaturedArtists() {
-  const { data: artists, isPending, error } = useFeaturedArtistsQuery();
+  const { data: artists, isPending } = useFeaturedArtistsQuery();
   if (!artists) return null;
   return (
     <div className='h-50vh flex justify-center bg-ob-purple-dark py-16'>

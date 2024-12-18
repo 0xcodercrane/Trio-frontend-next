@@ -1,5 +1,5 @@
 import { auth, firestore } from '@/lib/firebase';
-import { EOrderSubType, ERewardState } from '@/types';
+import { ERewardState } from '@/types';
 import { TTrioAccountOrder } from '@/types/orders';
 import { addDoc, collection, doc, setDoc, Timestamp } from 'firebase/firestore';
 import { toast } from 'sonner';

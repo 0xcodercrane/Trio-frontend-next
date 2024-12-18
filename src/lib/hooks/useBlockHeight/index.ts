@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 const fetchBlockHeight = async () => {
   console.log('Fetching block height from /api/blockHeight...');

@@ -7,7 +7,7 @@ import { TPagination } from '../hooks/usePagination/pagination.types';
 const rewardsRef = collection(firestore, 'rewards');
 
 // TODO: implement proper pagination here as per Firestore spec: https://firebase.google.com/docs/firestore/query-data/query-cursors
-export const fetchRewards = async (userId: string, pagination: TPagination): Promise<TReward[]> => {
+export const fetchRewards = async (userId: string, _pagination: TPagination): Promise<TReward[]> => {
   if (!userId || userId === '') return [];
 
   const forCurrentUser = where('userId', '==', userId);

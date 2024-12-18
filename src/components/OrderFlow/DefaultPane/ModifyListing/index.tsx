@@ -46,7 +46,6 @@ const ModifyListing = ({
   };
 
   const currentPriceInSats = listing.price;
-  const currentMarketplaceFeeSats = currentPriceInSats * 0.005;
 
   return (
     <>

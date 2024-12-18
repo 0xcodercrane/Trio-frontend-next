@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
 import Pagination from '@/components/Pagination';
-import { SizeSelector } from './SizeSelector';
 import { EVIEW_TYPES } from '@/lib/constants';
 import { FilterPanelSearchbar } from './Searchbar';
 

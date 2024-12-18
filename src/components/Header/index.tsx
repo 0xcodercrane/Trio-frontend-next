@@ -8,7 +8,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import NavBar from '../NavBar';
 import ConnectedWallet from './ConnectedWallet';
-import { GlobalContext } from '@/app/providers/GlobalContext';
 import { Container } from '../Container';
 import { Searchbar } from '../Searchbar';
 

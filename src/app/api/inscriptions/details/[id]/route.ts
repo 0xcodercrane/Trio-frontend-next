@@ -1,4 +1,4 @@
-import { EXPLORER_URL, INSCRIPTIONS_DETAILS_CACHE_AGE } from '@/lib/constants';
+import { EXPLORER_URL } from '@/lib/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
 // MEMO: Caching disabled -> when item is purchased cache needs to be invalidated,

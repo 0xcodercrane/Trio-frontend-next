@@ -69,11 +69,7 @@ export function MintComponent() {
   const wallet = useWallet();
   const { sendBTC } = useLaserEyes();
 
-  const {
-    data: orderInfo,
-    isPending: orderInfoPending,
-    error: orderInfoError
-  } = useQuery({
+  const { data: orderInfo } = useQuery({
     queryKey: ['legacy-order', order?.id],
     queryFn: () => {
       if (order) return ob.Inscription().getOrder(order?.id);
@@ -150,7 +146,6 @@ export function MintComponent() {
     let buttonTxt: string = '';
     let buttonAction: () => void = () => {};
     let buttonLoading: boolean = false;
-    let buttonDisabled: boolean = false;
     switch (stage) {
       case ESTAGES.Select: {
         buttonTxt = 'Continue';
@@ -160,7 +155,6 @@ export function MintComponent() {
       case ESTAGES.Pay: {
         buttonTxt = order === null ? 'Publish War Logs' : 'Paying...';
         buttonLoading = orderLoading;
-        buttonDisabled = orderLoading;
         buttonAction = async () => {
           if (!wallet) return toast.error('Please connect your wallet');
           setOrderLoading(true);

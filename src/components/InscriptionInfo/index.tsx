@@ -7,7 +7,6 @@ import { DateTime } from 'luxon';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
 import { EXPLORER_URL } from '@/lib/constants';
-import { Card } from '../ui/card';
 
 type InscriptionInfoProps = {
   details: InscriptionDetails | undefined;

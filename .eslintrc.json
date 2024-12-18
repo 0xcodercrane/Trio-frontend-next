@@ -15,12 +15,22 @@
         "endOfLine": "auto"
       }
     ],
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "none",
+        "ignoreRestSiblings": false,
+        "reportUsedIgnorePattern": false
+      }
+    ],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/ban-types": 0,
     "prefer-const": "warn",
-    "no-console": "warn",
+    "no-console": "off",
     "no-debugger": "warn",
     "react/no-children-prop": "off",
     "react-hooks/exhaustive-deps": "off",
@@ -32,6 +42,7 @@
         "children": "ignore",
         "propElementValues": "always"
       }
-    ]
+    ],
+    "@next/next/no-img-element": "off"
   }
 }

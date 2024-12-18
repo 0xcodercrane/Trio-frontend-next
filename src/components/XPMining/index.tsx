@@ -20,11 +20,7 @@ export function XPMining() {
   const { pointsConfig } = useContext(GlobalContext);
 
   const { data: tip } = useBlockHeight();
-  const {
-    data: balanceData,
-    isPending: balanceDataIsPending,
-    error: balanceDataError
-  } = useTokenBalanceQuery(wallet?.ordinalsAddress, 'TRIO');
+  const { data: balanceData } = useTokenBalanceQuery(wallet?.ordinalsAddress, 'TRIO');
 
   const currentBlockInCycle = useMemo(() => (tip || 0) % XP_MINING_CYCLE_LENGTH, [tip]);
   const currentBlockProgress = useMemo(() => Math.floor(currentBlockInCycle / 12), [currentBlockInCycle]);

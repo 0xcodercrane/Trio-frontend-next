@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { id, takerPaymentAddress, takerPaymentPublicKey, takerOrdinalAddress, utxos, feeRate } = await req.json();
+    const { id, takerPaymentAddress, takerPaymentPublicKey, takerOrdinalAddress, feeRate } = await req.json();
     if (!id || !takerPaymentAddress || !takerPaymentPublicKey || !takerOrdinalAddress) {
       return NextResponse.json({ error: 'Invalid request params' }, { status: 400 });
     }

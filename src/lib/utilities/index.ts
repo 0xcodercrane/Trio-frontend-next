@@ -28,11 +28,6 @@ export const shortenInscriptionId = (inscriptionId: string) => shortenString(ins
 export const satsToBitcoin = (sats: number) => {
   return cleanDecimalValue((sats / ONE_BITCOIN).toString());
 };
-function removeTrailingZeros(input: string): string {
-  return input
-    .replace(/(\.\d*?[1-9])0+$/g, '$1') // Removes trailing zeros after a decimal.
-    .replace(/\.0+$/, ''); // Removes the decimal point if followed only by zeros.
-}
 
 function cleanDecimalValue(input: string): string {
   // Limit to at most 8 decimal places
