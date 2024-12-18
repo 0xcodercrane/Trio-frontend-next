@@ -60,10 +60,16 @@ export default function Mint({ slug }: { slug: string }) {
         const now = Date.now();
         const start = phase.start_date * 1000;
         const end = phase.end_date ? phase.end_date * 1000 : null;
-        return now >= start && (!end || now <= end);
+        let foundPhase: boolean = false;
+        if (now > start) {
+          if (end === null) foundPhase = true;
+          else if (now > end) foundPhase = false;
+          else if (now < end) foundPhase = true;
+        } else foundPhase = false;
+        return foundPhase;
       }) || null
     );
-  }, [launchInfo]);
+  }, [launchInfo, launchInfoPending]);
 
   const mint = useCallback(
     (feeRate: number) => {
@@ -85,7 +91,6 @@ export default function Mint({ slug }: { slug: string }) {
   const executeMint = async (feeRate: number) => {
     if (!isAuthenticated) return handleMintFailure('Please connect your wallet');
     if (currentPhase === null) return handleMintFailure('No active mint phase');
-
     setMintState(EMintState.MINT_PROMPT);
 
     if (!wallet?.ordinalsAddress || !wallet?.paymentAddress || !wallet?.paymentPublicKey) {
@@ -130,8 +135,12 @@ export default function Mint({ slug }: { slug: string }) {
     setMintState(EMintState.CONFIRMED);
   };
 
-  const handleMintFailure = (error: string) => {
-    toast.error(error);
+  const handleMintFailure = (error: any) => {
+    if (typeof error === 'string') {
+      toast.error(error);
+    } else if (error.errors) {
+      toast.error(error.errors[0].msg);
+    }
     setMintState(EMintState.DEFAULT);
   };
 
