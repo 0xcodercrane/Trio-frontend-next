@@ -20,7 +20,7 @@ export default function Footer() {
               <Socials config={OB_SOCIALS_CONFIG} />
             </div>
           </div>
-          <div className='grid grid-cols-2 gap-8 md:col-span-2'>
+          <div className='grid grid-cols-3 gap-8 md:col-span-2'>
             <div>
               <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400'>GENERAL</h3>
               <ul className='space-y-2'>
@@ -77,6 +77,43 @@ export default function Footer() {
                   {
                     label: 'Runes',
                     href: 'https://ordinalsbot.com/runes',
+                    target: '_blank'
+                  }
+                ].map(({ label, href, target }) => (
+                  <li key={label}>
+                    <Link
+                      href={href}
+                      target={target}
+                      className='text-xl font-semibold transition-colors hover:text-gray-300'
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400'>TOKEN</h3>
+              <ul className='space-y-2'>
+                {[
+                  {
+                    label: 'Whitepaper',
+                    href: 'https://token.ordinalsbot.com',
+                    target: '_blank'
+                  },
+                  {
+                    label: 'Where to Buy',
+                    href: 'https://token.ordinalsbot.com/getting-started/marketplaces',
+                    target: '_blank'
+                  },
+                  {
+                    label: 'Price',
+                    href: 'https://www.coingecko.com/en/coins/trio-ordinals',
+                    target: '_blank'
+                  },
+                  {
+                    label: 'Tokenomics',
+                    href: 'https://token.ordinalsbot.com/tokenomics/overview',
                     target: '_blank'
                   }
                 ].map(({ label, href, target }) => (

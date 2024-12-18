@@ -10,8 +10,7 @@ export const variants = {
     success: 'bg-ob-green-light border border-ob-green text-ob-black',
     caution: 'bg-ob-yellow border border-ob-yellow text-ob-black',
     destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-    outline:
-      'border-2 border-input bg-transparent hover:bg-ob-purple-lighter/20 border-ob-purple-lighter text-ob-purple-lighter transition-colors',
+    outline: 'border-2 border-input bg-transparent hover:bg-ob-yellow/20 border-ob-yellow text-ob-yellow transition-colors',
     secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
     ghost:
       'hover:text-accent-foreground text-ob-white-40 hover:text-ob-white-80 *:grayscale *:hover:grayscale-0 border border-zinc-400',
