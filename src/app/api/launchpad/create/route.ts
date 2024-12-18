@@ -17,7 +17,8 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
         'x-api-key': `${ORDINALSBOT_MARKETPLACE_API_KEY}`
       },
-      body: JSON.stringify({ ...launchpadData })
+      body: JSON.stringify({ ...launchpadData }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

@@ -14,7 +14,8 @@ export async function POST(req: Request) {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': ORDINALSBOT_MARKETPLACE_API_KEY
-      }
+      },
+      cache: 'no-store'
     });
 
     const data = await response.json();

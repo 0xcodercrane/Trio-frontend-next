@@ -18,7 +18,8 @@ export async function DELETE(req: Request) {
       body: JSON.stringify({
         makerPaymentAddress,
         makerPaymentPublicKey
-      })
+      }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

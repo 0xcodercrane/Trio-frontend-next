@@ -22,7 +22,8 @@ export async function POST(req: Request) {
         makerOrdinalPublicKey,
         signedPSBT: signedPsbt,
         price
-      })
+      }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

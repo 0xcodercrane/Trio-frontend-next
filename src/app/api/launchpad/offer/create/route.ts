@@ -15,7 +15,8 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
         'x-api-key': ORDINALSBOT_MARKETPLACE_API_KEY
       },
-      body: JSON.stringify({ id, takerOrdinalAddress, takerPaymentAddress, takerPaymentPublicKey, feeRate })
+      body: JSON.stringify({ id, takerOrdinalAddress, takerPaymentAddress, takerPaymentPublicKey, feeRate }),
+      cache: 'no-store'
     });
 
     console.log('------ Detailed Error:1');

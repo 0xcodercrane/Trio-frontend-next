@@ -17,7 +17,8 @@ export async function PUT(req: Request) {
       body: JSON.stringify({
         listingIds,
         signedPSBT
-      })
+      }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

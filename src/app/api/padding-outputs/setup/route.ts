@@ -10,7 +10,8 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
         'x-api-key': `${ORDINALSBOT_MARKETPLACE_API_KEY}`
       },
-      body: JSON.stringify({ address, publicKey, numOfOutPuts: 3, feeRate })
+      body: JSON.stringify({ address, publicKey, numOfOutPuts: 3, feeRate }),
+      cache: 'no-store'
     });
     if (!response.ok) {
       return NextResponse.json({ error: await response.text() }, { status: response.status });

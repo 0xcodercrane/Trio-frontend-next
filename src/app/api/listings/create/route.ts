@@ -22,7 +22,8 @@ export async function POST(req: Request) {
         makerOrdinalPublicKey,
         makerOrdinalAddress,
         utxos
-      })
+      }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

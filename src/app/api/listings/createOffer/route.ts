@@ -20,7 +20,8 @@ export async function POST(req: Request) {
         takerPaymentPublicKey,
         takerOrdinalAddress,
         feeRate
-      })
+      }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

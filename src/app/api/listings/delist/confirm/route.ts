@@ -17,7 +17,8 @@ export async function PUT(req: Request) {
       body: JSON.stringify({
         signedPSBT,
         makerPaymentAddress
-      })
+      }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

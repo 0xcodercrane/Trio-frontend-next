@@ -11,7 +11,8 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
         'x-api-key': `${ORDINALSBOT_MARKETPLACE_API_KEY}`
       },
-      body: JSON.stringify({ address })
+      body: JSON.stringify({ address }),
+      cache: 'no-store'
     });
     if (!response.ok) {
       return NextResponse.json({ error: await response.text() }, { status: response.status });

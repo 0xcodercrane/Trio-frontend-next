@@ -20,7 +20,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       },
       body: JSON.stringify({
         signedPSBTBase64
-      })
+      }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

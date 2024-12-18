@@ -16,7 +16,8 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         'Content-Type': 'application/json',
         'x-api-key': `${ORDINALSBOT_MARKETPLACE_API_KEY}`
       },
-      body: JSON.stringify({ signedPSBT: signedPsbt })
+      body: JSON.stringify({ signedPSBT: signedPsbt }),
+      cache: 'no-store'
     });
 
     if (!response.ok) {

@@ -15,7 +15,8 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
         'x-api-key': ORDINALSBOT_MARKETPLACE_API_KEY
       },
-      body: JSON.stringify({ signedPSBT: signedPsbt })
+      body: JSON.stringify({ signedPSBT: signedPsbt }),
+      cache: 'no-store'
     });
 
     const data = await response.json();
