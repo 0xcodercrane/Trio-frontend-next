@@ -27,7 +27,7 @@ export default function Mint({ slug }: { slug: string }) {
   const [mintState, setMintState] = useState<EMintState>(EMintState.DEFAULT);
   const [txid, setTxid] = useState<string | null>(null);
 
-  // Simply gets the supabaes launchpad row so that we can use the ID and plug into the rest of the code
+  // Simply gets the supabase launchpad row so that we can use the ID and plug into the rest of the code
   // WARN: There is a more efficient way of doing this. Revisit this code later.
   const { data: launchpad } = useLaunchpad(slug);
 
@@ -55,20 +55,18 @@ export default function Mint({ slug }: { slug: string }) {
 
   const currentPhase = useMemo(() => {
     if (launchInfoPending) return null;
-    return (
-      launchInfo?.phases.find((phase: TPhase) => {
-        const now = Date.now();
-        const start = phase.start_date * 1000;
-        const end = phase.end_date ? phase.end_date * 1000 : null;
-        let foundPhase: boolean = false;
-        if (now > start) {
-          if (end === null) foundPhase = true;
-          else if (now > end) foundPhase = false;
-          else if (now < end) foundPhase = true;
-        } else foundPhase = false;
-        return foundPhase;
-      }) || null
-    );
+    return launchInfo?.phases.find((phase: TPhase) => {
+      const now = Date.now();
+      const start = phase.start_date * 1000;
+      const end = phase.end_date ? phase.end_date * 1000 : null;
+      let foundPhase: boolean = false;
+      if (now > start) {
+        if (end === null) foundPhase = true;
+        else if (now > end) foundPhase = false;
+        else if (now < end) foundPhase = true;
+      } else foundPhase = false;
+      return foundPhase;
+    });
   }, [launchInfo, launchInfoPending]);
 
   const mint = useCallback(
@@ -85,7 +83,7 @@ export default function Mint({ slug }: { slug: string }) {
         }
       });
     },
-    [wallet, withPaddingOutputs]
+    [wallet, withPaddingOutputs, currentPhase]
   );
 
   const executeMint = async (feeRate: number) => {
