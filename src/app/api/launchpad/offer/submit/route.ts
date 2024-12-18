@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         }
       );
     } else {
-      return NextResponse.json({ success: false, error: 'Error confirming buy offer' });
+      return NextResponse.json({ success: false, error: data });
     }
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.response.data.errors[0].msg || 'An unknown error occurred' });

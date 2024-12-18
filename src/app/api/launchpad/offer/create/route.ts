@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     } else {
       console.log('------ Detailed Error');
       console.error(data);
-      return NextResponse.json({ success: false, error: 'Error creating buy offer' });
+      return NextResponse.json({ success: false, error: data });
     }
   } catch (error: any) {
     return NextResponse.json({ success: false, error: error.response.data.errors[0].msg || 'An unknown error occurred' });
