@@ -69,7 +69,7 @@ const usePaddingOutputs = () => {
     queryKey: ['padding-outputs-check', wallet?.paymentAddress],
     queryFn: () => checkPaddingOutputs(wallet?.paymentAddress),
     select: (data) => isResponseSuccess(data) && data.payload.paddingOutputsExist,
-    enabled: !!wallet?.paymentAddress
+    enabled: !!wallet
   });
 
   const [isPaddingOuputsSetupInProgress, setIsPaddingOutputsSetupInProgess] = useState(false);

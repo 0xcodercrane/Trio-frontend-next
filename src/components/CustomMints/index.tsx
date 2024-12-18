@@ -7,8 +7,8 @@ export enum ECustomMints {
 
 export const CustomMintValues = Object.values(ECustomMints);
 
-export default function CustomMints({ id }: { id: string }) {
-  switch (id) {
+export default function CustomMints({ slug }: { slug: string }) {
+  switch (slug) {
     // return <SpartacusMint />;
     case 'spartacus':
     default:

@@ -19,7 +19,7 @@ import MintAction from './MintAction';
 import MintProcess from './MintProcess';
 import PhaseStatus from './PhaseStatus';
 
-export default function Mint({ id }: { id: string }) {
+export default function Mint({ slug }: { slug: string }) {
   const { wallet, isAuthenticated } = useContext(AuthContext);
   const { signPsbt } = useLaserEyes();
   const { withPaddingOutputs } = usePaddingOutputs();
@@ -29,14 +29,14 @@ export default function Mint({ id }: { id: string }) {
 
   // Simply gets the supabaes launchpad row so that we can use the ID and plug into the rest of the code
   // WARN: There is a more efficient way of doing this. Revisit this code later.
-  const { data: launchpad, isPending: launchpadPending, error: launchpadError } = useLaunchpad(id);
+  const { data: launchpad, isPending: launchpadPending, error: launchpadError } = useLaunchpad(slug);
 
   const {
     data: launchInfo,
     isPending: launchInfoPending,
     refetch: refrechLaunchInfo
   } = useQuery({
-    queryKey: ['launchpad-stats', id],
+    queryKey: ['launchpad-stats', launchpad?.id],
     queryFn: () => fetchLaunchpadStatus(launchpad?.id),
     select: (data) => data.payload,
     enabled: !!launchpad?.id
@@ -47,10 +47,10 @@ export default function Mint({ id }: { id: string }) {
     isPending: allocationIsPending,
     refetch: refetchAllocationInfo
   } = useQuery({
-    queryKey: ['allocation-info', id, wallet?.ordinalsAddress],
+    queryKey: ['allocation-info', launchpad?.id, wallet?.ordinalsAddress],
     queryFn: () => fetchAllocationInfo(launchpad?.id, wallet?.ordinalsAddress),
     select: (data) => data.payload,
-    enabled: !!id && isAuthenticated && !!wallet?.ordinalsAddress
+    enabled: !!launchpad?.id && isAuthenticated && !!wallet?.ordinalsAddress
   });
 
   const currentPhase = useMemo(() => {
