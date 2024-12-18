@@ -20,6 +20,7 @@ export type TPool = {
   endBlock: number;
   rewards: TPoolReward[];
   type: EPoolType;
+  winners: TWinner[];
   trioBalanceRequired?: number; // Optional field that gates the pool based on the user's trio balance
 };
 
@@ -27,15 +28,21 @@ export type TProportionatePool = TPool & {
   totalPointsAllocated: number;
   minPointsAllocation: number;
   maxPointsAllocation: number;
-  winners: string[];
 };
 
 export type TLotteryPool = TPool & {
   ticketPrice: number;
   numberOfTickets: number;
   maxTicketsPerUser: number;
-  winners: string[];
   totalTicketsSold: number;
+};
+
+export type TWinner = {
+  address: string;
+  winner: {
+    userId: string;
+    ticketNumber: number;
+  };
 };
 
 export enum EPoolReward {
