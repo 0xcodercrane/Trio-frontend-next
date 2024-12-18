@@ -46,7 +46,7 @@ export function Pools() {
           <div className='w-1/2'>
             <span className='text-ob-white-40'>
               Spend points (XP) in Trio Reward Pools. The Trio Points system is designed to give back to you, our loyal
-              customers. By engaging with the Trio ecosystem, you reveive XP for completing orders, minting, inscribe, and of
+              customers. By engaging with the Trio ecosystem, you receive XP for completing orders, minting, inscribe, and of
               course buying and holding Trio in your wallet (XP Mining).
             </span>
           </div>
