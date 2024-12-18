@@ -39,11 +39,12 @@ const MintAction = ({ mintState, hasAllocationInCurrentPhase, txid, mint, launch
     <div className='flex flex-row items-center justify-between'>
       <Button
         disabled={
-          isOutputsSetupInMempool ||
-          !hasPaddingOutputs ||
-          !isAuthenticated ||
-          [EMintState.MINTING, EMintState.PADDING].includes(mintState) ||
-          !hasAllocationInCurrentPhase
+          isOutputsSetupInMempool || // Cannot mint if your padding is in mempool
+          launchInfoPending || // Cannot mint if launch info is pending, we need to know what the current phase is
+          !hasPaddingOutputs || // Cannot mint if you don't have padding outputs
+          !isAuthenticated || // Cannot mint if you are not authenticated
+          [EMintState.MINTING, EMintState.PADDING].includes(mintState) || // Cannot mint if you are already minting or padding
+          !hasAllocationInCurrentPhase // Cannot mint if you don't have an allocation in the current phase
         }
         onClick={() => {
           if (feeRatesData?.fastest_fee) mint(feeRatesData?.fastest_fee);
