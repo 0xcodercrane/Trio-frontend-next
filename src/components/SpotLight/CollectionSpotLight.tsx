@@ -1,8 +1,7 @@
 'use client';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { useCollectionBySlugQuery } from '@/lib/services';
 import { MediaWrapper } from '../common';
-import InscriptionSkeleton from '../Skeletons/InscriptionSkeleton';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
