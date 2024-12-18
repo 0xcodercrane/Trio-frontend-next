@@ -33,7 +33,7 @@ export default function Header({ renderSearchbar = false, onChangeSearch }: Head
                 width={95}
                 height={30}
               />
-              <span className='me-2 -translate-y-2 translate-x-3 rounded bg-gray-100 px-2.5 py-0.5 text-xs font-bold text-gray-800 dark:bg-gray-700 dark:text-gray-300'>
+              <span className='me-2 -translate-y-2 translate-x-3 rounded bg-gray-700 px-2.5 py-0.5 text-xs font-bold text-gray-300'>
                 Alpha
               </span>
             </Link>
