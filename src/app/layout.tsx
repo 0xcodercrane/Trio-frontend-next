@@ -41,7 +41,7 @@ export default async function RootLayout({
         <Providers session={session}>
           <Header />
           <MobileOverlayWrapper>
-            <div className='mt-24'>{children}</div>
+            <div className='mt-[--header-height]'>{children}</div>
           </MobileOverlayWrapper>
           <Footer />
           <MenuPanes />
