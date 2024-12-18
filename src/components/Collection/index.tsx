@@ -1,11 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { useCollectionBySlugQuery, useCollectionStats } from '@/lib/services';
 import { Container } from '@/components/Container';
 import { Panels } from '@/components/Collection/FilterPanels';
 import { Skeleton } from '../ui/skeleton';
-import { Img } from '../Img';
 import NotFound from '@/app/not-found';
 import { satsToBitcoin } from '@/lib/utilities';
 import { TSocialsConfig } from '@/types/socials';
@@ -19,7 +17,7 @@ interface CollectionProps {
 }
 
 export default function Collection({ slug }: CollectionProps) {
-  const { data, isPending, error } = useCollectionBySlugQuery(slug);
+  const { data, isPending } = useCollectionBySlugQuery(slug);
   const { data: stats, isPending: isPendingStats } = useCollectionStats(slug);
 
   const { name, twitter_link, discord_link, website_link, banner_image, icon } = data || {};

@@ -28,7 +28,7 @@ export function SpartacusFeesPanel({ count, order }: { count: number; order: TSp
   const { feeRate, isPending: feeRatePending } = useFeeRates();
   const { satsToUsd } = usePrices();
   const [fees, setFees] = useState<TLegacyFees | null>(null);
-  const [feesLoading, setFeesLoading] = useState<boolean>(true);
+  const [, setFeesLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // return early if we don't have one of the required params

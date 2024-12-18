@@ -1,9 +1,5 @@
-import CustomFeeInput from '@/components/Inputs/CustomFeeInput';
 import { UserOrdersTable } from '@/components/Tables';
 import { Button } from '@/components/ui/button';
-
-// Replace this with actual data when implementing logic here.
-const TX_VIRTUAL_SIZE_PLACEHOLDER = 21;
 
 export default function OrdersPane() {
   return (

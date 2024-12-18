@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { TPagination } from '../hooks/usePagination/pagination.types';
-import { getInscriptionsByCollectionId, getInscriptionsByCollectionSlug } from '../supabase';
+import { getInscriptionsByCollectionId } from '../supabase';
 import { getCollectionIdFromSlug } from '../supabase';
 
 export const useInscriptionsByCollectionSlug = (slug: string, pagination: TPagination) => {

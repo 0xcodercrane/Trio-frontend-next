@@ -1,7 +1,7 @@
 import { useInscriptionWithCollectionData } from '@/lib/services';
 import { MediaWrapper } from '../common';
 import { useInscriptionDataQuery } from '../common/MediaViewer/useInscriptionDataQuery';
-import { useInscriptionOrder, useOrderFlow } from '@/lib/hooks';
+import { useOrderFlow } from '@/lib/hooks';
 import { MEMPOOL_SPACE_URL } from '@/lib/constants';
 import { shortenTxid } from '@/lib/utilities';
 

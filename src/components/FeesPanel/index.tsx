@@ -50,7 +50,7 @@ const FeeRow = ({
 
 export default function FeesPanel({ listPriceSats, variant = 'buy' }: FeesPanelProps) {
   const wallet = useWallet();
-  const { satsToUsd, isPending: isPendingPrices } = usePrices();
+  const { isPending: isPendingPrices } = usePrices();
 
   const { data: tokenBalance, isPending: isPendingTrioBalance } = useTokenBalanceQuery(
     wallet?.ordinalsAddress || '',

@@ -1,10 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Collection } from '@/types';
 import { Button } from '@/components/ui/button';
-import CustomFeeInput from '@/components/Inputs/CustomFeeInput';
-
-// Replace this with actual data when implementing logic here.
-const TX_VIRTUAL_SIZE_PLACEHOLDER = 21;
 
 type TOrder = {
   id: string;

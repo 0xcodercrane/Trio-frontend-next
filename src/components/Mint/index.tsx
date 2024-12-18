@@ -29,7 +29,7 @@ export default function Mint({ slug }: { slug: string }) {
 
   // Simply gets the supabaes launchpad row so that we can use the ID and plug into the rest of the code
   // WARN: There is a more efficient way of doing this. Revisit this code later.
-  const { data: launchpad, isPending: launchpadPending, error: launchpadError } = useLaunchpad(slug);
+  const { data: launchpad } = useLaunchpad(slug);
 
   const {
     data: launchInfo,

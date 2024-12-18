@@ -22,11 +22,7 @@ const TabValues = Object.values(ETabs);
 
 export function Pools() {
   const { user, wallet } = useContext(AuthContext);
-  const {
-    data: balanceData,
-    isPending: balanceDataIsPending,
-    error: balanceDataError
-  } = useTokenBalanceQuery(wallet?.ordinalsAddress, 'TRIO');
+  const { data: balanceData, isPending: balanceDataIsPending } = useTokenBalanceQuery(wallet?.ordinalsAddress, 'TRIO');
 
   const { pools, loading } = usePoolsQuery();
   const { data: tip } = useBlockHeight();

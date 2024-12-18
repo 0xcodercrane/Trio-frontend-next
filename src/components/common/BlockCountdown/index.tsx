@@ -1,7 +1,7 @@
 'use client';
 import { ONE_SECOND } from '@/lib/constants';
 import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
-import { DateTime, Duration } from 'luxon';
+import { Duration } from 'luxon';
 import { useEffect, useMemo, useState } from 'react';
 
 export function BlockCountdown({
@@ -21,7 +21,6 @@ export function BlockCountdown({
     if (!tip) return;
 
     const interval = setInterval(() => {
-      const now = DateTime.now();
       let remainingBlocks: number = -1;
 
       if (tip < startBlock) {

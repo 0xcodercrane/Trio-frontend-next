@@ -1,8 +1,6 @@
 import Section from '@/components/Section';
 import { DEFAULT_METADATA } from '@/lib/constants';
 import { Metadata } from 'next';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = DEFAULT_METADATA;

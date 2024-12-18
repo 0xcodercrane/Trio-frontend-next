@@ -2,7 +2,6 @@
 
 import { Input, InputProps } from '@/components/ui/input';
 import { usePrices } from '@/lib/services';
-import { formatUsdValue } from '@/lib/utilities';
 import { useState } from 'react';
 
 interface CustomFeeInputProps extends InputProps {

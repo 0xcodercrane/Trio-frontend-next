@@ -1,13 +1,11 @@
 'use client';
 
-import { Collection } from '@/types/database';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { satsToBitcoin } from '@/lib/utilities';
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import { GlobalContext } from '@/app/providers/GlobalContext';
-import { Img } from '@/components/Img';
 import { Info } from 'lucide-react';
 import { CollectionIcon } from '@/components/CollectionIcon';
 

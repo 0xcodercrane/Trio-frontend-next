@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { useOrderFlow } from '@/lib/hooks';
 import { shortenTxid } from '@/lib/utilities';
 import { Tag } from '../../../common';

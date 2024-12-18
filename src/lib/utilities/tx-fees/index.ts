@@ -6,14 +6,11 @@ const P2PKH_IN_SIZE = 148;
 const P2PKH_OUT_SIZE = 34;
 
 const P2SH_OUT_SIZE = 32;
-const P2SH_P2WPKH_OUT_SIZE = 32;
-const P2SH_P2WSH_OUT_SIZE = 32;
 
 // All segwit input sizes are reduced by 1 WU to account for the witness item counts being added for every input per the transaction header
 const P2SH_P2WPKH_IN_SIZE = 90.75;
 
 const P2WPKH_IN_SIZE = 67.75;
-const P2WPKH_OUT_SIZE = 31;
 
 const P2WSH_OUT_SIZE = 43;
 const P2TR_OUT_SIZE = 43;

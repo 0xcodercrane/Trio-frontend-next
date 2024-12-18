@@ -1,8 +1,6 @@
 import { MEMPOOL_URL, ORDINALSBOT_PUBLIC_API_KEY } from '@/lib/constants';
 import { NextResponse } from 'next/server';
 
-const CACHING_PERIOD_SECONDS = 600;
-
 const fetchBlockHeight = async () => {
   try {
     const response = await fetch(`${MEMPOOL_URL}/api/blocks/tip/height`, {

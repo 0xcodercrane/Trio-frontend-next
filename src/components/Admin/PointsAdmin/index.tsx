@@ -1,15 +1,12 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { firestore } from '@/lib/firebase';
 import { collection, getAggregateFromServer, onSnapshot, query, sum, where } from 'firebase/firestore';
 import { DataItem } from '@/components/common';
-import { EOrderSubType, ERewardType } from '@/types';
+import { ERewardType } from '@/types';
 import { adminMetricsRef } from '@/lib/firebase/references';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { GlobalContext } from '@/app/providers/GlobalContext';
 
 export function PointsAdmin() {
-  const { pointsConfig } = useContext(GlobalContext);
   const [totalPoints, setTotalPoints] = useState<number>(0);
   const [totalPointsSpent, setTotalPointsSpent] = useState<number>(0);
   const [pointsFromStaking, setPointsFromStaking] = useState<number>(0);

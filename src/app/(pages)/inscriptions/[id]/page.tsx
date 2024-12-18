@@ -2,7 +2,6 @@
 
 import NotFound from '@/app/not-found';
 import { Panels } from '@/components/Collection/FilterPanels';
-import { Avatar, Divider } from '@/components/common';
 import { useInscriptionDataQuery } from '@/components/common/MediaViewer/useInscriptionDataQuery';
 import { Container } from '@/components/Container';
 import InscriptionInfo from '@/components/InscriptionInfo';

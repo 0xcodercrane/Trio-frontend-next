@@ -28,7 +28,6 @@ export default function ListItem({ inscriptionId, collectionSlug }: ListItemProp
   };
 
   const priceInSats = bitcoinToSats(parseFloat(price));
-  const marketplaceFeeSats = priceInSats * 0.005;
 
   return (
     <>

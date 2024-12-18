@@ -45,7 +45,7 @@ const chartConfig = {
 
 export const ActivityPanel = ({ slug }: { slug: string }) => {
   const { offset, limit } = useFilter();
-  const { data, isPending, error, isPlaceholderData } = useInscriptionsByCollectionSlug(slug, {
+  const { data, isPending, isPlaceholderData } = useInscriptionsByCollectionSlug(slug, {
     offset,
     limit
   });
