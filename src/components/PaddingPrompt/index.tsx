@@ -17,7 +17,7 @@ export function PaddingPrompt() {
 
   if (isOutputsSetupInMempool) {
     return (
-      <div className='flex flex-col gap-4 bg-ob-purple p-4 text-white'>
+      <div className='flex flex-col gap-4 rounded-xl bg-ob-purple p-4 text-white'>
         Padding outputs setup transaction for the connected wallet is in the mempool, please wait until it gets confirmed to
         mint.
       </div>
