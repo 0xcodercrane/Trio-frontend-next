@@ -5,6 +5,7 @@ export * from './date';
 export * from './format';
 export * from './number';
 export * from './tx-fees';
+export * from './error';
 
 export const shortenString = (str: string, firstAmount: number, lastAmount: number) => {
   if (!str) return '';

@@ -120,7 +120,7 @@ const usePaddingOutputs = () => {
         }
       } else {
         console.error('Setting up padding outputs failed:', response.error);
-        toast.error('Setting up padding outputs failed.');
+        toast.error(`Setting up padding outputs failed: ${response.error}`);
         setIsPaddingOutputsSetupInProgess(false);
         return;
       }

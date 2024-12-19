@@ -1,4 +1,5 @@
 import { ORDINALSBOT_MARKETPLACE_API_KEY, ORDINALSBOT_MARKETPLACE_API_URL } from '@/lib/constants';
+import { parseMarketplaceApiError } from '@/lib/utilities';
 import { NextRequest, NextResponse } from 'next/server';
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -25,7 +26,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     });
 
     if (!response.ok) {
-      return NextResponse.json({ error: await response.text() }, { status: response.status });
+      return NextResponse.json({ error: await parseMarketplaceApiError(response) }, { status: response.status });
     }
 
     const data = await response.json();
