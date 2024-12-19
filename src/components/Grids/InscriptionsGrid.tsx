@@ -5,11 +5,14 @@ import { InscriptionOverlay } from '../InscriptionOverlay';
 import { Skeleton } from '../ui/skeleton';
 import { useRouter } from 'next/navigation';
 import { InscriptionWithMetadata } from '@/types';
+import { Img } from '../Img';
 
 export default function InscriptionsGrid({
+  isInnersFlagToBeReverted = false,
   inscriptions,
   isFetching
 }: {
+  isInnersFlagToBeReverted: boolean;
   inscriptions: Array<InscriptionWithMetadata>;
   isFetching: boolean;
 }) {
@@ -27,11 +30,15 @@ export default function InscriptionsGrid({
                 onClick={() => router.push(`/inscriptions/${inscription.inscription_id}`, { scroll: true })}
                 className='cursor-pointer overflow-hidden rounded-xl'
               >
-                <MediaWrapper
-                  id={inscription.inscription_id}
-                  className='relative aspect-square w-full overflow-hidden rounded-xl group-hover:opacity-80'
-                  square
-                />
+                {isInnersFlagToBeReverted ? (
+                  <Img className='max-w-full rounded-lg' src='/img/inners.webp' />
+                ) : (
+                  <MediaWrapper
+                    id={inscription.inscription_id}
+                    className='relative aspect-square w-full overflow-hidden rounded-xl group-hover:opacity-80'
+                    square
+                  />
+                )}
 
                 <InscriptionOverlay
                   id={inscription.inscription_id}

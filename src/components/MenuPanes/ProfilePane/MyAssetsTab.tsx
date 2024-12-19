@@ -6,16 +6,18 @@ import { useWalletInscriptions } from '@/lib/services/inscriptions/fetchWalletIn
 import { InscriptionWithMetadata } from '@/types';
 
 const InscriptionsSection = ({
+  isInnersFlagToBeReverted = false,
   sectionName,
   inscriptions
 }: {
+  isInnersFlagToBeReverted?: boolean;
   sectionName: string;
   inscriptions: Array<InscriptionWithMetadata>;
 }) => {
   return (
     <div className='rounded-lg bg-ob-purple-dark p-6'>
       <div className='mb-4 text-3xl font-semibold text-white'>{sectionName}</div>
-      <InscriptionsGrid inscriptions={inscriptions} isFetching={false} />
+      <InscriptionsGrid isInnersFlagToBeReverted={isInnersFlagToBeReverted} inscriptions={inscriptions} isFetching={false} />
     </div>
   );
 };
@@ -37,7 +39,12 @@ export const MyAssetsTab = () => {
         ) : (
           <>
             {(inscriptions?.collections || []).map(({ collectionName, collectionSlug, inscriptions }) => (
-              <InscriptionsSection key={collectionSlug} sectionName={collectionName || ''} inscriptions={inscriptions} />
+              <InscriptionsSection
+                isInnersFlagToBeReverted={collectionSlug === 'inners'}
+                key={collectionSlug}
+                sectionName={collectionName || ''}
+                inscriptions={inscriptions}
+              />
             ))}
             {(inscriptions?.other?.length || 0) > 0 && (
               <InscriptionsSection sectionName='Other Inscriptions' inscriptions={inscriptions?.other || []} />
