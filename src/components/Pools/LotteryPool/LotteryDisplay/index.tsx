@@ -1,12 +1,12 @@
-import { EPoolState, TLotteryPool } from '@/types';
-import numeral from 'numeral';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { BlockCountdown } from '@/components/common/BlockCountdown';
-import { mapPoolToState, mapPoolTypeToLabel } from '../../helpers';
 import { DataItem } from '@/components/common';
-import { useMemo } from 'react';
+import { BlockCountdown } from '@/components/common/BlockCountdown';
+import { Button } from '@/components/ui/button';
 import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
+import { EPoolState, EPoolType, TLotteryPool } from '@/types';
+import Image from 'next/image';
+import numeral from 'numeral';
+import { useMemo } from 'react';
+import { mapPoolToState, mapPoolTypeToLabel } from '../../helpers';
 
 export const LotteryDisplay = ({
   pool,
@@ -54,7 +54,11 @@ export const LotteryDisplay = ({
           <span className='text-4xl font-semibold text-white'>{title}</span>
           <div className='flex flex-row items-center justify-start'>
             <span className='text-sm'>{typeText}</span>
-            <span className='text-sm italic'>&nbsp;- {additionalInfo}</span>
+            {type === EPoolType.N_WINNERS ? (
+              <span>Total prizes are split between {pool.rewards.length} winners</span>
+            ) : (
+              <span className='text-sm italic'>&nbsp;- {additionalInfo}</span>
+            )}
           </div>
         </div>
         <div className='flex h-1/2 w-full flex-row justify-start gap-4'>
