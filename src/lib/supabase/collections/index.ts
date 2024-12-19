@@ -48,9 +48,9 @@ const INSCRIPTIONS_BY_COLLECTION_ID_QUERY = `
   `;
 
 export const getEntireCollectionBySlug = async (slug: string) =>
-  supabase.from('collections').select(COLLECTION_QUERY).eq('slug', slug);
+  supabase.from('collections').select(COLLECTION_QUERY).eq('slug', slug).eq('is_under_review', false);
 export const getEntireCollectionById = async (id: number) =>
-  supabase.from('collections').select(COLLECTION_QUERY).eq('id', id);
+  supabase.from('collections').select(COLLECTION_QUERY).eq('id', id).eq('is_under_review', false);
 
 export const getInscriptionsByCollectionId = async (collectionId: number, pagination: TPagination) =>
   supabase
@@ -64,12 +64,14 @@ export const getInscriptionsByCollectionSlug = async (slug: string, pagination: 
     .from('collections')
     .select(COLLECTION_QUERY)
     .eq('slug', slug)
-    .range(pagination.offset, pagination.offset + pagination.limit - 1);
+    .range(pagination.offset, pagination.offset + pagination.limit - 1)
+    .eq('is_under_review', false);
 
 export const getInscriptionWithCollectionData = async (id: string) =>
   supabase.from('inscriptions').select(COLLECTION_ITEM_QUERY).eq('inscription_id', id);
 
-export const getCollectionIdFromSlug = async (slug: string) => supabase.from('collections').select('id').eq('slug', slug);
+export const getCollectionIdFromSlug = async (slug: string) =>
+  supabase.from('collections').select('id').eq('slug', slug).eq('is_under_review', false);
 
 export const getCollections = async (pagination: TPagination, searchKeyword: string) => ({
   collections: await supabase
