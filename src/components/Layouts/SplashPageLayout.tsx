@@ -26,7 +26,7 @@ export default function SplashPageLayout({
       <div className='flex basis-1/2 items-start justify-start'>
         {type === 'inscription' ? (
           <div className='w-full'>
-            <MediaWrapper id={id} size='full' className='relative w-full max-w-[500px] overflow-hidden rounded-xl' />
+            <MediaWrapper id={id} size='--inscription-largest' className='relative overflow-hidden rounded-xl' />
           </div>
         ) : (
           <Image src={src ?? ''} alt='Mint Image' width={600} height={600} className='relative overflow-hidden rounded-xl' />

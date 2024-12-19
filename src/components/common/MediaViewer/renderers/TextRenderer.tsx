@@ -1,33 +1,50 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
-const getFontSize = (length: number) => {
-  switch (true) {
-    case length === 1:
-      return 310;
-    case length < 3:
-      return 200;
-    case length < 6:
-      return 150;
-    case length < 15:
-      return 100;
-    case length < 20:
-      return 90;
-    default:
-      return 50;
-  }
-};
+const DEFAULT_FONT_SIZE = 16;
+const WIDTH_TO_PIXEL_RATIO = 2;
 
 export const TextRenderer = memo(({ content }: { content: string }) => {
-  const fontSize = getFontSize(content.length);
+  const [size, setSize] = useState(DEFAULT_FONT_SIZE);
 
-  // TODO add the different text sizes/styles
+  // MEMO: Can not use ref hook here because it does not trigger update
+  //       when container size changes. see: https://legacy.reactjs.org/docs/hooks-faq.html#how-can-i-measure-a-dom-node
+  const measuredRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (node !== null) {
+        // Fill up 100% of parent container.
+        const nodeToMeasure = node.parentElement ?? node;
+        const nodeRect = nodeToMeasure.getBoundingClientRect();
+
+        const containerWidth = nodeRect.width;
+        const containerHeight = nodeRect.height;
+
+        const contentWidth = Math.max(...content.split('\n').map((line) => line.length));
+        const contentHeight = content.split('\n').length;
+
+        // MEMO: CSS font-size is telling the browsers to render the letters at exactly the
+        //       number of pixels in height. To get the pixel to width size we need to multiply it by ±2.
+        const sizeX = (containerWidth / contentWidth) * WIDTH_TO_PIXEL_RATIO;
+        const sizeY = containerHeight / contentHeight;
+
+        // MEMO: Returns the smaller value to render the content fully.
+        const size = Math.min(sizeX, sizeY);
+        setSize(size);
+      }
+    },
+    [content]
+  );
+
   return (
-    <pre
-      className={`text-content max-w-full text-white md:flex ${content.length < 150 ? 'short-text' : ''}`}
-      style={{ fontSize }}
-    >
-      {content}
-    </pre>
+    <div ref={measuredRef}>
+      <div className='flex items-center justify-center'>
+        <pre
+          className='text-content max-w-full text-white md:flex'
+          style={{ fontSize: `${size}px`, lineHeight: `${size}px` }}
+        >
+          {content}
+        </pre>
+      </div>
+    </div>
   );
 });
 
