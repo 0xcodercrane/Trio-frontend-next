@@ -26,6 +26,15 @@ const nextConfig = {
         hostname: 'ordinalsbot-prod.s3.amazonaws.com'
       }
     ]
+  },
+  async redirects() {
+    return [
+      {
+        source: '/mint/inners',
+        destination: 'https://ordinalsbot.com/mint/inners?featured=true&trio=true',
+        permanent: true
+      }
+    ];
   }
 };
 
