@@ -78,6 +78,26 @@ export default function Home() {
               <p className='mt-1 text-sm text-gray-500'>Mint</p>
             </Link>
 
+            <Link href='https://trio.xyz/mint/inners' target='_blank' className='group relative'>
+              <div className='relative'>
+                <img
+                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Finners.webp?alt=media&token=25efd731-798c-4e79-aade-a381f47f2932'
+                  alt='Inners'
+                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
+                />
+              </div>
+              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
+                <span>
+                  <span>
+                    <span aria-hidden='true' className='absolute inset-0'></span>
+                    Inners
+                  </span>
+                </span>
+                <p>LIVE</p>
+              </div>
+              <p className='mt-1 text-sm text-gray-500'>Mint</p>
+            </Link>
+
             <div className='group relative'>
               <div className='relative'>
                 <img
@@ -91,26 +111,6 @@ export default function Home() {
                   <span>
                     <span aria-hidden='true' className='absolute inset-0'></span>
                     Satorials
-                  </span>
-                </span>
-                <p>Coming Soon</p>
-              </div>
-              <p className='mt-1 text-sm text-gray-500'>Mint</p>
-            </div>
-
-            <div className='group relative'>
-              <div className='relative'>
-                <img
-                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Finners.webp?alt=media&token=25efd731-798c-4e79-aade-a381f47f2932'
-                  alt='Inners'
-                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
-                />
-              </div>
-              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
-                <span>
-                  <span>
-                    <span aria-hidden='true' className='absolute inset-0'></span>
-                    Inners
                   </span>
                 </span>
                 <p>Coming Soon</p>
