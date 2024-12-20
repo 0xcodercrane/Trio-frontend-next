@@ -22,7 +22,11 @@ export const SingleCollectionFilterPanel = ({ slug }: { slug: string }) => {
       </div> */}
       <div className='w-full'>
         {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out. */}
-        <InscriptionsGrid inscriptions={(inscriptionsWithPrices as any) ?? []} isFetching={isFetching} />
+        <InscriptionsGrid
+          isInnersFlagToBeReverted={slug === 'inners'}
+          inscriptions={(inscriptionsWithPrices as any) ?? []}
+          isFetching={isFetching}
+        />
         <div ref={ref} />
         {/* // @ts-expect-error - TODO: The type is actually correct for inscriptions. But it still needs to be completely fleshed out.
           // <SingleCollectionInscriptionsTable inscriptions={inscriptions} nextPageLoading={isPlaceholderData} /> */}

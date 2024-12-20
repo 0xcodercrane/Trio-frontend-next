@@ -27,6 +27,10 @@ const CollectionIcon = ({
   const firstInscriptionId = inscriptions?.[0]?.inscription_id;
   const { data } = useInscriptionDataQuery(firstInscriptionId || '');
 
+  if (slug === 'inners') {
+    return <Img className={'rounded-lg ' + className} src='/img/inners.webp' />;
+  }
+
   const firstInscription =
     inscriptions && data?.details.content_type && hasRenderableContentType(data.details.content_type) ? (
       <div className={`${className} overflow-hidden rounded-lg`}>
