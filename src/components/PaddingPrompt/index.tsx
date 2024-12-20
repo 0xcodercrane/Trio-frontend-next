@@ -10,7 +10,7 @@ export function PaddingPrompt() {
   const {
     hasPaddingOutputs,
     isOutputsSetupInMempool,
-    isPaddingOutputsCheckPending,
+    isPaddingOutputsCheckFetching,
     isPaddingOuputsSetupInProgress,
     setupPaddingOutputs
   } = usePaddingOutputs();
@@ -24,7 +24,7 @@ export function PaddingPrompt() {
     );
   }
 
-  if (isOutputsSetupInMempool || hasPaddingOutputs || !isAuthenticated || isPaddingOutputsCheckPending) return null;
+  if (isOutputsSetupInMempool || hasPaddingOutputs || !isAuthenticated || isPaddingOutputsCheckFetching) return null;
 
   return (
     <div className='flex flex-col bg-ob-purple-dark p-4'>

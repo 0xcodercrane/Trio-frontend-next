@@ -64,7 +64,7 @@ const usePaddingOutputs = () => {
     false
   );
 
-  const { data: hasPaddingOutputs, isPending: isPaddingOutputsCheckPending } = useQuery({
+  const { data: hasPaddingOutputs, isFetching: isPaddingOutputsCheckFetching } = useQuery({
     queryKey: ['padding-outputs-check', wallet?.paymentAddress],
     queryFn: () => checkPaddingOutputs(wallet?.paymentAddress),
     select: (data) => isResponseSuccess(data) && data.payload.paddingOutputsExist,
@@ -82,7 +82,7 @@ const usePaddingOutputs = () => {
   // MEMO: Wrapper around any call that needs to be checked.
   const withPaddingOutputs = useCallback(
     async (callback: () => any) => {
-      if (isPaddingOutputsCheckPending || !wallet) {
+      if (isPaddingOutputsCheckFetching || !wallet) {
         return;
       }
       if (hasPaddingOutputs) {
@@ -125,14 +125,14 @@ const usePaddingOutputs = () => {
         return;
       }
     },
-    [hasPaddingOutputs, isPaddingOutputsCheckPending, wallet, feeRate]
+    [hasPaddingOutputs, isPaddingOutputsCheckFetching, wallet, feeRate]
   );
 
   const setupPaddingOutputs = useCallback(() => withPaddingOutputs(() => {}), [withPaddingOutputs]);
 
   return {
     hasPaddingOutputs,
-    isPaddingOutputsCheckPending,
+    isPaddingOutputsCheckFetching,
     isPaddingOuputsSetupInProgress,
     isOutputsSetupInMempool,
     withPaddingOutputs,
