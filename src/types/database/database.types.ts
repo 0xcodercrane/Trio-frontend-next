@@ -1218,6 +1218,23 @@ export type Database = {
           error_message: string;
         }[];
       };
+      fetch_activity: {
+        Args: {
+          want_interval?: unknown;
+          want_slug?: string;
+        };
+        Returns: {
+          inscription_id: string;
+          inscription_name: string;
+          maker_address: string;
+          taker_address: string;
+          collection_slug: string;
+          collection_name: string;
+          price: number;
+          trade_timestamp: string;
+          transaction_id: string;
+        }[];
+      };
       get_collection_stats: {
         Args: {
           collection_slug: string;
