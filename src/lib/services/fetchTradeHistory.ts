@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getTradeHistoryByOrderId } from '../supabase';
 import { TPagination } from '../hooks/usePagination/pagination.types';
-import { getTradeHistories, getTradeHistoryById } from '../supabase/tradeHistory';
+import { getLatestTrades, getTradeHistories, getTradeHistoryById, getTradeHistoryByOrderId } from '../supabase';
 
 // TODO: This should be subscribed to the supabase changes.
 export const useTradeHistoryByOrderId = (orderId: number | undefined) =>
@@ -24,5 +23,13 @@ export const useTradeHistoryByIdQuery = (id: number) => {
     queryKey: ['trade-history-by-id', id],
     queryFn: async () => await getTradeHistoryById(id),
     select: ({ data }) => (data && data) || {}
+  });
+};
+
+export const useLatestTrades = (interval: string = '1 day', slug?: string) => {
+  return useQuery({
+    queryKey: ['latest-trades', interval, slug],
+    queryFn: async () => await getLatestTrades(interval, slug),
+    select: ({ data }) => data
   });
 };

@@ -17,3 +17,9 @@ export const getTradeHistories = async ({ offset, limit }: TPagination) =>
 
 export const getTradeHistoryById = async (id: number) =>
   supabase.from('trade_history').select(TRADE_HISTORIES).eq('id', id).single();
+
+export const getTradeHistoryByOrderId = (orderId: number) =>
+  supabase.rpc('get_trade_history_by_order_id', { _order_id: orderId });
+
+export const getLatestTrades = (interval: string, slug: string | undefined, limit = 100) =>
+  supabase.rpc('fetch_activity', { want_interval: interval, want_slug: slug }).limit(limit);
