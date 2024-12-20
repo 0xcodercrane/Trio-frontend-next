@@ -1,5 +1,6 @@
 'use client';
 
+import { Collections } from '@/types/database';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,16 +16,7 @@ export function CollectionsTable({
   isLoading,
   searchMode = false
 }: {
-  collections: {
-    id: number;
-    slug: string;
-    name: string;
-    icon: string;
-    is_under_review: boolean;
-    floor_price: number;
-    total_supply: number;
-    total_listings: number;
-  }[];
+  collections: Collections;
   isLoading: boolean;
   searchMode?: boolean;
 }) {
@@ -45,6 +37,7 @@ export function CollectionsTable({
           <TableRow>
             <TableHead align='left'>Collection</TableHead>
             <TableHead align='right'>Floor price</TableHead>
+            <TableHead align='right'>7D Volume</TableHead>
             {!searchMode && (
               <>
                 <TableHead align='right'>Listed</TableHead>
@@ -60,7 +53,7 @@ export function CollectionsTable({
           {isLoading
             ? Array.from({ length: 10 }).map((_, indexRow) => (
                 <TableRow key={`row-${indexRow}`}>
-                  {Array.from({ length: searchMode ? 2 : 4 }).map((_, indexCell) => (
+                  {Array.from({ length: searchMode ? 3 : 5 }).map((_, indexCell) => (
                     <TableCell key={`cell-${indexCell}`}>
                       <Skeleton className='min-h-12 w-full' />
                     </TableCell>
@@ -84,6 +77,7 @@ export function CollectionsTable({
                     <TableCell align='right'>
                       {collection.floor_price ? satsToBitcoin(collection.floor_price) + ' BTC' : '—'}
                     </TableCell>
+                    <TableCell align='right'>{satsToBitcoin(collection?.weekly_trading_volume || 0) + ' BTC'}</TableCell>
                     {!searchMode && (
                       <>
                         <TableCell align='right'>

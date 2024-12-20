@@ -434,6 +434,7 @@ export type Database = {
           remaining_editions: number | null;
           slug: string;
           status: Database['public']['Enums']['launchpad_status'];
+          total_inscriptions: number | null;
           updated_at: string | null;
         };
         Insert: {
@@ -449,6 +450,7 @@ export type Database = {
           remaining_editions?: number | null;
           slug: string;
           status: Database['public']['Enums']['launchpad_status'];
+          total_inscriptions?: number | null;
           updated_at?: string | null;
         };
         Update: {
@@ -464,6 +466,7 @@ export type Database = {
           remaining_editions?: number | null;
           slug?: string;
           status?: Database['public']['Enums']['launchpad_status'];
+          total_inscriptions?: number | null;
           updated_at?: string | null;
         };
         Relationships: [
@@ -751,21 +754,24 @@ export type Database = {
           created_at: string | null;
           id: number;
           is_signed: boolean | null;
-          psbt_data: string | null;
+          signed_psbt: string | null;
+          unsigned_psbt: string | null;
         };
         Insert: {
           batch_id?: number | null;
           created_at?: string | null;
           id?: number;
           is_signed?: boolean | null;
-          psbt_data?: string | null;
+          signed_psbt?: string | null;
+          unsigned_psbt?: string | null;
         };
         Update: {
           batch_id?: number | null;
           created_at?: string | null;
           id?: number;
           is_signed?: boolean | null;
-          psbt_data?: string | null;
+          signed_psbt?: string | null;
+          unsigned_psbt?: string | null;
         };
         Relationships: [
           {
@@ -1028,6 +1034,22 @@ export type Database = {
       };
     };
     Views: {
+      collections_by_trading_volume_daily: {
+        Row: {
+          collection_id: number | null;
+          slug: string | null;
+          volume: number | null;
+        };
+        Relationships: [];
+      };
+      collections_by_trading_volume_weekly: {
+        Row: {
+          collection_id: number | null;
+          slug: string | null;
+          volume: number | null;
+        };
+        Relationships: [];
+      };
       edition_launchpad_orders_anon: {
         Row: {
           charge_address: string | null;
@@ -1203,13 +1225,16 @@ export type Database = {
         Returns: {
           min_price: number;
           total_volume_all_time: number;
+          total_volume_all_time_including_launchpad: number;
           distinct_listings_count: number;
           total_inscriptions_count: number;
         }[];
       };
       get_collections: {
         Args: {
-          search_keyword: string;
+          search_keyword?: string;
+          page_number?: number;
+          page_size?: number;
         };
         Returns: {
           id: number;
@@ -1217,6 +1242,7 @@ export type Database = {
           name: string;
           icon: string;
           is_under_review: boolean;
+          weekly_trading_volume: number;
           floor_price: number;
           total_supply: number;
           total_listings: number;
@@ -1227,6 +1253,16 @@ export type Database = {
           search_keyword: string;
         };
         Returns: number;
+      };
+      get_collections_trading_volume: {
+        Args: {
+          interval_param?: unknown;
+        };
+        Returns: {
+          volume: number;
+          slug: string;
+          collection_id: number;
+        }[];
       };
       get_inscription_details_wallet_view: {
         Args: {
@@ -1397,6 +1433,28 @@ export type Database = {
           taker_ordinal_address_id: number;
         };
         Returns: boolean;
+      };
+      launchpad_by_id_view: {
+        Args: {
+          launchpad_id_input: number;
+        };
+        Returns: {
+          id: number;
+          collection_id: number;
+          edition_inscription_id: number;
+          launchpad_type: string;
+          maker_payment_address_id: number;
+          marketplace_id: string;
+          meta_data: Json;
+          number_of_editions: number;
+          remaining_editions: number;
+          slug: string;
+          status: string;
+          total_inscriptions: number;
+          remaining_inscriptions: number;
+          created_at: string;
+          updated_at: string;
+        }[];
       };
       set_limit: {
         Args: {

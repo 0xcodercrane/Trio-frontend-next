@@ -19,3 +19,5 @@ export type Collection = Database['public']['Tables']['collections']['Row'] & {
 };
 
 export type OrderbookItem = Database['public']['Tables']['orderbook']['Row'];
+
+export type Collections = Database['public']['Functions']['get_collections']['Returns'];

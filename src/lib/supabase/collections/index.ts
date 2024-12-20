@@ -74,11 +74,12 @@ export const getCollectionIdFromSlug = async (slug: string) =>
   supabase.from('collections').select('id').eq('slug', slug).eq('is_under_review', false);
 
 export const getCollections = async (pagination: TPagination, searchKeyword: string) => ({
-  collections: await supabase
-    .rpc('get_collections', { search_keyword: `%${searchKeyword}%` })
-    .range(pagination.offset, pagination.offset + pagination.limit - 1)
-    .order('id', { ascending: false }),
-  count: await supabase.rpc('get_collections_count', { search_keyword: `%${searchKeyword}%` })
+  collections: await supabase.rpc('get_collections', {
+    search_keyword: `${searchKeyword}%`,
+    page_size: pagination.limit,
+    page_number: pagination.offset / pagination.limit + 1
+  }),
+  count: await supabase.rpc('get_collections_count', { search_keyword: `${searchKeyword}%` })
 });
 
 export const getCollectionStats = async (slug: string) => supabase.rpc('get_collection_stats', { collection_slug: slug });
