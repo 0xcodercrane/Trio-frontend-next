@@ -152,8 +152,8 @@ export default function Mint({ slug }: { slug: string }) {
   );
 
   const hasAllocationInCurrentPhase = useMemo(() => {
+    if (currentPhase?.is_public) return true;
     if (!allocationInfo || !currentPhase) return false;
-    if (currentPhase.is_public) return true;
 
     const allocationForPhase: TAllocation = allocationInfo.phases.find(
       (allocation: TAllocation) => allocation.id === currentPhase.id

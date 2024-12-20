@@ -80,7 +80,7 @@ export default function Home() {
               <p className='mt-1 text-sm text-gray-500'>Mint</p>
             </Link>
 
-            <Link href='https://trio.xyz/mint/inners' target='_blank' className='group relative'>
+            <Link href='https://trio.xyz/collections/inners' target='_blank' className='group relative'>
               <div className='relative'>
                 <img
                   src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Finners.webp?alt=media&token=25efd731-798c-4e79-aade-a381f47f2932'
