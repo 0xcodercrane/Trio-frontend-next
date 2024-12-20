@@ -26,10 +26,10 @@ export const useTradeHistoryByIdQuery = (id: number) => {
   });
 };
 
-export const useLatestTrades = (interval: string = '1 day', slug?: string) => {
+export const useLatestTrades = (interval: string = '1 day', limit = 100, slug?: string) => {
   return useQuery({
     queryKey: ['latest-trades', interval, slug],
-    queryFn: async () => await getLatestTrades(interval, slug),
+    queryFn: async () => await getLatestTrades(interval, limit, slug),
     select: ({ data }) => data
   });
 };

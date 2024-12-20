@@ -3,6 +3,7 @@ import { Container } from '@/components/Container';
 import { LaunchACollection } from '@/components/CTAs';
 import SpotLight from '@/components/SpotLight';
 import { NETWORK, SPOTLIGHT_COLLECTION_SLUG } from '@/lib/constants';
+import { LatestTrades } from '../LatestTrades';
 
 export default function Collections() {
   return (
@@ -18,8 +19,12 @@ export default function Collections() {
         />
       </Container> */}
 
-      <Container bgColor='bg-ob-purple-darkest mt-8' padding>
+      <Container bgColor='bg-ob-purple-darkest' className='mt-8' padding>
         <SpotLight type='collection' slug={SPOTLIGHT_COLLECTION_SLUG[NETWORK]} />
+      </Container>
+
+      <Container bgColor='bg-ob-purple-darkest' padding>
+        <LatestTrades />
       </Container>
 
       <PanelsWrapper />
