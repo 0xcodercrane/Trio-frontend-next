@@ -23,7 +23,7 @@ const LaunchpadMetaData = ({ metaData }: { metaData: TMetaData }) => {
       <>
         <div className='flex flex-col gap-2'>
           <div className='h-[2.5rem] w-full max-w-96 rounded-md bg-ob-black-lightest lg:h-[3.5rem] xl:h-[4.5rem]'></div>
-          <div className='h-[1.5rem] w-full max-w-full rounded-md bg-ob-black-lightest'></div>
+          <div className='h-[6rem] w-full max-w-full rounded-md bg-ob-black-lightest'></div>
         </div>
 
         <div className='flex flex-row gap-2'>

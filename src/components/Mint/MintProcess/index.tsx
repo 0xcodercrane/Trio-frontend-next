@@ -12,9 +12,9 @@ const MintProcess = ({
 
   return (
     <>
-      <div className='flex flex-col gap-2'>
-        <div className='relative h-[5px] w-full bg-ob-grey-lighter/[0.80]'>
-          <div className='absolute h-full bg-ob-green-light' style={{ width: `${percentComplete}%` }}></div>
+      <div className='flex w-full flex-col gap-2'>
+        <div className='relative h-[6px] w-full rounded-sm bg-ob-grey-lighter/[0.80]'>
+          <div className='absolute h-full rounded-sm bg-ob-green-light' style={{ width: `${percentComplete}%` }}></div>
         </div>
         <div className='flex flex-row justify-between'>
           <span className='text-ob-grey-lightest'>

@@ -5,19 +5,16 @@ import { usePaddingOutputs } from '@/lib/hooks/usePaddingOutputs';
 import { createBuyOffer, fetchAllocationInfo, fetchLaunchpadStatus, submitBuyOffer } from '@/lib/services';
 import { useLaunchpad } from '@/lib/services/fetchLaunchpad';
 import { pushPreinscribeMintOrderToFirebase } from '@/lib/services/points';
-import { EMediaType, EMintState, EOrientation, TAllocation, TMetaData, TPhase } from '@/types';
+import { EMintState, TAllocation, TMetaData, TPhase } from '@/types';
 import { useLaserEyes } from '@omnisat/lasereyes';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { Container } from '../Container';
-import { SplashPageLayout } from '../Layouts';
-import { PaddingPrompt } from '../PaddingPrompt';
 import Section from '../Section';
 import LaunchpadMetaData from './launchpadMetadata';
 import MintAction from './MintAction';
-import MintProcess from './MintProcess';
 import PhaseStatus from './PhaseStatus';
+import Image from 'next/image';
 
 export default function Mint({ slug }: { slug: string }) {
   const { wallet, isAuthenticated } = useContext(AuthContext);
@@ -171,43 +168,46 @@ export default function Mint({ slug }: { slug: string }) {
 
   return (
     <Section className='bg-ob-purple-darkest'>
-      <Container>
-        <SplashPageLayout
-          className='mt-16 gap-12'
-          orientation={EOrientation.LTR}
-          media={{ type: EMediaType.IMG, src: metaData && metaData?.icon ? metaData.icon : undefined }}
-        >
-          <div className='h-full space-y-8'>
-            <LaunchpadMetaData metaData={metaData} />
-
-            <PhaseStatus
-              launchInfo={launchInfo}
-              metaData={metaData}
-              allocationIsPending={allocationIsPending}
-              allocationInfo={allocationInfo}
-              isAuthenticated={isAuthenticated}
-              currentPhase={currentPhase}
+      <div className='grid grid-cols-1 gap-6 sm:gap-12 lg:grid-cols-2'>
+        <div>
+          {launchInfoPending ? (
+            <div className='h-[40rem] w-full animate-pulse rounded-xl bg-ob-black-lightest'></div>
+          ) : (
+            <Image
+              src={metaData?.icon ?? ''}
+              alt='Mint Image'
+              width={600}
+              height={600}
+              className='relative w-full overflow-hidden rounded-xl'
             />
+          )}
+        </div>
 
-            <MintProcess
-              percentComplete={percentComplete}
-              launchInfoPending={launchInfoPending}
-              totalInscriptions={totalInscriptions}
-              remainingInscriptions={remainingInscriptions}
-            />
+        <div className='h-full space-y-8'>
+          <LaunchpadMetaData metaData={metaData} />
 
-            <MintAction
-              mint={mint}
-              mintState={mintState}
-              txid={txid}
-              hasAllocationInCurrentPhase={hasAllocationInCurrentPhase}
-              launchInfoPending={launchInfoPending}
-            />
+          <PhaseStatus
+            launchInfo={launchInfo}
+            metaData={metaData}
+            allocationIsPending={allocationIsPending}
+            allocationInfo={allocationInfo}
+            isAuthenticated={isAuthenticated}
+            currentPhase={currentPhase}
+          />
 
-            <PaddingPrompt />
-          </div>
-        </SplashPageLayout>
-      </Container>
+          <MintAction
+            mint={mint}
+            mintState={mintState}
+            txid={txid}
+            hasLivePhase={currentPhase ? true : false}
+            hasAllocationInCurrentPhase={hasAllocationInCurrentPhase}
+            launchInfoPending={launchInfoPending}
+            percentComplete={percentComplete}
+            totalInscriptions={totalInscriptions}
+            remainingInscriptions={remainingInscriptions}
+          />
+        </div>
+      </div>
     </Section>
   );
 }

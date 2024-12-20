@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import { Container } from '@/components/Container';
 import { ENV, ENVS, NETWORK, OB_SOCIALS_CONFIG } from '@/lib/constants';
+import Image from 'next/image';
+import Link from 'next/link';
 import Socials from '../Socials';
 
 export default function Footer() {
   return (
     <footer className='w-full bg-ob-purple-dark pb-8 pt-12 text-white'>
       <Container padding>
-        <div className='mb-32 grid grid-cols-2 gap-8 md:grid-cols-3'>
-          <div className='flex flex-col items-start gap-4'>
-            <img src='/img/trio-logo.svg' alt='OrdinalsBot Logo' width={95} height={30} />
+        <div className='mb-32 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+          <div className='m-auto flex flex-col items-start gap-4 md:m-0'>
+            <Image src='/img/trio-logo.svg' alt='OrdinalsBot Logo' width={95} height={30} className='m-auto md:m-0' />
             {ENV !== ENVS.PROD && (
               <span className='w-full text-left italic text-ob-grey-lightest'>
                 Connected to <span className='font-bold text-ob-green-light'>{NETWORK}</span>
@@ -20,7 +20,7 @@ export default function Footer() {
               <Socials config={OB_SOCIALS_CONFIG} />
             </div>
           </div>
-          <div className='grid grid-cols-3 gap-8 md:col-span-2'>
+          <div className='grid grid-cols-3 gap-8 sm:col-span-1 md:col-span-2'>
             <div>
               <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400'>GENERAL</h3>
               <ul className='space-y-2'>

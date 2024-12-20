@@ -56,7 +56,7 @@ const PhaseStatus: React.FC<TPhaseStatusProps> = ({
 }) => {
   if (!metaData || !launchInfo || !launchInfo.phases.length)
     return (
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-2 rounded-xl bg-ob-black-lightest/30 p-5'>
         {Array.from({ length: 3 }).map((_, key) => (
           <div key={key} className='h-24 animate-pulse rounded-xl bg-ob-black-lightest'></div>
         ))}
@@ -64,7 +64,7 @@ const PhaseStatus: React.FC<TPhaseStatusProps> = ({
     );
 
   return (
-    <div className='flex flex-col gap-3'>
+    <div className='flex flex-col gap-2 rounded-xl bg-ob-purple-light/20 p-2 sm:p-5'>
       {launchInfo.phases
         .sort((a, b) => a.start_date - b.start_date)
         .map((phase: TPhase, index: number) => {
@@ -87,7 +87,7 @@ const PhaseStatus: React.FC<TPhaseStatusProps> = ({
           return (
             <div
               key={phase.id}
-              className={`relative flex h-24 max-h-24 flex-row justify-between rounded-xl p-[1px] ${
+              className={`relative flex h-24 max-h-24 flex-row justify-between rounded-xl bg-ob-purple-dark p-[1px] ${
                 phase.id !== currentPhase?.id ? 'opacity-60 hover:cursor-not-allowed' : ''
               }`}
             >
@@ -96,18 +96,18 @@ const PhaseStatus: React.FC<TPhaseStatusProps> = ({
                   state === EPhaseState.LIVE ? 'bg-gradient-to-r from-ob-blue to-ob-green' : 'bg-ob-white-20'
                 }`}
               ></div>
-              <div className='relative flex h-full min-h-[calc(var(--button-height-sm)-2px)] w-full max-w-full flex-row items-center justify-between gap-2 rounded-xl bg-ob-black-lightest px-4 xs:text-sm md:text-base'>
+              <div className='relative flex h-full min-h-[calc(var(--button-height-sm)-2px)] w-full max-w-full flex-row items-center justify-between gap-2 rounded-xl bg-ob-black-lightest px-3 xs:text-sm sm:px-4 md:text-base'>
                 <div className='max-w-1/2 flex flex-col gap-2'>
                   <div className='flex flex-row justify-start gap-2'>
-                    <span className='text-lg'>{phase.name || `Phase ${index + 1}`}</span>
+                    <span className='text-sm sm:text-lg'>{phase.name || `Phase ${index + 1}`}</span>
                   </div>
-                  <span className='text-sm'>
+                  <span className='text-xs sm:text-sm'>
                     {btcPrice} BTC ({numeral(price).format('0a')} Sats)
                   </span>
                 </div>
 
                 <div className='max-w-1/2 flex max-h-full flex-col gap-2'>
-                  <div className='flex flex-row justify-between gap-2'>
+                  <div className='flex flex-row justify-between gap-2 text-xs sm:text-sm'>
                     <span className={`text-${color}`}>
                       {state}
                       {state === EPhaseState.LIVE && phase.end_date !== null && (

@@ -11,7 +11,7 @@ import { authOptions } from '@/lib/auth';
 import { Toaster } from 'sonner';
 import MenuPanes from '@/components/MenuPanes';
 import FirebaseAnalytics from '@/components/FirebaseAnalytics';
-import { MobileOverlayWrapper } from '@/components/MobileOverlayWrapper';
+import ConditionalWrapper from '@/components/ConditionalWrapper';
 
 const satoshiVariable = localFont({
   src: [
@@ -40,9 +40,9 @@ export default async function RootLayout({
       <body className={`${satoshiVariable.variable} bg-ob-purple-darkest font-sans`} style={{ overscrollBehavior: 'none' }}>
         <Providers session={session}>
           <Header />
-          <MobileOverlayWrapper>
+          <ConditionalWrapper>
             <div className='mt-[--header-height]'>{children}</div>
-          </MobileOverlayWrapper>
+          </ConditionalWrapper>
           <Footer />
           <MenuPanes />
           <Toaster richColors />

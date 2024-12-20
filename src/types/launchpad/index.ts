@@ -88,4 +88,8 @@ export type TMintActionProps = {
   txid: string | null;
   mint: (feeRate: number) => void;
   launchInfoPending: boolean;
+  percentComplete: number;
+  totalInscriptions: number;
+  remainingInscriptions: number;
+  hasLivePhase: boolean;
 };
