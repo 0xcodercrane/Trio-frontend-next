@@ -1,5 +1,7 @@
+import { Chit } from '@/components/common';
 import Section from '@/components/Section';
 import { DEFAULT_METADATA } from '@/lib/constants';
+import { EComponentVariants } from '@/types';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -93,7 +95,7 @@ export default function Home() {
                     Inners
                   </span>
                 </span>
-                <p>LIVE</p>
+                <Chit variant={EComponentVariants.Success} label='Sold Out' />
               </div>
               <p className='mt-1 text-sm text-gray-500'>Mint</p>
             </Link>
