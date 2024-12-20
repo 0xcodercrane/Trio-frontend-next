@@ -19,11 +19,7 @@ export const MyItemsPanel = ({ slug }: { slug: string }) => {
   return (
     <div className='w-full'>
       {ownedInscriptions.length > 0 ? (
-        <InscriptionsGrid
-          isInnersFlagToBeReverted={slug === 'inners'}
-          inscriptions={ownedInscriptions}
-          isFetching={isPending}
-        />
+        <InscriptionsGrid inscriptions={ownedInscriptions} isFetching={isPending} />
       ) : (
         <div className='flex w-full items-center gap-2 p-4 text-lg text-white'>
           <Info size={32} /> You do not own any item from this collection.
