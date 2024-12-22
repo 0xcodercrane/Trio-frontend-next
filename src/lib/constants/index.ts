@@ -101,7 +101,7 @@ export const TRANSACTION_DEFAULT_PARAMETERS_BUY_LISTING = {
 };
 
 export const SPOTLIGHT_COLLECTION_SLUG = {
-  [ENETWORK.MAINNET]: 'inners',
+  [ENETWORK.MAINNET]: 'punk-royale',
   [ENETWORK.SIGNET]: 'underground-fragments',
   [ENETWORK.TESTNET]: 'test'
 };
