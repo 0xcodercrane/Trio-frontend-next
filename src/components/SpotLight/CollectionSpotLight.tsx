@@ -1,10 +1,10 @@
 'use client';
 import { buttonVariants } from '@/components/ui/button';
 import { useCollectionBySlugQuery } from '@/lib/services';
-import { MediaWrapper } from '../common';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
+import { CollectionIcon } from '../CollectionIcon';
 
 export function CollectionSpotLight({ slug }: { slug: string }) {
   const { data, isPending } = useCollectionBySlugQuery(slug);
@@ -26,12 +26,8 @@ export function CollectionSpotLight({ slug }: { slug: string }) {
         )}
       </div>
       <div className='max-w-1/2 flex max-h-[--inscription-larger] w-full items-end justify-end'>
-        <div className='w-full max-w-[--inscription-larger]'>
-          <MediaWrapper
-            id={data?.inscriptions[0].inscription_id}
-            size='full'
-            className='!static overflow-hidden rounded-xl'
-          />
+        <div className='w-full max-w-[--inscription-larger] overflow-hidden rounded-xl'>
+          <CollectionIcon slug={slug} src={data?.icon ?? undefined} />
         </div>
       </div>
     </div>
