@@ -75,7 +75,7 @@ export default function Home() {
                     Satorials
                   </span>
                 </span>
-                <p>Starting Soon</p>
+                <p>Mint Live</p>
               </div>
               <p className='mt-1 text-sm text-gray-500'>Mint</p>
             </Link>
@@ -100,7 +100,7 @@ export default function Home() {
                     OrdiBoos
                   </span>
                 </span>
-                <p>Starting Soon</p>
+                <p>Mint Live</p>
               </div>
               <p className='mt-1 text-sm text-gray-500'>Mint</p>
             </Link>
