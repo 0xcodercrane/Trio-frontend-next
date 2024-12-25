@@ -13,3 +13,4 @@ export {
 };
 
 export * from './CollectionsTable';
+export * from './CollectionTradesTable';

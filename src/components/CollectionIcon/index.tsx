@@ -36,7 +36,7 @@ const CollectionIcon = ({
       <div className={`rounded-md bg-white/20 ${className}`} />
     ) : null;
   if (src) {
-    return <Img fallback={firstInscription} className={className} src={src} />;
+    return <Img fallback={firstInscription} className={`${className} rounded-lg`} src={src} />;
   }
   return firstInscription;
 };

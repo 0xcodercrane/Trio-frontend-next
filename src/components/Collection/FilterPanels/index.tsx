@@ -8,10 +8,11 @@ import { FilterPanelHeader } from '@/components/FilterPanel';
 import { EVIEW_TYPES } from '@/lib/constants';
 import { MyItemsPanel } from './MyItems';
 import { AuthContext } from '@/app/providers/AuthContext';
+import { ActivityPanel } from './ActivityPanel';
 
 export enum ETABS {
   ITEMS = 'Items',
-  // ACTIVITY = 'Activity',
+  ACTIVITY = 'Activity',
   MY_ITEMS = 'My Items',
   ABOUT = 'About'
 }
@@ -40,8 +41,8 @@ export const Panels = ({ slug, showOnlyItems = false }: { slug: string; showOnly
         return <MyItemsPanel slug={slug} />;
       case ETABS.ABOUT:
         return <AboutPanel slug={slug} />;
-      // case ETABS.ACTIVITY:
-      //   return <ActivityPanel slug={slug} />;
+      case ETABS.ACTIVITY:
+        return <ActivityPanel slug={slug} />;
       default:
         return <></>;
     }
