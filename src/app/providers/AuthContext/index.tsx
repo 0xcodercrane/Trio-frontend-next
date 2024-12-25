@@ -3,7 +3,7 @@ import { signIn, signOut } from 'next-auth/react';
 import { createContext, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { onAuthStateChanged, signInWithCustomToken, User } from 'firebase/auth';
 import { auth, firestore } from '@/lib/firebase';
-import { ESUPPORTED_WALLETS, WALLET_COOKIE, WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
+import { WALLET_SIGN_IN_MESSAGE } from '@/lib/constants';
 import {
   collection,
   doc,
@@ -34,6 +34,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     paymentPublicKey,
     provider,
     isInitializing,
+    isConnecting,
     disconnect
   } = useLaserEyes();
 
@@ -45,19 +46,25 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
 
   const isAuthenticated = useMemo(() => (auth?.currentUser ? true : false), [auth.currentUser]);
 
-  const loginWithWallet = (wallet: IWallet) => {
-    localStorage.setItem(WALLET_COOKIE, JSON.stringify(wallet));
-    setWallet(wallet);
+  // MEMO: This function is called programatically under the condition that
+  //       Firebase authentification was successful. That's why it's not a hook.
+  const logIn = () => {
+    setWallet({
+      ordinalsAddress: address,
+      ordinalsPublicKey: publicKey,
+      paymentAddress,
+      paymentPublicKey,
+      wallet: provider
+    });
   };
 
-  const logout = () => {
+  const logOut = () => {
     auth
       .signOut()
       .then(() => {
         // Unsubscribe from all listeners
         listeners.current.forEach((unsubscribe) => unsubscribe());
         listeners.current = []; // Reset the listeners list
-        localStorage.removeItem(WALLET_COOKIE);
 
         // local purge
         setWallet(null);
@@ -83,13 +90,6 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
     listeners.current = []; // Reset the list
 
     if (firebaseUser) {
-      // Initialize wallet from local storage
-      const localWallet = JSON.parse(localStorage.getItem(WALLET_COOKIE) || 'null');
-
-      if (localWallet) {
-        setWallet(localWallet);
-      }
-
       const userRef = doc(firestore, 'users', firebaseUser.uid);
       const profileRef = doc(firestore, 'profiles', firebaseUser.uid);
       const pointsRef = doc(firestore, 'pointsBalances', firebaseUser.uid);
@@ -157,7 +157,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
 
       setLoading(false);
     } else {
-      logout();
+      logOut();
       setLoading(false);
     }
   };
@@ -200,52 +200,47 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
   };
 
   useEffect(() => {
-    if (isInitializing || loading) return;
+    if (isInitializing || loading || isConnecting) return;
 
+    // MEMO: This is needed because of wallets that require connection upon every load - Leather.
     if (!connected) {
-      return logout();
+      return logOut();
     }
-    // Only prompt to sign a message if the wallet is connected, but firebase has no authenticated user
-    if (connected && !auth.currentUser) {
-      setLoading(true);
-      const signMessageForFirebase = async (wallet: ESUPPORTED_WALLETS) => {
-        try {
-          const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
-          if (!signedMessage) {
-            logout();
-            return toast.error('Failed to sign message');
+
+    if (connected) {
+      // Only prompt to sign a message if the wallet is connected,
+      // but firebase has no authenticated user
+      if (!auth.currentUser) {
+        setLoading(true);
+        const signMessageForFirebase = async () => {
+          try {
+            const signedMessage = await signMessage(WALLET_SIGN_IN_MESSAGE, address);
+            if (!signedMessage) {
+              logOut();
+              return toast.error('Failed to sign message');
+            }
+            const signInResult = await signIntoFirebase(address, signedMessage);
+
+            if (signInResult) {
+              return logIn();
+            } else {
+              logOut();
+              return toast.error('Failed to sign into Firebase');
+            }
+          } catch (error) {
+            toast.error('User rejected request');
+            console.error(error);
+            return logOut();
           }
-          const signInResult = await signIntoFirebase(address, signedMessage);
+        };
 
-          if (signInResult) {
-            return loginWithWallet({
-              ordinalsAddress: address,
-              ordinalsPublicKey: publicKey,
-              paymentAddress,
-              paymentPublicKey,
-              wallet
-            });
-          } else {
-            logout();
-            return toast.error('Failed to sign into Firebase');
-          }
-        } catch (error) {
-          toast.error('User rejected request');
-          logout();
-        }
-      };
-
-      signMessageForFirebase(provider);
+        signMessageForFirebase();
+      } else {
+        // If the user is authenticated then log in directly
+        logIn();
+      }
     }
-  }, [connected, isInitializing, loading]);
-
-  useEffect(() => {
-    // If the user has a wallet, set it as the default wallet if it hasn't already been set
-    if (!user?.defaultAddress && wallet?.ordinalsAddress && auth?.currentUser) {
-      const userRef = doc(firestore, 'users', auth?.currentUser.uid);
-      setDoc(userRef, { defaultAddress: wallet?.ordinalsAddress }, { merge: true });
-    }
-  }, [user, auth]);
+  }, [connected, isInitializing, loading, isConnecting]);
 
   useEffect(() => {
     // If the user has a wallet, set it as the default wallet if it hasn't already been set
@@ -265,8 +260,7 @@ const AuthContextProvider = ({ children }: { children: NonNullable<ReactNode> })
       value={{
         signPsbt,
         isAuthenticated,
-        loginWithWallet,
-        logout,
+        logOut: logOut,
         loading,
         wallet,
         user

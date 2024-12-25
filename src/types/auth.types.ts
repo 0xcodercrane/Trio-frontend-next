@@ -10,8 +10,7 @@ export interface IWallet {
 
 export interface IAuthContext {
   isAuthenticated: boolean;
-  loginWithWallet: (wallet: IWallet) => void;
-  logout: () => void;
+  logOut: () => void;
   signPsbt: (
     psbt: string,
     finalize?: boolean

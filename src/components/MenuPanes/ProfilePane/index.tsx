@@ -4,7 +4,6 @@ import { Avatar } from '@/components/common';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/ui/button';
 import { shortenAddress } from '@/lib/utilities';
-import { useLaserEyes } from '@omnisat/lasereyes';
 import { useContext, useState } from 'react';
 import { BuyTrioTab } from './BuyTrio';
 import { MyAssetsTab } from './MyAssetsTab';
@@ -29,8 +28,7 @@ const ProfilePaneConfig = {
 };
 
 export default function ProfilePane() {
-  const { wallet, logout } = useContext(AuthContext);
-  const { disconnect } = useLaserEyes();
+  const { wallet, logOut } = useContext(AuthContext);
   const [activePane, setActivePane] = useState<EProfilePanes>(EProfilePanes.MY_ASSETS);
 
   return (
@@ -50,8 +48,7 @@ export default function ProfilePane() {
               <Button
                 variant='destructive'
                 onClick={() => {
-                  logout();
-                  disconnect();
+                  logOut();
                 }}
               >
                 Logout
