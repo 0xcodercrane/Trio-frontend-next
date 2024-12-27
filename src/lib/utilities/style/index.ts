@@ -3,8 +3,8 @@ import { Dimensions } from '@/types/global.types';
 
 export const getWidth = (size: number | 'full' | Dimensions | string) => {
   if (size === 'full') return 'w-full max-w-full';
-  else if (typeof size === 'string') return `min-w-[${size}] w-[${size}] max-w-[${size}]`;
-  if (typeof size === 'number') return `min-w-[${size}px] w-[${size}px] max-w-[${size}px]`;
+  else if (typeof size === 'string') return `px-2 sm:px-0 sm:min-w-[${size}] w-[${size}] max-w-[${size}]`;
+  if (typeof size === 'number') return `px-2 sm:px-0 sm:min-w-[${size}px] w-[${size}px] max-w-[${size}px]`;
   return `min-w-[${size.width}] w-[${size.width}] max-w-[${size.width}]`;
 };
 

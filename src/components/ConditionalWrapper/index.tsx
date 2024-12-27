@@ -6,7 +6,8 @@ import { MobileOverlayWrapper } from '@/components/MobileOverlayWrapper';
 export default function ConditionalWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
-  const enableMobile = pathname.startsWith('/mint/');
+  const enableMobile =
+    pathname.startsWith('/mint/') || pathname.startsWith('/collections/') || pathname.startsWith('/inscriptions/');
 
   return (
     <>

@@ -8,7 +8,7 @@ export default function CompletePane({ inscriptionId }: OrderFlowPaneBaseProps) 
 
   return (
     <div className='flex w-full flex-col gap-8'>
-      <div className='rounded-lg bg-ob-purple-dark p-4'>
+      <div className='rounded-lg bg-ob-purple-dark sm:p-4'>
         {' '}
         <FeesPanel listPriceSats={latestOrder?.price} />
       </div>

@@ -22,17 +22,25 @@ export default function SplashPageLayout({
   childrenWrapperJustify = 'center'
 }: SplashPageLayoutProps) {
   return (
-    <div className={`flex w-full flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}>
-      <div className='flex basis-1/2 items-start justify-start'>
+    <div
+      className={`flex w-full flex-col gap-8 lg:flex-row ${orientation === 'rtl' ? 'flex-row-reverse' : ''} ${className ? className : ''}`}
+    >
+      <div className='flex w-full items-start justify-start lg:basis-1/2'>
         {type === 'inscription' ? (
-          <div className='w-full'>
-            <MediaWrapper id={id} size='--inscription-largest' className='relative overflow-hidden rounded-xl' />
+          <div className='flex w-full justify-center'>
+            <MediaWrapper id={id} size='--inscription-largest' className='relative w-full overflow-hidden rounded-xl' />
           </div>
         ) : (
-          <Image src={src ?? ''} alt='Mint Image' width={600} height={600} className='relative overflow-hidden rounded-xl' />
+          <Image
+            src={src ?? ''}
+            alt='Mint Image'
+            width={600}
+            height={600}
+            className='relative w-full overflow-hidden rounded-xl'
+          />
         )}
       </div>
-      <div className={`flex basis-1/2 flex-col justify-${childrenWrapperJustify}`}>{children}</div>
+      <div className={`flex w-full flex-col lg:basis-1/2 justify-${childrenWrapperJustify}`}>{children}</div>
     </div>
   );
 }

@@ -47,7 +47,7 @@ export default function Footer() {
                     <Link
                       href={href}
                       target={target}
-                      className='text-xl font-semibold transition-colors hover:text-gray-300'
+                      className='text-sm font-semibold transition-colors hover:text-gray-300 sm:text-xl'
                     >
                       {label}
                     </Link>
@@ -84,7 +84,7 @@ export default function Footer() {
                     <Link
                       href={href}
                       target={target}
-                      className='text-xl font-semibold transition-colors hover:text-gray-300'
+                      className='text-sm font-semibold transition-colors hover:text-gray-300 sm:text-xl'
                     >
                       {label}
                     </Link>
@@ -121,7 +121,7 @@ export default function Footer() {
                     <Link
                       href={href}
                       target={target}
-                      className='text-xl font-semibold transition-colors hover:text-gray-300'
+                      className='text-sm font-semibold transition-colors hover:text-gray-300 sm:text-xl'
                     >
                       {label}
                     </Link>

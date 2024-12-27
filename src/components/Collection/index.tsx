@@ -55,17 +55,19 @@ export default function Collection({ slug }: CollectionProps) {
 
       <Container padding>
         <div
-          className={`z-10 flex ${hasBanner ? 'h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))]' : 'h-[24rem]'} flex-row`}
+          className={`z-10 flex ${hasBanner ? 'h-[calc(100vh-var(--header-height))] max-h-[calc(100vh-var(--header-height))]' : 'sm:h-[24rem]'} flex-row`}
         >
           <div className='flex h-full w-full flex-col justify-end'>
-            <div className='flex w-full flex-row pb-12'>
-              <div className='flex basis-1/2 flex-col justify-end gap-4'>
+            <div className='flex w-full flex-col gap-8 sm:flex-row sm:pb-12'>
+              <div className='order-2 flex w-full flex-col justify-end gap-4 sm:order-1 sm:basis-1/2'>
                 <div className='flex flex-row gap-4'>
                   <Socials config={socialsConfig} />
                 </div>
-                <div>{name ? <h2 className='text-6xl text-white'>{name}</h2> : <Skeleton className='h-12 w-full' />}</div>
+                <div>
+                  {name ? <h2 className='text-4xl text-white sm:text-6xl'>{name}</h2> : <Skeleton className='h-12 w-full' />}
+                </div>
 
-                <div className='flex flex-row gap-8'>
+                <div className='grid grid-cols-3 gap-8 sm:grid-cols-5'>
                   {[
                     {
                       label: 'floor price',
@@ -102,23 +104,25 @@ export default function Collection({ slug }: CollectionProps) {
                   ].map((row, index) => {
                     return (
                       <div key={index} className='flex flex-col justify-between capitalize text-white'>
-                        <span className='bold text-sm'>{row.label}</span>
-                        <span className='bold'>{isPendingStats ? <Skeleton className='min-h-6 w-full' /> : row.value}</span>
+                        <span className='bold text-xs sm:text-sm'>{row.label}</span>
+                        <span className='bold text-xs sm:text-sm'>
+                          {isPendingStats ? <Skeleton className='min-h-6 w-full' /> : row.value}
+                        </span>
                       </div>
                     );
                   })}
                 </div>
               </div>
 
-              <div className='flex basis-1/2 flex-row items-end justify-end'>
+              <div className='order-1 flex w-full flex-row items-end justify-end sm:order-2 sm:basis-1/2'>
                 {!isPending ? (
                   <CollectionIcon
-                    className='h-[210px] w-[210px] overflow-hidden rounded-xl'
+                    className='h-[20rem] w-full overflow-hidden rounded-xl sm:h-[210px] sm:w-[210px]'
                     src={icon ?? undefined}
                     slug={slug}
                   />
                 ) : (
-                  <Skeleton className='h-[210px] w-[210px] rounded-xl' />
+                  <Skeleton className='h-[20rem] rounded-xl sm:h-[210px] sm:w-[210px]' />
                 )}
                 {/* <div className='flex min-h-[320px] w-full flex-row justify-end'>
                   <div className='flex min-w-[210px] max-w-[210px] rounded-xl bg-white/[0.14] p-6'>

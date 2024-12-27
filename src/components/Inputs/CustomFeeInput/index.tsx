@@ -34,13 +34,13 @@ export default function CustomFeeInput({ txVirtualSize, value = '', onChange, ..
   return (
     <div className='flex w-full flex-row items-center justify-between rounded-sm bg-ob-purple-darkest pr-2 ring-1 ring-ob-white-20'>
       <Input
-        className='min-w-12 grow border-none bg-ob-purple-darkest pl-2 text-ob-grey-lightest'
+        className='w-full grow border-none bg-ob-purple-darkest pl-2 text-ob-grey-lightest'
         type='number'
         value={localValue}
         onChange={handleChange}
         {...props}
       />
-      <span className='text-nowrap pl-1 text-sm text-ob-grey-lightest'>sats/vB | {satsToUsd(feeInUsd).formatted}</span>
+      <span className='text-nowrap pl-1 text-xs text-ob-grey-lightest'>sats/vB | {satsToUsd(feeInUsd).formatted}</span>
     </div>
   );
 }

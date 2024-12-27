@@ -16,7 +16,7 @@ export default function InscriptionsGrid({
   const router = useRouter();
   // const { size } = useFilter();
   return (
-    <div className='grid grid-cols-5 gap-4'>
+    <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5'>
       {isFetching
         ? Array.from({ length: 10 }).map((_, indexRow) => (
             <Skeleton key={`skeleton-inscriptions-grid-${indexRow}`} className='aspect-square w-full' />

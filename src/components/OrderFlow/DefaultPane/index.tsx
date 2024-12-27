@@ -31,7 +31,7 @@ export default function DefaultPane({ inscriptionId, collectionSlug }: OrderFlow
       {isPending ? (
         <Skeleton className='h-full min-h-[240px] w-full' />
       ) : (
-        <div className='flex flex-col gap-4 rounded-lg bg-ob-purple-dark p-4 text-white'>
+        <div className='flex flex-col gap-4 rounded-lg text-white sm:bg-ob-purple-dark sm:p-4'>
           {/* OWNER OF INSCRIPTION */}
           {isInscriptionOwner ? (
             hasActiveListing ? (

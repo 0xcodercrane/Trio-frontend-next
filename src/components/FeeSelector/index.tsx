@@ -65,12 +65,15 @@ export default function FeeSelector({ feeOptions = DEFAULT_FEE_OPTIONS, txVirtua
   return (
     <div className='flex flex-col gap-2'>
       <span className='text-ob-grey-lightest'>Network Fee / Speed</span>
-      <div className='flex w-full flex-row gap-2'>
+      <div className='grid w-full grid-cols-2 gap-2 lg:grid-cols-3'>
         {feeOptionsToRender.map((feeOption) => {
           const currentFeeRate = feeOption !== EFeeOptions.CUSTOM && feeRatesData?.[feeOptionsConfig[feeOption].dbKey];
           const txFee = currentFeeRate && txVirtualSize ? currentFeeRate * txVirtualSize : 0;
           return (
-            <div key={feeOption} className='min-h-[96px] basis-1/3'>
+            <div
+              key={feeOption}
+              className={`${feeOption === EFeeOptions.CUSTOM && 'col-span-2 lg:col-span-1'} min-h-[96px]`}
+            >
               {isFeeRatesPending || !feeRatesData ? (
                 <Skeleton className='h-full w-full' />
               ) : (
