@@ -3,7 +3,8 @@ export enum EComponentVariants {
   Success = 'success',
   Error = 'error',
   Info = 'info',
-  Disabled = 'disabled'
+  Disabled = 'disabled',
+  Primary = 'primary'
 }
 
 export const ComponentVariantsValues: EComponentVariants[] = Object.values(EComponentVariants);

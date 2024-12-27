@@ -48,11 +48,12 @@ export const mapComponentVariantsToColor = (variant: EComponentVariants) => {
         text: 'text-ob-white',
         border: 'border border-ob-white'
       };
+    case EComponentVariants.Primary:
     default:
       return {
-        bg: 'bg-ob-purple-dark',
+        bg: 'bg-ob-purple-light',
         text: 'text-ob-white',
-        border: 'border border-ob-black-light'
+        border: 'border border-ob-purple-lighter'
       };
   }
 };

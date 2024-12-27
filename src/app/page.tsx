@@ -75,16 +75,17 @@ export default function Home() {
                     Satorials
                   </span>
                 </span>
-                <p>Mint Live</p>
+                <Chit variant={EComponentVariants.Primary} label='Mint Live' />
               </div>
               <p className='mt-1 text-sm text-gray-500'>Buy Now</p>
             </Link>
 
-            <Link href='/mint/ordiboos' className='group relative'>
+            {/* <Link href='/mint/cryptomancers' className='group relative'> */}
+            <div className='group relative'>
               <div className='relative'>
                 <img
-                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Fordiboos.webp?alt=media&token=79925248-806e-4da8-9393-2bf5c8db9b01'
-                  alt='OrdiBoos'
+                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Fcryptomancers.png?alt=media&token=18e6a82a-4a95-4e3d-aa53-1b9d66d3450a'
+                  alt='cryptomancers'
                   className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
                 />
                 <div className='absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100' aria-hidden='true'>
@@ -97,13 +98,14 @@ export default function Home() {
                 <span>
                   <span>
                     <span aria-hidden='true' className='absolute inset-0'></span>
-                    OrdiBoos
+                    Cryptomancers
                   </span>
                 </span>
-                <p>Mint Live</p>
+                <Chit variant={EComponentVariants.Info} label='Mint Coming' />
               </div>
               <p className='mt-1 text-sm text-gray-500'>Mint</p>
-            </Link>
+            </div>
+            {/* </Link> */}
 
             <Link href='/collections/punk-royale' className='group relative'>
               <div className='relative'>
