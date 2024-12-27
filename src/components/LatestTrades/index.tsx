@@ -7,7 +7,7 @@ import { InscriptionOverlay } from '../InscriptionOverlay';
 
 const LATEST_TRADES = 6;
 export const LatestTrades = () => {
-  const { data, isPending, error } = useLatestTrades('12 hours', LATEST_TRADES);
+  const { data, isPending, error } = useLatestTrades('7 days', LATEST_TRADES);
   const router = useRouter();
   return (
     <div className='flex w-full flex-col gap-4'>
