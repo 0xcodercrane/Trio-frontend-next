@@ -80,32 +80,32 @@ export default function Home() {
               <p className='mt-1 text-sm text-gray-500'>Buy Now</p>
             </Link>
 
-            {/* <Link href='/mint/cryptomancers' className='group relative'> */}
-            <div className='group relative'>
-              <div className='relative'>
-                <img
-                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Fcryptomancers.png?alt=media&token=18e6a82a-4a95-4e3d-aa53-1b9d66d3450a'
-                  alt='cryptomancers'
-                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
-                />
-                <div className='absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100' aria-hidden='true'>
-                  <div className='w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter'>
-                    Go to Mint
+            <Link href='/mint/cryptomancers-universekeys-series-1' className='group relative'>
+              <div className='group relative'>
+                <div className='relative'>
+                  <img
+                    src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Fcryptomancers.png?alt=media&token=18e6a82a-4a95-4e3d-aa53-1b9d66d3450a'
+                    alt='cryptomancers'
+                    className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
+                  />
+                  <div className='absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100' aria-hidden='true'>
+                    <div className='w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter'>
+                      Go to Mint
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
-                <span>
+                <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
                   <span>
-                    <span aria-hidden='true' className='absolute inset-0'></span>
-                    Cryptomancers
+                    <span>
+                      <span aria-hidden='true' className='absolute inset-0'></span>
+                      Cryptomancers
+                    </span>
                   </span>
-                </span>
-                <Chit variant={EComponentVariants.Info} label='Mint Coming' />
+                  <Chit variant={EComponentVariants.Info} label='Mint Coming' />
+                </div>
+                <p className='mt-1 text-sm text-gray-500'>Mint</p>
               </div>
-              <p className='mt-1 text-sm text-gray-500'>Mint</p>
-            </div>
-            {/* </Link> */}
+            </Link>
 
             <Link href='/collections/punk-royale' className='group relative'>
               <div className='relative'>
