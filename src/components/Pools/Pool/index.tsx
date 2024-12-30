@@ -25,7 +25,7 @@ export default function Pool({ pool }: { pool: TLotteryPool | TProportionatePool
   };
 
   return (
-    <div className='relative rounded-lg bg-ob-purple-light'>
+    <div className='relative w-full rounded-lg bg-ob-purple-light'>
       {poolState === EPoolState.PENDING && (
         <div className='absolute left-0 top-0 z-20 flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg bg-ob-black/[0.80]'>
           <span className='text-lg'>Pool Pending Confirmation</span>

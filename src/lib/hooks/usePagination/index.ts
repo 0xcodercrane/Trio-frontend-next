@@ -1,9 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 interface UsePaginationProps {
   initialOffset?: number;
   initialLimit?: number;
-  max: number;
+  max?: number;
 }
 
 export const DEFAULT_INITIAL_PAGINATION = {
@@ -12,7 +12,11 @@ export const DEFAULT_INITIAL_PAGINATION = {
   initialLimit: 10
 };
 
-const usePagination = ({ initialOffset = 0, initialLimit = 10, max }: UsePaginationProps) => {
+const usePagination = ({
+  initialOffset = 0,
+  initialLimit = 10,
+  max = 100
+}: UsePaginationProps = DEFAULT_INITIAL_PAGINATION) => {
   const [offset, setOffset] = useState(initialOffset);
   const [limit, setLimit] = useState(initialLimit);
 

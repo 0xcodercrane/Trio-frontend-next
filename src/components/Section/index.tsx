@@ -12,7 +12,9 @@ export default function Section({
   paddingLeft?: boolean;
 }) {
   return (
-    <div className={`h-auto min-h-[66vh] w-full py-[--section-vertical-padding] ${className ? className : ''}`}>
+    <div
+      className={`h-auto min-h-[66vh] w-full py-[calc(var(--section-vertical-padding)/4)] md:py-[--section-vertical-padding] ${className ? className : ''}`}
+    >
       <Container padding={padding} paddingLeft={paddingLeft}>
         {children}
       </Container>

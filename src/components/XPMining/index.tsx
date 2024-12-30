@@ -1,19 +1,21 @@
 'use client';
 
-import { Database, Wallet, WandSparkles, X } from 'lucide-react';
-import { Container } from '../Container';
-import { AVERAGE_BLOCK_TIME, ONE_SECOND, XP_MINING_CYCLE_LENGTH } from '@/lib/constants';
-import { useContext, useEffect, useMemo, useState } from 'react';
 import { AuthContext } from '@/app/providers/AuthContext';
-import { useTokenBalanceQuery } from '@/lib/services';
-import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
-import numeral from 'numeral';
-import { Dialog, DialogContent } from '../ui/dialog';
-import { useDisclosure } from '@/lib/hooks';
-import { DateTime } from 'luxon';
 import { GlobalContext } from '@/app/providers/GlobalContext';
-import { Button } from '../ui/button';
+import { AVERAGE_BLOCK_TIME, ENV, ENVS, ONE_SECOND, XP_MINING_CYCLE_LENGTH } from '@/lib/constants';
+import { useDisclosure } from '@/lib/hooks';
+import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
+import { useTokenBalanceQuery } from '@/lib/services';
+import { Database, Wallet, WandSparkles, X } from 'lucide-react';
+import { DateTime } from 'luxon';
+import numeral from 'numeral';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import XPMiningChart from '../Charts/XPMiningChart';
+import Section from '../Section';
+import { XPMiningRewardsTable } from '../Tables';
 import TrioMarkets from '../TrioMarkets';
+import { Button } from '../ui/button';
+import { Dialog, DialogContent } from '../ui/dialog';
 
 export function XPMining() {
   const { user, wallet } = useContext(AuthContext);
@@ -67,16 +69,16 @@ export function XPMining() {
   }, [blocksRemaining, targetEndBlock]);
 
   return (
-    <Container direction='col' justify='start' className='py-[--section-vertical-padding]'>
-      <div className='mb-12 flex flex-row'>
-        <div className='w-1/2'>
-          <span className='text-4xl'>
+    <Section>
+      <div className='mb-12 grid-cols-1 md:grid-cols-2'>
+        <div className='col-span-1'>
+          <span className='text-2xl md:text-4xl'>
             Hold TRIO,
             <br />
             <span className='text-ob-yellow'>Mine XP</span>
           </span>
         </div>
-        <div className='w-1/2'>
+        <div className='col-span-1'>
           <span className='text-ob-white-40'>
             By simply holding TRIO token, you will be mining XP points daily. No action is required on your part, other than
             holding TRIO in your non-custodial Bitcoin Wallet of your choice. Hold more TRIO to earn more XP. Earn more XP to
@@ -84,13 +86,13 @@ export function XPMining() {
           </span>
         </div>
       </div>
-      <div className='flex flex-col items-center justify-center rounded-b-xl bg-ob-purple-dark p-12'>
-        <div className='flex w-full flex-row gap-4'>
-          <div className='flex h-auto w-1/2 flex-col items-center justify-between gap-4 rounded-lg bg-ob-purple p-4'>
-            <div className='flex max-w-[80%] flex-col items-center justify-center'>
+      <div className='flex flex-col items-center justify-center rounded-b-xl bg-ob-purple-dark p-2 md:p-10'>
+        <div className='grid w-full grid-cols-1 gap-4 md:grid-cols-2'>
+          <div className='col-span-1 flex h-auto flex-col items-center justify-between gap-4 rounded-lg bg-ob-purple p-4'>
+            <div className='flex flex-col items-center justify-center'>
               <span className='py-5 text-2xl'>Hold TRIO, Earn Points (XP)</span>
             </div>
-            <div className='flex max-w-[90%] flex-col items-center justify-center gap-2 text-center'>
+            <div className='flex flex-col items-center justify-center gap-2 text-center'>
               <span>What is XP Mining?</span>
               <span className='text-ob-white-40'>
                 TRIO is the first BRC20 token to offer a &lsquo;staking-like&rsquo; reward system. No action is required on
@@ -132,7 +134,7 @@ export function XPMining() {
             </div>
           </div>
 
-          <div className='flex h-auto w-1/2 flex-col items-center justify-start gap-4'>
+          <div className='col-span-1 flex h-auto flex-col items-center justify-start gap-4'>
             <div className='flex flex-col items-center gap-4 rounded-lg bg-ob-purple p-4'>
               <div className='flex max-w-[80%] flex-col items-center justify-start'>
                 <span className='flex items-center py-5 text-2xl'>Earn XP Daily</span>
@@ -217,14 +219,33 @@ export function XPMining() {
           </div>
         </div>
 
+        {ENV !== ENVS.PROD && (
+          <Section className='flex w-full flex-col'>
+            <div className='grid grid-cols-1 md:grid-cols-2'>
+              <div className='col-span-1'>
+                <h3>TRIO Balance History</h3>
+                <div className='flex h-full flex-col items-center justify-center'>
+                  <XPMiningChart />
+                </div>
+              </div>
+              <div className='col-span-1'>
+                <h3>Last 10 days of XP Mining</h3>
+                <div className='flex flex-col items-center justify-center'>
+                  <XPMiningRewardsTable />
+                </div>
+              </div>
+            </div>
+          </Section>
+        )}
+
         <Dialog open={isOpen}>
           <DialogContent className='w-full sm:max-w-[425px]'>
             <div className='flex flex-col items-center justify-center gap-6 py-1 text-center'>
               <div
                 onClick={close}
-                className='absolute right-2 top-2 flex h-[24px] w-[24px] items-center justify-center rounded-full bg-ob-purple-darkest hover:cursor-pointer hover:opacity-60'
+                className='absolute right-2 top-2 z-20 flex h-[24px] w-[24px] items-center justify-center rounded-full bg-ob-purple-darkest hover:cursor-pointer hover:opacity-60'
               >
-                <X size={20} />
+                <X size={16} />
               </div>
               <h4 className='font-xl font-bold'>You can buy TRIO from any of these places:</h4>
               <TrioMarkets />
@@ -232,6 +253,6 @@ export function XPMining() {
           </DialogContent>
         </Dialog>
       </div>
-    </Container>
+    </Section>
   );
 }

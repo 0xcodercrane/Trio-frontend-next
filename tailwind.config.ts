@@ -107,22 +107,11 @@ const config = {
     },
     screens: {
       xs: '320px',
-
       sm: '640px',
-      // => @media (min-width: 640px) { ... }
-
       md: '768px',
-      // => @media (min-width: 768px) { ... }
-
       lg: '1092px',
-      // => @media (min-width: 1024px) { ... }
-
       xl: '1280px',
-      // => @media (min-width: 1280px) { ... }
-
       '2xl': '1600px',
-      // => @media (min-width: 1536px) { ... }
-
       '3xl': '2048px'
     },
     extend: {
@@ -170,23 +159,18 @@ const config = {
         'ob-white-60': 'rgba(255, 255, 255, 0.6)',
         'ob-white-70': 'rgba(255, 255, 255, 0.7)',
         'ob-white-80': 'rgba(255, 255, 255, 0.8)',
-
         'ob-black': '#0D0D0D',
         'ob-black-light': '#1b1b1b',
         'ob-black-lighter': '#131313',
         'ob-black-lightest': '#161616',
-
         'ob-grey': '#242424',
         'ob-grey-light': '#252525',
         'ob-grey-lighter': '#727272',
         'ob-grey-lightest': '#B5B5B5',
         'ob-text-grey': '#868686',
-        // Added for creators launchpad
         'ob-dark-grey': '#343434',
         'ob-darker-grey': '#353535',
         'ob-light-grey': '#5E5D5D',
-
-        // Blues
         'ob-blue-darkest': '#0007A8',
         'ob-blue-darker': '#001BC5',
         'ob-blue-dark': '#0032E2',
@@ -194,26 +178,16 @@ const config = {
         'ob-blue-light': '#4D60FF',
         'ob-blue-lighter': '#6676FF',
         'ob-blue-lightest': '#808DFF',
-
-        // Greens
         'ob-green': '#13C657',
         'ob-green-light': '#33FF81',
-
-        // Reds
         'ob-red-dark': '#E60019',
         'ob-red': '#FF001B',
         'ob-red-light': '#FF1A32',
         'ob-red-lighter': '#FF3349',
         'ob-red-lightest': '#FF6677',
-
-        // Yellows
         'ob-yellow': '#D6E814',
         'ob-yellow-dark': '#ffbb33',
-
-        // Turquoise
         'ob-turquoise': '#30D5C8',
-
-        // Purples
         'ob-purple-darkest': '#0D0216',
         'ob-purple-dark': '#0f031c',
         'ob-purple': '#2B0059',
@@ -227,12 +201,20 @@ const config = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' }
+          from: {
+            height: '0'
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)'
+          }
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' }
+          from: {
+            height: 'var(--radix-accordion-content-height)'
+          },
+          to: {
+            height: '0'
+          }
         }
       },
       animation: {

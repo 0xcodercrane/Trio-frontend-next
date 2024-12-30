@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { FilterState } from '@/types';
 import { ESIZES, EVIEW_TYPES } from '@/lib/constants';
+import { FilterState } from '@/types';
+import { create } from 'zustand';
 
 const DEFAULT_MAX = 100;
 

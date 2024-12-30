@@ -1,15 +1,18 @@
 'use client';
 
+import { Loading } from '@/components/common';
 import { XP_MINING_CYCLE_LENGTH } from '@/lib/constants';
 import { auth, firestore } from '@/lib/firebase';
 import { TStakedBalance } from '@/types';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { useEffect, useState } from 'react';
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 export default function XPMiningChart() {
   const [stakingData, setStakingData] = useState<TStakedBalance[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!auth?.currentUser) return;
     const unsubscribe = onSnapshot(
       query(collection(firestore, `users/${auth?.currentUser?.uid}/stakedBalance`), orderBy('block', 'asc')),
       (snapshot) => {
@@ -35,11 +38,14 @@ export default function XPMiningChart() {
 
         // Set the filled data to state
         setStakingData(filledData);
+        setLoading(false);
       }
     );
 
     return () => unsubscribe();
-  }, []);
+  }, [auth?.currentUser]);
+
+  if (loading) return <Loading />;
 
   return (
     <ResponsiveContainer width='100%' height={400}>

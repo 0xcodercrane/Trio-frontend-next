@@ -1,17 +1,16 @@
 'use client';
+import { Loading } from '@/components/common';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { DEFAULT_INITIAL_PAGINATION, usePagination } from '@/lib/hooks';
-import { useRewardsQuery } from '@/lib/services/fetchUserRewards';
+import { useRewards } from '@/lib/services/fetchUserRewards';
 import { formatDate } from '@/lib/utilities';
 
 export default function PointsHistoryTable() {
-  const pagination = usePagination(DEFAULT_INITIAL_PAGINATION);
-  const { data: rewards, isSuccess: rewardsSuccess } = useRewardsQuery(pagination);
+  const { rewards, loading } = useRewards();
   return (
     <Table>
       <TableBody>
-        {rewardsSuccess &&
-          rewards.length > 0 &&
+        {loading && <Loading />}
+        {!loading &&
           rewards.map(({ date, amount, type, id }, index) => (
             <TableRow key={index} className='rounded-sm border-none text-xs text-white'>
               <TableCell className='py-3'>{formatDate(date)}</TableCell>

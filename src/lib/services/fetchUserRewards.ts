@@ -1,40 +1,75 @@
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { ERewardType, TReward } from '@/types/rewards';
+import { collection, DocumentReference, limit, onSnapshot, orderBy, query, startAfter, where } from 'firebase/firestore';
+import { useCallback, useEffect, useState } from 'react';
 import { auth, firestore } from '../firebase';
-import { useQuery } from '@tanstack/react-query';
-import { TReward } from '@/types/rewards';
 import { TPagination } from '../hooks/usePagination/pagination.types';
 
 const rewardsRef = collection(firestore, 'rewards');
 
-// TODO: implement proper pagination here as per Firestore spec: https://firebase.google.com/docs/firestore/query-data/query-cursors
-export const fetchRewards = async (userId: string, _pagination: TPagination): Promise<TReward[]> => {
-  if (!userId || userId === '') return [];
+export const useRewards = (type: ERewardType | 'all' = 'all', pagination: TPagination = { offset: 0, limit: 10 }) => {
+  const [rewards, setRewards] = useState<TReward[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [lastVisible, setLastVisible] = useState<DocumentReference | null>(null);
 
-  const forCurrentUser = where('userId', '==', userId);
-  const rewardsQuery = query(rewardsRef, forCurrentUser, orderBy('date', 'desc'));
-  try {
-    const rewardsData = await getDocs(rewardsQuery);
-    const rewards = rewardsData.docs.map(
-      (doc) =>
-        ({
-          ...doc.data(),
-          id: doc.id
-        }) as TReward
-    );
+  // Fetch rewards and set up a real-time listener
+  const fetchRewards = useCallback(
+    (reset: boolean = false) => {
+      if (!auth?.currentUser) return;
 
-    return rewards;
-  } catch (err) {
-    console.error('Error fetching rewards', err);
-    return [];
-  }
-};
+      setLoading(true);
 
-export const useRewardsQuery = (pagination: TPagination) => {
-  const userId = auth.currentUser?.uid || '';
+      const forCurrentUser = where('userId', '==', auth?.currentUser?.uid);
+      const orderByDate = orderBy('date', 'desc');
+      let rewardsQuery = query(rewardsRef, forCurrentUser, orderByDate, limit(pagination.limit));
 
-  return useQuery<TReward[], Error>({
-    queryKey: ['rewards', userId],
-    queryFn: () => fetchRewards(userId, pagination),
-    enabled: !!userId
-  });
+      if (!reset && lastVisible) {
+        rewardsQuery = query(rewardsQuery, startAfter(lastVisible));
+      }
+
+      if (type !== 'all') {
+        rewardsQuery = query(rewardsQuery, where('type', '==', type));
+      }
+
+      // Real-time listener for rewards
+      const unsubscribe = onSnapshot(rewardsQuery, (snapshot) => {
+        const newRewards: TReward[] = [];
+        snapshot.forEach((doc) => {
+          newRewards.push({ ...doc.data(), id: doc.id } as TReward);
+        });
+
+        setLastVisible(snapshot.docs[snapshot.docs.length - 1]?.ref || null);
+        setRewards((prevRewards) => (reset ? newRewards : [...prevRewards, ...newRewards]));
+        console.log('----- here - 1');
+        setLoading(false);
+      });
+
+      // Return the unsubscribe function to clean up the listener
+      return unsubscribe;
+    },
+    [auth?.currentUser, type, pagination.limit]
+  );
+
+  // Effect to fetch rewards initially
+  useEffect(() => {
+    const unsubscribe = fetchRewards(true);
+
+    // Cleanup listener on unmount
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [fetchRewards]);
+
+  // Reset rewards
+  const resetRewards = useCallback(() => {
+    setRewards([]);
+    setLastVisible(null);
+    fetchRewards(true);
+  }, [fetchRewards]);
+
+  // Load more rewards (pagination)
+  const loadMore = useCallback(() => {
+    fetchRewards(false);
+  }, [fetchRewards]);
+
+  return { rewards, loading, loadMore, resetRewards };
 };

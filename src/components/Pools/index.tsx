@@ -1,16 +1,16 @@
 'use client';
 
+import { AuthContext } from '@/app/providers/AuthContext';
+import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
+import { useTokenBalanceQuery } from '@/lib/services';
+import { usePoolsQuery } from '@/lib/services/fetchRewardPools';
 import { EPoolState, TLotteryPool, TProportionatePool } from '@/types';
 import { useContext, useState } from 'react';
 import { Loading } from '../common';
-import Pool from './Pool';
-import { AuthContext } from '@/app/providers/AuthContext';
-import { useTokenBalanceQuery } from '@/lib/services';
 import Section from '../Section';
-import { usePoolsQuery } from '@/lib/services/fetchRewardPools';
 import { Button } from '../ui/button';
 import { mapPoolToState } from './helpers';
-import { useBlockHeight } from '@/lib/hooks/useBlockHeight';
+import Pool from './Pool';
 
 enum ETabs {
   All = 'all',
@@ -31,15 +31,15 @@ export function Pools() {
   return (
     <Section>
       <div className='flex flex-col gap-8'>
-        <div className='flex flex-row'>
-          <div className='w-1/2'>
-            <span className='text-6xl'>
+        <div className='grid grid-cols-1 md:grid-cols-2'>
+          <div className='col-span-1'>
+            <span className='text-2xl md:text-6xl'>
               Earn rewards with
               <br />
               <span className='text-ob-yellow'>TRIO&apos;s Reward Pools</span>
             </span>
           </div>
-          <div className='w-1/2'>
+          <div className='col-span-1'>
             <span className='text-ob-white-40'>
               Spend points (XP) in Trio Reward Pools. The Trio Points system is designed to give back to you, our loyal
               customers. By engaging with the Trio ecosystem, you receive XP for completing orders, minting, inscribe, and of
@@ -47,6 +47,7 @@ export function Pools() {
             </span>
           </div>
         </div>
+
         <div className='flex w-full flex-row justify-between'>
           <div className='flex flex-row justify-center gap-4'>
             {[
@@ -68,8 +69,8 @@ export function Pools() {
           </div>
         </div>
 
-        <div className='flex min-h-[40vh] flex-col gap-4 rounded-md bg-ob-purple-dark p-10'>
-          <div className='flex flex-row gap-4'>
+        <div className='flex min-h-[40vh] flex-col gap-4 rounded-md bg-ob-purple-dark p-2 md:p-10'>
+          <div className='flex flex-row flex-wrap gap-4 md:flex-nowrap'>
             {TabValues.map((tab: ETabs) => (
               <Button
                 key={tab}
@@ -82,7 +83,8 @@ export function Pools() {
               </Button>
             ))}
           </div>
-          <div className='grid grid-cols-3 gap-8 sm:grid-cols-1 md:grid-cols-3'>
+
+          <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
             {loading && <Loading />}
             {pools.map((pool: TLotteryPool | TProportionatePool) => {
               let showPool = true;
