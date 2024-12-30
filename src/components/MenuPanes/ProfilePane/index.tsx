@@ -5,15 +5,16 @@ import { Container } from '@/components/Container';
 import { Button } from '@/components/ui/button';
 import { shortenAddress } from '@/lib/utilities';
 import { useContext, useState } from 'react';
+import OrderHistory from '../OrderHistory';
+import { PointsPane } from '../PointsPane/PointsPane';
 import { BuyTrioTab } from './BuyTrio';
 import { MyAssetsTab } from './MyAssetsTab';
-import { PointsPane } from '../PointsPane/PointsPane';
 
 enum EProfilePanes {
   // ACCOUNT = 'account',
   MY_ASSETS = 'My Assets',
   BUY_TRIO = 'Buy TRIO',
-  // ORDERS = 'orders',
+  ORDERS = 'Orders',
   POINTS = 'Points'
 }
 
@@ -23,7 +24,7 @@ const ProfilePaneConfig = {
   // [EProfilePanes.ACCOUNT]: () => <div className='text-white'>My Account</div>,
   [EProfilePanes.MY_ASSETS]: () => <MyAssetsTab />,
   [EProfilePanes.BUY_TRIO]: () => <BuyTrioTab />,
-  // [EProfilePanes.ORDERS]: () => <OrdersPane />,
+  [EProfilePanes.ORDERS]: () => <OrderHistory />,
   [EProfilePanes.POINTS]: () => <PointsPane />
 };
 

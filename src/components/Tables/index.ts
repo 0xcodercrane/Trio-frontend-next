@@ -1,15 +1,17 @@
 import MultiCollectionInscriptionsTable from './MultiCollectionInscriptionsTable';
-import SingleCollectionInscriptionsTable from './SingleCollectionInscriptionsTable';
-import PointsHistoryTable from './PointsHistoryTable';
-import UserOrdersTable from './UserOrdersTable';
 import NotificationTable from './NotificationTable';
+import PointsHistoryTable from './PointsHistoryTable';
+import SingleCollectionInscriptionsTable from './SingleCollectionInscriptionsTable';
+import TrioAccountOrdersTable from './TrioAccountOrdersTable';
+import UserOrdersTable from './UserOrdersTable';
 
 export {
   MultiCollectionInscriptionsTable,
-  SingleCollectionInscriptionsTable,
+  NotificationTable,
   PointsHistoryTable,
-  UserOrdersTable,
-  NotificationTable
+  SingleCollectionInscriptionsTable,
+  TrioAccountOrdersTable,
+  UserOrdersTable
 };
 
 export * from './CollectionsTable';
