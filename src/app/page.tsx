@@ -101,7 +101,7 @@ export default function Home() {
                       Cryptomancers
                     </span>
                   </span>
-                  <Chit variant={EComponentVariants.Info} label='Mint Coming' />
+                  <Chit variant={EComponentVariants.Primary} label='Mint Live' />
                 </div>
                 <p className='mt-1 text-sm text-gray-500'>Mint</p>
               </div>
