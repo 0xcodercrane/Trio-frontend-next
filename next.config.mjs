@@ -33,6 +33,11 @@ const nextConfig = {
         source: '/mint/inners',
         destination: 'https://ordinalsbot.com/mint/inners?featured=true&trio=true',
         permanent: true
+      },
+      {
+        source: '/mint/dead-ordinals',
+        destination: 'https://ordinalsbot.com/mint/dead-ordinals?featured=true&trio=true',
+        permanent: true
       }
     ];
   }

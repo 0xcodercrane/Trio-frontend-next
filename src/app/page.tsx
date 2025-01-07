@@ -52,9 +52,34 @@ export default function Home() {
       <div>
         <div className='mx-auto mt-20'>
           <div className='flex items-center justify-between space-x-4'>
-            <h2 className='text-white-900 text-lg font-medium'>Upcoming Mints</h2>
+            <h2 className='text-white-900 text-lg font-medium'>Mint Calendar</h2>
           </div>
           <div className='mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4'>
+            <Link href='/mint/dead-ordinals' className='group relative'>
+              <div className='relative'>
+                <img
+                  src='https://ordinalsbot-prod.s3.amazonaws.com/c337532a-ec82-4d44-807f-f28797889cc1_0f3a5df5-f96b-4497-8aee-e8d8b67d947d.png'
+                  alt='Satorials'
+                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
+                />
+                <div className='absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100' aria-hidden='true'>
+                  <div className='w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter'>
+                    Go to Mint
+                  </div>
+                </div>
+              </div>
+              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
+                <span>
+                  <span>
+                    <span aria-hidden='true' className='absolute inset-0'></span>
+                    Dead Ordinals
+                  </span>
+                </span>
+                <Chit variant={EComponentVariants.Disabled} label='Coming Soon' />
+              </div>
+              <p className='mt-1 text-sm text-gray-500'>Coming Soon</p>
+            </Link>
+
             <Link href='/mint/satorials' className='group relative'>
               <div className='relative'>
                 <img
@@ -64,7 +89,7 @@ export default function Home() {
                 />
                 <div className='absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100' aria-hidden='true'>
                   <div className='w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter'>
-                    Buy Now
+                    Go to Mint
                   </div>
                 </div>
               </div>
@@ -77,7 +102,7 @@ export default function Home() {
                 </span>
                 <Chit variant={EComponentVariants.Primary} label='Mint Live' />
               </div>
-              <p className='mt-1 text-sm text-gray-500'>Buy Now</p>
+              <p className='mt-1 text-sm text-gray-500'>Minting</p>
             </Link>
 
             <Link href='/mint/cryptomancers-universekeys-series-1' className='group relative'>
@@ -103,7 +128,7 @@ export default function Home() {
                   </span>
                   <Chit variant={EComponentVariants.Primary} label='Mint Live' />
                 </div>
-                <p className='mt-1 text-sm text-gray-500'>Mint</p>
+                <p className='mt-1 text-sm text-gray-500'>Minting</p>
               </div>
             </Link>
 
@@ -125,31 +150,6 @@ export default function Home() {
                   <span>
                     <span aria-hidden='true' className='absolute inset-0'></span>
                     Punk Royale
-                  </span>
-                </span>
-                <Chit variant={EComponentVariants.Success} label='Sold Out' />
-              </div>
-              <p className='mt-1 text-sm text-gray-500'>Buy Now</p>
-            </Link>
-
-            <Link href='/collections/inners' className='group relative'>
-              <div className='relative'>
-                <img
-                  src='https://firebasestorage.googleapis.com/v0/b/web-ob-prod.appspot.com/o/content%2Finners.webp?alt=media&token=25efd731-798c-4e79-aade-a381f47f2932'
-                  alt='Inners'
-                  className='aspect-[4/3] w-full rounded-lg bg-gray-100 object-cover'
-                />
-                <div className='absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100' aria-hidden='true'>
-                  <div className='w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter'>
-                    Buy Now
-                  </div>
-                </div>
-              </div>
-              <div className='mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900'>
-                <span>
-                  <span>
-                    <span aria-hidden='true' className='absolute inset-0'></span>
-                    Inners
                   </span>
                 </span>
                 <Chit variant={EComponentVariants.Success} label='Sold Out' />
