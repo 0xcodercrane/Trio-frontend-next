@@ -75,9 +75,9 @@ export default function Home() {
                     Dead Ordinals
                   </span>
                 </span>
-                <Chit variant={EComponentVariants.Disabled} label='Coming Soon' />
+                <Chit variant={EComponentVariants.Success} label='Mint Live' />
               </div>
-              <p className='mt-1 text-sm text-gray-500'>Coming Soon</p>
+              <p className='mt-1 text-sm text-gray-500'>Minting</p>
             </Link>
 
             <Link href='/mint/satorials' className='group relative'>
@@ -100,7 +100,7 @@ export default function Home() {
                     Satorials
                   </span>
                 </span>
-                <Chit variant={EComponentVariants.Primary} label='Mint Live' />
+                <Chit variant={EComponentVariants.Success} label='Mint Live' />
               </div>
               <p className='mt-1 text-sm text-gray-500'>Minting</p>
             </Link>
@@ -126,7 +126,7 @@ export default function Home() {
                       Cryptomancers
                     </span>
                   </span>
-                  <Chit variant={EComponentVariants.Primary} label='Mint Live' />
+                  <Chit variant={EComponentVariants.Success} label='Mint Live' />
                 </div>
                 <p className='mt-1 text-sm text-gray-500'>Minting</p>
               </div>
@@ -152,7 +152,7 @@ export default function Home() {
                     Punk Royale
                   </span>
                 </span>
-                <Chit variant={EComponentVariants.Success} label='Sold Out' />
+                <Chit variant={EComponentVariants.Error} label='Sold Out' />
               </div>
               <p className='mt-1 text-sm text-gray-500'>Buy Now</p>
             </Link>

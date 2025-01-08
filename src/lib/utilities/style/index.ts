@@ -32,7 +32,7 @@ export const mapComponentVariantsToColor = (variant: EComponentVariants) => {
     case EComponentVariants.Error:
       return {
         bg: 'bg-ob-red-lighter',
-        text: 'text-ob-black',
+        text: 'text-ob-white',
         border: 'border border-ob-red-lighter'
       };
     case EComponentVariants.Disabled: {
